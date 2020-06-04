@@ -1,4 +1,4 @@
-.PHONY: clean test run-tests tests/* release version readme
+.PHONY: clean test run-tests tests/* release version readme ok
 
 ok:
 	go build
@@ -38,7 +38,8 @@ test-coverage:
 run-tests: tests/*
 
 tests/*: ok
-	./ok run $@
+	./ok run $@ > /tmp/stdout.txt
+	diff $@/stdout.txt /tmp/stdout.txt
 
 ok-macos.zip: version clean
 	GOOS=darwin GOARCH=amd64 go build -o bin/ok

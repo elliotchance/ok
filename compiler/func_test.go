@@ -4,6 +4,7 @@ import (
 	"ok/ast"
 	"ok/compiler"
 	"ok/instruction"
+	"ok/lexer"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -38,13 +39,21 @@ func TestCompileFunc(t *testing.T) {
 					},
 					&ast.Call{
 						FunctionName: "print",
-						Arguments:    []string{"hello world"},
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenString,
+								Value: "hello",
+							},
+						},
 					},
 				},
 			},
 			[]instruction.Instruction{
 				&instruction.Print{},
-				&instruction.Print{Value: "hello world"},
+				&instruction.Print{Value: &ast.Literal{
+					Kind:  lexer.TokenString,
+					Value: "hello",
+				}},
 			},
 		},
 	} {

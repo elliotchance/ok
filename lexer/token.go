@@ -9,18 +9,22 @@ const (
 	TokenEOF = "end of file"
 
 	// Dynamic
+	TokenBool       = "bool"       // bool literal, eg. true
+	TokenCharacter  = "character"  // char literal, eg. 'a'
+	TokenComment    = "comment"    // eg. "//..."
+	TokenData       = "data"       // data literal, eg. `foo`
 	TokenIdentifier = "identifier" // any non-keyword
-	TokenString     = "string"     // "..."
-	TokenComment    = "comment"    // "//..."
+	TokenNumber     = "number"     // number literal, eg. 12.3
+	TokenString     = "string"     // string literal, eg. "hello"
 
 	// Keywords
 	TokenFunc = "func"
 
 	// Operators
-	TokenParenOpen  = "("
-	TokenParenClose = ")"
-	TokenCurlyOpen  = "{"
 	TokenCurlyClose = "}"
+	TokenCurlyOpen  = "{"
+	TokenParenClose = ")"
+	TokenParenOpen  = "("
 )
 
 // Token represents a single token.

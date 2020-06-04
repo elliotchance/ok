@@ -7,5 +7,5 @@ type Call struct {
 
 	// Arguments contains zero or more elements that represent each of the
 	// arguments respectively.
-	Arguments []string
+	Arguments []*Literal
 }

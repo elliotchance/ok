@@ -3,6 +3,7 @@ package parser_test
 import (
 	"errors"
 	"ok/ast"
+	"ok/lexer"
 	"ok/parser"
 	"testing"
 
@@ -62,7 +63,12 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments:    []string{"hello world"},
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenString,
+								Value: "hello world",
+							},
+						},
 					},
 				},
 			},
@@ -74,11 +80,21 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments:    []string{"hello"},
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenString,
+								Value: "hello",
+							},
+						},
 					},
 					&ast.Call{
 						FunctionName: "print",
-						Arguments:    []string{"world"},
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenString,
+								Value: "world",
+							},
+						},
 					},
 				},
 			},
@@ -100,7 +116,12 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments:    []string{"hello"},
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenString,
+								Value: "hello",
+							},
+						},
 					},
 				},
 			},
@@ -113,6 +134,90 @@ func TestParseString(t *testing.T) {
 				{Comment: "corge"},
 				{Comment: "grault"},
 			},
+		},
+		"literal-true": {
+			str: `func main() { print(true) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenBool,
+								Value: "true",
+							},
+						},
+					},
+				},
+			},
+		},
+		"literal-false": {
+			str: `func main() { print(false) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenBool,
+								Value: "false",
+							},
+						},
+					},
+				},
+			},
+		},
+		"literal-char": {
+			str: `func main() { print('a') }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenCharacter,
+								Value: "a",
+							},
+						},
+					},
+				},
+			},
+		},
+		"literal-zero-length-char": {
+			str: `func main() { print('') }`,
+			err: errors.New("character literal cannot be empty"),
+		},
+		"literal-number-zero": {
+			str: `func main() { print(0) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []*ast.Literal{
+							{
+								Kind:  lexer.TokenNumber,
+								Value: "0",
+							},
+						},
+					},
+				},
+			},
+		},
+		"call-identifier-close": {
+			str: `func main() { print) }`,
+			err: errors.New("expecting ( after identifier, but found )"),
+		},
+		"call-identifier-without-literal": {
+			str: `func main() { print( }`,
+			err: errors.New("expecting literal after (, but found }"),
+		},
+		"call-identifier-missing-close": {
+			str: `func main() { print("hello" }`,
+			err: errors.New("expecting ) after string, but found }"),
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
