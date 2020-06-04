@@ -1,5 +1,24 @@
 language: go
 
-go: "1.14"
+go: '1.14'
 
-script: make test
+jobs:
+  include:
+    - stage: Test
+      script: make test
+
+    - stage: Release
+      if: tag =~ ^v
+      script: make release
+      deploy:
+        provider: releases
+        api_key:
+          secure: 015mmYacS/6PZvLU3X25kWC5XtXTMZZm9bmqQyNWxzJg1p/lrV+mZMyMilBKVEVJnsW93HRG0+Q84aq93bHxXDzgFgBH/955yGpOY4V7KfGDodM0JnuPYN5GEY3QPXr6TxIWvMS+aLO5PurjGEEfB9dXDkRiyM+1c3M10X5J8LG9X7bD6i05i3Jz8x0Bh4BFxBVtbJ2kPiVJmcOfLkIoF6RIttYF0MhR4uGzgkzrXuKoJYxrNjCRObm1ABe+1vZmfqhDpZYyzoAmy7ISTCPOKdHwBsguD9u9C0ouul5/3UjVrEM674W/lZ7sJCbswRXoagvlyZZJWQVrynRvSl+oWTkRZE0VpirC7QgsXlAUO/sETniQD4VH5XUfZw7GVFxS8Z4L/tKuq2uyX5RS7bkAoro2e3PRwcxRsyewFRh/k5x0X6BgK4RD0Bqtw1COGxZtO2qkx4lKBznERSqRwXBN1yVgNxAPxboicNYBSAkypTIBBzcGxbyzoxAua+j+uLbV1KUhaCDuDGePYpJjSrJuGiZ6Z8KN+pdEDV54flM2/TESYq7fyHcZmT4WMOg4mO5LccM/6bItREm4r2HDzKagHIqE37NZkO2cf+e+UlWaoi9wAfKBu1ZyA1HfTFG8ZrUDYGmsTUcQCA7znVcl7RLvszPi2RYE97ZozQFRuf8fVqY=
+        file:
+          - ok-linux.zip
+          - ok-macos.zip
+          - ok-windows.zip
+        on:
+          repo: elliotchance/ok
+          all_branches: true
+        skip_cleanup: 'true'

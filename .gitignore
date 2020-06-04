@@ -1,2 +1,8 @@
 /.idea
 /ok
+
+# Releases
+/bin
+/ok-macos.zip
+/ok-linux.zip
+/ok-windows.zip
