@@ -7,9 +7,10 @@
       * [From Source](#from-source)
    * [Command Line Interface](#command-line-interface)
       * [run](#run)
+      * [version](#version)
    * [Testing](#testing)
 
-<!-- Added by: elliot, at: Thu Jun  4 18:00:27 EDT 2020 -->
+<!-- Added by: elliot, at: Fri Jun  5 09:10:34 EDT 2020 -->
 
 <!--te-->
 
@@ -56,6 +57,11 @@ program by specifying the directory (or see the included tests/):
 ```bash
 ok run my/program
 ```
+
+version
+-------
+
+`ok version` will show the current version and the date it was built.
 
 
 Testing
