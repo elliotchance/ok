@@ -1,53 +1,64 @@
 package main
 
 import (
-	"io/ioutil"
+	"flag"
+	"fmt"
 	"log"
-	"ok/compiler"
-	"ok/parser"
-	"ok/vm"
+	"ok/cmd/run"
+	"ok/cmd/version"
 	"os"
-	"path"
+	"sort"
 )
 
+type command interface {
+	Run(args []string)
+	Description() string
+}
+
+var commands = map[string]command{
+	"run":     &run.Command{},
+	"version": &version.Command{},
+}
+
 func main() {
-	if len(os.Args) < 2 {
+	flag.Usage = func() {
+		fmt.Println("ok is a tool for managing ok source code.")
+		fmt.Println("")
+		fmt.Println("Usage:")
+		fmt.Println("")
+		fmt.Println("\tok <command> [arguments]")
+		fmt.Println("")
+		fmt.Println("The commands are:")
+		fmt.Println("")
+
+		var keys []string
+		for name := range commands {
+			keys = append(keys, name)
+		}
+
+		sort.Strings(keys)
+
+		for _, name := range keys {
+			fmt.Printf("\t%s\t\t%s\n", name, commands[name].Description())
+		}
+
+		fmt.Println("")
+		fmt.Println(`Use "ok <command> -help" for more information about a command.`)
+		fmt.Println("")
+	}
+
+	// This is just for the -help (usage).
+	flag.Parse()
+
+	if len(flag.Args()) < 1 {
 		log.Fatalln("missing command")
 	}
 
-	runCmd(os.Args[1], os.Args[2:])
-}
-
-func runCmd(cmd string, args []string) {
-	switch cmd {
-	case "run":
-		cmdRun(args)
-
-	default:
-		log.Fatalln("unknown command:", cmd)
-	}
-}
-
-func check(err error) {
-	if err != nil {
-		log.Fatalln(err)
-	}
-}
-
-func cmdRun(args []string) {
-	// TODO: Multiple packages provided.
-	if len(args) == 0 {
-		args = []string{"."}
+	cmdName := os.Args[1]
+	if cmd, ok := commands[cmdName]; ok {
+		cmd.Run(os.Args[2:])
+		return
 	}
 
-	data, err := ioutil.ReadFile(path.Join(args[0], "main.ok"))
-	check(err)
-
-	fn, err := parser.ParseString(string(data))
-	check(err)
-
-	instructions := compiler.CompileFunction(fn)
-
-	p := vm.NewVM(instructions)
-	p.Run()
+	log.Fatalln("unknown command:", cmdName)
 }
