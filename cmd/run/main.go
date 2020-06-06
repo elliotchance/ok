@@ -6,6 +6,7 @@ import (
 	"ok/compiler"
 	"ok/parser"
 	"ok/vm"
+	"os"
 	"path"
 )
 
@@ -38,6 +39,6 @@ func (*Command) Run(args []string) {
 
 	instructions := compiler.CompileFile(f)
 
-	p := vm.NewVM(instructions)
+	p := vm.NewVM(instructions, os.Stdout)
 	p.Run()
 }

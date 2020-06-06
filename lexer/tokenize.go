@@ -1,7 +1,7 @@
 package lexer
 
 import (
-	"errors"
+	"fmt"
 	"ok/ast"
 	"strings"
 )
@@ -11,17 +11,29 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 	var tokens []Token
 	var comments []*ast.Comment
 	var word string
-	for i := 0; i < len(str); i++ {
-		c := rune(str[i])
+
+	runes := []rune(str)
+	for i := 0; i < len(runes); i++ {
+		c := runes[i]
 		var token Token
 		found := false
 
 		switch c {
+		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			token := Token{TokenNumber, ""}
+			for ; i < len(runes) && isDecimalCharacter(runes[i]); i++ {
+				token.Value += string(runes[i])
+			}
+
+			i--
+			tokens = append(tokens, token)
+			continue
+
 		case '/':
 			token.Kind = TokenComment
 			i += 2
-			for ; i < len(str) && str[i] != '\n'; i++ {
-				token.Value += string(str[i])
+			for ; i < len(runes) && runes[i] != '\n'; i++ {
+				token.Value += string(runes[i])
 			}
 
 			comments = append(comments, &ast.Comment{
@@ -32,23 +44,17 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 			continue
 
-		case '"':
-			token.Kind = TokenString
-			i++
-			terminated := false
-			for ; i < len(str); i++ {
-				if str[i] == '"' {
-					terminated = true
-					break
-				}
-				token.Value += string(str[i])
+		case '\'', '"', '`':
+			value, newI, err := readQuotedLiteral(runes, i, c)
+			if err != nil {
+				// It's important that we return the tokens up until now so that
+				// the parser has to the context to say where the error
+				// occurred.
+				return tokens, comments, err
 			}
 
-			if !terminated {
-				return tokens, comments, errors.New("unterminated string")
-			}
-
-			tokens = append(tokens, token)
+			i = newI
+			tokens = append(tokens, Token{tokenKindForQuote(c), value})
 			continue
 
 		case ' ', '\n':
@@ -83,6 +89,27 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 	return tokens, comments, nil
 }
 
+func readQuotedLiteral(str []rune, i int, quote rune) (string, int, error) {
+	i++
+	terminated := false
+	value := ""
+	for ; i < len(str); i++ {
+		if str[i] == quote {
+			terminated = true
+			break
+		}
+
+		value += string(str[i])
+	}
+
+	if !terminated {
+		return "", i, fmt.Errorf(
+			"unterminated literal, did not find closing %c", quote)
+	}
+
+	return value, i, nil
+}
+
 func tokenWord(word string) Token {
 	word = strings.TrimSpace(word)
 
@@ -90,9 +117,31 @@ func tokenWord(word string) Token {
 	case "":
 		return Token{TokenEOF, ""}
 
+	case "true", "false":
+		return Token{TokenBool, word}
+
 	case "func":
 		return Token{TokenFunc, word}
 	}
 
 	return Token{TokenIdentifier, word}
+}
+
+func isDecimalCharacter(c rune) bool {
+	return (c >= '0' && c <= '9') || c == '.'
+}
+
+func tokenKindForQuote(quote rune) (kind string) {
+	switch quote {
+	case '\'':
+		kind = TokenCharacter
+
+	case '"':
+		kind = TokenString
+
+	case '`':
+		kind = TokenData
+	}
+
+	return
 }

@@ -1,0 +1,12 @@
+func main() {
+    print(true)
+    print(false)
+    print('A')
+    print('😃')
+    print(0)
+    print(456)
+    print(1.23)
+    print(`some 😳 data`)
+    print("hello")
+    print("夜")
+}

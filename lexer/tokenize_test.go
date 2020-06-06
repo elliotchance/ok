@@ -125,14 +125,14 @@ func TestTokenizeString(t *testing.T) {
 		},
 		"unterminated-string": {
 			str: `"`,
-			err: errors.New("unterminated string"),
+			err: errors.New("unterminated literal, did not find closing \""),
 		},
 		"func-unterminated-string": {
 			str: `func "`,
 			expected: []lexer.Token{
 				{lexer.TokenFunc, "func"},
 			},
-			err: errors.New("unterminated string"),
+			err: errors.New("unterminated literal, did not find closing \""),
 		},
 		"empty-string": {
 			str: `""`,
@@ -150,7 +150,7 @@ func TestTokenizeString(t *testing.T) {
 		},
 		"non-empty-unterminated-string": {
 			str: `"foo`,
-			err: errors.New("unterminated string"),
+			err: errors.New("unterminated literal, did not find closing \""),
 		},
 		"empty-comment": {
 			str: `//`,
@@ -192,6 +192,183 @@ func TestTokenizeString(t *testing.T) {
 			},
 			comments: []*ast.Comment{
 				{Comment: " hello"},
+			},
+		},
+		"number-0": {
+			str: `0`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "0"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-1": {
+			str: `1`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "1"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-2": {
+			str: `2`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "2"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-3": {
+			str: `3`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "3"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-4": {
+			str: `4`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "4"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-5": {
+			str: `5`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "5"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-6": {
+			str: `6`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "6"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-7": {
+			str: `7`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "7"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-8": {
+			str: `8`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "8"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-9": {
+			str: `9`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "9"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-10": {
+			str: `10`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "10"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-7676673479634790000000000": {
+			str: `7676673479634790000000000`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "7676673479634790000000000"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-0045": {
+			str: `0045`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "0045"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-0.12": {
+			str: `0.12`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "0.12"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-0.1200": {
+			str: `0.1200`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "0.1200"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"true": {
+			str: `true`,
+			expected: []lexer.Token{
+				{lexer.TokenBool, "true"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"false": {
+			str: `false`,
+			expected: []lexer.Token{
+				{lexer.TokenBool, "false"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"ascii-char": {
+			str: `'a'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharacter, "a"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"zero-length-char": {
+			str: `''`,
+			expected: []lexer.Token{
+				{lexer.TokenCharacter, ""},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"multi-byte-char": {
+			str: `'😃'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharacter, "😃"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"unterminated-char": {
+			str: `'a`,
+			err: errors.New("unterminated literal, did not find closing '"),
+		},
+		"ascii-data": {
+			str: "`a`",
+			expected: []lexer.Token{
+				{lexer.TokenData, "a"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"zero-length-data": {
+			str: "``",
+			expected: []lexer.Token{
+				{lexer.TokenData, ""},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"multi-byte-data": {
+			str: "`😃`",
+			expected: []lexer.Token{
+				{lexer.TokenData, "😃"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"unterminated-data": {
+			str: "`a",
+			err: errors.New("unterminated literal, did not find closing `"),
+		},
+		"number-open": {
+			str: `0(`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "0"},
+				{lexer.TokenParenOpen, "("},
+				{lexer.TokenEOF, ""},
 			},
 		},
 	} {

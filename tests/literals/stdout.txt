@@ -1,0 +1,10 @@
+true
+false
+A
+😃
+0
+456
+1.23
+some 😳 data
+hello
+夜

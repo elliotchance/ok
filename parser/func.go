@@ -23,10 +23,14 @@ func consumeFunc(f *File, offset int) (*ast.Func, int, bool, error) {
 	}
 
 	for {
-		var call *ast.Call
-		call, offset, _ = consumeCall(f, offset)
-		if call == nil {
+		if f.Tokens[offset].Kind != lexer.TokenIdentifier {
 			break
+		}
+
+		var call *ast.Call
+		call, offset, err = consumeCall(f, offset)
+		if err != nil {
+			return nil, originalOffset, false, err
 		}
 
 		fn.Statements = append(fn.Statements, call)
