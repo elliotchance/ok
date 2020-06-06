@@ -7,12 +7,33 @@ clean:
 	rm -rf bin ok-macos.zip
 	rm -f ok-linux.zip ok-windows.zip
 	rm -f ok
+	rm -f coverage.txt
+
+ci: clean test-fmt vet test-coverage
 
 test:
+	go test -race ./...
+
+fmt:
 	go fmt ./...
+
+test-fmt:
+	@echo "Checking go fmt..."
+	exit $(shell go fmt ./... | wc -l)
+
+vet:
 	go vet ./...
-	go test ./...
-	make run-tests
+
+test-coverage:
+	echo "" > coverage.txt
+
+	for d in $$(go list ./... | grep -v vendor); do \
+		go test -race -coverprofile=profile.out -covermode=atomic $$d || exit 1; \
+		if [ -f profile.out ]; then \
+			cat profile.out >> coverage.txt; \
+			rm profile.out; \
+		fi \
+	done
 
 run-tests: tests/*
 
