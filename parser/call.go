@@ -5,9 +5,9 @@ import (
 	"ok/lexer"
 )
 
-func consumeCall(tokens []lexer.Token, offset int) (*ast.Call, int, error) {
+func consumeCall(f *File, offset int) (*ast.Call, int, error) {
 	var err error
-	offset, err = consume(tokens, offset, []string{
+	offset, err = consume(f, offset, []string{
 		lexer.TokenIdentifier,
 		lexer.TokenParenOpen,
 		lexer.TokenString,
@@ -18,7 +18,7 @@ func consumeCall(tokens []lexer.Token, offset int) (*ast.Call, int, error) {
 	}
 
 	return &ast.Call{
-		FunctionName: tokens[offset-4].Value,
-		Arguments:    []string{tokens[offset-2].Value},
+		FunctionName: f.Tokens[offset-4].Value,
+		Arguments:    []string{f.Tokens[offset-2].Value},
 	}, offset, nil
 }

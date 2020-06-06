@@ -5,24 +5,26 @@ import (
 	"ok/lexer"
 )
 
-func consumeFunc(tokens []lexer.Token, offset int) (*ast.Func, int, error) {
+func consumeFunc(f *File, offset int) (*ast.Func, int, bool, error) {
 	var err error
-	offset, err = consume(tokens, offset, []string{
+	originalOffset := offset
+
+	offset, err = consume(f, offset, []string{
 		lexer.TokenFunc, lexer.TokenIdentifier,
 		lexer.TokenParenOpen, lexer.TokenParenClose,
 		lexer.TokenCurlyOpen,
 	})
 	if err != nil {
-		return nil, offset, err
+		return nil, offset, originalOffset == offset, err
 	}
 
 	fn := &ast.Func{
-		Name: tokens[offset-4].Value,
+		Name: f.Tokens[offset-4].Value,
 	}
 
 	for {
 		var call *ast.Call
-		call, offset, _ = consumeCall(tokens, offset)
+		call, offset, _ = consumeCall(f, offset)
 		if call == nil {
 			break
 		}
@@ -30,10 +32,10 @@ func consumeFunc(tokens []lexer.Token, offset int) (*ast.Func, int, error) {
 		fn.Statements = append(fn.Statements, call)
 	}
 
-	offset, err = consume(tokens, offset, []string{lexer.TokenCurlyClose})
+	offset, err = consume(f, offset, []string{lexer.TokenCurlyClose})
 	if err != nil {
-		return nil, offset, err
+		return nil, offset, false, err
 	}
 
-	return fn, offset, nil
+	return fn, offset, false, nil
 }

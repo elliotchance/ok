@@ -5,9 +5,9 @@ import (
 	"ok/instruction"
 )
 
-// CompileFunction translates a single function into a set of instructions. The
+// CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunction(fn *ast.Func) []instruction.Instruction {
+func CompileFunc(fn *ast.Func) []instruction.Instruction {
 	var instructions []instruction.Instruction
 	for _, statement := range fn.Statements {
 		ins := &instruction.Print{}

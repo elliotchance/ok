@@ -12,7 +12,7 @@ test:
 	go fmt ./...
 	go vet ./...
 	go test ./...
-	make tests/*
+	make run-tests
 
 run-tests: tests/*
 
@@ -36,7 +36,7 @@ release: ok-macos.zip ok-linux.zip ok-windows.zip
 version: TRAVIS_TAG ?= $(shell git describe --tags --abbrev=0)
 version: DATE := $(shell date +'%F')
 version:
-	sed -i '' "s/ok version unknown/ok version $(TRAVIS_TAG) $(DATE)/" cmd/version/main.go
+	sed -i "s/ok version unknown/ok version $(TRAVIS_TAG) $(DATE)/" cmd/version/main.go
 
 readme:
 	./gh-md-toc --insert README.md

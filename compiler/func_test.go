@@ -9,7 +9,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCompileFunction(t *testing.T) {
+func TestCompileFunc(t *testing.T) {
 	for testName, test := range map[string]struct {
 		fn       *ast.Func
 		expected []instruction.Instruction
@@ -49,7 +49,7 @@ func TestCompileFunction(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			instructions := compiler.CompileFunction(test.fn)
+			instructions := compiler.CompileFunc(test.fn)
 			assert.Equal(t, test.expected, instructions)
 		})
 	}
