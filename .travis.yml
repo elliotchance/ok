@@ -5,7 +5,8 @@ go: '1.14'
 jobs:
   include:
     - stage: Test
-      script: make test
+      script: make ci
+      after_success: bash <(curl -s https://codecov.io/bash)
 
     - stage: Release
       if: tag =~ ^v
