@@ -1,56 +1,54 @@
 package parser
 
 import (
-	"errors"
 	"fmt"
-	"ok/ast"
 	"ok/lexer"
 )
 
-// ParseString parses source code and returns the AST for the function.
-func ParseString(s string) (*ast.Func, error) {
-	if s == "" {
-		return nil, errors.New("cannot parse empty string")
-	}
-
-	tokens, err := lexer.TokenizeString(s)
+// ParseString parses source code and returns the AST for the file.
+func ParseString(s string) (*File, error) {
+	f := &File{}
+	var err error
+	f.Tokens, f.Comments, err = lexer.TokenizeString(s, lexer.Options{
+		IncludeComments: false,
+	})
 	if err != nil {
 		at := "at the start"
-		if len(tokens) > 0 {
-			at = "after " + tokens[len(tokens)-1].String()
+		if len(f.Tokens) > 0 {
+			at = "after " + f.Tokens[len(f.Tokens)-1].String()
 		}
 
 		return nil, fmt.Errorf("unterminated string found %s", at)
 	}
 
-	fn, offset, err := consumeFunc(tokens, 0)
-	if err != nil {
+	var offset int
+	var consumedNothing bool
+	f.Root, offset, consumedNothing, err = consumeFunc(f, offset)
+	if consumedNothing {
+		// This is OK. It means there was no function in the file.
+	} else if err != nil {
+		// Something went wrong consuming the function.
 		return nil, err
 	}
 
-	if tokens[offset].Kind != lexer.TokenEOF {
+	if f.Tokens[offset].Kind != lexer.TokenEOF {
 		return nil, fmt.Errorf("found extra %s at the end of the file",
-			tokens[offset])
+			f.Tokens[offset])
 	}
 
-	return fn, nil
+	return f, nil
 }
 
-func consume(tokens []lexer.Token, offset int, expected []string) (int, error) {
+func consume(f *File, offset int, expected []string) (int, error) {
 	for i, t := range expected {
-		// Bail out if there are not enough tokens. We can't do this at the
-		// start because we needed to check one of the tokens earlier on did not
-		// match to return a potentially lower value of i.
-		if offset+i >= len(tokens) {
-			return offset, fmt.Errorf(
-				"expecting %s after %s, but found end of file",
-				expected[i], tokens[offset+i-1].Kind)
-		}
+		tok := f.Tokens[offset+i]
+		if t != tok.Kind {
+			var after string
+			if offset+i-1 >= 0 {
+				after = f.Tokens[offset+i-1].Kind
+			}
 
-		if t != tokens[offset+i].Kind {
-			return offset, fmt.Errorf(
-				"expecting %s after %s, but found %s",
-				expected[i], tokens[offset+i-1].Kind, tokens[offset+i].Kind)
+			return offset + i, newTokenMismatch(expected[i], after, tok.Kind)
 		}
 	}
 

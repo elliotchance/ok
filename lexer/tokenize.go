@@ -2,12 +2,14 @@ package lexer
 
 import (
 	"errors"
+	"ok/ast"
 	"strings"
 )
 
 // TokenizeString returns a slice of tokens from the provided str.
-func TokenizeString(str string) ([]Token, error) {
+func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error) {
 	var tokens []Token
+	var comments []*ast.Comment
 	var word string
 	for i := 0; i < len(str); i++ {
 		c := rune(str[i])
@@ -15,8 +17,23 @@ func TokenizeString(str string) ([]Token, error) {
 		found := false
 
 		switch c {
+		case '/':
+			token.Kind = TokenComment
+			i += 2
+			for ; i < len(str) && str[i] != '\n'; i++ {
+				token.Value += string(str[i])
+			}
+
+			comments = append(comments, &ast.Comment{
+				Comment: token.Value,
+			})
+			if options.IncludeComments {
+				tokens = append(tokens, token)
+			}
+			continue
+
 		case '"':
-			token := Token{TokenString, ""}
+			token.Kind = TokenString
 			i++
 			terminated := false
 			for ; i < len(str); i++ {
@@ -28,7 +45,7 @@ func TokenizeString(str string) ([]Token, error) {
 			}
 
 			if !terminated {
-				return tokens, errors.New("unterminated string")
+				return tokens, comments, errors.New("unterminated string")
 			}
 
 			tokens = append(tokens, token)
@@ -63,7 +80,7 @@ func TokenizeString(str string) ([]Token, error) {
 
 	tokens = append(tokens, Token{TokenEOF, ""})
 
-	return tokens, nil
+	return tokens, comments, nil
 }
 
 func tokenWord(word string) Token {

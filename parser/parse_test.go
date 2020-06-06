@@ -13,11 +13,11 @@ func TestParseString(t *testing.T) {
 	for testName, test := range map[string]struct {
 		str      string
 		expected *ast.Func
+		comments []*ast.Comment
 		err      error
 	}{
 		"empty": {
 			str: "",
-			err: errors.New("cannot parse empty string"),
 		},
 		"func-paren-close": {
 			str: "func)",
@@ -87,15 +87,46 @@ func TestParseString(t *testing.T) {
 			str: "func main() {\n} (",
 			err: errors.New("found extra '(' at the end of the file"),
 		},
+		"only-comment": {
+			str: "// nothing to see here",
+			comments: []*ast.Comment{
+				{Comment: " nothing to see here"},
+			},
+		},
+		"comments-everywhere": {
+			str: "// foo\n //bar\nfunc main() {\n// baz\nprint(\"hello\") // qux\n// quux\n}//corge\n//grault",
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments:    []string{"hello"},
+					},
+				},
+			},
+			comments: []*ast.Comment{
+				{Comment: " foo"},
+				{Comment: "bar"},
+				{Comment: " baz"},
+				{Comment: " qux"},
+				{Comment: " quux"},
+				{Comment: "corge"},
+				{Comment: "grault"},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			node, err := parser.ParseString(test.str)
+			f, err := parser.ParseString(test.str)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
 				assert.NoError(t, err)
 			}
-			assert.Equal(t, test.expected, node)
+
+			if f != nil {
+				assert.Equal(t, test.expected, f.Root)
+				assert.Equal(t, test.comments, f.Comments)
+			}
 		})
 	}
 }

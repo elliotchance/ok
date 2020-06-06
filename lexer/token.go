@@ -11,6 +11,7 @@ const (
 	// Dynamic
 	TokenIdentifier = "identifier" // any non-keyword
 	TokenString     = "string"     // "..."
+	TokenComment    = "comment"    // "//..."
 
 	// Keywords
 	TokenFunc = "func"

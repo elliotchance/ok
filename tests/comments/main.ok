@@ -1,0 +1,9 @@
+// Comments can be everywhere.
+
+func main() {
+    // okie
+    print("hi") // Even here!
+    // dokie
+}
+
+// Or here...

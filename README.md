@@ -1,4 +1,4 @@
-*ok* is a strongly-duck-typed language.
+**ok** is a strongly-duck-typed language.
 
 <!--ts-->
    * [Installation](#installation)
@@ -8,9 +8,11 @@
    * [Command Line Interface](#command-line-interface)
       * [run](#run)
       * [version](#version)
-   * [Testing](#testing)
+   * [Language Specification](#language-specification)
+      * [Comments](#comments)
+   * [Contributing/Development](#contributingdevelopment)
 
-<!-- Added by: elliot, at: Fri Jun  5 09:10:34 EDT 2020 -->
+<!-- Added by: elliot, at: Sat Jun  6 11:03:39 EDT 2020 -->
 
 <!--te-->
 
@@ -64,8 +66,23 @@ version
 `ok version` will show the current version and the date it was built.
 
 
-Testing
-=======
+Language Specification
+======================
+
+Comments
+--------
+
+Comments begin with `//` and are terminated by a new line. Comments can exist on
+the same line as code:
+
+```
+// This is a comment.
+print("Hi") // Also a comment
+```
+
+
+Contributing/Development
+========================
 
 To run the full suite:
 
