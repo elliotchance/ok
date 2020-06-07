@@ -75,6 +75,9 @@ func compileNode(node ast.Node) (*ast.Literal, error) {
 	case *ast.Literal:
 		return n, nil
 
+	case *ast.Group:
+		return compileNode(n.Expr)
+
 	case *ast.Binary:
 		leftType := typeOf(n.Left)
 		rightType := typeOf(n.Right)
@@ -108,6 +111,9 @@ func typeOf(node ast.Node) string {
 
 	case *ast.Binary:
 		return typeOf(n.Left)
+
+	case *ast.Group:
+		return typeOf(n.Expr)
 	}
 
 	// TODO(elliot): Do something more sensible here.

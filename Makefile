@@ -9,7 +9,7 @@ clean:
 	rm -f ok
 	rm -f coverage.txt
 
-ci: clean test-fmt vet test-coverage
+ci: clean test-fmt vet test-coverage run-tests
 
 test:
 	go test -race ./...

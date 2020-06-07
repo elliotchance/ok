@@ -240,6 +240,86 @@ func TestCompileFunc(t *testing.T) {
 			)),
 			err: errors.New("division by zero"),
 		},
+		"group-1": {
+			fn: newFunc(ast.NewBinary(
+				&ast.Group{
+					Expr: ast.NewBinary(
+						ast.NewLiteralNumber("3"),
+						lexer.TokenPlus,
+						ast.NewLiteralNumber("4"),
+					),
+				},
+				lexer.TokenTimes,
+				ast.NewLiteralNumber("5"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralNumber("35"),
+					},
+				},
+			},
+		},
+		"group-2": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("5"),
+				lexer.TokenMinus,
+				&ast.Group{
+					Expr: ast.NewBinary(
+						ast.NewLiteralNumber("3"),
+						lexer.TokenPlus,
+						ast.NewLiteralNumber("4"),
+					),
+				},
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralNumber("-2"),
+					},
+				},
+			},
+		},
+		"group-3": {
+			fn: newFunc(ast.NewBinary(
+				&ast.Group{
+					Expr: &ast.Group{
+						Expr: ast.NewLiteralNumber("5"),
+					},
+				},
+				lexer.TokenPlus,
+				&ast.Group{
+					Expr: ast.NewLiteralNumber("3"),
+				},
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralNumber("8"),
+					},
+				},
+			},
+		},
+		"group-4": {
+			fn: newFunc(
+				&ast.Group{
+					Expr: &ast.Group{
+						Expr: ast.NewLiteralNumber("5"),
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralNumber("5"),
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			instructions, err := compiler.CompileFunc(test.fn)
