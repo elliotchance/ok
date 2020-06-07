@@ -1,0 +1,13 @@
+func main() {
+    print(2 + 3 * 4) // 14
+    print(2 * 3 + 4) // 10
+
+    print((2 + 3) * 4) // 20
+    print(2 + (3 * 4)) // 14
+    print((2 * 3) + 4) // 10
+    print(2 * (3 + 4)) // 14
+
+    print((7.2 + 1))                    // 8.2
+    print((123))                        // 123
+    print((((((((("super deep"))))))))) // "super deep"
+}

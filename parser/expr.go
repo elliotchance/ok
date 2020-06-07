@@ -26,6 +26,14 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 			continue
 		}
 
+		// Grouping "()"
+		var group *ast.Group
+		group, offset, err = consumeGroup(f, offset)
+		if err == nil {
+			parts = append(parts, group)
+			continue
+		}
+
 		// Otherwise it must be a a valid binary operator.
 		switch f.Tokens[offset].Kind {
 		case lexer.TokenPlus, lexer.TokenMinus, lexer.TokenTimes,
@@ -58,8 +66,7 @@ var operatorPrecedence = map[string]int{
 
 func reduceExpr(parts []interface{}) ast.Node {
 	if len(parts) == 1 {
-		// TODO(elliot): Check a non-literal.
-		return parts[0].(*ast.Literal)
+		return parts[0]
 	}
 
 	if len(parts) == 2 {
@@ -71,9 +78,9 @@ func reduceExpr(parts []interface{}) ast.Node {
 
 	if len(parts) == 3 {
 		return &ast.Binary{
-			Left:  parts[0].(*ast.Literal),
+			Left:  parts[0],
 			Op:    parts[1].(lexer.Token).Kind,
-			Right: parts[2].(*ast.Literal),
+			Right: parts[2],
 		}
 	}
 

@@ -25,6 +25,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [Language Specification](#language-specification)
       * [Comments](#comments)
       * [Data Types](#data-types)
+      * [Expressions](#expressions)
       * [Literals](#literals)
          * [Booleans](#booleans)
          * [Characters](#characters)
@@ -35,7 +36,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [FAQ](#faq)
       * [Why does "3 / 2 = 2?"](#why-does-3--2--2)
 
-<!-- Added by: elliot, at: Sun Jun  7 15:43:26 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun  7 17:58:46 EDT 2020 -->
 
 <!--te-->
 
@@ -113,6 +114,16 @@ ok supports these data types:
 - `data`: [Data](#data)
 - `number`: [Numbers](#numbers)
 - `string`: [Strings](#strings)
+
+Expressions
+-----------
+
+An expression resolves to a single value and can be recursive. An expression is
+one of:
+
+1. A [literal](#Literals).
+2. `(` [expression](#Expressions) `)`.
+3. [expression](#Expressions) [operator](#Operators) [expression](#Expressions).
 
 Literals
 --------
