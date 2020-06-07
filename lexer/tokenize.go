@@ -125,8 +125,8 @@ func tokenWord(word string) Token {
 	case "true", "false":
 		return Token{TokenBool, word}
 
-	case "func":
-		return Token{TokenFunc, word}
+	case "and", "func", "or", "not":
+		return Token{word, word}
 	}
 
 	return Token{TokenIdentifier, word}

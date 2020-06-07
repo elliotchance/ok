@@ -320,6 +320,94 @@ func TestCompileFunc(t *testing.T) {
 				},
 			},
 		},
+		"true-and-true": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenAnd,
+				ast.NewLiteralBool(true),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"true-and-false": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenAnd,
+				ast.NewLiteralBool(false),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"true-or-true": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenOr,
+				ast.NewLiteralBool(true),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"true-or-false": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenOr,
+				ast.NewLiteralBool(false),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"not-true": {
+			fn: newFunc(&ast.Unary{
+				Op:   lexer.TokenNot,
+				Expr: ast.NewLiteralBool(true),
+			}),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"not-false": {
+			fn: newFunc(&ast.Unary{
+				Op:   lexer.TokenNot,
+				Expr: ast.NewLiteralBool(true),
+			}),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			instructions, err := compiler.CompileFunc(test.fn)

@@ -1,5 +1,7 @@
 package ast
 
+import "strconv"
+
 // Literal represents a literal of any type.
 type Literal struct {
 	Kind  string
@@ -27,5 +29,13 @@ func NewLiteralString(str string) *Literal {
 	return &Literal{
 		Kind:  "string",
 		Value: str,
+	}
+}
+
+// NewLiteralBool create a new literal representing a boolean value.
+func NewLiteralBool(b bool) *Literal {
+	return &Literal{
+		Kind:  "bool",
+		Value: strconv.FormatBool(b),
 	}
 }

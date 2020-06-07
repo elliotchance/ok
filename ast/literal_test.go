@@ -24,3 +24,17 @@ func TestNewLiteralString(t *testing.T) {
 	assert.Equal(t, "string", literal.Kind)
 	assert.Equal(t, "foo bar", literal.Value)
 }
+
+func TestNewLiteralBool(t *testing.T) {
+	t.Run("true", func(t *testing.T) {
+		literal := ast.NewLiteralBool(true)
+		assert.Equal(t, "bool", literal.Kind)
+		assert.Equal(t, "true", literal.Value)
+	})
+
+	t.Run("false", func(t *testing.T) {
+		literal := ast.NewLiteralBool(false)
+		assert.Equal(t, "bool", literal.Kind)
+		assert.Equal(t, "false", literal.Value)
+	})
+}

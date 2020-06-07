@@ -422,6 +422,27 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, ""},
 			},
 		},
+		"and": {
+			str: `and`,
+			expected: []lexer.Token{
+				{lexer.TokenAnd, "and"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"or": {
+			str: `or`,
+			expected: []lexer.Token{
+				{lexer.TokenOr, "or"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"not": {
+			str: `not`,
+			expected: []lexer.Token{
+				{lexer.TokenNot, "not"},
+				{lexer.TokenEOF, ""},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

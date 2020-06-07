@@ -11,6 +11,7 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 	// Consume as many subexpressions and operators as possible.
 	var parts []interface{}
 	var err error
+	didJustConsumeLiteral := false
 	for offset < len(f.Tokens) {
 		// Try to consume a literal first. This is important because literals
 		// may be multi token and contain an operator.
@@ -23,6 +24,7 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 			}
 
 			parts = append(parts, literal)
+			didJustConsumeLiteral = true
 			continue
 		}
 
@@ -31,15 +33,29 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 		group, offset, err = consumeGroup(f, offset)
 		if err == nil {
 			parts = append(parts, group)
+			didJustConsumeLiteral = false
 			continue
+		}
+
+		// Unary operator (can not be consumed directly after a literal).
+		if !didJustConsumeLiteral {
+			var unary *ast.Unary
+			unary, offset, err = consumeUnary(f, offset)
+			if err == nil {
+				parts = append(parts, unary)
+				didJustConsumeLiteral = false
+				continue
+			}
 		}
 
 		// Otherwise it must be a a valid binary operator.
 		switch f.Tokens[offset].Kind {
 		case lexer.TokenPlus, lexer.TokenMinus, lexer.TokenTimes,
-			lexer.TokenDivide, lexer.TokenRemainder:
+			lexer.TokenDivide, lexer.TokenRemainder, lexer.TokenAnd,
+			lexer.TokenOr:
 			parts = append(parts, f.Tokens[offset])
 			offset++
+			didJustConsumeLiteral = false
 			continue
 		}
 
@@ -67,13 +83,6 @@ var operatorPrecedence = map[string]int{
 func reduceExpr(parts []interface{}) ast.Node {
 	if len(parts) == 1 {
 		return parts[0]
-	}
-
-	if len(parts) == 2 {
-		return &ast.Unary{
-			Op:   lexer.TokenMinus,
-			Expr: parts[1].(*ast.Literal),
-		}
 	}
 
 	if len(parts) == 3 {

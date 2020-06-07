@@ -123,7 +123,8 @@ one of:
 
 1. A [literal](#Literals).
 2. `(` [expression](#Expressions) `)`.
-3. [expression](#Expressions) [operator](#Operators) [expression](#Expressions).
+3. [expression](#Expressions) [binary operator](#Operators) [expression](#Expressions).
+4. [unary operator](#Operators) [expression](#Expressions).
 
 Literals
 --------
@@ -205,13 +206,22 @@ Operators
 The following table describes the supported binary operators. All binary
 operations require the same type on the left and right.
 
-|     | `bool` | `char` | `data` | `number` | `string` |
-| --- | ------ | ------ | ------ | -------- | -------- |
-| `+` | No     | No     | Yes    | Yes      | Yes      |
-| `-` | No     | No     | No     | Yes      | No       |
-| `*` | No     | No     | No     | Yes      | No       |
-| `/` | No     | No     | No     | Yes      | No       |
-| `%` | No     | No     | No     | Yes      | No       |
+|       | `bool` | `char` | `data` | `number` | `string` |
+| ----- | ------ | ------ | ------ | -------- | -------- |
+| `+`   | No     | No     | Yes    | Yes      | Yes      |
+| `-`   | No     | No     | No     | Yes      | No       |
+| `*`   | No     | No     | No     | Yes      | No       |
+| `/`   | No     | No     | No     | Yes      | No       |
+| `%`   | No     | No     | No     | Yes      | No       |
+| `and` | Yes    | No     | No     | No       | No       |
+| `or`  | Yes    | No     | No     | No       | No       |
+
+The following table describes the unary operators.
+
+|       | `bool` | `char` | `data` | `number` | `string` |
+| ----- | ------ | ------ | ------ | -------- | -------- |
+| `-`   | No     | No     | No     | Yes      | No       |
+| `not` | Yes    | No     | No     | No       | No       |
 
 When evaluating expressions the order of operations is influenced by the
 precedence of the operator. The precedence from most to least important:
