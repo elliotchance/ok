@@ -18,18 +18,21 @@ const (
 	TokenString     = "string"     // string literal, eg. "hello"
 
 	// Keywords
+	TokenAnd  = "and"
 	TokenFunc = "func"
+	TokenNot  = "not"
+	TokenOr   = "or"
 
 	// Operators
 	TokenCurlyClose = "}"
 	TokenCurlyOpen  = "{"
+	TokenDivide     = "/"
+	TokenMinus      = "-"
 	TokenParenClose = ")"
 	TokenParenOpen  = "("
 	TokenPlus       = "+"
-	TokenMinus      = "-"
-	TokenTimes      = "*"
-	TokenDivide     = "/"
 	TokenRemainder  = "%"
+	TokenTimes      = "*"
 )
 
 // Token represents a single token.

@@ -68,6 +68,18 @@ var binaryOperations = map[string]func(*ast.Literal, *ast.Literal) (*ast.Literal
 
 		return ast.NewLiteralString(result.Result.Value), err
 	},
+	"bool and bool": func(left, right *ast.Literal) (*ast.Literal, error) {
+		l := left.Value == "true"
+		r := right.Value == "true"
+
+		return ast.NewLiteralBool(l && r), nil
+	},
+	"bool or bool": func(left, right *ast.Literal) (*ast.Literal, error) {
+		l := left.Value == "true"
+		r := right.Value == "true"
+
+		return ast.NewLiteralBool(l || r), nil
+	},
 }
 
 func compileNode(node ast.Node) (*ast.Literal, error) {
@@ -77,6 +89,15 @@ func compileNode(node ast.Node) (*ast.Literal, error) {
 
 	case *ast.Group:
 		return compileNode(n.Expr)
+
+	case *ast.Unary:
+		// TODO(elliot): Need "-"
+		val, err := compileNode(n.Expr)
+		if err != nil {
+			return nil, err
+		}
+
+		return ast.NewLiteralBool(val.Value == "false"), nil
 
 	case *ast.Binary:
 		leftType := typeOf(n.Left)

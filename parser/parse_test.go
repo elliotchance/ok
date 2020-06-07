@@ -252,6 +252,47 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
+		"bool-and-bool": {
+			str: `func main() { print(true and false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenAnd,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"bool-or-bool": {
+			str: `func main() { print(true or false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenOr,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"not-bool": {
+			str: `func main() { print(not true) }`,
+			expected: newFunc(
+				&ast.Unary{
+					Op:   lexer.TokenNot,
+					Expr: ast.NewLiteralBool(true),
+				},
+			),
+		},
+		"not-not-bool": {
+			str: `func main() { print(not not false) }`,
+			expected: newFunc(
+				&ast.Unary{
+					Op: lexer.TokenNot,
+					Expr: &ast.Unary{
+						Op:   lexer.TokenNot,
+						Expr: ast.NewLiteralBool(false),
+					},
+				},
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			f, err := parser.ParseString(test.str)
