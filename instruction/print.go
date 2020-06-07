@@ -8,12 +8,15 @@ import (
 
 // Print will output a string to stdout.
 type Print struct {
-	Value *ast.Literal
+	Values []*ast.Literal
+	Stdout io.Writer
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Print) Execute(stdout io.Writer) {
-	if ins.Value != nil {
-		fmt.Fprintln(stdout, ins.Value.Value)
+func (ins *Print) Execute() error {
+	for _, value := range ins.Values {
+		fmt.Fprintln(ins.Stdout, value.Value)
 	}
+
+	return nil
 }

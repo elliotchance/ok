@@ -31,8 +31,11 @@ variables, nils, dereferencing or variables/arguments that have defaults.
          * [Data](#data)
          * [Numbers](#numbers)
          * [Strings](#strings)
+      * [Operators](#operators)
+   * [FAQ](#faq)
+      * [Why does "3 / 2 = 2?"](#why-does-3--2--2)
 
-<!-- Added by: elliot, at: Sat Jun  6 14:24:39 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun  7 15:43:26 EDT 2020 -->
 
 <!--te-->
 
@@ -168,6 +171,12 @@ is valid.
 When printing numbers the precision is preserved. So `1.300` will also display
 as `1.300`.
 
+Number have the value of a negative zero (`-0`). This is always normalised as
+`0`.
+
+Divide and remainder with a denominator of zero (ie. division by zero) will
+raise an error.
+
 ### Strings
 
 Strings can be any length (including zero) and must be wrapped in double-quotes
@@ -177,3 +186,56 @@ Examples:
 
 - `""` - an empty string (zero length).
 - `"hello world"` - a string containing 11 characters.
+
+
+Operators
+---------
+
+The following table describes the supported binary operators. All binary
+operations require the same type on the left and right.
+
+|     | `bool` | `char` | `data` | `number` | `string` |
+| --- | ------ | ------ | ------ | -------- | -------- |
+| `+` | No     | No     | Yes    | Yes      | Yes      |
+| `-` | No     | No     | No     | Yes      | No       |
+| `*` | No     | No     | No     | Yes      | No       |
+| `/` | No     | No     | No     | Yes      | No       |
+| `%` | No     | No     | No     | Yes      | No       |
+
+When evaluating expressions the order of operations is influenced by the
+precedence of the operator. The precedence from most to least important:
+
+1. `*`, `/`, `%`
+2. `+`, `-`
+
+Examples:
+
+- `1 + 2 + 3` is evaluated as `1 + (2 + 3)`
+- `1 + 2 * 3` is evaluated as `1 + (2 * 3)`
+- `1 * 2 + 3` is evaluated as `(1 * 2) + 3`
+
+Other notes:
+
+1. All arithmetic operations return a number that has the same precision as the
+greatest precision input.
+
+2. The remainder operator (`%`) is not the same as a modulo operator. Whereas as
+modulo operation will always return a positive number, a remainder may be
+negative if one of the inputs is also negative.
+
+
+FAQ
+===
+
+## Why does "3 / 2 = 2?"
+
+All numbers have a precision. The precision is the number of digits after the
+decimal place. For integers (whole numbers) the precision is zero. When
+performing any arithmetic operation the output precision will be the same as the
+highest input precision.
+
+So, in this case both inputs have a precision of 0 and so that is also used in
+the output precision. On top of that any numbers is rounded half-up to fit
+within the precision, so `1.5` becomes `2`.
+
+`3.0 / 2` or `3 / 2.0` would produce `1.5`.

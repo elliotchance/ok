@@ -17,14 +17,8 @@ func consumeCall(f *File, offset int) (*ast.Call, int, error) {
 		return nil, originalOffset, err
 	}
 
-	var literal *ast.Literal
-	literal, offset, err = consumeLiteral(f, offset)
-	if err != nil {
-		return nil, originalOffset, newTokenMismatch("literal",
-			f.Tokens[offset-1].Kind, f.Tokens[offset].Kind)
-	}
-
-	err = validateLiteral(literal)
+	var expr ast.Node
+	expr, offset, err = consumeExpr(f, offset)
 	if err != nil {
 		return nil, originalOffset, err
 	}
@@ -35,9 +29,7 @@ func consumeCall(f *File, offset int) (*ast.Call, int, error) {
 	}
 
 	return &ast.Call{
-		FunctionName: f.Tokens[offset-4].Value,
-		Arguments: []*ast.Literal{
-			literal,
-		},
+		FunctionName: f.Tokens[originalOffset].Value,
+		Arguments:    []ast.Node{expr},
 	}, offset, nil
 }

@@ -20,7 +20,7 @@ func TestVM_Run(t *testing.T) {
 		"one-instruction": {
 			instructions: []instruction.Instruction{
 				&instruction.Print{
-					Value: &ast.Literal{Kind: lexer.TokenNumber, Value: "1.23"},
+					Values: []*ast.Literal{{Kind: lexer.TokenNumber, Value: "1.23"}},
 				},
 			},
 			expectedStdout: "1.23\n",
@@ -28,10 +28,10 @@ func TestVM_Run(t *testing.T) {
 		"two-instructions": {
 			instructions: []instruction.Instruction{
 				&instruction.Print{
-					Value: &ast.Literal{Kind: lexer.TokenString, Value: "foo bar"},
+					Values: []*ast.Literal{{Kind: lexer.TokenString, Value: "foo bar"}},
 				},
 				&instruction.Print{
-					Value: &ast.Literal{Kind: lexer.TokenNumber, Value: "1.23"},
+					Values: []*ast.Literal{{Kind: lexer.TokenNumber, Value: "1.23"}},
 				},
 			},
 			expectedStdout: "foo bar\n1.23\n",
@@ -39,7 +39,11 @@ func TestVM_Run(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
-			vm := vm.NewVM(test.instructions, buf)
+			for _, ins := range test.instructions {
+				ins.(*instruction.Print).Stdout = buf
+			}
+
+			vm := vm.NewVM(test.instructions)
 			vm.Run()
 			assert.Equal(t, test.expectedStdout, buf.String())
 		})

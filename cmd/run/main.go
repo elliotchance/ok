@@ -6,7 +6,6 @@ import (
 	"ok/compiler"
 	"ok/parser"
 	"ok/vm"
-	"os"
 	"path"
 )
 
@@ -37,8 +36,9 @@ func (*Command) Run(args []string) {
 	f, err := parser.ParseString(string(data))
 	check(err)
 
-	instructions := compiler.CompileFile(f)
+	instructions, err := compiler.CompileFile(f)
+	check(err)
 
-	p := vm.NewVM(instructions, os.Stdout)
+	p := vm.NewVM(instructions)
 	p.Run()
 }

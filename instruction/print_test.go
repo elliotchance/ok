@@ -43,7 +43,13 @@ func TestPrint_Execute(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
-			(&instruction.Print{Value: test.value}).Execute(buf)
+			ins := &instruction.Print{
+				Stdout: buf,
+			}
+			if test.value != nil {
+				ins.Values = []*ast.Literal{test.value}
+			}
+			assert.NoError(t, ins.Execute())
 			assert.Equal(t, test.expectedStdout, buf.String())
 		})
 	}

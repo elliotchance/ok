@@ -63,8 +63,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenString,
 								Value: "hello world",
 							},
@@ -80,8 +80,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenString,
 								Value: "hello",
 							},
@@ -89,8 +89,8 @@ func TestParseString(t *testing.T) {
 					},
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenString,
 								Value: "world",
 							},
@@ -116,8 +116,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenString,
 								Value: "hello",
 							},
@@ -142,8 +142,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenBool,
 								Value: "true",
 							},
@@ -159,8 +159,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenBool,
 								Value: "false",
 							},
@@ -176,8 +176,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenCharacter,
 								Value: "a",
 							},
@@ -197,8 +197,8 @@ func TestParseString(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
-						Arguments: []*ast.Literal{
-							{
+						Arguments: []ast.Node{
+							&ast.Literal{
 								Kind:  lexer.TokenNumber,
 								Value: "0",
 							},
@@ -213,11 +213,213 @@ func TestParseString(t *testing.T) {
 		},
 		"call-identifier-without-literal": {
 			str: `func main() { print( }`,
-			err: errors.New("expecting literal after (, but found }"),
+			err: errors.New("expecting expression after (, but found }"),
 		},
 		"call-identifier-missing-close": {
 			str: `func main() { print("hello" }`,
 			err: errors.New("expecting ) after string, but found }"),
+		},
+		"literal-number-negative": {
+			str: `func main() { print(-3.20) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Unary{
+								Op: lexer.TokenMinus,
+								Expr: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3.20",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"numbers-plus": {
+			str: `func main() { print(3 + 2) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3",
+								},
+								Op: lexer.TokenPlus,
+								Right: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "2",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"numbers-minus": {
+			str: `func main() { print(3 - 2) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3",
+								},
+								Op: lexer.TokenMinus,
+								Right: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "2",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"numbers-times": {
+			str: `func main() { print(3.0*2.1) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3.0",
+								},
+								Op: lexer.TokenTimes,
+								Right: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "2.1",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"numbers-divide": {
+			str: `func main() { print(3/2.0) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3",
+								},
+								Op: lexer.TokenDivide,
+								Right: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "2.0",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"numbers-remainder": {
+			str: `func main() { print(3 % 2) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3",
+								},
+								Op: lexer.TokenRemainder,
+								Right: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "2",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"expr-3-linear-order": {
+			str: `func main() { print(1 + 2 - 3) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "1",
+								},
+								Op: lexer.TokenPlus,
+								Right: &ast.Binary{
+									Left: &ast.Literal{
+										Kind:  lexer.TokenNumber,
+										Value: "2",
+									},
+									Op: lexer.TokenMinus,
+									Right: &ast.Literal{
+										Kind:  lexer.TokenNumber,
+										Value: "3",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"expr-3-non-linear-order": {
+			str: `func main() { print(1 * 2 - 3) }`,
+			expected: &ast.Func{
+				Name: "main",
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Binary{
+								Left: &ast.Binary{
+									Left: &ast.Literal{
+										Kind:  lexer.TokenNumber,
+										Value: "1",
+									},
+									Op: lexer.TokenTimes,
+									Right: &ast.Literal{
+										Kind:  lexer.TokenNumber,
+										Value: "2",
+									},
+								},
+								Op: lexer.TokenMinus,
+								Right: &ast.Literal{
+									Kind:  lexer.TokenNumber,
+									Value: "3",
+								},
+							},
+						},
+					},
+				},
+			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

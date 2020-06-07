@@ -25,6 +25,11 @@ const (
 	TokenCurlyOpen  = "{"
 	TokenParenClose = ")"
 	TokenParenOpen  = "("
+	TokenPlus       = "+"
+	TokenMinus      = "-"
+	TokenTimes      = "*"
+	TokenDivide     = "/"
+	TokenRemainder  = "%"
 )
 
 // Token represents a single token.
