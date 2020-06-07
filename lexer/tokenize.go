@@ -30,19 +30,24 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			continue
 
 		case '/':
-			token.Kind = TokenComment
-			i += 2
-			for ; i < len(runes) && runes[i] != '\n'; i++ {
-				token.Value += string(runes[i])
-			}
+			if i+1 < len(runes) && runes[i+1] == '/' {
+				token.Kind = TokenComment
+				i += 2
+				for ; i < len(runes) && runes[i] != '\n'; i++ {
+					token.Value += string(runes[i])
+				}
 
-			comments = append(comments, &ast.Comment{
-				Comment: token.Value,
-			})
-			if options.IncludeComments {
-				tokens = append(tokens, token)
+				comments = append(comments, &ast.Comment{
+					Comment: token.Value,
+				})
+				if options.IncludeComments {
+					tokens = append(tokens, token)
+				}
+				continue
+			} else {
+				found = true
+				token = Token{string(c), string(c)}
 			}
-			continue
 
 		case '\'', '"', '`':
 			value, newI, err := readQuotedLiteral(runes, i, c)
@@ -60,7 +65,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 		case ' ', '\n':
 			found = true
 
-		case '(', ')', '{', '}':
+		case '(', ')', '{', '}', '+', '-', '*', '%':
 			found = true
 			token = Token{string(c), string(c)}
 		}

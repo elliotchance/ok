@@ -371,6 +371,57 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, ""},
 			},
 		},
+		"plus": {
+			str: `+`,
+			expected: []lexer.Token{
+				{lexer.TokenPlus, "+"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"minus": {
+			str: `-`,
+			expected: []lexer.Token{
+				{lexer.TokenMinus, "-"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"times": {
+			str: `*`,
+			expected: []lexer.Token{
+				{lexer.TokenTimes, "*"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"divide": {
+			str: `/`,
+			expected: []lexer.Token{
+				{lexer.TokenDivide, "/"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"remainder": {
+			str: `%`,
+			expected: []lexer.Token{
+				{lexer.TokenRemainder, "%"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-negative-integer": {
+			str: `-3`,
+			expected: []lexer.Token{
+				{lexer.TokenMinus, "-"},
+				{lexer.TokenNumber, "3"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"number-negative-decimal": {
+			str: `-3.20`,
+			expected: []lexer.Token{
+				{lexer.TokenMinus, "-"},
+				{lexer.TokenNumber, "3.20"},
+				{lexer.TokenEOF, ""},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

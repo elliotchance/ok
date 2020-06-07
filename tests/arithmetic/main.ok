@@ -1,0 +1,6 @@
+func main() {
+    print("he" + "llo")
+
+    print(1+1)
+    print(7.0/3.0)
+}

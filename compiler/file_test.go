@@ -5,6 +5,7 @@ import (
 	"ok/compiler"
 	"ok/instruction"
 	"ok/parser"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -30,12 +31,13 @@ func TestCompileFile(t *testing.T) {
 				},
 			},
 			[]instruction.Instruction{
-				&instruction.Print{},
+				&instruction.Print{Stdout: os.Stdout},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			instructions := compiler.CompileFile(test.f)
+			instructions, err := compiler.CompileFile(test.f)
+			assert.NoError(t, err)
 			assert.Equal(t, test.expected, instructions)
 		})
 	}
