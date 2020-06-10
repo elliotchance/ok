@@ -1,31 +1,38 @@
 package compiler
 
 import (
+	"fmt"
 	"ok/ast"
 	"ok/instruction"
-	"os"
 )
+
+type CompiledFunc struct {
+	Instructions []instruction.Instruction
+	Registers    int
+	variables    map[string]string
+}
+
+func (c *CompiledFunc) nextRegister() string {
+	c.Registers++
+	return fmt.Sprintf("%d", c.Registers)
+}
+
+func (c *CompiledFunc) append(instruction instruction.Instruction) {
+	c.Instructions = append(c.Instructions, instruction)
+}
 
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunc(fn *ast.Func) ([]instruction.Instruction, error) {
-	var instructions []instruction.Instruction
+func CompileFunc(fn *ast.Func) (*CompiledFunc, error) {
+	compiled := &CompiledFunc{
+		variables: map[string]string{},
+	}
 	for _, statement := range fn.Statements {
-		ins := &instruction.Print{
-			Stdout: os.Stdout,
+		err := compileStatement(compiled, statement)
+		if err != nil {
+			return nil, err
 		}
-		args := statement.(*ast.Call).Arguments
-		for _, arg := range args {
-			literal, err := compileNode(arg)
-			if err != nil {
-				return nil, err
-			}
-
-			ins.Values = append(ins.Values, literal)
-		}
-
-		instructions = append(instructions, ins)
 	}
 
-	return instructions, nil
+	return compiled, nil
 }

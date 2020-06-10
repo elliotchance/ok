@@ -7,23 +7,17 @@ import (
 
 // Multiply will multiply two numbers.
 type Multiply struct {
-	Left, Right, Result *ast.Literal
+	Left, Right, Result string
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Multiply) Execute() error {
-	ins.Result = ast.NewLiteralNumber(
+func (ins *Multiply) Execute(registers map[string]*ast.Literal) error {
+	registers[ins.Result] = ast.NewLiteralNumber(
 		number.Multiply(
-			number.NewNumber(ins.Left.Value),
-			number.NewNumber(ins.Right.Value),
+			number.NewNumber(registers[ins.Left].Value),
+			number.NewNumber(registers[ins.Right].Value),
 		).String(),
 	)
 
 	return nil
-}
-
-// Answer will be removed shortly. Right now it's used to evaluate literals
-// because there are no variables.
-func (ins *Multiply) Answer() *ast.Literal {
-	return ins.Result
 }

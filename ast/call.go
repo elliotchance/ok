@@ -9,3 +9,11 @@ type Call struct {
 	// arguments respectively.
 	Arguments []Node
 }
+
+// NewCall produces a new call to functionName with any number of arguments.
+func NewCall(functionName string, arguments ...Node) *Call {
+	return &Call{
+		FunctionName: functionName,
+		Arguments:    arguments,
+	}
+}

@@ -24,6 +24,7 @@ const (
 	TokenOr   = "or"
 
 	// Operators
+	TokenAssign           = "="
 	TokenComma            = ","
 	TokenCurlyClose       = "}"
 	TokenCurlyOpen        = "{"
@@ -50,6 +51,22 @@ type Token struct {
 	// Value is captured from the original source code. It is only useful for
 	// dynamic tokens such as TokenString or TokenIdentifier.
 	Value string
+
+	// IsEndOfLine will be true if there is at least one new line character
+	// after this token (ignoring other whitespace). This is needed by some
+	// grammars to determine the end of the line, but newlines have no effect in
+	// between most tokens.
+	IsEndOfLine bool
+}
+
+// NewToken initializes a token with a kind and value and other
+// defaults.
+func NewToken(kind, value string) Token {
+	return Token{
+		Kind:        kind,
+		Value:       value,
+		IsEndOfLine: false,
+	}
 }
 
 // String returns a human-readable representation of the token.

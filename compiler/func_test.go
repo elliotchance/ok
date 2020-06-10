@@ -56,12 +56,13 @@ func TestCompileFunc(t *testing.T) {
 				&instruction.Print{
 					Stdout: os.Stdout,
 				},
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("hello"),
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{{
-						Kind:  lexer.TokenString,
-						Value: "hello",
-					}},
+					Stdout:    os.Stdout,
+					Arguments: []string{"1"},
 				},
 			},
 		},
@@ -112,136 +113,189 @@ func TestCompileFunc(t *testing.T) {
 			err: errors.New("cannot perform string / number"),
 		},
 		"data-plus-data": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralData([]byte("foo")),
 				lexer.TokenPlus,
 				ast.NewLiteralData([]byte("bar")),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralData([]byte("foo")),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralData([]byte("bar")),
+				},
+				&instruction.Combine{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralData([]byte("foobar")),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-plus-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.20"),
 				lexer.TokenPlus,
 				ast.NewLiteralNumber("5"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.20"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Add{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("6.20"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-plus-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("foo"),
 				lexer.TokenPlus,
 				ast.NewLiteralString("bar"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("foo"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("bar"),
+				},
+				&instruction.Concat{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralString("foobar"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-minus-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.20"),
 				lexer.TokenMinus,
 				ast.NewLiteralNumber("5"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.20"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Subtract{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("-3.80"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-times-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.20"),
 				lexer.TokenTimes,
 				ast.NewLiteralNumber("5"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.20"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Multiply{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("6.00"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-divide-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.20"),
 				lexer.TokenDivide,
 				ast.NewLiteralNumber("5"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.20"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Divide{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("0.24"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-remainder-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("5"),
 				lexer.TokenRemainder,
 				ast.NewLiteralNumber("1.20"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1.20"),
+				},
+				&instruction.Remainder{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("0.20"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
-		"left-binary-failed": {
-			fn: newFunc(ast.NewBinary(
-				ast.NewBinary(
-					ast.NewLiteralNumber("3"),
-					lexer.TokenDivide,
-					ast.NewLiteralNumber("0"),
-				),
-				lexer.TokenPlus,
-				ast.NewLiteralNumber("5"),
-			)),
-			err: errors.New("division by zero"),
-		},
-		"right-binary-failed": {
-			fn: newFunc(ast.NewBinary(
-				ast.NewLiteralNumber("5"),
-				lexer.TokenPlus,
-				ast.NewBinary(
-					ast.NewLiteralNumber("3"),
-					lexer.TokenDivide,
-					ast.NewLiteralNumber("0"),
-				),
-			)),
-			err: errors.New("division by zero"),
-		},
 		"group-1": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				&ast.Group{
 					Expr: ast.NewBinary(
 						ast.NewLiteralNumber("3"),
@@ -253,16 +307,36 @@ func TestCompileFunc(t *testing.T) {
 				ast.NewLiteralNumber("5"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("4"),
+				},
+				&instruction.Add{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Multiply{
+					Left:   "3",
+					Right:  "4",
+					Result: "5",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("35"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"5"},
 				},
 			},
 		},
 		"group-2": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("5"),
 				lexer.TokenMinus,
 				&ast.Group{
@@ -274,16 +348,36 @@ func TestCompileFunc(t *testing.T) {
 				},
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Assign{
+					VariableName: "3",
+					Value:        ast.NewLiteralNumber("4"),
+				},
+				&instruction.Add{
+					Left:   "2",
+					Right:  "3",
+					Result: "4",
+				},
+				&instruction.Subtract{
+					Left:   "1",
+					Right:  "4",
+					Result: "5",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("-2"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"5"},
 				},
 			},
 		},
 		"group-3": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				&ast.Group{
 					Expr: &ast.Group{
 						Expr: ast.NewLiteralNumber("5"),
@@ -295,16 +389,27 @@ func TestCompileFunc(t *testing.T) {
 				},
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("5"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Add{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("8"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"group-4": {
-			fn: newFunc(
+			fn: newFuncPrint(
 				&ast.Group{
 					Expr: &ast.Group{
 						Expr: ast.NewLiteralNumber("5"),
@@ -312,104 +417,162 @@ func TestCompileFunc(t *testing.T) {
 				},
 			),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("5"),
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralNumber("5"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"1"},
 				},
 			},
 		},
 		"true-and-true": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenAnd,
 				ast.NewLiteralBool(true),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.And{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"true-and-false": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenAnd,
 				ast.NewLiteralBool(false),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(false),
+				},
+				&instruction.And{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"true-or-true": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenOr,
 				ast.NewLiteralBool(true),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Or{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"true-or-false": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenOr,
 				ast.NewLiteralBool(false),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(false),
+				},
+				&instruction.Or{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"not-true": {
-			fn: newFunc(&ast.Unary{
+			fn: newFuncPrint(&ast.Unary{
 				Op:   lexer.TokenNot,
 				Expr: ast.NewLiteralBool(true),
 			}),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Not{
+					Left:   "1",
+					Result: "2",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"2"},
 				},
 			},
 		},
 		"not-false": {
-			fn: newFunc(&ast.Unary{
+			fn: newFuncPrint(&ast.Unary{
 				Op:   lexer.TokenNot,
-				Expr: ast.NewLiteralBool(true),
+				Expr: ast.NewLiteralBool(false),
 			}),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(false),
+				},
+				&instruction.Not{
+					Left:   "1",
+					Result: "2",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"2"},
 				},
 			},
 		},
 		"bool-greater-than-bool": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenGreaterThan,
 				ast.NewLiteralBool(true),
@@ -417,277 +580,475 @@ func TestCompileFunc(t *testing.T) {
 			err: errors.New("cannot perform bool > bool"),
 		},
 		"bool-equals-bool": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenEqual,
 				ast.NewLiteralBool(true),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Equal{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"char-equals-char": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralChar('a'),
 				lexer.TokenEqual,
 				ast.NewLiteralChar('B'),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralChar('a'),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralChar('B'),
+				},
+				&instruction.Equal{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"data-equals-data": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralData([]byte("a")),
 				lexer.TokenEqual,
 				ast.NewLiteralData([]byte("B")),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralData([]byte("a")),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralData([]byte("B")),
+				},
+				&instruction.Equal{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-equals-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.0"),
 				lexer.TokenEqual,
 				ast.NewLiteralNumber("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.EqualNumber{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-equals-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("foo"),
 				lexer.TokenEqual,
 				ast.NewLiteralString("bar"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("foo"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("bar"),
+				},
+				&instruction.Equal{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"bool-not-equals-bool": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralBool(true),
 				lexer.TokenNotEqual,
 				ast.NewLiteralBool(true),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.NotEqual{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"char-not-equals-char": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralChar('a'),
 				lexer.TokenNotEqual,
 				ast.NewLiteralChar('B'),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralChar('a'),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralChar('B'),
+				},
+				&instruction.NotEqual{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"data-not-equals-data": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralData([]byte("a")),
 				lexer.TokenNotEqual,
 				ast.NewLiteralData([]byte("B")),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralData([]byte("a")),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralData([]byte("B")),
+				},
+				&instruction.NotEqual{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-not-equals-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.0"),
 				lexer.TokenNotEqual,
 				ast.NewLiteralNumber("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.NotEqualNumber{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-not-equals-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("foo"),
 				lexer.TokenNotEqual,
 				ast.NewLiteralString("bar"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("foo"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("bar"),
+				},
+				&instruction.NotEqual{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-greater-than-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.0"),
 				lexer.TokenGreaterThan,
 				ast.NewLiteralNumber("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.GreaterThanNumber{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-greater-than-equal-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.0"),
 				lexer.TokenGreaterThanEqual,
 				ast.NewLiteralNumber("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.GreaterThanEqualNumber{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-less-than-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.0"),
 				lexer.TokenLessThan,
 				ast.NewLiteralNumber("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.LessThanNumber{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"number-less-than-equal-number": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralNumber("1.0"),
 				lexer.TokenLessThanEqual,
 				ast.NewLiteralNumber("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.LessThanEqualNumber{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-greater-than-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("1.0"),
 				lexer.TokenGreaterThan,
 				ast.NewLiteralString("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("1"),
+				},
+				&instruction.GreaterThanString{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-greater-than-equal-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("1.0"),
 				lexer.TokenGreaterThanEqual,
 				ast.NewLiteralString("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("1"),
+				},
+				&instruction.GreaterThanEqualString{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(true),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-less-than-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("1.0"),
 				lexer.TokenLessThan,
 				ast.NewLiteralString("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("1"),
+				},
+				&instruction.LessThanString{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"string-less-than-equal-string": {
-			fn: newFunc(ast.NewBinary(
+			fn: newFuncPrint(ast.NewBinary(
 				ast.NewLiteralString("1.0"),
 				lexer.TokenLessThanEqual,
 				ast.NewLiteralString("1"),
 			)),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("1.0"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("1"),
+				},
+				&instruction.LessThanEqualString{
+					Left:   "1",
+					Right:  "2",
+					Result: "3",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralBool(false),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"3"},
 				},
 			},
 		},
 		"print-2": {
-			fn: newFunc(
+			fn: newFuncPrint(
 				ast.NewLiteralString("total is"),
 				ast.NewBinary(
 					ast.NewLiteralNumber("1.5"),
@@ -696,30 +1057,167 @@ func TestCompileFunc(t *testing.T) {
 				),
 			),
 			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("total is"),
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1.5"),
+				},
+				&instruction.Assign{
+					VariableName: "3",
+					Value:        ast.NewLiteralNumber("0.8"),
+				},
+				&instruction.Add{
+					Left:   "2",
+					Right:  "3",
+					Result: "4",
+				},
 				&instruction.Print{
-					Stdout: os.Stdout,
-					Values: []*ast.Literal{
-						ast.NewLiteralString("total is"),
-						ast.NewLiteralNumber("2.3"),
-					},
+					Stdout:    os.Stdout,
+					Arguments: []string{"1", "4"},
 				},
 			},
 		},
+		"assign-1": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralNumber("1.5"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.5"),
+				},
+				&instruction.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+			},
+		},
+		"assign-print": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralNumber("1.5"),
+				},
+				&ast.Call{
+					FunctionName: "print",
+					Arguments: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.5"),
+				},
+				&instruction.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"foo"},
+				},
+			},
+		},
+		"assign-print-2": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralNumber("1.5"),
+				},
+				&ast.Call{
+					FunctionName: "print",
+					Arguments: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "foo"},
+							Op:    lexer.TokenPlus,
+							Right: ast.NewLiteralNumber("2"),
+						},
+						&ast.Binary{
+							Left:  ast.NewLiteralNumber("10"),
+							Op:    lexer.TokenTimes,
+							Right: &ast.Identifier{Name: "foo"},
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.5"),
+				},
+				&instruction.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&instruction.Add{
+					Left:   "foo",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("10"),
+				},
+				&instruction.Multiply{
+					Left:   "4",
+					Right:  "foo",
+					Result: "5",
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"3", "5"},
+				},
+			},
+		},
+		"variable-undefined": {
+			fn:  newFuncPrint(&ast.Identifier{Name: "foo"}),
+			err: errors.New("undefined variable: foo"),
+		},
+		"variable-bad-reassign": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralNumber("1.5"),
+				},
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralString("1.5"),
+				},
+			),
+			err: errors.New("cannot assign string to variable foo (expecting number)"),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			instructions, err := compiler.CompileFunc(test.fn)
+			compiledFunc, err := compiler.CompileFunc(test.fn)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
 				assert.NoError(t, err)
+				assert.Equal(t, test.expected, compiledFunc.Instructions)
 			}
-
-			assert.Equal(t, test.expected, instructions)
 		})
 	}
 }
 
-func newFunc(args ...ast.Node) *ast.Func {
+func newFunc(statements ...ast.Node) *ast.Func {
+	return &ast.Func{
+		Statements: statements,
+	}
+}
+
+func newFuncPrint(args ...ast.Node) *ast.Func {
 	return &ast.Func{
 		Statements: []ast.Node{
 			&ast.Call{

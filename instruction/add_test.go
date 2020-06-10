@@ -16,11 +16,13 @@ func TestAdd_Execute(t *testing.T) {
 		"maintain-precision": {"1.2200", "4.7", "5.9200"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			left := ast.NewLiteralNumber(test.left)
-			right := ast.NewLiteralNumber(test.right)
-			ins := &instruction.Add{Left: left, Right: right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": ast.NewLiteralNumber(test.left),
+				"1": ast.NewLiteralNumber(test.right),
+			}
+			ins := &instruction.Add{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

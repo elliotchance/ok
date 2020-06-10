@@ -33,12 +33,14 @@ func (*Command) Run(args []string) {
 	data, err := ioutil.ReadFile(path.Join(args[0], "main.ok"))
 	check(err)
 
-	f, err := parser.ParseString(string(data))
+	p := parser.ParseString(string(data))
+	for _, err := range p.Errors {
+		check(err)
+	}
+
+	f, err := compiler.CompileFile(p.File)
 	check(err)
 
-	instructions, err := compiler.CompileFile(f)
-	check(err)
-
-	p := vm.NewVM(instructions)
-	p.Run()
+	m := vm.NewVM(f)
+	m.Run()
 }

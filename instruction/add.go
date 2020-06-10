@@ -7,23 +7,17 @@ import (
 
 // Add will sum two numbers.
 type Add struct {
-	Left, Right, Result *ast.Literal
+	Left, Right, Result string
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Add) Execute() error {
-	ins.Result = ast.NewLiteralNumber(
+func (ins *Add) Execute(registers map[string]*ast.Literal) error {
+	registers[ins.Result] = ast.NewLiteralNumber(
 		number.Add(
-			number.NewNumber(ins.Left.Value),
-			number.NewNumber(ins.Right.Value),
+			number.NewNumber(registers[ins.Left].Value),
+			number.NewNumber(registers[ins.Right].Value),
 		).String(),
 	)
 
 	return nil
-}
-
-// Answer will be removed shortly. Right now it's used to evaluate literals
-// because there are no variables.
-func (ins *Add) Answer() *ast.Literal {
-	return ins.Result
 }

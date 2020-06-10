@@ -14,6 +14,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 
 	runes := []rune(str)
 	runesLen := len(runes)
+	endOfLineForNextToken := false
 	for i := 0; i < runesLen; i++ {
 		c := runes[i]
 		var token Token
@@ -21,14 +22,18 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 
 		switch c {
 		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			token.Kind = TokenNumber
-			for ; i < runesLen && isDecimalCharacter(runes[i]); i++ {
-				token.Value += string(runes[i])
-			}
+			// Make sure we are not in the middle of reading a word. The digit
+			// would be part of the identifier.
+			if word == "" {
+				token.Kind = TokenNumber
+				for ; i < runesLen && isDecimalCharacter(runes[i]); i++ {
+					token.Value += string(runes[i])
+				}
 
-			i--
-			tokens = append(tokens, token)
-			continue
+				i--
+				tokens = appendToken(tokens, token, &endOfLineForNextToken)
+				continue
+			}
 
 		case '/':
 			if i+1 < runesLen && runes[i+1] == '/' {
@@ -42,12 +47,12 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 					Comment: token.Value,
 				})
 				if options.IncludeComments {
-					tokens = append(tokens, token)
+					tokens = appendToken(tokens, token, &endOfLineForNextToken)
 				}
 				continue
 			} else {
 				found = true
-				token = Token{string(c), string(c)}
+				token = NewToken(string(c), string(c))
 			}
 
 		case '\'', '"', '`':
@@ -60,10 +65,22 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 
 			i = newI
-			tokens = append(tokens, Token{tokenKindForQuote(c), value})
+			tokens = appendToken(tokens,
+				NewToken(tokenKindForQuote(c), value), &endOfLineForNextToken)
 			continue
 
-		case ' ', '\n':
+		case ' ':
+			found = true
+
+		case '\n', '\r':
+			// Only set the end of line if we are not in the middle of consuming
+			// a token, since we need the newline to be after the most recent
+			// finished token.
+			if word == "" && len(tokens) > 0 {
+				tokens[len(tokens)-1].IsEndOfLine = true
+			} else {
+				endOfLineForNextToken = true
+			}
 			found = true
 
 		case '(', ')', '{', '}', '+', '-', '*', '%', '=', '!', '>', '<', ',':
@@ -77,12 +94,12 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 		}
 
 		if found && word != "" {
-			tokens = append(tokens, tokenWord(word))
+			tokens = appendToken(tokens, tokenWord(word), &endOfLineForNextToken)
 			word = ""
 		}
 
 		if token.Kind != "" {
-			tokens = append(tokens, token)
+			tokens = appendToken(tokens, token, &endOfLineForNextToken)
 		}
 
 		if !found {
@@ -95,7 +112,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 		tokens = append(tokens, token)
 	}
 
-	tokens = append(tokens, Token{TokenEOF, ""})
+	tokens = append(tokens, NewToken(TokenEOF, ""))
 
 	return tokens, comments, nil
 }
@@ -126,16 +143,16 @@ func tokenWord(word string) Token {
 
 	switch word {
 	case "":
-		return Token{TokenEOF, ""}
+		return NewToken(TokenEOF, "")
 
 	case "true", "false":
-		return Token{TokenBool, word}
+		return NewToken(TokenBool, word)
 
 	case "and", "func", "or", "not":
-		return Token{word, word}
+		return NewToken(word, word)
 	}
 
-	return Token{TokenIdentifier, word}
+	return NewToken(TokenIdentifier, word)
 }
 
 func isDecimalCharacter(c rune) bool {
@@ -155,4 +172,13 @@ func tokenKindForQuote(quote rune) (kind string) {
 	}
 
 	return
+}
+
+func appendToken(tokens []Token, token Token, endOfLine *bool) []Token {
+	if *endOfLine {
+		*endOfLine = false
+		token.IsEndOfLine = true
+	}
+
+	return append(tokens, token)
 }

@@ -7,25 +7,21 @@ import (
 
 // Divide will multiply two numbers.
 type Divide struct {
-	Left, Right, Result *ast.Literal
+	Left, Right, Result string
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Divide) Execute() error {
+func (ins *Divide) Execute(registers map[string]*ast.Literal) error {
 	divide, err := number.Divide(
-		number.NewNumber(ins.Left.Value),
-		number.NewNumber(ins.Right.Value),
+		number.NewNumber(registers[ins.Left].Value),
+		number.NewNumber(registers[ins.Right].Value),
 	)
 	if err != nil {
+		// TODO(elliot): This needs to be the same precision of zero.
+		registers[ins.Result] = ast.NewLiteralNumber("0")
 		return err
 	}
 
-	ins.Result = ast.NewLiteralNumber(divide.String())
+	registers[ins.Result] = ast.NewLiteralNumber(divide.String())
 	return nil
-}
-
-// Answer will be removed shortly. Right now it's used to evaluate literals
-// because there are no variables.
-func (ins *Divide) Answer() *ast.Literal {
-	return ins.Result
 }

@@ -1,24 +1,26 @@
 package vm
 
 import (
-	"ok/instruction"
+	"ok/ast"
+	"ok/compiler"
 )
 
 // VM is an instance of a virtual machine to run ok instructions.
 type VM struct {
-	instructions []instruction.Instruction
+	f *compiler.CompiledFunc
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
-func NewVM(instructions []instruction.Instruction) *VM {
+func NewVM(f *compiler.CompiledFunc) *VM {
 	return &VM{
-		instructions: instructions,
+		f: f,
 	}
 }
 
 // Run will run the program.
 func (vm *VM) Run() {
-	for _, i := range vm.instructions {
-		i.Execute()
+	registers := map[string]*ast.Literal{}
+	for _, i := range vm.f.Instructions {
+		i.Execute(registers)
 	}
 }
