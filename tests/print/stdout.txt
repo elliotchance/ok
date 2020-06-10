@@ -1,0 +1,6 @@
+golang
+1+1 = 2
+7.0/3.0 = 2.3
+false
+true
+false

@@ -15,13 +15,13 @@ func CompileFunc(fn *ast.Func) ([]instruction.Instruction, error) {
 			Stdout: os.Stdout,
 		}
 		args := statement.(*ast.Call).Arguments
-		if len(args) > 0 {
-			literal, err := compileNode(args[0])
+		for _, arg := range args {
+			literal, err := compileNode(arg)
 			if err != nil {
 				return nil, err
 			}
 
-			ins.Values = []*ast.Literal{literal}
+			ins.Values = append(ins.Values, literal)
 		}
 
 		instructions = append(instructions, ins)

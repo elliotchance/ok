@@ -17,10 +17,20 @@ func consumeCall(f *File, offset int) (*ast.Call, int, error) {
 		return nil, originalOffset, err
 	}
 
-	var expr ast.Node
-	expr, offset, err = consumeExpr(f, offset)
-	if err != nil {
-		return nil, originalOffset, err
+	var exprs []ast.Node
+	for {
+		var expr ast.Node
+		expr, offset, err = consumeExpr(f, offset)
+		if err != nil {
+			return nil, originalOffset, err
+		}
+
+		exprs = append(exprs, expr)
+
+		offset, err = consume(f, offset, []string{lexer.TokenComma})
+		if err != nil {
+			break
+		}
 	}
 
 	offset, err = consume(f, offset, []string{lexer.TokenParenClose})
@@ -30,6 +40,6 @@ func consumeCall(f *File, offset int) (*ast.Call, int, error) {
 
 	return &ast.Call{
 		FunctionName: f.Tokens[originalOffset].Value,
-		Arguments:    []ast.Node{expr},
+		Arguments:    exprs,
 	}, offset, nil
 }

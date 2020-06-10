@@ -14,9 +14,15 @@ type Print struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Print) Execute() error {
-	for _, value := range ins.Values {
-		fmt.Fprintln(ins.Stdout, value.Value)
+	for i, value := range ins.Values {
+		if i > 0 {
+			fmt.Fprint(ins.Stdout, " ")
+		}
+
+		fmt.Fprint(ins.Stdout, value.Value)
 	}
+
+	fmt.Fprint(ins.Stdout, "\n")
 
 	return nil
 }
