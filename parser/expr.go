@@ -52,7 +52,9 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 		switch f.Tokens[offset].Kind {
 		case lexer.TokenPlus, lexer.TokenMinus, lexer.TokenTimes,
 			lexer.TokenDivide, lexer.TokenRemainder, lexer.TokenAnd,
-			lexer.TokenOr:
+			lexer.TokenOr, lexer.TokenEqual, lexer.TokenNotEqual,
+			lexer.TokenGreaterThan, lexer.TokenGreaterThanEqual,
+			lexer.TokenLessThan, lexer.TokenLessThanEqual:
 			parts = append(parts, f.Tokens[offset])
 			offset++
 			didJustConsumeLiteral = false
@@ -72,12 +74,23 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 }
 
 var operatorPrecedence = map[string]int{
-	lexer.TokenPlus:  1,
-	lexer.TokenMinus: 1,
+	lexer.TokenOr: 1,
 
-	lexer.TokenTimes:     2,
-	lexer.TokenDivide:    2,
-	lexer.TokenRemainder: 2,
+	lexer.TokenAnd: 2,
+
+	lexer.TokenEqual:            3,
+	lexer.TokenNotEqual:         3,
+	lexer.TokenGreaterThan:      3,
+	lexer.TokenGreaterThanEqual: 3,
+	lexer.TokenLessThan:         3,
+	lexer.TokenLessThanEqual:    3,
+
+	lexer.TokenPlus:  4,
+	lexer.TokenMinus: 4,
+
+	lexer.TokenTimes:     5,
+	lexer.TokenDivide:    5,
+	lexer.TokenRemainder: 5,
 }
 
 func reduceExpr(parts []interface{}) ast.Node {

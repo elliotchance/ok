@@ -38,3 +38,17 @@ func TestNewLiteralBool(t *testing.T) {
 		assert.Equal(t, "false", literal.Value)
 	})
 }
+
+func TestNewLiteralChar(t *testing.T) {
+	t.Run("a", func(t *testing.T) {
+		literal := ast.NewLiteralChar('a')
+		assert.Equal(t, "char", literal.Kind)
+		assert.Equal(t, "a", literal.Value)
+	})
+
+	t.Run("emoji", func(t *testing.T) {
+		literal := ast.NewLiteralChar('😃')
+		assert.Equal(t, "char", literal.Kind)
+		assert.Equal(t, "😃", literal.Value)
+	})
+}
