@@ -24,6 +24,7 @@ const (
 	TokenOr   = "or"
 
 	// Operators
+	TokenComma            = ","
 	TokenCurlyClose       = "}"
 	TokenCurlyOpen        = "{"
 	TokenDivide           = "/"

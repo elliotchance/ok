@@ -353,6 +353,13 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
+		"print-2": {
+			str: `func main() { print(true, false) }`,
+			expected: newFunc(
+				ast.NewLiteralBool(true),
+				ast.NewLiteralBool(false),
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			f, err := parser.ParseString(test.str)
@@ -370,13 +377,13 @@ func TestParseString(t *testing.T) {
 	}
 }
 
-func newFunc(arg ast.Node) *ast.Func {
+func newFunc(args ...ast.Node) *ast.Func {
 	return &ast.Func{
 		Name: "main",
 		Statements: []ast.Node{
 			&ast.Call{
 				FunctionName: "print",
-				Arguments:    []ast.Node{arg},
+				Arguments:    args,
 			},
 		},
 	}

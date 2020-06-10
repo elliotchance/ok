@@ -22,7 +22,11 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [Command Line Interface](#command-line-interface)
       * [run](#run)
       * [version](#version)
+   * [OK By Example](#ok-by-example)
+      * [Hello World](#hello-world)
+      * [Values](#values)
    * [Language Specification](#language-specification)
+      * [Built-in Functions](#built-in-functions)
       * [Comments](#comments)
       * [Data Types](#data-types)
       * [Expressions](#expressions)
@@ -36,7 +40,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [FAQ](#faq)
       * [Why does "3 / 2 = 2?"](#why-does-3--2--2)
 
-<!-- Added by: elliot, at: Sun Jun  7 19:45:52 EDT 2020 -->
+<!-- Added by: elliot, at: Wed Jun 10 02:55:51 EDT 2020 -->
 
 <!--te-->
 
@@ -90,8 +94,63 @@ version
 `ok version` will show the current version and the date it was built.
 
 
+OK By Example
+=============
+
+These have been heavily influenced (copied) from
+[gobyexample](https://gobyexample.com) because it's such a great source!
+
+
+Hello World
+-----------
+
+Our first program will print the classic "hello world" message. Here’s the full
+source code.
+
+```
+func main() {
+    print("hello world")
+}
+```
+
+To run the program, put the code in `hello-world/main.ok` and use `ok run`.
+
+```bash
+$ ok run hello-world
+hello world
+```
+
+Now that we can run and build basic ok programs, let’s learn more about the
+language.
+
+Values
+------
+
+ok has various value types including strings, numbers, booleans, etc. Here are a
+few basic examples.
+
+```
+func main() {
+    print("go" + "lang")
+
+    print("1+1 =", 1+1)
+    print("7.0/3.0 =", 7.0/3.0)
+
+    print(true and false)
+    print(true or false)
+    print(not true)
+}
+```
+
+
 Language Specification
 ======================
+
+Built-in Functions
+------------------
+
+- `print(...any)` - Prints a single line with each argument separated by a
+space.
 
 Comments
 --------

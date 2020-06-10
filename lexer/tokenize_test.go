@@ -494,6 +494,13 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, ""},
 			},
 		},
+		"comma": {
+			str: `,`,
+			expected: []lexer.Token{
+				{lexer.TokenComma, ","},
+				{lexer.TokenEOF, ""},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

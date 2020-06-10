@@ -686,6 +686,25 @@ func TestCompileFunc(t *testing.T) {
 				},
 			},
 		},
+		"print-2": {
+			fn: newFunc(
+				ast.NewLiteralString("total is"),
+				ast.NewBinary(
+					ast.NewLiteralNumber("1.5"),
+					lexer.TokenPlus,
+					ast.NewLiteralNumber("0.8"),
+				),
+			),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralString("total is"),
+						ast.NewLiteralNumber("2.3"),
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			instructions, err := compiler.CompileFunc(test.fn)
@@ -700,12 +719,12 @@ func TestCompileFunc(t *testing.T) {
 	}
 }
 
-func newFunc(arg ast.Node) *ast.Func {
+func newFunc(args ...ast.Node) *ast.Func {
 	return &ast.Func{
 		Statements: []ast.Node{
 			&ast.Call{
 				FunctionName: "print",
-				Arguments:    []ast.Node{arg},
+				Arguments:    args,
 			},
 		},
 	}
