@@ -13,15 +13,16 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 	var word string
 
 	runes := []rune(str)
-	for i := 0; i < len(runes); i++ {
+	runesLen := len(runes)
+	for i := 0; i < runesLen; i++ {
 		c := runes[i]
 		var token Token
 		found := false
 
 		switch c {
 		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
-			token := Token{TokenNumber, ""}
-			for ; i < len(runes) && isDecimalCharacter(runes[i]); i++ {
+			token.Kind = TokenNumber
+			for ; i < runesLen && isDecimalCharacter(runes[i]); i++ {
 				token.Value += string(runes[i])
 			}
 
@@ -30,10 +31,10 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			continue
 
 		case '/':
-			if i+1 < len(runes) && runes[i+1] == '/' {
+			if i+1 < runesLen && runes[i+1] == '/' {
 				token.Kind = TokenComment
 				i += 2
-				for ; i < len(runes) && runes[i] != '\n'; i++ {
+				for ; i < runesLen && runes[i] != '\n'; i++ {
 					token.Value += string(runes[i])
 				}
 
@@ -65,9 +66,14 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 		case ' ', '\n':
 			found = true
 
-		case '(', ')', '{', '}', '+', '-', '*', '%':
+		case '(', ')', '{', '}', '+', '-', '*', '%', '=', '!', '>', '<':
+			token.Value = string(c)
+			if i < runesLen-1 && runes[i+1] == '=' {
+				token.Value = string(c) + "="
+				i++
+			}
 			found = true
-			token = Token{string(c), string(c)}
+			token.Kind = token.Value
 		}
 
 		if found && word != "" {

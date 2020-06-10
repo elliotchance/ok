@@ -20,3 +20,9 @@ func (ins *Print) Execute() error {
 
 	return nil
 }
+
+// Answer will be removed shortly. Right now it's used to evaluate literals
+// because there are no variables.
+func (ins *Print) Answer() *ast.Literal {
+	return nil
+}

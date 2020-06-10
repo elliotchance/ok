@@ -82,6 +82,40 @@ var newNumberTests = map[string]struct {
 	"-0.0":        {"0/1", 1, "0.0", true},
 }
 
+var comparisonTests = map[string]struct {
+	left, right string
+	cmp         int
+}{
+	"zero": {
+		"0", "0",
+		0,
+	},
+	"negative-zero": {
+		"0", "-0",
+		0,
+	},
+	"positive-ints": {
+		"456", "123",
+		1,
+	},
+	"mixed-ints": {
+		"-456", "123",
+		-1,
+	},
+	"same-precision": {
+		"45.69", "45.69",
+		0,
+	},
+	"precision-greater-left": {
+		"45.690", "45.69",
+		0,
+	},
+	"precision-greater-right": {
+		"45", "45.0000",
+		0,
+	},
+}
+
 func TestNewNumber(t *testing.T) {
 	for n, test := range newNumberTests {
 		t.Run(n, func(t *testing.T) {

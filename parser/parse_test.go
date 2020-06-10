@@ -293,6 +293,66 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
+		"bool-equal-bool": {
+			str: `func main() { print(true==false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenEqual,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"bool-not-equal-bool": {
+			str: `func main() { print(true != false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenNotEqual,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"bool-greater-than-bool": {
+			str: `func main() { print(true>false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenGreaterThan,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"bool-greater-than-equal-bool": {
+			str: `func main() { print(true>=false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenGreaterThanEqual,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"bool-less-than-bool": {
+			str: `func main() { print(true < false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenLessThan,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
+		"bool-less-than-equal-bool": {
+			str: `func main() { print(true <= false) }`,
+			expected: newFunc(
+				&ast.Binary{
+					Left:  ast.NewLiteralBool(true),
+					Op:    lexer.TokenLessThanEqual,
+					Right: ast.NewLiteralBool(false),
+				},
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			f, err := parser.ParseString(test.str)

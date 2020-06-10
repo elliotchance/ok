@@ -21,3 +21,9 @@ func (ins *Add) Execute() error {
 
 	return nil
 }
+
+// Answer will be removed shortly. Right now it's used to evaluate literals
+// because there are no variables.
+func (ins *Add) Answer() *ast.Literal {
+	return ins.Result
+}

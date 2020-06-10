@@ -408,6 +408,284 @@ func TestCompileFunc(t *testing.T) {
 				},
 			},
 		},
+		"bool-greater-than-bool": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenGreaterThan,
+				ast.NewLiteralBool(true),
+			)),
+			err: errors.New("cannot perform bool > bool"),
+		},
+		"bool-equals-bool": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenEqual,
+				ast.NewLiteralBool(true),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"char-equals-char": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralChar('a'),
+				lexer.TokenEqual,
+				ast.NewLiteralChar('B'),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"data-equals-data": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralData([]byte("a")),
+				lexer.TokenEqual,
+				ast.NewLiteralData([]byte("B")),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"number-equals-number": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("1.0"),
+				lexer.TokenEqual,
+				ast.NewLiteralNumber("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"string-equals-string": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralString("foo"),
+				lexer.TokenEqual,
+				ast.NewLiteralString("bar"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"bool-not-equals-bool": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralBool(true),
+				lexer.TokenNotEqual,
+				ast.NewLiteralBool(true),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"char-not-equals-char": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralChar('a'),
+				lexer.TokenNotEqual,
+				ast.NewLiteralChar('B'),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"data-not-equals-data": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralData([]byte("a")),
+				lexer.TokenNotEqual,
+				ast.NewLiteralData([]byte("B")),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"number-not-equals-number": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("1.0"),
+				lexer.TokenNotEqual,
+				ast.NewLiteralNumber("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"string-not-equals-string": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralString("foo"),
+				lexer.TokenNotEqual,
+				ast.NewLiteralString("bar"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"number-greater-than-number": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("1.0"),
+				lexer.TokenGreaterThan,
+				ast.NewLiteralNumber("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"number-greater-than-equal-number": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("1.0"),
+				lexer.TokenGreaterThanEqual,
+				ast.NewLiteralNumber("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"number-less-than-number": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("1.0"),
+				lexer.TokenLessThan,
+				ast.NewLiteralNumber("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"number-less-than-equal-number": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralNumber("1.0"),
+				lexer.TokenLessThanEqual,
+				ast.NewLiteralNumber("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"string-greater-than-string": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralString("1.0"),
+				lexer.TokenGreaterThan,
+				ast.NewLiteralString("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"string-greater-than-equal-string": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralString("1.0"),
+				lexer.TokenGreaterThanEqual,
+				ast.NewLiteralString("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(true),
+					},
+				},
+			},
+		},
+		"string-less-than-string": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralString("1.0"),
+				lexer.TokenLessThan,
+				ast.NewLiteralString("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
+		"string-less-than-equal-string": {
+			fn: newFunc(ast.NewBinary(
+				ast.NewLiteralString("1.0"),
+				lexer.TokenLessThanEqual,
+				ast.NewLiteralString("1"),
+			)),
+			expected: []instruction.Instruction{
+				&instruction.Print{
+					Stdout: os.Stdout,
+					Values: []*ast.Literal{
+						ast.NewLiteralBool(false),
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			instructions, err := compiler.CompileFunc(test.fn)

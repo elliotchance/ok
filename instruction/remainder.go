@@ -24,3 +24,9 @@ func (ins *Remainder) Execute() error {
 	ins.Result = ast.NewLiteralNumber(divide.String())
 	return nil
 }
+
+// Answer will be removed shortly. Right now it's used to evaluate literals
+// because there are no variables.
+func (ins *Remainder) Answer() *ast.Literal {
+	return ins.Result
+}

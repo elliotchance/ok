@@ -36,7 +36,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [FAQ](#faq)
       * [Why does "3 / 2 = 2?"](#why-does-3--2--2)
 
-<!-- Added by: elliot, at: Sun Jun  7 17:58:46 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun  7 19:45:52 EDT 2020 -->
 
 <!--te-->
 
@@ -215,6 +215,12 @@ operations require the same type on the left and right.
 | `%`   | No     | No     | No     | Yes      | No       |
 | `and` | Yes    | No     | No     | No       | No       |
 | `or`  | Yes    | No     | No     | No       | No       |
+| `==`  | Yes    | Yes    | Yes    | Yes      | Yes      |
+| `!=`  | Yes    | Yes    | Yes    | Yes      | Yes      |
+| `>`   | No     | Yes    | No     | Yes      | Yes      |
+| `>=`  | No     | Yes    | No     | Yes      | Yes      |
+| `<`   | No     | Yes    | No     | Yes      | Yes      |
+| `<=`  | No     | Yes    | No     | Yes      | Yes      |
 
 The following table describes the unary operators.
 

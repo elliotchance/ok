@@ -443,6 +443,57 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, ""},
 			},
 		},
+		"==": {
+			str: `==`,
+			expected: []lexer.Token{
+				{lexer.TokenEqual, "=="},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"!=": {
+			str: `!=`,
+			expected: []lexer.Token{
+				{lexer.TokenNotEqual, "!="},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		">": {
+			str: `>`,
+			expected: []lexer.Token{
+				{lexer.TokenGreaterThan, ">"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"<": {
+			str: `<`,
+			expected: []lexer.Token{
+				{lexer.TokenLessThan, "<"},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		">=": {
+			str: `>=`,
+			expected: []lexer.Token{
+				{lexer.TokenGreaterThanEqual, ">="},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"<=": {
+			str: `<=`,
+			expected: []lexer.Token{
+				{lexer.TokenLessThanEqual, "<="},
+				{lexer.TokenEOF, ""},
+			},
+		},
+		"bool==bool": {
+			str: `true==false`,
+			expected: []lexer.Token{
+				{lexer.TokenBool, "true"},
+				{lexer.TokenEqual, "=="},
+				{lexer.TokenBool, "false"},
+				{lexer.TokenEOF, ""},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

@@ -24,15 +24,21 @@ const (
 	TokenOr   = "or"
 
 	// Operators
-	TokenCurlyClose = "}"
-	TokenCurlyOpen  = "{"
-	TokenDivide     = "/"
-	TokenMinus      = "-"
-	TokenParenClose = ")"
-	TokenParenOpen  = "("
-	TokenPlus       = "+"
-	TokenRemainder  = "%"
-	TokenTimes      = "*"
+	TokenCurlyClose       = "}"
+	TokenCurlyOpen        = "{"
+	TokenDivide           = "/"
+	TokenEqual            = "=="
+	TokenGreaterThan      = ">"
+	TokenGreaterThanEqual = ">="
+	TokenLessThan         = "<"
+	TokenLessThanEqual    = "<="
+	TokenMinus            = "-"
+	TokenNotEqual         = "!="
+	TokenParenClose       = ")"
+	TokenParenOpen        = "("
+	TokenPlus             = "+"
+	TokenRemainder        = "%"
+	TokenTimes            = "*"
 )
 
 // Token represents a single token.

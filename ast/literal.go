@@ -39,3 +39,11 @@ func NewLiteralBool(b bool) *Literal {
 		Value: strconv.FormatBool(b),
 	}
 }
+
+// NewLiteralChar create a new literal representing a character value.
+func NewLiteralChar(c rune) *Literal {
+	return &Literal{
+		Kind:  "char",
+		Value: string(c),
+	}
+}
