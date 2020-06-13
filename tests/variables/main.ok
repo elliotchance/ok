@@ -1,0 +1,11 @@
+func main() {
+
+    a = "initial"
+    print(a)
+
+    b = true
+    print(b)
+
+    c = 1.23
+    print(c)
+}

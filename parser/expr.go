@@ -5,22 +5,29 @@ import (
 	"ok/lexer"
 )
 
-func consumeExpr(f *File, offset int) (ast.Node, int, error) {
+func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 	originalOffset := offset
 
 	// Consume as many subexpressions and operators as possible.
 	var parts []interface{}
 	var err error
 	didJustConsumeLiteral := false
-	for offset < len(f.Tokens) {
-		// Try to consume a literal first. This is important because literals
-		// may be multi token and contain an operator.
+	for offset < len(parser.File.Tokens) {
+		tok := parser.File.Tokens[offset]
+
+		// Bail out if we reach the end of the line.
+		if parser.File.Tokens[offset-1].IsEndOfLine {
+			break
+		}
+
+		// Try to consume a literal.
 		var literal *ast.Literal
-		literal, offset, err = consumeLiteral(f, offset)
+		literal, offset, err = consumeLiteral(parser.File, offset)
 		if err == nil {
 			err = validateLiteral(literal)
 			if err != nil {
-				return nil, originalOffset, err
+				// This kind of error should not stop the parsing.
+				parser.Errors = append(parser.Errors, err)
 			}
 
 			parts = append(parts, literal)
@@ -30,7 +37,7 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 
 		// Grouping "()"
 		var group *ast.Group
-		group, offset, err = consumeGroup(f, offset)
+		group, offset, err = consumeGroup(parser, offset)
 		if err == nil {
 			parts = append(parts, group)
 			didJustConsumeLiteral = false
@@ -40,7 +47,7 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 		// Unary operator (can not be consumed directly after a literal).
 		if !didJustConsumeLiteral {
 			var unary *ast.Unary
-			unary, offset, err = consumeUnary(f, offset)
+			unary, offset, err = consumeUnary(parser, offset)
 			if err == nil {
 				parts = append(parts, unary)
 				didJustConsumeLiteral = false
@@ -48,14 +55,22 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 			}
 		}
 
+		// An identifier. It's important this happens last if all else fails.
+		var identifier *ast.Identifier
+		identifier, offset, err = consumeIdentifier(parser, offset)
+		if err == nil {
+			parts = append(parts, identifier)
+			continue
+		}
+
 		// Otherwise it must be a a valid binary operator.
-		switch f.Tokens[offset].Kind {
+		switch tok.Kind {
 		case lexer.TokenPlus, lexer.TokenMinus, lexer.TokenTimes,
 			lexer.TokenDivide, lexer.TokenRemainder, lexer.TokenAnd,
 			lexer.TokenOr, lexer.TokenEqual, lexer.TokenNotEqual,
 			lexer.TokenGreaterThan, lexer.TokenGreaterThanEqual,
 			lexer.TokenLessThan, lexer.TokenLessThanEqual:
-			parts = append(parts, f.Tokens[offset])
+			parts = append(parts, tok)
 			offset++
 			didJustConsumeLiteral = false
 			continue
@@ -67,7 +82,8 @@ func consumeExpr(f *File, offset int) (ast.Node, int, error) {
 	if len(parts) == 0 {
 		// Nothing was consumed, this is an error.
 		return nil, originalOffset, newTokenMismatch("expression",
-			f.Tokens[originalOffset-1].Kind, f.Tokens[originalOffset].Kind)
+			parser.File.Tokens[originalOffset-1].Kind,
+			parser.File.Tokens[originalOffset].Kind)
 	}
 
 	return reduceExpr(parts), offset, nil

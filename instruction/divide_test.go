@@ -19,13 +19,13 @@ func TestDivide_Execute(t *testing.T) {
 		"divide-zero":        {"1.2200", "0", "0", errors.New("division by zero")},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			left := ast.NewLiteralNumber(test.left)
-			right := ast.NewLiteralNumber(test.right)
-			ins := &instruction.Divide{Left: left, Right: right}
-			assert.Equal(t, test.err, ins.Execute())
-			if test.err == nil {
-				assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": ast.NewLiteralNumber(test.left),
+				"1": ast.NewLiteralNumber(test.right),
 			}
+			ins := &instruction.Divide{Left: "0", Right: "1", Result: "2"}
+			assert.Equal(t, test.err, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

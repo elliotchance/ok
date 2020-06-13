@@ -7,23 +7,17 @@ import (
 
 // NotEqualNumber will compare two numbers for equality.
 type NotEqualNumber struct {
-	Left, Right, Result *ast.Literal
+	Left, Right, Result string
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NotEqualNumber) Execute() error {
-	ins.Result = ast.NewLiteralBool(number.Cmp(
-		number.NewNumber(ins.Left.Value),
-		number.NewNumber(ins.Right.Value),
+func (ins *NotEqualNumber) Execute(registers map[string]*ast.Literal) error {
+	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
+		number.NewNumber(registers[ins.Left].Value),
+		number.NewNumber(registers[ins.Right].Value),
 	) != 0)
 
 	return nil
-}
-
-// Answer will be removed shortly. Right now it's used to evaluate literals
-// because there are no variables.
-func (ins *NotEqualNumber) Answer() *ast.Literal {
-	return ins.Result
 }
 
 // NotEqual will compare two non-numbers for non-equality. This works for every
@@ -31,18 +25,14 @@ func (ins *NotEqualNumber) Answer() *ast.Literal {
 // are made in the future this will need to be expanded to one instruction per
 // type.
 type NotEqual struct {
-	Left, Right, Result *ast.Literal
+	Left, Right, Result string
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NotEqual) Execute() error {
-	ins.Result = ast.NewLiteralBool(ins.Left.Value != ins.Right.Value)
+func (ins *NotEqual) Execute(registers map[string]*ast.Literal) error {
+	registers[ins.Result] = ast.NewLiteralBool(
+		registers[ins.Left].Value != registers[ins.Right].Value,
+	)
 
 	return nil
-}
-
-// Answer will be removed shortly. Right now it's used to evaluate literals
-// because there are no variables.
-func (ins *NotEqual) Answer() *ast.Literal {
-	return ins.Result
 }

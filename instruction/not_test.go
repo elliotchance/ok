@@ -17,10 +17,12 @@ func TestNot_Execute(t *testing.T) {
 		"true":  {true, "false"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			left := ast.NewLiteralBool(test.left)
-			ins := &instruction.Not{Left: left}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": ast.NewLiteralBool(test.left),
+			}
+			ins := &instruction.Not{Left: "0", Result: "1"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

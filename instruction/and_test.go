@@ -19,11 +19,13 @@ func TestAnd_Execute(t *testing.T) {
 		"true-true":   {true, true, "true"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			left := ast.NewLiteralBool(test.left)
-			right := ast.NewLiteralBool(test.right)
-			ins := &instruction.And{Left: left, Right: right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": ast.NewLiteralBool(test.left),
+				"1": ast.NewLiteralBool(test.right),
+			}
+			ins := &instruction.And{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

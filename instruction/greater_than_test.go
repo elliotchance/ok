@@ -22,9 +22,13 @@ func TestGreaterThanString_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			ins := &instruction.GreaterThanString{Left: test.left, Right: test.right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": test.left,
+				"1": test.right,
+			}
+			ins := &instruction.GreaterThanString{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }
@@ -43,9 +47,13 @@ func TestGreaterThanNumber_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			ins := &instruction.GreaterThanNumber{Left: test.left, Right: test.right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": test.left,
+				"1": test.right,
+			}
+			ins := &instruction.GreaterThanNumber{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

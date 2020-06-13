@@ -2,6 +2,7 @@ package instruction_test
 
 import (
 	"bytes"
+	"fmt"
 	"ok/ast"
 	"ok/instruction"
 	"ok/lexer"
@@ -49,12 +50,20 @@ func TestPrint_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
+			registers := map[string]*ast.Literal{}
+			var arguments []string
+			for i, value := range test.values {
+				register := fmt.Sprintf("%d", i)
+				registers[register] = value
+				arguments = append(arguments, register)
+			}
+
 			buf := bytes.NewBuffer(nil)
 			ins := &instruction.Print{
-				Stdout: buf,
-				Values: test.values,
+				Stdout:    buf,
+				Arguments: arguments,
 			}
-			assert.NoError(t, ins.Execute())
+			assert.NoError(t, ins.Execute(registers))
 			assert.Equal(t, test.expectedStdout, buf.String())
 		})
 	}

@@ -5,11 +5,11 @@ import (
 	"ok/lexer"
 )
 
-func consumeFunc(f *File, offset int) (*ast.Func, int, bool, error) {
+func consumeFunc(parser *Parser, offset int) (*ast.Func, int, bool, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(f, offset, []string{
+	offset, err = consume(parser.File, offset, []string{
 		lexer.TokenFunc, lexer.TokenIdentifier,
 		lexer.TokenParenOpen, lexer.TokenParenClose,
 		lexer.TokenCurlyOpen,
@@ -19,24 +19,20 @@ func consumeFunc(f *File, offset int) (*ast.Func, int, bool, error) {
 	}
 
 	fn := &ast.Func{
-		Name: f.Tokens[offset-4].Value,
+		Name: parser.File.Tokens[offset-4].Value,
 	}
 
 	for {
-		if f.Tokens[offset].Kind != lexer.TokenIdentifier {
+		var statement ast.Node
+		statement, offset, err = consumeStatement(parser, offset)
+		if err != nil {
 			break
 		}
 
-		var call *ast.Call
-		call, offset, err = consumeCall(f, offset)
-		if err != nil {
-			return nil, originalOffset, false, err
-		}
-
-		fn.Statements = append(fn.Statements, call)
+		fn.Statements = append(fn.Statements, statement)
 	}
 
-	offset, err = consume(f, offset, []string{lexer.TokenCurlyClose})
+	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyClose})
 	if err != nil {
 		return nil, offset, false, err
 	}

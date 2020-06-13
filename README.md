@@ -22,9 +22,10 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [Command Line Interface](#command-line-interface)
       * [run](#run)
       * [version](#version)
-   * [OK By Example](#ok-by-example)
+   * [Learn By Example](#learn-by-example)
       * [Hello World](#hello-world)
       * [Values](#values)
+      * [Variables](#variables)
    * [Language Specification](#language-specification)
       * [Built-in Functions](#built-in-functions)
       * [Comments](#comments)
@@ -37,10 +38,9 @@ variables, nils, dereferencing or variables/arguments that have defaults.
          * [Numbers](#numbers)
          * [Strings](#strings)
       * [Operators](#operators)
-   * [FAQ](#faq)
-      * [Why does "3 / 2 = 2?"](#why-does-3--2--2)
+      * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Wed Jun 10 02:55:51 EDT 2020 -->
+<!-- Added by: elliot, at: Sat Jun 13 18:14:07 EDT 2020 -->
 
 <!--te-->
 
@@ -94,8 +94,8 @@ version
 `ok version` will show the current version and the date it was built.
 
 
-OK By Example
-=============
+Learn By Example
+================
 
 These have been heavily influenced (copied) from
 [gobyexample](https://gobyexample.com) because it's such a great source!
@@ -139,6 +139,29 @@ func main() {
     print(true and false)
     print(true or false)
     print(not true)
+}
+```
+
+Variables
+---------
+
+In ok, variables are explicitly declared and used by the compiler to e.g. check
+type-correctness of function calls.
+
+Every variable has a type, but that type is inferred from the expression or
+value being assigned to it.
+
+```
+func main() {
+
+    a = "initial"
+    print(a)
+
+    b = true
+    print(b)
+
+    c = 1.23
+    print(c)
 }
 ```
 
@@ -194,7 +217,7 @@ A boolean can be either `true` or `false`.
 
 ### Characters
 
-A character represents a single symbol and is wrapped in single-quotes (`'`').
+A character represents a single symbol and is wrapped in single-quotes (`'`).
 The symbol must be a UTF-8 code point.
 
 Examples:
@@ -206,13 +229,13 @@ Examples:
 ### Data
 
 A data value represents zero or more bytes. Data can be created with literals by
-using backticks (`\``).
+using backticks (`` ` ``).
 
 Examples:
 
-- `\`\`` - zero bytes.
-- `\`hello\`` - 5 bytes.
-- `\`😃\`` - 4 bytes.
+- ``` `` ``` - zero bytes.
+- `` `hello` `` - 5 bytes.
+- `` `😃` `` - 4 bytes.
 
 ### Numbers
 
@@ -293,10 +316,13 @@ precedence of the operator. The precedence from most to least important:
 
 1. `*`, `/`, `%`
 2. `+`, `-`
+3. `==`, `!=`, `>`, `>=`, `<`, `<=`
+4. `and`
+5. `or`
 
 Examples:
 
-- `1 + 2 + 3` is evaluated as `1 + (2 + 3)`
+- `1 + 2 + 3` is evaluated as `(1 + 2) + 3`
 - `1 + 2 * 3` is evaluated as `1 + (2 * 3)`
 - `1 * 2 + 3` is evaluated as `(1 * 2) + 3`
 
@@ -310,18 +336,13 @@ modulo operation will always return a positive number, a remainder may be
 negative if one of the inputs is also negative.
 
 
-FAQ
-===
+Variables
+---------
 
-## Why does "3 / 2 = 2?"
+A variable holds a single value.
 
-All numbers have a precision. The precision is the number of digits after the
-decimal place. For integers (whole numbers) the precision is zero. When
-performing any arithmetic operation the output precision will be the same as the
-highest input precision.
+Variables must be defined (by assigning) before they can be referenced and may
+be reassigned as long as the new value is of the same type.
 
-So, in this case both inputs have a precision of 0 and so that is also used in
-the output precision. On top of that any numbers is rounded half-up to fit
-within the precision, so `1.5` becomes `2`.
-
-`3.0 / 2` or `3 / 2.0` would produce `1.5`.
+A variable name is case-sensitive, must start with a letter and can contain
+letters, digits and an underscore (`_`).

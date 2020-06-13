@@ -16,11 +16,13 @@ func TestSubtract_Execute(t *testing.T) {
 		"maintain-precision": {"1.2200", "4.7", "-3.4800"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			left := ast.NewLiteralNumber(test.left)
-			right := ast.NewLiteralNumber(test.right)
-			ins := &instruction.Subtract{Left: left, Right: right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": ast.NewLiteralNumber(test.left),
+				"1": ast.NewLiteralNumber(test.right),
+			}
+			ins := &instruction.Subtract{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

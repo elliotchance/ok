@@ -15,50 +15,70 @@ func TestParseString(t *testing.T) {
 		str      string
 		expected *ast.Func
 		comments []*ast.Comment
-		err      error
+		errs     []error
 	}{
 		"empty": {
 			str: "",
 		},
 		"func-paren-close": {
 			str: "func)",
-			err: errors.New("expecting identifier after func, but found )"),
+			errs: []error{
+				errors.New("expecting identifier after func, but found )"),
+			},
 		},
 		"func-curly-open": {
 			str: "func {",
-			err: errors.New("expecting identifier after func, but found {"),
+			errs: []error{
+				errors.New("expecting identifier after func, but found {"),
+			},
 		},
 		"func-name-paren-close": {
 			str: "func main)",
-			err: errors.New(`expecting ( after identifier, but found )`),
+			errs: []error{
+				errors.New(`expecting ( after identifier, but found )`),
+			},
 		},
 		"func-name-paren-open": {
 			str: "func main (",
-			err: errors.New("expecting ) after (, but found end of file"),
+			errs: []error{
+				errors.New("expecting ) after (, but found end of file"),
+			},
 		},
 		"func-name-paren-open-close": {
 			str: "func main ()",
-			err: errors.New("expecting { after ), but found end of file"),
+			errs: []error{
+				errors.New("expecting { after ), but found end of file"),
+			},
 		},
 		"func-name-paren-open-close-open": {
 			str: "func main () {",
-			err: errors.New("expecting } after {, but found end of file"),
+			errs: []error{
+				errors.New("expecting } after {, but found end of file"),
+			},
 		},
 		"func-empty": {
 			str:      "func main() {\n}",
 			expected: &ast.Func{Name: "main"},
 		},
+		"func-empty-2": {
+			str:      "func\nmain() {\n}",
+			expected: &ast.Func{Name: "main"},
+		},
 		"unterminated-string": {
 			str: `func "`,
-			err: errors.New("unterminated string found after 'func'"),
+			errs: []error{
+				errors.New("unterminated string found after 'func'"),
+			},
 		},
 		"unterminated-string-first-token": {
 			str: `"`,
-			err: errors.New("unterminated string found at the start"),
+			errs: []error{
+				errors.New("unterminated string found at the start"),
+			},
 		},
 		"hello-world": {
 			str:      `func main() {print("hello world")}`,
-			expected: newFunc(ast.NewLiteralString("hello world")),
+			expected: newFuncPrint(ast.NewLiteralString("hello world")),
 		},
 		"hello-world-2": {
 			str: `func main() {print("hello") print("world")}`,
@@ -81,8 +101,11 @@ func TestParseString(t *testing.T) {
 			},
 		},
 		"extra-token": {
-			str: "func main() {\n} (",
-			err: errors.New("found extra '(' at the end of the file"),
+			str:      "func main() {\n} (",
+			expected: newFunc(),
+			errs: []error{
+				errors.New("found extra '(' at the end of the file"),
+			},
 		},
 		"only-comment": {
 			str: "// nothing to see here",
@@ -92,7 +115,7 @@ func TestParseString(t *testing.T) {
 		},
 		"comments-everywhere": {
 			str:      "// foo\n //bar\nfunc main() {\n// baz\nprint(\"hello\") // qux\n// quux\n}//corge\n//grault",
-			expected: newFunc(ast.NewLiteralString("hello")),
+			expected: newFuncPrint(ast.NewLiteralString("hello")),
 			comments: []*ast.Comment{
 				{Comment: " foo"},
 				{Comment: "bar"},
@@ -105,58 +128,70 @@ func TestParseString(t *testing.T) {
 		},
 		"literal-true": {
 			str: `func main() { print(true) }`,
-			expected: newFunc(&ast.Literal{
+			expected: newFuncPrint(&ast.Literal{
 				Kind:  lexer.TokenBool,
 				Value: "true",
 			}),
 		},
 		"literal-false": {
 			str: `func main() { print(false) }`,
-			expected: newFunc(&ast.Literal{
+			expected: newFuncPrint(&ast.Literal{
 				Kind:  lexer.TokenBool,
 				Value: "false",
 			}),
 		},
 		"literal-char": {
 			str: `func main() { print('a') }`,
-			expected: newFunc(&ast.Literal{
+			expected: newFuncPrint(&ast.Literal{
 				Kind:  lexer.TokenCharacter,
 				Value: "a",
 			}),
 		},
 		"literal-zero-length-char": {
 			str: `func main() { print('') }`,
-			err: errors.New("character literal cannot be empty"),
+			expected: newFuncPrint(&ast.Literal{
+				Kind:  lexer.TokenCharacter,
+				Value: "",
+			}),
+			errs: []error{
+				errors.New("character literal cannot be empty"),
+			},
 		},
 		"literal-number-zero": {
 			str: `func main() { print(0) }`,
-			expected: newFunc(&ast.Literal{
+			expected: newFuncPrint(&ast.Literal{
 				Kind:  lexer.TokenNumber,
 				Value: "0",
 			}),
 		},
 		"call-identifier-close": {
 			str: `func main() { print) }`,
-			err: errors.New("expecting ( after identifier, but found )"),
+			errs: []error{
+				errors.New("expecting } after {, but found identifier"),
+			},
 		},
 		"call-identifier-without-literal": {
 			str: `func main() { print( }`,
-			err: errors.New("expecting expression after (, but found }"),
+			errs: []error{
+				errors.New("expecting } after {, but found identifier"),
+			},
 		},
 		"call-identifier-missing-close": {
 			str: `func main() { print("hello" }`,
-			err: errors.New("expecting ) after string, but found }"),
+			errs: []error{
+				errors.New("expecting } after {, but found identifier"),
+			},
 		},
 		"literal-number-negative": {
 			str: `func main() { print(-3.20) }`,
-			expected: newFunc(&ast.Unary{
+			expected: newFuncPrint(&ast.Unary{
 				Op:   lexer.TokenMinus,
 				Expr: ast.NewLiteralNumber("3.20"),
 			}),
 		},
 		"numbers-plus": {
 			str: `func main() { print(3 + 2) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left:  ast.NewLiteralNumber("3"),
 				Op:    lexer.TokenPlus,
 				Right: ast.NewLiteralNumber("2"),
@@ -164,7 +199,7 @@ func TestParseString(t *testing.T) {
 		},
 		"numbers-minus": {
 			str: `func main() { print(3 - 2) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left:  ast.NewLiteralNumber("3"),
 				Op:    lexer.TokenMinus,
 				Right: ast.NewLiteralNumber("2"),
@@ -172,7 +207,7 @@ func TestParseString(t *testing.T) {
 		},
 		"numbers-times": {
 			str: `func main() { print(3.0*2.1) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left:  ast.NewLiteralNumber("3.0"),
 				Op:    lexer.TokenTimes,
 				Right: ast.NewLiteralNumber("2.1"),
@@ -180,7 +215,7 @@ func TestParseString(t *testing.T) {
 		},
 		"numbers-divide": {
 			str: `func main() { print(3/2.0) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left:  ast.NewLiteralNumber("3"),
 				Op:    lexer.TokenDivide,
 				Right: ast.NewLiteralNumber("2.0"),
@@ -188,7 +223,7 @@ func TestParseString(t *testing.T) {
 		},
 		"numbers-remainder": {
 			str: `func main() { print(3 % 2) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left:  ast.NewLiteralNumber("3"),
 				Op:    lexer.TokenRemainder,
 				Right: ast.NewLiteralNumber("2"),
@@ -196,7 +231,7 @@ func TestParseString(t *testing.T) {
 		},
 		"expr-3-linear-order": {
 			str: `func main() { print(1 + 2 - 3) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left: ast.NewLiteralNumber("1"),
 				Op:   lexer.TokenPlus,
 				Right: &ast.Binary{
@@ -208,7 +243,7 @@ func TestParseString(t *testing.T) {
 		},
 		"expr-3-non-linear-order": {
 			str: `func main() { print(1 * 2 - 3) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left: &ast.Binary{
 					Left:  ast.NewLiteralNumber("1"),
 					Op:    lexer.TokenTimes,
@@ -220,7 +255,7 @@ func TestParseString(t *testing.T) {
 		},
 		"expr-3-grouping": {
 			str: `func main() { print(1 * (2 - 3)) }`,
-			expected: newFunc(&ast.Binary{
+			expected: newFuncPrint(&ast.Binary{
 				Left: ast.NewLiteralNumber("1"),
 				Op:   lexer.TokenTimes,
 				Right: &ast.Group{
@@ -234,7 +269,7 @@ func TestParseString(t *testing.T) {
 		},
 		"group-1": {
 			str: `func main() { print((2 - 3)) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Group{
 					Expr: &ast.Binary{
 						Left:  ast.NewLiteralNumber("2"),
@@ -246,7 +281,7 @@ func TestParseString(t *testing.T) {
 		},
 		"group-2": {
 			str: `func main() { print((2)) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Group{
 					Expr: ast.NewLiteralNumber("2"),
 				},
@@ -254,7 +289,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-and-bool": {
 			str: `func main() { print(true and false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenAnd,
@@ -264,7 +299,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-or-bool": {
 			str: `func main() { print(true or false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenOr,
@@ -274,7 +309,7 @@ func TestParseString(t *testing.T) {
 		},
 		"not-bool": {
 			str: `func main() { print(not true) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Unary{
 					Op:   lexer.TokenNot,
 					Expr: ast.NewLiteralBool(true),
@@ -283,7 +318,7 @@ func TestParseString(t *testing.T) {
 		},
 		"not-not-bool": {
 			str: `func main() { print(not not false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Unary{
 					Op: lexer.TokenNot,
 					Expr: &ast.Unary{
@@ -295,7 +330,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-equal-bool": {
 			str: `func main() { print(true==false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenEqual,
@@ -305,7 +340,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-not-equal-bool": {
 			str: `func main() { print(true != false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenNotEqual,
@@ -315,7 +350,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-greater-than-bool": {
 			str: `func main() { print(true>false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenGreaterThan,
@@ -325,7 +360,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-greater-than-equal-bool": {
 			str: `func main() { print(true>=false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenGreaterThanEqual,
@@ -335,7 +370,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-less-than-bool": {
 			str: `func main() { print(true < false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenLessThan,
@@ -345,7 +380,7 @@ func TestParseString(t *testing.T) {
 		},
 		"bool-less-than-equal-bool": {
 			str: `func main() { print(true <= false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				&ast.Binary{
 					Left:  ast.NewLiteralBool(true),
 					Op:    lexer.TokenLessThanEqual,
@@ -355,29 +390,89 @@ func TestParseString(t *testing.T) {
 		},
 		"print-2": {
 			str: `func main() { print(true, false) }`,
-			expected: newFunc(
+			expected: newFuncPrint(
 				ast.NewLiteralBool(true),
 				ast.NewLiteralBool(false),
 			),
 		},
+		"assign-string": {
+			str: `func main() { foo = "bar" }`,
+			expected: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralString("bar"),
+				},
+			),
+		},
+		"read-variable": {
+			str: `func main() { foo = bar }`,
+			expected: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         &ast.Identifier{Name: "bar"},
+				},
+			),
+		},
+		"end-of-line-1": {
+			str: "func main() { a = 1\nprint(a) }",
+			expected: newFunc(
+				&ast.Assign{
+					VariableName: "a",
+					Expr:         ast.NewLiteralNumber("1"),
+				},
+				&ast.Call{
+					FunctionName: "print",
+					Arguments: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+				},
+			),
+		},
+		"end-of-line-2": {
+			str: "func main() { b = true\nprint(b)\nc = 1.23 }",
+			expected: newFunc(
+				&ast.Assign{
+					VariableName: "b",
+					Expr:         ast.NewLiteralBool(true),
+				},
+				&ast.Call{
+					FunctionName: "print",
+					Arguments: []ast.Node{
+						&ast.Identifier{Name: "b"},
+					},
+				},
+				&ast.Assign{
+					VariableName: "c",
+					Expr:         ast.NewLiteralNumber("1.23"),
+				},
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			f, err := parser.ParseString(test.str)
-			if test.err != nil {
-				assert.EqualError(t, err, test.err.Error())
-			} else {
-				assert.NoError(t, err)
-			}
+			p := parser.ParseString(test.str)
 
-			if f != nil {
-				assert.Equal(t, test.expected, f.Root)
-				assert.Equal(t, test.comments, f.Comments)
-			}
+			assertEqualErrors(t, test.errs, p.Errors)
+			assert.Equal(t, test.expected, p.File.Root)
+			assert.Equal(t, test.comments, p.File.Comments)
 		})
 	}
 }
 
-func newFunc(args ...ast.Node) *ast.Func {
+func assertEqualErrors(t *testing.T, expected, actual []error) {
+	var e []string
+	for _, err := range expected {
+		e = append(e, err.Error())
+	}
+
+	var a []string
+	for _, err := range actual {
+		a = append(a, err.Error())
+	}
+
+	assert.Equal(t, e, a)
+}
+
+func newFuncPrint(args ...ast.Node) *ast.Func {
 	return &ast.Func{
 		Name: "main",
 		Statements: []ast.Node{
@@ -386,5 +481,12 @@ func newFunc(args ...ast.Node) *ast.Func {
 				Arguments:    args,
 			},
 		},
+	}
+}
+
+func newFunc(statements ...ast.Node) *ast.Func {
+	return &ast.Func{
+		Name:       "main",
+		Statements: statements,
 	}
 }

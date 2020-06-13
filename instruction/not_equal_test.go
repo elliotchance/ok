@@ -43,9 +43,13 @@ func TestNotEqual_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			ins := &instruction.NotEqual{Left: test.left, Right: test.right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": test.left,
+				"1": test.right,
+			}
+			ins := &instruction.NotEqual{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }
@@ -64,9 +68,13 @@ func TestNotEqualNumber_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			ins := &instruction.NotEqualNumber{Left: test.left, Right: test.right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": test.left,
+				"1": test.right,
+			}
+			ins := &instruction.NotEqualNumber{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

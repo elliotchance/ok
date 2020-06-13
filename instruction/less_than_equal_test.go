@@ -22,9 +22,13 @@ func TestLessThanEqualString_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			ins := &instruction.LessThanEqualString{Left: test.left, Right: test.right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": test.left,
+				"1": test.right,
+			}
+			ins := &instruction.LessThanEqualString{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }
@@ -43,9 +47,13 @@ func TestLessThanEqualNumber_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			ins := &instruction.LessThanEqualNumber{Left: test.left, Right: test.right}
-			assert.NoError(t, ins.Execute())
-			assert.Equal(t, test.expected, ins.Result.Value)
+			registers := map[string]*ast.Literal{
+				"0": test.left,
+				"1": test.right,
+			}
+			ins := &instruction.LessThanEqualNumber{Left: "0", Right: "1", Result: "2"}
+			assert.NoError(t, ins.Execute(registers))
+			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
 }

@@ -6,18 +6,12 @@ import (
 
 // Combine will create a new data by joining two other datas.
 type Combine struct {
-	Left, Right, Result *ast.Literal
+	Left, Right, Result string
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Combine) Execute() error {
-	ins.Result = ast.NewLiteralData([]byte(ins.Left.Value + ins.Right.Value))
+func (ins *Combine) Execute(registers map[string]*ast.Literal) error {
+	registers[ins.Result] = ast.NewLiteralData([]byte(registers[ins.Left].Value + registers[ins.Right].Value))
 
 	return nil
-}
-
-// Answer will be removed shortly. Right now it's used to evaluate literals
-// because there are no variables.
-func (ins *Combine) Answer() *ast.Literal {
-	return ins.Result
 }

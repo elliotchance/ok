@@ -6,12 +6,12 @@ import (
 )
 
 // group := [ "not" | "-" ] expr
-func consumeUnary(f *File, offset int) (*ast.Unary, int, error) {
+func consumeUnary(parser *Parser, offset int) (*ast.Unary, int, error) {
 	originalOffset := offset
 
 	var err error
 	var t lexer.Token
-	t, offset, err = consumeOneOf(f, offset, []string{
+	t, offset, err = consumeOneOf(parser.File, offset, []string{
 		lexer.TokenNot,
 		lexer.TokenMinus,
 	})
@@ -20,7 +20,7 @@ func consumeUnary(f *File, offset int) (*ast.Unary, int, error) {
 	}
 
 	var expr ast.Node
-	expr, offset, err = consumeExpr(f, offset)
+	expr, offset, err = consumeExpr(parser, offset)
 	if err != nil {
 		return nil, originalOffset, err
 	}
