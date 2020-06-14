@@ -27,11 +27,9 @@ func CompileFunc(fn *ast.Func) (*CompiledFunc, error) {
 	compiled := &CompiledFunc{
 		variables: map[string]string{},
 	}
-	for _, statement := range fn.Statements {
-		err := compileStatement(compiled, statement)
-		if err != nil {
-			return nil, err
-		}
+	err := compileBlock(compiled, fn.Statements, nil, nil)
+	if err != nil {
+		return nil, err
 	}
 
 	return compiled, nil

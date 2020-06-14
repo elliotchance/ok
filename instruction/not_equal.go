@@ -11,7 +11,7 @@ type NotEqualNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NotEqualNumber) Execute(registers map[string]*ast.Literal) error {
+func (ins *NotEqualNumber) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),
@@ -29,7 +29,7 @@ type NotEqual struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NotEqual) Execute(registers map[string]*ast.Literal) error {
+func (ins *NotEqual) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(
 		registers[ins.Left].Value != registers[ins.Right].Value,
 	)

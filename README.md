@@ -37,10 +37,11 @@ variables, nils, dereferencing or variables/arguments that have defaults.
          * [Data](#data)
          * [Numbers](#numbers)
          * [Strings](#strings)
+      * [Loops](#loops)
       * [Operators](#operators)
       * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Sat Jun 13 18:14:07 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun 14 01:36:38 EDT 2020 -->
 
 <!--te-->
 
@@ -280,6 +281,24 @@ Examples:
 
 - `""` - an empty string (zero length).
 - `"hello world"` - a string containing 11 characters.
+
+
+Loops
+-----
+
+There is only one construct for loops in ok:
+
+```
+for condition {
+    statements...
+}
+```
+
+- `condition` may be omitted, and `true` will be used in its place.
+- There may be zero statements in the block.
+- `continue` will cause the next iteration to begin immediately.
+- `break` will cause the loop to stop immediately and proceed with the code
+after the loop.
 
 
 Operators

@@ -12,7 +12,7 @@ type Remainder struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Remainder) Execute(registers map[string]*ast.Literal) error {
+func (ins *Remainder) Execute(registers map[string]*ast.Literal, _ *int) error {
 	divide, err := number.Remainder(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),

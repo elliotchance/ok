@@ -20,7 +20,8 @@ func NewVM(f *compiler.CompiledFunc) *VM {
 // Run will run the program.
 func (vm *VM) Run() {
 	registers := map[string]*ast.Literal{}
-	for _, i := range vm.f.Instructions {
-		i.Execute(registers)
+	totalInstructions := len(vm.f.Instructions)
+	for i := 0; i < totalInstructions; i++ {
+		vm.f.Instructions[i].Execute(registers, &i)
 	}
 }

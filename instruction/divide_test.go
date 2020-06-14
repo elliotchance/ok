@@ -24,7 +24,7 @@ func TestDivide_Execute(t *testing.T) {
 				"1": ast.NewLiteralNumber(test.right),
 			}
 			ins := &instruction.Divide{Left: "0", Right: "1", Result: "2"}
-			assert.Equal(t, test.err, ins.Execute(registers))
+			assert.Equal(t, test.err, ins.Execute(registers, nil))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}

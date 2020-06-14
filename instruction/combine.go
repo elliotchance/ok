@@ -10,8 +10,9 @@ type Combine struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Combine) Execute(registers map[string]*ast.Literal) error {
-	registers[ins.Result] = ast.NewLiteralData([]byte(registers[ins.Left].Value + registers[ins.Right].Value))
+func (ins *Combine) Execute(registers map[string]*ast.Literal, _ *int) error {
+	registers[ins.Result] = ast.NewLiteralData(
+		[]byte(registers[ins.Left].Value + registers[ins.Right].Value))
 
 	return nil
 }

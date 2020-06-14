@@ -11,7 +11,7 @@ type Add struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Add) Execute(registers map[string]*ast.Literal) error {
+func (ins *Add) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralNumber(
 		number.Add(
 			number.NewNumber(registers[ins.Left].Value),

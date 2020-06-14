@@ -12,7 +12,7 @@ func TestAssign_Execute(t *testing.T) {
 	t.Run("literal", func(t *testing.T) {
 		registers := map[string]*ast.Literal{}
 		ins := &instruction.Assign{VariableName: "1", Value: ast.NewLiteralNumber("1.5")}
-		assert.NoError(t, ins.Execute(registers))
+		assert.NoError(t, ins.Execute(registers, nil))
 		assert.Equal(t, "1.5", registers["1"].Value)
 	})
 
@@ -21,7 +21,7 @@ func TestAssign_Execute(t *testing.T) {
 			"0": ast.NewLiteralNumber("1.5"),
 		}
 		ins := &instruction.Assign{VariableName: "1", Register: "0"}
-		assert.NoError(t, ins.Execute(registers))
+		assert.NoError(t, ins.Execute(registers, nil))
 		assert.Equal(t, "1.5", registers["1"].Value)
 	})
 }

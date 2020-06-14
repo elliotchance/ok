@@ -63,7 +63,7 @@ func TestPrint_Execute(t *testing.T) {
 				Stdout:    buf,
 				Arguments: arguments,
 			}
-			assert.NoError(t, ins.Execute(registers))
+			assert.NoError(t, ins.Execute(registers, nil))
 			assert.Equal(t, test.expectedStdout, buf.String())
 		})
 	}

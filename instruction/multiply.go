@@ -11,7 +11,7 @@ type Multiply struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Multiply) Execute(registers map[string]*ast.Literal) error {
+func (ins *Multiply) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralNumber(
 		number.Multiply(
 			number.NewNumber(registers[ins.Left].Value),

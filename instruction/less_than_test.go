@@ -27,7 +27,7 @@ func TestLessThanString_Execute(t *testing.T) {
 				"1": test.right,
 			}
 			ins := &instruction.LessThanString{Left: "0", Right: "1", Result: "2"}
-			assert.NoError(t, ins.Execute(registers))
+			assert.NoError(t, ins.Execute(registers, nil))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
@@ -52,7 +52,7 @@ func TestLessThanNumber_Execute(t *testing.T) {
 				"1": test.right,
 			}
 			ins := &instruction.LessThanNumber{Left: "0", Right: "1", Result: "2"}
-			assert.NoError(t, ins.Execute(registers))
+			assert.NoError(t, ins.Execute(registers, nil))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}

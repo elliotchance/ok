@@ -11,7 +11,7 @@ type LessThanNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *LessThanNumber) Execute(registers map[string]*ast.Literal) error {
+func (ins *LessThanNumber) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),
@@ -26,7 +26,7 @@ type LessThanString struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *LessThanString) Execute(registers map[string]*ast.Literal) error {
+func (ins *LessThanString) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(
 		registers[ins.Left].Value < registers[ins.Right].Value,
 	)
