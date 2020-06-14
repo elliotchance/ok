@@ -1083,9 +1083,10 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"assign-1": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralNumber("1.5"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.5"),
 				},
 			),
 			expected: []instruction.Instruction{
@@ -1101,9 +1102,10 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"assign-print": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralNumber("1.5"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.5"),
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -1129,9 +1131,10 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"assign-print-2": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralNumber("1.5"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.5"),
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -1188,13 +1191,15 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"variable-bad-reassign": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralNumber("1.5"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.5"),
 				},
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralString("1.5"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralString("1.5"),
 				},
 			),
 			err: errors.New("cannot assign string to variable foo (expecting number)"),
@@ -1219,25 +1224,29 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"for-true-with-statements": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralNumber("1"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1"),
 				},
 				&ast.For{
 					Statements: []ast.Node{
-						&ast.Assign{
-							VariableName: "bar",
-							Expr:         ast.NewLiteralNumber("2"),
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "bar"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("2"),
 						},
-						&ast.Assign{
-							VariableName: "baz",
-							Expr:         ast.NewLiteralNumber("3"),
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "baz"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("3"),
 						},
 					},
 				},
-				&ast.Assign{
-					VariableName: "qux",
-					Expr:         ast.NewLiteralNumber("4"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "qux"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("4"),
 				},
 			),
 			expected: []instruction.Instruction{
@@ -1288,9 +1297,10 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"for-condition": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "i",
-					Expr:         ast.NewLiteralNumber("0"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
 				},
 				&ast.For{
 					Condition: ast.NewBinary(
@@ -1299,9 +1309,10 @@ func TestCompileFunc(t *testing.T) {
 						ast.NewLiteralNumber("10"),
 					),
 					Statements: []ast.Node{
-						&ast.Assign{
-							VariableName: "i",
-							Expr: ast.NewBinary(
+						&ast.Binary{
+							Left: &ast.Identifier{Name: "i"},
+							Op:   lexer.TokenAssign,
+							Right: ast.NewBinary(
 								&ast.Identifier{Name: "i"},
 								lexer.TokenPlus,
 								ast.NewLiteralNumber("1"),
@@ -1352,26 +1363,30 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"for-break": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "i",
-					Expr:         ast.NewLiteralNumber("0"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
 				},
 				&ast.For{
 					Statements: []ast.Node{
-						&ast.Assign{
-							VariableName: "i",
-							Expr:         ast.NewLiteralNumber("1"),
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "i"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
 						},
 						&ast.Break{},
-						&ast.Assign{
-							VariableName: "i",
-							Expr:         ast.NewLiteralNumber("2"),
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "i"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("2"),
 						},
 					},
 				},
-				&ast.Assign{
-					VariableName: "i",
-					Expr:         ast.NewLiteralNumber("3"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("3"),
 				},
 			),
 			expected: []instruction.Instruction{
@@ -1425,26 +1440,30 @@ func TestCompileFunc(t *testing.T) {
 		},
 		"for-continue": {
 			fn: newFunc(
-				&ast.Assign{
-					VariableName: "i",
-					Expr:         ast.NewLiteralNumber("0"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
 				},
 				&ast.For{
 					Statements: []ast.Node{
-						&ast.Assign{
-							VariableName: "i",
-							Expr:         ast.NewLiteralNumber("1"),
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "i"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
 						},
 						&ast.Continue{},
-						&ast.Assign{
-							VariableName: "i",
-							Expr:         ast.NewLiteralNumber("2"),
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "i"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("2"),
 						},
 					},
 				},
-				&ast.Assign{
-					VariableName: "i",
-					Expr:         ast.NewLiteralNumber("3"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("3"),
 				},
 			),
 			expected: []instruction.Instruction{
@@ -1493,6 +1512,329 @@ func TestCompileFunc(t *testing.T) {
 				&instruction.Assign{
 					VariableName: "i",
 					Register:     "5",
+				},
+			},
+		},
+		"increment-variable": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Unary{
+					Op:   "++",
+					Expr: &ast.Identifier{Name: "i"},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Add{
+					Left:   "i",
+					Right:  "2",
+					Result: "i",
+				},
+			},
+		},
+		"decrement-variable": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Unary{
+					Op:   "--",
+					Expr: &ast.Identifier{Name: "i"},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Subtract{
+					Left:   "i",
+					Right:  "2",
+					Result: "i",
+				},
+			},
+		},
+		"plus-assign-data": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralData([]byte("foo")),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenPlusAssign,
+					Right: ast.NewLiteralData([]byte("bar")),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralData([]byte("foo")),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralData([]byte("bar")),
+				},
+				&instruction.Combine{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+			},
+		},
+		"plus-assign-string": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralString("foo"),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenPlusAssign,
+					Right: ast.NewLiteralString("bar"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralString("foo"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralString("bar"),
+				},
+				&instruction.Concat{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+			},
+		},
+		"plus-assign-number": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenPlusAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Add{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+			},
+		},
+		"minus-assign-number": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenMinusAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Subtract{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+			},
+		},
+		"times-assign-number": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenTimesAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Multiply{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+			},
+		},
+		"divide-assign-number": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenDivideAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Divide{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+			},
+		},
+		"remainder-assign-number": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenRemainderAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Remainder{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
 				},
 			},
 		},

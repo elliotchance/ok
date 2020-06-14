@@ -41,7 +41,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Operators](#operators)
       * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Sun Jun 14 01:36:38 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun 14 03:46:05 EDT 2020 -->
 
 <!--te-->
 
@@ -310,10 +310,15 @@ operations require the same type on the left and right.
 |       | `bool` | `char` | `data` | `number` | `string` |
 | ----- | ------ | ------ | ------ | -------- | -------- |
 | `+`   | No     | No     | Yes    | Yes      | Yes      |
+| `+=`  | No     | No     | Yes    | Yes      | Yes      |
 | `-`   | No     | No     | No     | Yes      | No       |
+| `-=`  | No     | No     | No     | Yes      | No       |
 | `*`   | No     | No     | No     | Yes      | No       |
+| `*=`  | No     | No     | No     | Yes      | No       |
 | `/`   | No     | No     | No     | Yes      | No       |
+| `/=`  | No     | No     | No     | Yes      | No       |
 | `%`   | No     | No     | No     | Yes      | No       |
+| `%=`  | No     | No     | No     | Yes      | No       |
 | `and` | Yes    | No     | No     | No       | No       |
 | `or`  | Yes    | No     | No     | No       | No       |
 | `==`  | Yes    | Yes    | Yes    | Yes      | Yes      |
@@ -323,10 +328,13 @@ operations require the same type on the left and right.
 | `<`   | No     | Yes    | No     | Yes      | Yes      |
 | `<=`  | No     | Yes    | No     | Yes      | Yes      |
 
-The following table describes the unary operators.
+The following table describes the unary operators. Unary operators must appear
+before the operand.
 
 |       | `bool` | `char` | `data` | `number` | `string` |
 | ----- | ------ | ------ | ------ | -------- | -------- |
+| `++`  | No     | No     | No     | Yes      | No       |
+| `--`  | No     | No     | No     | Yes      | No       |
 | `-`   | No     | No     | No     | Yes      | No       |
 | `not` | Yes    | No     | No     | No       | No       |
 
@@ -338,6 +346,7 @@ precedence of the operator. The precedence from most to least important:
 3. `==`, `!=`, `>`, `>=`, `<`, `<=`
 4. `and`
 5. `or`
+6. `+=`, `-=`, `*=`, `/=`, `%=`
 
 Examples:
 

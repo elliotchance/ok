@@ -5,7 +5,7 @@ import (
 	"ok/lexer"
 )
 
-// group := [ "not" | "-" ] expr
+// unary := [ "not" | "-" | "++" | "--" ] expr
 func consumeUnary(parser *Parser, offset int) (*ast.Unary, int, error) {
 	originalOffset := offset
 
@@ -14,6 +14,8 @@ func consumeUnary(parser *Parser, offset int) (*ast.Unary, int, error) {
 	t, offset, err = consumeOneOf(parser.File, offset, []string{
 		lexer.TokenNot,
 		lexer.TokenMinus,
+		lexer.TokenIncrement,
+		lexer.TokenDecrement,
 	})
 	if err != nil {
 		return nil, originalOffset, err

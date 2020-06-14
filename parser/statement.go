@@ -6,7 +6,7 @@ import (
 	"ok/lexer"
 )
 
-// statement := [ assign | call | for | break | continue ]
+// statement := [ call | for | break | continue ]
 func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 	originalOffset := offset
 	var err error
@@ -27,16 +27,22 @@ func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 		return call, offset, nil
 	}
 
-	var assign *ast.Assign
-	assign, offset, err = consumeAssign(parser, offset)
-	if err == nil {
-		return assign, offset, nil
-	}
-
 	var forStmt *ast.For
 	forStmt, offset, err = consumeFor(parser, offset)
 	if err == nil {
 		return forStmt, offset, nil
+	}
+
+	var unary *ast.Unary
+	unary, offset, err = consumeUnary(parser, offset)
+	if err == nil {
+		return unary, offset, nil
+	}
+
+	var expr ast.Node
+	expr, offset, err = consumeExpr(parser, offset)
+	if err == nil {
+		return expr, offset, nil
 	}
 
 	return nil, originalOffset, fmt.Errorf("expecting statement")

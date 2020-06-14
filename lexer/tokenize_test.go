@@ -594,6 +594,64 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false},
 			},
 		},
+		"++": {
+			str: `++`,
+			expected: []lexer.Token{
+				{lexer.TokenIncrement, "++", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"--": {
+			str: `--`,
+			expected: []lexer.Token{
+				{lexer.TokenDecrement, "--", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"+=": {
+			str: `+=`,
+			expected: []lexer.Token{
+				{lexer.TokenPlusAssign, "+=", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"-=": {
+			str: `-=`,
+			expected: []lexer.Token{
+				{lexer.TokenMinusAssign, "-=", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"*=": {
+			str: `*=`,
+			expected: []lexer.Token{
+				{lexer.TokenTimesAssign, "*=", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"/=": {
+			str: `/=`,
+			expected: []lexer.Token{
+				{lexer.TokenDivideAssign, "/=", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"%=": {
+			str: `%=`,
+			expected: []lexer.Token{
+				{lexer.TokenRemainderAssign, "%=", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"2/3": {
+			str: `2/3`,
+			expected: []lexer.Token{
+				{lexer.TokenNumber, "2", false},
+				{lexer.TokenDivide, "/", false},
+				{lexer.TokenNumber, "3", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{
