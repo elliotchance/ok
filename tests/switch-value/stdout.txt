@@ -1,14 +1,14 @@
 before switch 1
-ONE
+TWO
 after switch 1
 before switch 1a
-ONE OR TWO
+TWO OR FOUR
 after switch 1a
 before switch 2
-TWO
+FOUR
 after switch 2
 before switch 2a
-ONE OR TWO
+TWO OR FOUR
 after switch 2a
 before switch 3
 ELSE

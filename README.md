@@ -28,13 +28,14 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Variables](#variables)
       * [For](#for)
       * [If/Else](#ifelse)
+      * [Switch](#switch)
    * [Language Specification](#language-specification)
       * [Built-in Functions](#built-in-functions)
       * [Comments](#comments)
       * [Control Flow](#control-flow)
          * [If/Else](#ifelse-1)
          * [For](#for-1)
-         * [Switch](#switch)
+         * [Switch](#switch-1)
       * [Data Types](#data-types)
       * [Expressions](#expressions)
       * [Literals](#literals)
@@ -46,7 +47,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Operators](#operators)
       * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Sun Jun 14 15:23:14 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun 14 18:03:08 EDT 2020 -->
 
 <!--te-->
 
@@ -137,16 +138,29 @@ few basic examples.
 
 ```
 func main() {
-    print("go" + "lang")
+    // Strings, which can be added together with +.
+    print("he" + "llo")
 
+    // Numbers.
     print("1+1 =", 1+1)
     print("7.0/3.0 =", 7.0/3.0)
 
+    // Booleans.
     print(true and false)
     print(true or false)
     print(not true)
 }
 ```
+
+```
+$ ok run values
+hello
+1+1 = 2
+7.0/3.0 = 2.3
+false
+true
+false
+````
 
 Variables
 ---------
@@ -160,15 +174,24 @@ value being assigned to it.
 ```
 func main() {
 
+    // Declare a variable.
     a = "initial"
     print(a)
 
+    // ok will infer the type of initialized variables.
     b = true
     print(b)
 
     c = 1.23
     print(c)
 }
+```
+
+```
+$ ok run variables
+initial
+true
+1.23
 ```
 
 For
@@ -179,21 +202,26 @@ for is ok's only looping construct. Here are some basic types of for loops.
 ```
 func main() {
 
+    // The most basic type, with a single condition.
     i = 1
     for i <= 3 {
         print(i)
         i = i + 1
     }
 
+    // A classic initial/condition/after for loop.
     for j = 7; j <= 9; ++j {
         print(j)
     }
 
+    // for without a condition will loop repeatedly until you break out of the
+    // loop or return from the enclosing function.
     for {
         print("loop")
         break
     }
 
+    // You can also continue to the next iteration of the loop.
     for n = 0; n <= 5; ++n {
         if n%2 == 0 {
             continue
@@ -201,6 +229,20 @@ func main() {
         print(n)
     }
 }
+```
+
+```
+$ ok run for
+1
+2
+3
+7
+8
+9
+loop
+1
+3
+5
 ```
 
 If/Else
@@ -212,16 +254,20 @@ Branching with if and else in ok is straight-forward. In ok, there is no
 ```
 func main() {
 
+    // Here's a basic example.
     if 7%2 == 0 {
         print("7 is even")
     } else {
         print("7 is odd")
     }
 
+    // You can have an if statement without an else.
     if 8%4 == 0 {
         print("8 is divisible by 4")
     }
 
+    // Note that you don't need parentheses around conditions in ok, but that
+    // the braces are required.
     num = 9
     if num < 10 {
         print(num, "has 1 digit")
@@ -229,6 +275,70 @@ func main() {
         print(num, "has multiple digits")
     }
 }
+```
+
+```
+$ ok run if-else
+7 is odd
+8 is divisible by 4
+9 has 1 digit
+```
+
+Switch
+------
+
+Switch statements express conditionals across many branches.
+
+```
+func main() {
+
+    // Here's a basic switch.
+    i = 2
+    print("Write", i, "as")
+    switch i {
+        case 1 {
+            print("one")
+        }
+        case 2 {
+            print("two")
+        }
+        case 3 {
+            print("three")
+        }
+    }
+
+    // You can use commas to separate multiple expressions in the same case
+    // statement. We use the optional else case in this example as well.
+    weekday = "sunday"
+    switch weekday {
+        case "saturday", "sunday" {
+            print("It's the weekend")
+        }
+        else {
+            print("It's a weekday")
+        }
+    }
+
+    // switch without an expression is an alternate way to express if/else
+    // logic. Here we also show how the case expressions can be non-constants.
+    hour = 11
+    switch {
+        case hour < 12 {
+            print("It's before noon")
+        }
+        else {
+            print("It's after noon")
+        }
+    }
+}
+```
+
+```
+$ ok run switch
+Write 2 as
+two
+It's the weekend
+It's before noon
 ```
 
 Language Specification
@@ -296,8 +406,10 @@ after the loop.
 ### Switch
 
 1. `switch { <case>... }`
-2. `switch { <case>... } else { <statements> }`
-3. **case** := `case <case> { <statements> }`
+2. `switch { <case>... else { <statements> } }`
+1. `switch <value> { <case>... }`
+2. `switch <value> { <case>... else { <statements> } }`
+3. **case** := `case <conditions> { <statements> }`
 
 Where:
 
@@ -308,9 +420,11 @@ if none of the cases are `true` and there is no **else** then nothing will be
 executed.
 - **else** will always be executed if none of the previous **cases** were
 `true`.
-- **cases* are evaluated in original order. If more than one match is possible
-only the first match will be executed.
-- **case** must be a `bool`.
+- **conditions** are evaluated in original order. If more than one match is
+possible, only the first match will be executed.
+- **conditions** must contain at least one condition (comma separated). If
+**value** is not provided each **condition** must be a `bool`. Otherwise, each
+**condition** must be the same type as the type of **value**.
 
 Data Types
 ----------

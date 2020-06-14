@@ -104,6 +104,35 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 	return reduceExpr(parts), offset, nil
 }
 
+func consumeExprs(parser *Parser, offset int) ([]ast.Node, int, error) {
+	// There must always be one expression.
+	var expr ast.Node
+	var err error
+	expr, offset, err = consumeExpr(parser, offset)
+	if err != nil {
+		return nil, offset, err
+	}
+
+	// Any others are optional, but if there is a comma it must be followed by
+	// the next expression.
+	exprs := []ast.Node{expr}
+	for {
+		if parser.File.Tokens[offset].Kind != lexer.TokenComma {
+			break
+		}
+
+		offset++ // skip comma
+		expr, offset, err = consumeExpr(parser, offset)
+		if err != nil {
+			return nil, offset, err
+		}
+
+		exprs = append(exprs, expr)
+	}
+
+	return exprs, offset, nil
+}
+
 var operatorPrecedence = map[string]int{
 	lexer.TokenAssign:          1,
 	lexer.TokenPlusAssign:      1,

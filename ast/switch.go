@@ -2,7 +2,8 @@ package ast
 
 // Case represents a switch case statement.
 type Case struct {
-	Condition Node
+	// Conditions will always contain at least one element.
+	Conditions []Node
 
 	// Statements may be nil.
 	Statements []Node
@@ -10,6 +11,9 @@ type Case struct {
 
 // Switch represents a switch statement.
 type Switch struct {
+	// Expr may be nil.
+	Expr Node
+
 	// Cases may be nil.
 	Cases []*Case
 

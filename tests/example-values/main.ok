@@ -1,0 +1,13 @@
+func main() {
+    // Strings, which can be added together with +.
+    print("he" + "llo")
+
+    // Numbers.
+    print("1+1 =", 1+1)
+    print("7.0/3.0 =", 7.0/3.0)
+
+    // Booleans.
+    print(true and false)
+    print(true or false)
+    print(not true)
+}
