@@ -1,0 +1,11 @@
+before if 1
+should be true
+after if 1
+before if 2
+after if 2
+before if 3
+good
+after if 3
+before if 4
+good
+after if 4

@@ -29,6 +29,9 @@ variables, nils, dereferencing or variables/arguments that have defaults.
    * [Language Specification](#language-specification)
       * [Built-in Functions](#built-in-functions)
       * [Comments](#comments)
+      * [Control Flow](#control-flow)
+         * [If/Else](#ifelse)
+         * [For](#for)
       * [Data Types](#data-types)
       * [Expressions](#expressions)
       * [Literals](#literals)
@@ -37,11 +40,10 @@ variables, nils, dereferencing or variables/arguments that have defaults.
          * [Data](#data)
          * [Numbers](#numbers)
          * [Strings](#strings)
-      * [Loops](#loops)
       * [Operators](#operators)
       * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Sun Jun 14 03:46:05 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun 14 12:08:48 EDT 2020 -->
 
 <!--te-->
 
@@ -187,6 +189,40 @@ the same line as code:
 print("Hi") // Also a comment
 ```
 
+Control Flow
+------------
+
+### If/Else
+
+1. `if <condition> { <true statements> }`
+2. `if <condition> { <true statements> } else { <false statements> }`
+
+Where:
+
+- `true statements` and `false statements` may contain zero or more statements.
+- `true statements` is only executed if `condition` is `true`.
+- `false statements` is only executed if `condition` is `false`.
+- If `false statements` is not present and the `condition` evaluates to `false`
+then no statements are executed.
+- `condition` is only evaluated once.
+- `condition` must be of type `bool`.
+
+### For
+
+There is only one construct for loops in ok:
+
+```
+for condition {
+    statements...
+}
+```
+
+- `condition` may be omitted, and `true` will be used in its place.
+- There may be zero statements in the block.
+- `continue` will cause the next iteration to begin immediately.
+- `break` will cause the loop to stop immediately and proceed with the code
+after the loop.
+
 Data Types
 ----------
 
@@ -281,24 +317,6 @@ Examples:
 
 - `""` - an empty string (zero length).
 - `"hello world"` - a string containing 11 characters.
-
-
-Loops
------
-
-There is only one construct for loops in ok:
-
-```
-for condition {
-    statements...
-}
-```
-
-- `condition` may be omitted, and `true` will be used in its place.
-- There may be zero statements in the block.
-- `continue` will cause the next iteration to begin immediately.
-- `break` will cause the loop to stop immediately and proceed with the code
-after the loop.
 
 
 Operators

@@ -6,7 +6,6 @@ import (
 	"ok/lexer"
 )
 
-// statement := [ call | for | break | continue ]
 func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 	originalOffset := offset
 	var err error
@@ -31,6 +30,12 @@ func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 	forStmt, offset, err = consumeFor(parser, offset)
 	if err == nil {
 		return forStmt, offset, nil
+	}
+
+	var ifStmt *ast.If
+	ifStmt, offset, err = consumeIf(parser, offset)
+	if err == nil {
+		return ifStmt, offset, nil
 	}
 
 	var unary *ast.Unary
