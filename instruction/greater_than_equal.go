@@ -11,7 +11,7 @@ type GreaterThanEqualNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *GreaterThanEqualNumber) Execute(registers map[string]*ast.Literal) error {
+func (ins *GreaterThanEqualNumber) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),
@@ -26,7 +26,7 @@ type GreaterThanEqualString struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *GreaterThanEqualString) Execute(registers map[string]*ast.Literal) error {
+func (ins *GreaterThanEqualString) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(
 		registers[ins.Left].Value >= registers[ins.Right].Value,
 	)

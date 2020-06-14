@@ -11,7 +11,7 @@ type EqualNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *EqualNumber) Execute(registers map[string]*ast.Literal) error {
+func (ins *EqualNumber) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),
@@ -28,7 +28,7 @@ type Equal struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Equal) Execute(registers map[string]*ast.Literal) error {
+func (ins *Equal) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(
 		registers[ins.Left].Value == registers[ins.Right].Value,
 	)

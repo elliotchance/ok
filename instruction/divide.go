@@ -11,7 +11,7 @@ type Divide struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Divide) Execute(registers map[string]*ast.Literal) error {
+func (ins *Divide) Execute(registers map[string]*ast.Literal, _ *int) error {
 	divide, err := number.Divide(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),

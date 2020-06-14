@@ -18,10 +18,13 @@ const (
 	TokenString     = "string"     // string literal, eg. "hello"
 
 	// Keywords
-	TokenAnd  = "and"
-	TokenFunc = "func"
-	TokenNot  = "not"
-	TokenOr   = "or"
+	TokenAnd      = "and"
+	TokenBreak    = "break"
+	TokenContinue = "continue"
+	TokenFor      = "for"
+	TokenFunc     = "func"
+	TokenNot      = "not"
+	TokenOr       = "or"
 
 	// Operators
 	TokenAssign           = "="

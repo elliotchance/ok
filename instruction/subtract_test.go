@@ -21,7 +21,7 @@ func TestSubtract_Execute(t *testing.T) {
 				"1": ast.NewLiteralNumber(test.right),
 			}
 			ins := &instruction.Subtract{Left: "0", Right: "1", Result: "2"}
-			assert.NoError(t, ins.Execute(registers))
+			assert.NoError(t, ins.Execute(registers, nil))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}

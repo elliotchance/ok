@@ -13,7 +13,7 @@ type Print struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Print) Execute(registers map[string]*ast.Literal) error {
+func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int) error {
 	for i, register := range ins.Arguments {
 		if i > 0 {
 			fmt.Fprint(ins.Stdout, " ")

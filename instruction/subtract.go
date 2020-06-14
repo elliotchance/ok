@@ -11,7 +11,7 @@ type Subtract struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Subtract) Execute(registers map[string]*ast.Literal) error {
+func (ins *Subtract) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralNumber(
 		number.Subtract(
 			number.NewNumber(registers[ins.Left].Value),

@@ -447,6 +447,95 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
+		"for-empty-body": {
+			str: "func main() { for true {} }",
+			expected: newFunc(
+				&ast.For{
+					Condition: ast.NewLiteralBool(true),
+				},
+			),
+		},
+		"for-1": {
+			str: "func main() { for true { print(a)\nprint(b) } }",
+			expected: newFunc(
+				&ast.For{
+					Condition: ast.NewLiteralBool(true),
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+						},
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "b"},
+							},
+						},
+					},
+				},
+			),
+		},
+		"for-empty-without-condition": {
+			str: "func main() { for {} }",
+			expected: newFunc(
+				&ast.For{},
+			),
+		},
+		"for-2": {
+			str: "func main() { for { print(a)\nprint(b) } }",
+			expected: newFunc(
+				&ast.For{
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+						},
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "b"},
+							},
+						},
+					},
+				},
+			),
+		},
+		"break-1": {
+			str: "func main() { for { break\nprint(a) } }",
+			expected: newFunc(
+				&ast.For{
+					Statements: []ast.Node{
+						&ast.Break{},
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+						},
+					},
+				},
+			),
+		},
+		"continue-1": {
+			str: "func main() { for { print(a)\ncontinue } }",
+			expected: newFunc(
+				&ast.For{
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+						},
+						&ast.Continue{},
+					},
+				},
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.ParseString(test.str)

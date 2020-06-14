@@ -10,7 +10,7 @@ type Not struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Not) Execute(registers map[string]*ast.Literal) error {
+func (ins *Not) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(
 		!(registers[ins.Left].Value == "true"),
 	)

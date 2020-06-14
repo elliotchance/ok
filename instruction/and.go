@@ -10,9 +10,10 @@ type And struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *And) Execute(registers map[string]*ast.Literal) error {
+func (ins *And) Execute(registers map[string]*ast.Literal, _ *int) error {
 	registers[ins.Result] = ast.NewLiteralBool(
-		(registers[ins.Left].Value == "true") && (registers[ins.Right].Value == "true"),
+		(registers[ins.Left].Value == "true") &&
+			(registers[ins.Right].Value == "true"),
 	)
 
 	return nil

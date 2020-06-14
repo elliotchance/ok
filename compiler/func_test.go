@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCompileFunc(t *testing.T) {
@@ -1198,13 +1199,310 @@ func TestCompileFunc(t *testing.T) {
 			),
 			err: errors.New("cannot assign string to variable foo (expecting number)"),
 		},
+		"empty-for-without-condition": {
+			fn: newFunc(
+				&ast.For{},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.JumpUnless{
+					Condition: "1",
+					To:        2,
+				},
+				&instruction.Jump{
+					To: -1,
+				},
+			},
+		},
+		"for-true-with-statements": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "foo",
+					Expr:         ast.NewLiteralNumber("1"),
+				},
+				&ast.For{
+					Statements: []ast.Node{
+						&ast.Assign{
+							VariableName: "bar",
+							Expr:         ast.NewLiteralNumber("2"),
+						},
+						&ast.Assign{
+							VariableName: "baz",
+							Expr:         ast.NewLiteralNumber("3"),
+						},
+					},
+				},
+				&ast.Assign{
+					VariableName: "qux",
+					Expr:         ast.NewLiteralNumber("4"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.JumpUnless{
+					Condition: "2",
+					To:        8,
+				},
+				&instruction.Assign{
+					VariableName: "3",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&instruction.Assign{
+					VariableName: "bar",
+					Register:     "3",
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Assign{
+					VariableName: "baz",
+					Register:     "4",
+				},
+				&instruction.Jump{
+					To: 1,
+				},
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("4"),
+				},
+				&instruction.Assign{
+					VariableName: "qux",
+					Register:     "5",
+				},
+			},
+		},
+		"for-condition": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "i",
+					Expr:         ast.NewLiteralNumber("0"),
+				},
+				&ast.For{
+					Condition: ast.NewBinary(
+						&ast.Identifier{Name: "i"},
+						lexer.TokenLessThan,
+						ast.NewLiteralNumber("10"),
+					),
+					Statements: []ast.Node{
+						&ast.Assign{
+							VariableName: "i",
+							Expr: ast.NewBinary(
+								&ast.Identifier{Name: "i"},
+								lexer.TokenPlus,
+								ast.NewLiteralNumber("1"),
+							),
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("10"),
+				},
+				&instruction.LessThanNumber{
+					Left:   "i",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        8,
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Add{
+					Left:   "i",
+					Right:  "4",
+					Result: "5",
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "5",
+				},
+				&instruction.Jump{
+					To: 2,
+				},
+			},
+		},
+		"for-break": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "i",
+					Expr:         ast.NewLiteralNumber("0"),
+				},
+				&ast.For{
+					Statements: []ast.Node{
+						&ast.Assign{
+							VariableName: "i",
+							Expr:         ast.NewLiteralNumber("1"),
+						},
+						&ast.Break{},
+						&ast.Assign{
+							VariableName: "i",
+							Expr:         ast.NewLiteralNumber("2"),
+						},
+					},
+				},
+				&ast.Assign{
+					VariableName: "i",
+					Expr:         ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.JumpUnless{
+					Condition: "2",
+					To:        9,
+				},
+				&instruction.Assign{
+					VariableName: "3",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+				&instruction.Jump{
+					To: 9,
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "4",
+				},
+				&instruction.Jump{
+					To: 1,
+				},
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "5",
+				},
+			},
+		},
+		"for-continue": {
+			fn: newFunc(
+				&ast.Assign{
+					VariableName: "i",
+					Expr:         ast.NewLiteralNumber("0"),
+				},
+				&ast.For{
+					Statements: []ast.Node{
+						&ast.Assign{
+							VariableName: "i",
+							Expr:         ast.NewLiteralNumber("1"),
+						},
+						&ast.Continue{},
+						&ast.Assign{
+							VariableName: "i",
+							Expr:         ast.NewLiteralNumber("2"),
+						},
+					},
+				},
+				&ast.Assign{
+					VariableName: "i",
+					Expr:         ast.NewLiteralNumber("3"),
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralBool(true),
+				},
+				&instruction.JumpUnless{
+					Condition: "2",
+					To:        9,
+				},
+				&instruction.Assign{
+					VariableName: "3",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "3",
+				},
+				&instruction.Jump{
+					To: 1,
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "4",
+				},
+				&instruction.Jump{
+					To: 1,
+				},
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.Assign{
+					VariableName: "i",
+					Register:     "5",
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 				assert.Equal(t, test.expected, compiledFunc.Instructions)
 			}
 		})
