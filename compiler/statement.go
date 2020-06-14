@@ -7,9 +7,6 @@ import (
 
 func compileStatement(compiledFunc *CompiledFunc, statement ast.Node, breakIns, continueIns instruction.Instruction) error {
 	switch n := statement.(type) {
-	case *ast.Assign:
-		return compileAssign(compiledFunc, n)
-
 	case *ast.For:
 		return compileFor(compiledFunc, n)
 

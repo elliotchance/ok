@@ -167,19 +167,19 @@ func TestParseString(t *testing.T) {
 		"call-identifier-close": {
 			str: `func main() { print) }`,
 			errs: []error{
-				errors.New("expecting } after {, but found identifier"),
+				errors.New("expecting } after identifier, but found )"),
 			},
 		},
 		"call-identifier-without-literal": {
 			str: `func main() { print( }`,
 			errs: []error{
-				errors.New("expecting } after {, but found identifier"),
+				errors.New("expecting } after identifier, but found ("),
 			},
 		},
 		"call-identifier-missing-close": {
 			str: `func main() { print("hello" }`,
 			errs: []error{
-				errors.New("expecting } after {, but found identifier"),
+				errors.New("expecting } after identifier, but found ("),
 			},
 		},
 		"literal-number-negative": {
@@ -398,27 +398,30 @@ func TestParseString(t *testing.T) {
 		"assign-string": {
 			str: `func main() { foo = "bar" }`,
 			expected: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         ast.NewLiteralString("bar"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralString("bar"),
 				},
 			),
 		},
 		"read-variable": {
 			str: `func main() { foo = bar }`,
 			expected: newFunc(
-				&ast.Assign{
-					VariableName: "foo",
-					Expr:         &ast.Identifier{Name: "bar"},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: &ast.Identifier{Name: "bar"},
 				},
 			),
 		},
 		"end-of-line-1": {
 			str: "func main() { a = 1\nprint(a) }",
 			expected: newFunc(
-				&ast.Assign{
-					VariableName: "a",
-					Expr:         ast.NewLiteralNumber("1"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1"),
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -431,9 +434,10 @@ func TestParseString(t *testing.T) {
 		"end-of-line-2": {
 			str: "func main() { b = true\nprint(b)\nc = 1.23 }",
 			expected: newFunc(
-				&ast.Assign{
-					VariableName: "b",
-					Expr:         ast.NewLiteralBool(true),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "b"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralBool(true),
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -441,9 +445,10 @@ func TestParseString(t *testing.T) {
 						&ast.Identifier{Name: "b"},
 					},
 				},
-				&ast.Assign{
-					VariableName: "c",
-					Expr:         ast.NewLiteralNumber("1.23"),
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "c"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.23"),
 				},
 			),
 		},
@@ -533,6 +538,74 @@ func TestParseString(t *testing.T) {
 						},
 						&ast.Continue{},
 					},
+				},
+			),
+		},
+		"increment": {
+			str: "func main() { ++a }",
+			expected: newFunc(
+				&ast.Unary{
+					Op:   "++",
+					Expr: &ast.Identifier{Name: "a"},
+				},
+			),
+		},
+		"decrement": {
+			str: "func main() { --a }",
+			expected: newFunc(
+				&ast.Unary{
+					Op:   "--",
+					Expr: &ast.Identifier{Name: "a"},
+				},
+			),
+		},
+		"add-assign": {
+			str: "func main() { a += 3 }",
+			expected: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenPlusAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+		},
+		"minus-assign": {
+			str: "func main() { a -= 3 }",
+			expected: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenMinusAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+		},
+		"times-assign": {
+			str: "func main() { a *= 3 }",
+			expected: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenTimesAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+		},
+		"divide-assign": {
+			str: "func main() { a /= 3 }",
+			expected: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenDivideAssign,
+					Right: ast.NewLiteralNumber("3"),
+				},
+			),
+		},
+		"remainder-assign": {
+			str: "func main() { a %= 3 }",
+			expected: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenRemainderAssign,
+					Right: ast.NewLiteralNumber("3"),
 				},
 			),
 		},

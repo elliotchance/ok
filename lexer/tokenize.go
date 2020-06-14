@@ -50,6 +50,13 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 					tokens = appendToken(tokens, token, &endOfLineForNextToken)
 				}
 				continue
+
+			} else if i+1 < runesLen && runes[i+1] == '=' {
+				token.Value = TokenDivideAssign
+				i++
+
+				found = true
+				token.Kind = token.Value
 			} else {
 				found = true
 				token = NewToken(string(c), string(c))
@@ -83,7 +90,17 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 			found = true
 
-		case '(', ')', '{', '}', '+', '-', '*', '%', '=', '!', '>', '<', ',':
+		case '+', '-':
+			token.Value = string(c)
+			if i < runesLen-1 && (runes[i+1] == c || runes[i+1] == '=') {
+				token.Value += string(runes[i+1])
+				i++
+			}
+
+			found = true
+			token.Kind = token.Value
+
+		case '(', ')', '{', '}', '*', '%', '=', '!', '>', '<', ',':
 			token.Value = string(c)
 			if i < runesLen-1 && runes[i+1] == '=' {
 				token.Value = string(c) + "="

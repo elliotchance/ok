@@ -41,36 +41,7 @@ func compileExpr(compiledFunc *CompiledFunc, expr ast.Node) (string, string, err
 		return compileExpr(compiledFunc, e.Expr)
 
 	case *ast.Unary:
-		returns1, kind, err := compileExpr(compiledFunc, e.Expr)
-		if err != nil {
-			return "", "", err
-		}
-
-		var ins instruction.Instruction
-		returns2 := compiledFunc.nextRegister()
-		switch e.Op {
-		case "not":
-			ins = &instruction.Not{
-				Left:   returns1,
-				Result: returns2,
-			}
-
-		case "-":
-			zeroAt := compiledFunc.nextRegister()
-			compiledFunc.append(&instruction.Assign{
-				VariableName: zeroAt,
-				Value:        ast.NewLiteralNumber("0"),
-			})
-
-			ins = &instruction.Subtract{
-				Left:   zeroAt,
-				Right:  returns1,
-				Result: returns2,
-			}
-		}
-		compiledFunc.append(ins)
-
-		return returns2, kind, nil
+		return compileUnary(compiledFunc, e)
 	}
 
 	panic(expr)

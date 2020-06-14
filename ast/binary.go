@@ -2,7 +2,7 @@ package ast
 
 // Binary is an binary operator operation.
 type Binary struct {
-	// Op is TokenPlus, TokenMinus, etc.
+	// Op is TokenPlus, TokenMinusAssign, etc.
 	Op string
 
 	Left, Right Node
