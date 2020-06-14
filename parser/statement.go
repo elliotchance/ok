@@ -38,6 +38,12 @@ func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 		return ifStmt, offset, nil
 	}
 
+	var switchStmt *ast.Switch
+	switchStmt, offset, err = consumeSwitch(parser, offset)
+	if err == nil {
+		return switchStmt, offset, nil
+	}
+
 	var unary *ast.Unary
 	unary, offset, err = consumeUnary(parser, offset)
 	if err == nil {

@@ -20,6 +20,9 @@ func compileStatement(compiledFunc *CompiledFunc, statement ast.Node, breakIns, 
 
 	case *ast.If:
 		return compileIf(compiledFunc, n, breakIns, continueIns)
+
+	case *ast.Switch:
+		return compileSwitch(compiledFunc, n, breakIns, continueIns)
 	}
 
 	_, _, err := compileExpr(compiledFunc, statement)

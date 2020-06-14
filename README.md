@@ -34,6 +34,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Control Flow](#control-flow)
          * [If/Else](#ifelse-1)
          * [For](#for-1)
+         * [Switch](#switch)
       * [Data Types](#data-types)
       * [Expressions](#expressions)
       * [Literals](#literals)
@@ -45,7 +46,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Operators](#operators)
       * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Sun Jun 14 13:10:21 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun 14 15:23:14 EDT 2020 -->
 
 <!--te-->
 
@@ -291,6 +292,25 @@ block):
 - `continue` will cause the next iteration to begin immediately.
 - `break` will cause the loop to stop immediately and proceed with the code
 after the loop.
+
+### Switch
+
+1. `switch { <case>... }`
+2. `switch { <case>... } else { <statements> }`
+3. **case** := `case <case> { <statements> }`
+
+Where:
+
+- A `switch` may contain zero or more **case** statements. Each **case**
+(including **else**) may contain zero or more **statements**.
+- A maximum of one **case** will be executed (including the **else**). However,
+if none of the cases are `true` and there is no **else** then nothing will be
+executed.
+- **else** will always be executed if none of the previous **cases** were
+`true`.
+- **cases* are evaluated in original order. If more than one match is possible
+only the first match will be executed.
+- **case** must be a `bool`.
 
 Data Types
 ----------

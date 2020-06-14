@@ -20,6 +20,7 @@ const (
 	// Keywords
 	TokenAnd      = "and"
 	TokenBreak    = "break"
+	TokenCase     = "case"
 	TokenContinue = "continue"
 	TokenElse     = "else"
 	TokenFor      = "for"
@@ -27,6 +28,7 @@ const (
 	TokenIf       = "if"
 	TokenNot      = "not"
 	TokenOr       = "or"
+	TokenSwitch   = "switch"
 
 	// Operators
 	TokenAssign           = "="
