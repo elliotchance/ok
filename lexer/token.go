@@ -51,6 +51,7 @@ const (
 	TokenPlusAssign       = "+="
 	TokenRemainder        = "%"
 	TokenRemainderAssign  = "%="
+	TokenSemiColon        = ";"
 	TokenTimes            = "*"
 	TokenTimesAssign      = "*="
 )

@@ -7,6 +7,16 @@ import (
 )
 
 func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
+	// There's nothing special about Init here. It just executes once before the
+	// loop.
+	if n.Init != nil {
+		_, _, err := compileExpr(compiledFunc, n.Init)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Condition is optionally present, but must always be of type bool.
 	condition := n.Condition
 	if condition == nil {
 		condition = ast.NewLiteralBool(true)
@@ -44,6 +54,24 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 		return err
 	}
 
+	// Next is optional and runs at the end of each iteration even if continue
+	// is called. However, it does not run is break is called.
+	if n.Next != nil {
+		// Since there is a Next we need the continue to jump to the end of the
+		// iteration where the Next is before it jumps back to the start of the
+		// next iteration.
+		continueIns.To = len(compiledFunc.Instructions) - 1
+
+		_, _, err := compileExpr(compiledFunc, n.Next)
+		if err != nil {
+			return err
+		}
+	} else {
+		// Since there is no Next, the continue can jump right to the start of
+		// the iteration.
+		continueIns.To = conditionPosition
+	}
+
 	// Jump back to the condition.
 	compiledFunc.append(&instruction.Jump{
 		To: conditionPosition,
@@ -52,9 +80,6 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 	// Correct condition jump. The "-1" is to correct for the "+1" that would
 	// happen after every instruction.
 	ins.To = len(compiledFunc.Instructions) - 1
-
-	// Correct the continue instruction.
-	continueIns.To = conditionPosition
 
 	// Correct the break instruction.
 	breakIns.To = len(compiledFunc.Instructions) - 1

@@ -2023,6 +2023,148 @@ func TestCompileFunc(t *testing.T) {
 				},
 			},
 		},
+		"for-3": {
+			fn: newFunc(
+				&ast.For{
+					Init: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenAssign,
+						Right: ast.NewLiteralNumber("0"),
+					},
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenLessThan,
+						Right: ast.NewLiteralNumber("10"),
+					},
+					Next: &ast.Unary{
+						Op:   lexer.TokenIncrement,
+						Expr: &ast.Identifier{Name: "a"},
+					},
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				// a = 0
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+
+				// a < 10
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("10"),
+				},
+				&instruction.LessThanNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        8,
+				},
+
+				// print(a)
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"a"},
+				},
+
+				// ++a
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Add{
+					Left:   "a",
+					Right:  "4",
+					Result: "a",
+				},
+				&instruction.Jump{
+					To: 2,
+				},
+			},
+		},
+		"for-continue-1": {
+			fn: newFunc(
+				&ast.For{
+					Init: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenAssign,
+						Right: ast.NewLiteralNumber("0"),
+					},
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenLessThan,
+						Right: ast.NewLiteralNumber("10"),
+					},
+					Next: &ast.Unary{
+						Op:   lexer.TokenIncrement,
+						Expr: &ast.Identifier{Name: "a"},
+					},
+					Statements: []ast.Node{
+						&ast.Continue{},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				// a = 0
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+
+				// a < 10
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("10"),
+				},
+				&instruction.LessThanNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        8,
+				},
+
+				// continue
+				&instruction.Jump{
+					To: 5,
+				},
+
+				// ++a
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Add{
+					Left:   "a",
+					Right:  "4",
+					Result: "a",
+				},
+				&instruction.Jump{
+					To: 2,
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn)

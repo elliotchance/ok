@@ -26,12 +26,14 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Hello World](#hello-world)
       * [Values](#values)
       * [Variables](#variables)
+      * [For](#for)
+      * [If/Else](#ifelse)
    * [Language Specification](#language-specification)
       * [Built-in Functions](#built-in-functions)
       * [Comments](#comments)
       * [Control Flow](#control-flow)
-         * [If/Else](#ifelse)
-         * [For](#for)
+         * [If/Else](#ifelse-1)
+         * [For](#for-1)
       * [Data Types](#data-types)
       * [Expressions](#expressions)
       * [Literals](#literals)
@@ -43,7 +45,7 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Operators](#operators)
       * [Variables](#variables-1)
 
-<!-- Added by: elliot, at: Sun Jun 14 12:08:48 EDT 2020 -->
+<!-- Added by: elliot, at: Sun Jun 14 13:10:21 EDT 2020 -->
 
 <!--te-->
 
@@ -168,6 +170,65 @@ func main() {
 }
 ```
 
+For
+---
+
+for is ok's only looping construct. Here are some basic types of for loops.
+
+```
+func main() {
+
+    i = 1
+    for i <= 3 {
+        print(i)
+        i = i + 1
+    }
+
+    for j = 7; j <= 9; ++j {
+        print(j)
+    }
+
+    for {
+        print("loop")
+        break
+    }
+
+    for n = 0; n <= 5; ++n {
+        if n%2 == 0 {
+            continue
+        }
+        print(n)
+    }
+}
+```
+
+If/Else
+-------
+
+Branching with if and else in ok is straight-forward. In ok, there is no
+"if else". Instead you should use a switch if there are multiple cases.
+
+```
+func main() {
+
+    if 7%2 == 0 {
+        print("7 is even")
+    } else {
+        print("7 is odd")
+    }
+
+    if 8%4 == 0 {
+        print("8 is divisible by 4")
+    }
+
+    num = 9
+    if num < 10 {
+        print(num, "has 1 digit")
+    } else {
+        print(num, "has multiple digits")
+    }
+}
+```
 
 Language Specification
 ======================
@@ -209,16 +270,24 @@ then no statements are executed.
 
 ### For
 
-There is only one construct for loops in ok:
+1. `for { <statements> }`
+2. `for <condition> { <statements> }`
+3. `for <init>; <condition>; <next> { <statements> }`
 
-```
-for condition {
-    statements...
-}
-```
+Where:
 
-- `condition` may be omitted, and `true` will be used in its place.
-- There may be zero statements in the block.
+- If **condition** is omitted, `true` will be used in its place.
+- **statements** may contain zero or more statements.
+- **init** is only evaluated once. It has the same effect as placing the
+statement immediately above the `for` loop, except that a variable created in
+**init** may only be referenced inside the **statements**.
+- **next** is executed at the end of every iteration, even if that iteration
+was interrupted with a `continue`. However, it is not executed in the case of a
+`break`.
+
+The **statements** may contain special statements (only available within a `for`
+block):
+
 - `continue` will cause the next iteration to begin immediately.
 - `break` will cause the loop to stop immediately and proceed with the code
 after the loop.

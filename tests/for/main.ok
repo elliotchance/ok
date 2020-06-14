@@ -22,4 +22,10 @@ func main() {
         print("after continue")
     }
     print("after for")
+
+    print("before for 3")
+    for a = 0; a < 3; ++a {
+        print(a)
+    }
+    print("after for")
 }

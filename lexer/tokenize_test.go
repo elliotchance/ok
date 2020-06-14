@@ -666,6 +666,13 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false},
 			},
 		},
+		";": {
+			str: `;`,
+			expected: []lexer.Token{
+				{lexer.TokenSemiColon, ";", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{
