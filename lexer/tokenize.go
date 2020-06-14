@@ -100,7 +100,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			found = true
 			token.Kind = token.Value
 
-		case '(', ')', '{', '}', '*', '%', '=', '!', '>', '<', ',':
+		case '(', ')', '{', '}', '*', '%', '=', '!', '>', '<', ',', ';':
 			token.Value = string(c)
 			if i < runesLen-1 && runes[i+1] == '=' {
 				token.Value = string(c) + "="

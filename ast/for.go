@@ -2,8 +2,9 @@ package ast
 
 // For represents a for loop.
 type For struct {
-	// Condition may be nil.
-	Condition Node
+	// All of Init, Condition and Next may be nil.
+	Init, Condition, Next Node
 
+	// Statements may be nil.
 	Statements []Node
 }

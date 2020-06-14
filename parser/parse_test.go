@@ -688,6 +688,35 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
+		"for-3": {
+			str: "func main() { for a = 0; a < 10; ++a { print(a) } }",
+			expected: newFunc(
+				&ast.For{
+					Init: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenAssign,
+						Right: ast.NewLiteralNumber("0"),
+					},
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenLessThan,
+						Right: ast.NewLiteralNumber("10"),
+					},
+					Next: &ast.Unary{
+						Op:   lexer.TokenIncrement,
+						Expr: &ast.Identifier{Name: "a"},
+					},
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "print",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+						},
+					},
+				},
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.ParseString(test.str)
