@@ -1,0 +1,13 @@
+func main() {
+
+    // Declare a variable.
+    a = "initial"
+    print(a)
+
+    // ok will infer the type of initialized variables.
+    b = true
+    print(b)
+
+    c = 1.23
+    print(c)
+}

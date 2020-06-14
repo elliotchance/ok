@@ -34,11 +34,13 @@ func TestSwitch(t *testing.T) {
 				&ast.Switch{
 					Cases: []*ast.Case{
 						{
-							Condition: ast.NewBinary(
-								&ast.Identifier{Name: "a"},
-								lexer.TokenEqual,
-								ast.NewLiteralNumber("1"),
-							),
+							Conditions: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("1"),
+								),
+							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
@@ -49,11 +51,13 @@ func TestSwitch(t *testing.T) {
 							},
 						},
 						{
-							Condition: ast.NewBinary(
-								&ast.Identifier{Name: "a"},
-								lexer.TokenEqual,
-								ast.NewLiteralNumber("2"),
-							),
+							Conditions: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("2"),
+								),
+							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
@@ -144,11 +148,13 @@ func TestSwitch(t *testing.T) {
 				&ast.Switch{
 					Cases: []*ast.Case{
 						{
-							Condition: ast.NewBinary(
-								&ast.Identifier{Name: "a"},
-								lexer.TokenEqual,
-								ast.NewLiteralNumber("1"),
-							),
+							Conditions: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("1"),
+								),
+							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
@@ -159,11 +165,13 @@ func TestSwitch(t *testing.T) {
 							},
 						},
 						{
-							Condition: ast.NewBinary(
-								&ast.Identifier{Name: "a"},
-								lexer.TokenEqual,
-								ast.NewLiteralNumber("2"),
-							),
+							Conditions: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("2"),
+								),
+							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
@@ -259,6 +267,312 @@ func TestSwitch(t *testing.T) {
 				&instruction.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"8"},
+				},
+			},
+		},
+		"switch-7": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Switch{
+					Cases: []*ast.Case{
+						{
+							Conditions: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("1"),
+								),
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("2"),
+								),
+							},
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+									Arguments: []ast.Node{
+										ast.NewLiteralString("ONE OR TWO"),
+									},
+								},
+							},
+						},
+						{
+							Conditions: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "a"},
+									lexer.TokenEqual,
+									ast.NewLiteralNumber("3"),
+								),
+							},
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+									Arguments: []ast.Node{
+										ast.NewLiteralString("THREE"),
+									},
+								},
+							},
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				// a = 0
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+
+				// a == 1
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        7,
+				},
+
+				// print("ONE OR TWO")
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralString("ONE OR TWO"),
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"4"},
+				},
+				&instruction.Jump{
+					To: 19,
+				},
+
+				// a == 2
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "5",
+					Result: "6",
+				},
+				&instruction.JumpUnless{
+					Condition: "6",
+					To:        13,
+				},
+
+				// print("ONE OR TWO")
+				&instruction.Assign{
+					VariableName: "7",
+					Value:        ast.NewLiteralString("ONE OR TWO"),
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"7"},
+				},
+				&instruction.Jump{
+					To: 19,
+				},
+
+				// a == 3
+				&instruction.Assign{
+					VariableName: "8",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "8",
+					Result: "9",
+				},
+				&instruction.JumpUnless{
+					Condition: "9",
+					To:        19,
+				},
+
+				// print("THREE")
+				&instruction.Assign{
+					VariableName: "10",
+					Value:        ast.NewLiteralString("THREE"),
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"10"},
+				},
+				&instruction.Jump{
+					To: 19,
+				},
+			},
+		},
+		"switch-value-1": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Switch{
+					Expr: &ast.Identifier{Name: "a"},
+				},
+			),
+			expected: []instruction.Instruction{
+				// a = 0
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+			},
+		},
+		"switch-value-2": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.Switch{
+					Expr: &ast.Identifier{Name: "a"},
+					Cases: []*ast.Case{
+						{
+							Conditions: []ast.Node{
+								ast.NewLiteralNumber("1"),
+								ast.NewLiteralNumber("2"),
+							},
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+									Arguments: []ast.Node{
+										ast.NewLiteralString("ONE OR TWO"),
+									},
+								},
+							},
+						},
+						{
+							Conditions: []ast.Node{
+								ast.NewLiteralNumber("3"),
+							},
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+									Arguments: []ast.Node{
+										ast.NewLiteralString("THREE"),
+									},
+								},
+							},
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				// a = 0
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+
+				// case 1
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        7,
+				},
+
+				// print("ONE OR TWO")
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralString("ONE OR TWO"),
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"4"},
+				},
+				&instruction.Jump{
+					To: 19,
+				},
+
+				// case 2
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "5",
+					Result: "6",
+				},
+				&instruction.JumpUnless{
+					Condition: "6",
+					To:        13,
+				},
+
+				// print("ONE OR TWO")
+				&instruction.Assign{
+					VariableName: "7",
+					Value:        ast.NewLiteralString("ONE OR TWO"),
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"7"},
+				},
+				&instruction.Jump{
+					To: 19,
+				},
+
+				// case 3
+				&instruction.Assign{
+					VariableName: "8",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "8",
+					Result: "9",
+				},
+				&instruction.JumpUnless{
+					Condition: "9",
+					To:        19,
+				},
+
+				// print("THREE")
+				&instruction.Assign{
+					VariableName: "10",
+					Value:        ast.NewLiteralString("THREE"),
+				},
+				&instruction.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"10"},
+				},
+				&instruction.Jump{
+					To: 19,
 				},
 			},
 		},
