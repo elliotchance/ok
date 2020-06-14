@@ -673,6 +673,20 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false},
 			},
 		},
+		"switch": {
+			str: `switch`,
+			expected: []lexer.Token{
+				{lexer.TokenSwitch, "switch", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"case": {
+			str: `case`,
+			expected: []lexer.Token{
+				{lexer.TokenCase, "case", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

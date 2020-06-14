@@ -1,0 +1,9 @@
+before switch 1
+ONE
+after switch 1
+before switch 2
+TWO
+after switch 2
+before switch 3
+ELSE
+after switch 3

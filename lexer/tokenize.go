@@ -165,7 +165,8 @@ func tokenWord(word string) Token {
 	case "true", "false":
 		return NewToken(TokenBool, word)
 
-	case "and", "break", "continue", "else", "if", "for", "func", "not", "or":
+	case "and", "break", "case", "continue", "else", "if", "for", "func", "not",
+		"or", "switch":
 		return NewToken(word, word)
 	}
 

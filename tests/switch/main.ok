@@ -1,0 +1,51 @@
+func main() {
+    a = 1
+
+    print("before switch 1")
+    switch {
+        case a == 1 {
+            print("ONE")
+        }
+        case a == 2 {
+            print("TWO")
+        }
+        case a == 3 {
+            print("THREE")
+        }
+    }
+    print("after switch 1")
+
+    print("before switch 2")
+    ++a
+    switch {
+        case a == 1 {
+            print("ONE")
+        }
+        case a == 2 {
+            print("TWO")
+        }
+        case a == 3 {
+            print("THREE")
+        }
+    } else {
+        print("ELSE")
+    }
+    print("after switch 2")
+
+    print("before switch 3")
+    a += 2
+    switch {
+        case a == 1 {
+            print("ONE")
+        }
+        case a == 2 {
+            print("TWO")
+        }
+        case a == 3 {
+            print("THREE")
+        }
+    } else {
+        print("ELSE")
+    }
+    print("after switch 3")
+}
