@@ -21,8 +21,10 @@ const (
 	TokenAnd      = "and"
 	TokenBreak    = "break"
 	TokenContinue = "continue"
+	TokenElse     = "else"
 	TokenFor      = "for"
 	TokenFunc     = "func"
+	TokenIf       = "if"
 	TokenNot      = "not"
 	TokenOr       = "or"
 

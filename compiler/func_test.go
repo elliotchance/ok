@@ -1838,6 +1838,191 @@ func TestCompileFunc(t *testing.T) {
 				},
 			},
 		},
+		"if-1": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        4,
+				},
+			},
+		},
+		"if-2": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+					True: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "a"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
+						},
+						&ast.Unary{
+							Op:   lexer.TokenIncrement,
+							Expr: &ast.Identifier{Name: "a"},
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        8,
+				},
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "4",
+				},
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Add{
+					Left:   "a",
+					Right:  "5",
+					Result: "a",
+				},
+			},
+		},
+		"if-else-2": {
+			fn: newFunc(
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("0"),
+				},
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+					True: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "a"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
+						},
+					},
+					False: []ast.Node{
+						&ast.Unary{
+							Op:   lexer.TokenIncrement,
+							Expr: &ast.Identifier{Name: "a"},
+						},
+					},
+				},
+			),
+			expected: []instruction.Instruction{
+				// a = 0
+				&instruction.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("0"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+
+				// if a == 3
+				&instruction.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("3"),
+				},
+				&instruction.EqualNumber{
+					Left:   "a",
+					Right:  "2",
+					Result: "3",
+				},
+				&instruction.JumpUnless{
+					Condition: "3",
+					To:        7,
+				},
+
+				// a = 1
+				&instruction.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Assign{
+					VariableName: "a",
+					Register:     "4",
+				},
+				&instruction.Jump{
+					To: 9,
+				},
+
+				// ++a
+				&instruction.Assign{
+					VariableName: "5",
+					Value:        ast.NewLiteralNumber("1"),
+				},
+				&instruction.Add{
+					Left:   "a",
+					Right:  "5",
+					Result: "a",
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn)

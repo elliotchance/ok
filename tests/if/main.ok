@@ -1,0 +1,29 @@
+func main() {
+    print("before if 1")
+    if true {
+        print("should be true")
+    }
+    print("after if 1")
+
+    print("before if 2")
+    if false {
+        print("uh oh!")
+    }
+    print("after if 2")
+
+    print("before if 3")
+    if true {
+        print("good")
+    } else {
+        print("bad")
+    }
+    print("after if 3")
+
+    print("before if 4")
+    if not true {
+        print("bad")
+    } else {
+        print("good")
+    }
+    print("after if 4")
+}

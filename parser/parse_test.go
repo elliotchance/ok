@@ -609,6 +609,85 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
+		"if-1": {
+			str: "func main() { if a == 3 { } }",
+			expected: newFunc(
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+				},
+			),
+		},
+		"if-2": {
+			str: "func main() { if a == 3 { a = 1\n++a } }",
+			expected: newFunc(
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+					True: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "a"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
+						},
+						&ast.Unary{
+							Op:   lexer.TokenIncrement,
+							Expr: &ast.Identifier{Name: "a"},
+						},
+					},
+				},
+			),
+		},
+		"if-else-1": {
+			str: "func main() { if a == 3 { a = 1 } else { } }",
+			expected: newFunc(
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+					True: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "a"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
+						},
+					},
+				},
+			),
+		},
+		"if-else-2": {
+			str: "func main() { if a == 3 { a = 1 } else { ++a } }",
+			expected: newFunc(
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenEqual,
+						Right: ast.NewLiteralNumber("3"),
+					},
+					True: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "a"},
+							Op:    lexer.TokenAssign,
+							Right: ast.NewLiteralNumber("1"),
+						},
+					},
+					False: []ast.Node{
+						&ast.Unary{
+							Op:   lexer.TokenIncrement,
+							Expr: &ast.Identifier{Name: "a"},
+						},
+					},
+				},
+			),
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.ParseString(test.str)
