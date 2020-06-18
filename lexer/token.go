@@ -9,25 +9,31 @@ const (
 	TokenEOF = "end of file"
 
 	// Dynamic
-	TokenBool       = "bool"       // bool literal, eg. true
-	TokenCharacter  = "character"  // char literal, eg. 'a'
-	TokenComment    = "comment"    // eg. "//..."
-	TokenData       = "data"       // data literal, eg. `foo`
-	TokenIdentifier = "identifier" // any non-keyword
-	TokenNumber     = "number"     // number literal, eg. 12.3
-	TokenString     = "string"     // string literal, eg. "hello"
+	TokenBoolLiteral   = "bool literal"   // boolean literal, eg. true
+	TokenCharLiteral   = "char literal"   // char literal, eg. 'a'
+	TokenComment       = "comment"        // eg. "//..."
+	TokenDataLiteral   = "data literal"   // data literal, eg. `foo`
+	TokenIdentifier    = "identifier"     // any non-keyword
+	TokenNumberLiteral = "number literal" // number literal, eg. 12.3
+	TokenStringLiteral = "string literal" // string literal, eg. "hello"
 
 	// Keywords
 	TokenAnd      = "and"
+	TokenAny      = "any"
+	TokenBool     = "bool"
 	TokenBreak    = "break"
 	TokenCase     = "case"
+	TokenChar     = "char"
 	TokenContinue = "continue"
+	TokenData     = "data"
 	TokenElse     = "else"
 	TokenFor      = "for"
 	TokenFunc     = "func"
 	TokenIf       = "if"
 	TokenNot      = "not"
+	TokenNumber   = "number"
 	TokenOr       = "or"
+	TokenString   = "string"
 	TokenSwitch   = "switch"
 
 	// Operators
@@ -54,6 +60,8 @@ const (
 	TokenRemainder        = "%"
 	TokenRemainderAssign  = "%="
 	TokenSemiColon        = ";"
+	TokenSquareClose      = "]"
+	TokenSquareOpen       = "["
 	TokenTimes            = "*"
 	TokenTimesAssign      = "*="
 )

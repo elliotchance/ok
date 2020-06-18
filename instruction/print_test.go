@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"ok/ast"
 	"ok/instruction"
-	"ok/lexer"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -18,35 +17,63 @@ func TestPrint_Execute(t *testing.T) {
 	}{
 		"no-args": {nil, "\n"},
 		"true": {
-			[]*ast.Literal{{Kind: lexer.TokenBool, Value: "true"}},
+			[]*ast.Literal{{Kind: "bool", Value: "true"}},
 			"true\n",
 		},
 		"false": {
-			[]*ast.Literal{{Kind: lexer.TokenBool, Value: "false"}},
+			[]*ast.Literal{{Kind: "bool", Value: "false"}},
 			"false\n",
 		},
 		"char": {
-			[]*ast.Literal{{Kind: lexer.TokenCharacter, Value: "#"}},
+			[]*ast.Literal{{Kind: "char", Value: "#"}},
 			"#\n",
 		},
 		"data": {
-			[]*ast.Literal{{Kind: lexer.TokenData, Value: "abc"}},
+			[]*ast.Literal{{Kind: "data", Value: "abc"}},
 			"abc\n",
 		},
 		"number": {
-			[]*ast.Literal{{Kind: lexer.TokenNumber, Value: "1.23"}},
+			[]*ast.Literal{{Kind: "number", Value: "1.23"}},
 			"1.23\n",
 		},
 		"string": {
-			[]*ast.Literal{{Kind: lexer.TokenString, Value: "foo bar"}},
+			[]*ast.Literal{{Kind: "string", Value: "foo bar"}},
 			"foo bar\n",
 		},
 		"multiple-args": {
 			[]*ast.Literal{
-				{Kind: lexer.TokenString, Value: "foo"},
-				{Kind: lexer.TokenNumber, Value: "123"},
+				{Kind: "string", Value: "foo"},
+				{Kind: "number", Value: "123"},
 			},
 			"foo 123\n",
+		},
+		"number-array": {
+			[]*ast.Literal{
+				{
+					Kind: "[]number",
+					Array: []*ast.Literal{
+						ast.NewLiteralNumber("123"),
+						ast.NewLiteralNumber("456"),
+						ast.NewLiteralNumber("789"),
+					},
+				},
+			},
+			"[123, 456, 789]\n",
+		},
+		"any-array": {
+			[]*ast.Literal{
+				{
+					Kind: "[]any",
+					Array: []*ast.Literal{
+						ast.NewLiteralBool(true),
+						ast.NewLiteralChar('a'),
+						ast.NewLiteralData([]byte("data")),
+						ast.NewLiteralNumber("123"),
+						ast.NewLiteralString("789"),
+					},
+				},
+			},
+			"[true, \"a\", \"data\", 123, \"789\"]\n",
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

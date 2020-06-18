@@ -129,28 +129,28 @@ func TestParseString(t *testing.T) {
 		"literal-true": {
 			str: `func main() { print(true) }`,
 			expected: newFuncPrint(&ast.Literal{
-				Kind:  lexer.TokenBool,
+				Kind:  "bool",
 				Value: "true",
 			}),
 		},
 		"literal-false": {
 			str: `func main() { print(false) }`,
 			expected: newFuncPrint(&ast.Literal{
-				Kind:  lexer.TokenBool,
+				Kind:  "bool",
 				Value: "false",
 			}),
 		},
 		"literal-char": {
 			str: `func main() { print('a') }`,
 			expected: newFuncPrint(&ast.Literal{
-				Kind:  lexer.TokenCharacter,
+				Kind:  "char",
 				Value: "a",
 			}),
 		},
 		"literal-zero-length-char": {
 			str: `func main() { print('') }`,
 			expected: newFuncPrint(&ast.Literal{
-				Kind:  lexer.TokenCharacter,
+				Kind:  "char",
 				Value: "",
 			}),
 			errs: []error{
@@ -160,7 +160,7 @@ func TestParseString(t *testing.T) {
 		"literal-number-zero": {
 			str: `func main() { print(0) }`,
 			expected: newFuncPrint(&ast.Literal{
-				Kind:  lexer.TokenNumber,
+				Kind:  "number",
 				Value: "0",
 			}),
 		},

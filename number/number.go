@@ -2,6 +2,7 @@ package number
 
 import (
 	"math/big"
+	"strconv"
 	"strings"
 )
 
@@ -34,6 +35,15 @@ func (n *Number) String() string {
 // IsZero returns true if the value equals 0 (at any precision).
 func (n *Number) IsZero() bool {
 	return n.Rat.Cmp(new(big.Rat)) == 0
+}
+
+// Int64 returns the int64 value. This is only for internal use when we need the
+// actual int for things like array sizes. Non-integers will be rounded to the
+// nearest integer.
+func (n *Number) Int64() int64 {
+	i64, _ := strconv.ParseInt(n.Rat.FloatString(0), 10, 64)
+
+	return i64
 }
 
 func precision(s string) int {

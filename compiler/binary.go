@@ -104,14 +104,39 @@ func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string
 		node.Op == lexer.TokenTimesAssign ||
 		node.Op == lexer.TokenDivideAssign ||
 		node.Op == lexer.TokenRemainderAssign {
-		variable, ok := node.Left.(*ast.Identifier)
-		if !ok {
-			return "", "", fmt.Errorf("cannot assign to non-variable")
-		}
 
 		right, rightKind, err := compileExpr(compiledFunc, node.Right)
 		if err != nil {
 			return "", "", err
+		}
+
+		// TODO(elliot): Check +=, etc.
+		if key, ok := node.Left.(*ast.Key); ok {
+			arrayResult, _, err := compileExpr(compiledFunc, key.Expr)
+			if err != nil {
+				return "", "", err
+			}
+
+			// TODO(elliot): Check this is a sane operation.
+			keyResult, _, err := compileExpr(compiledFunc, key.Key)
+			if err != nil {
+				return "", "", err
+			}
+
+			ins := &instruction.ArraySet{
+				Array: arrayResult,
+				Index: keyResult,
+				Value: right,
+			}
+			compiledFunc.append(ins)
+
+			// TODO(elliot): Return something more reasonable here.
+			return "", "", nil
+		}
+
+		variable, ok := node.Left.(*ast.Identifier)
+		if !ok {
+			return "", "", fmt.Errorf("cannot assign to non-variable")
 		}
 
 		// Make sure we do not assign the wrong type to an existing variable.
