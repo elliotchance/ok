@@ -25,7 +25,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			// Make sure we are not in the middle of reading a word. The digit
 			// would be part of the identifier.
 			if word == "" {
-				token.Kind = TokenNumber
+				token.Kind = TokenNumberLiteral
 				for ; i < runesLen && isDecimalCharacter(runes[i]); i++ {
 					token.Value += string(runes[i])
 				}
@@ -100,7 +100,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			found = true
 			token.Kind = token.Value
 
-		case '(', ')', '{', '}', '*', '%', '=', '!', '>', '<', ',', ';':
+		case '(', ')', '[', ']', '{', '}', '*', '%', '=', '!', '>', '<', ',', ';':
 			token.Value = string(c)
 			if i < runesLen-1 && runes[i+1] == '=' {
 				token.Value = string(c) + "="
@@ -163,10 +163,10 @@ func tokenWord(word string) Token {
 		return NewToken(TokenEOF, "")
 
 	case "true", "false":
-		return NewToken(TokenBool, word)
+		return NewToken(TokenBoolLiteral, word)
 
 	case "and", "break", "case", "continue", "else", "if", "for", "func", "not",
-		"or", "switch":
+		"or", "switch", "any", "bool", "char", "data", "number", "string":
 		return NewToken(word, word)
 	}
 
@@ -180,13 +180,13 @@ func isDecimalCharacter(c rune) bool {
 func tokenKindForQuote(quote rune) (kind string) {
 	switch quote {
 	case '\'':
-		kind = TokenCharacter
+		kind = TokenCharLiteral
 
 	case '"':
-		kind = TokenString
+		kind = TokenStringLiteral
 
 	case '`':
-		kind = TokenData
+		kind = TokenDataLiteral
 	}
 
 	return

@@ -37,6 +37,24 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 			continue
 		}
 
+		// Array
+		var array *ast.Array
+		array, offset, err = consumeArray(parser, offset)
+		if err == nil {
+			parts = append(parts, array)
+			didJustConsumeLiteral = false
+			continue
+		}
+
+		// Call
+		var call *ast.Call
+		call, offset, err = consumeCall(parser, offset)
+		if err == nil {
+			parts = append(parts, call)
+			didJustConsumeLiteral = false
+			continue
+		}
+
 		// Grouping "()"
 		var group *ast.Group
 		group, offset, err = consumeGroup(parser, offset)
@@ -61,7 +79,30 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		var identifier *ast.Identifier
 		identifier, offset, err = consumeIdentifier(parser, offset)
 		if err == nil {
-			parts = append(parts, identifier)
+
+			// Read ahead for key expression.
+			if parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen {
+				offset++ // skip "["
+
+				var key ast.Node
+				key, offset, err = consumeExpr(parser, offset)
+				if err != nil {
+					return nil, originalOffset, err
+				}
+
+				offset, err = consume(parser.File, offset, []string{lexer.TokenSquareClose})
+				if err != nil {
+					return nil, originalOffset, err
+				}
+
+				parts = append(parts, &ast.Key{
+					Expr: identifier,
+					Key:  key,
+				})
+			} else {
+				parts = append(parts, identifier)
+			}
+
 			continue
 		}
 

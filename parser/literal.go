@@ -4,21 +4,22 @@ import (
 	"errors"
 	"ok/ast"
 	"ok/lexer"
+	"strings"
 )
 
 func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {
 	types := []string{
-		lexer.TokenBool,
-		lexer.TokenCharacter,
-		lexer.TokenData,
-		lexer.TokenNumber,
-		lexer.TokenString,
+		lexer.TokenBoolLiteral,
+		lexer.TokenCharLiteral,
+		lexer.TokenDataLiteral,
+		lexer.TokenNumberLiteral,
+		lexer.TokenStringLiteral,
 	}
 
 	for _, ty := range types {
 		if t := f.Tokens[offset]; t.Kind == ty {
 			literal := &ast.Literal{
-				Kind:  ty,
+				Kind:  strings.Split(ty, " ")[0],
 				Value: t.Value,
 			}
 
@@ -31,7 +32,7 @@ func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {
 
 func validateLiteral(literal *ast.Literal) error {
 	switch literal.Kind {
-	case lexer.TokenCharacter:
+	case "char":
 		if len(literal.Value) == 0 {
 			return errors.New("character literal cannot be empty")
 		}

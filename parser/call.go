@@ -18,20 +18,7 @@ func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 	}
 
 	var exprs []ast.Node
-	for {
-		var expr ast.Node
-		expr, offset, err = consumeExpr(parser, offset)
-		if err != nil {
-			return nil, originalOffset, err
-		}
-
-		exprs = append(exprs, expr)
-
-		offset, err = consume(parser.File, offset, []string{lexer.TokenComma})
-		if err != nil {
-			break
-		}
-	}
+	exprs, offset, err = consumeExprs(parser, offset)
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
 	if err != nil {

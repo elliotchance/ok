@@ -18,6 +18,15 @@ func compileExpr(compiledFunc *CompiledFunc, expr ast.Node) (string, string, err
 
 		return returns, e.Kind, nil
 
+	case *ast.Array:
+		returns, err := compileArray(compiledFunc, e)
+		if err != nil {
+			return "", "", err
+		}
+
+		// FIXME: doesn't return type
+		return returns, "", nil
+
 	case *ast.Call:
 		err := compileCall(compiledFunc, e)
 		if err != nil {
@@ -42,6 +51,9 @@ func compileExpr(compiledFunc *CompiledFunc, expr ast.Node) (string, string, err
 
 	case *ast.Unary:
 		return compileUnary(compiledFunc, e)
+
+	case *ast.Key:
+		return compileKey(compiledFunc, e)
 	}
 
 	panic(expr)

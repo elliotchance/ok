@@ -45,10 +45,7 @@ func TestCompileFunc(t *testing.T) {
 					&ast.Call{
 						FunctionName: "print",
 						Arguments: []ast.Node{
-							&ast.Literal{
-								Kind:  lexer.TokenString,
-								Value: "hello",
-							},
+							ast.NewLiteralString("hello"),
 						},
 					},
 				},
@@ -75,12 +72,12 @@ func TestCompileFunc(t *testing.T) {
 						Arguments: []ast.Node{
 							&ast.Binary{
 								Left: &ast.Literal{
-									Kind:  lexer.TokenBool,
+									Kind:  "bool",
 									Value: "true",
 								},
 								Op: lexer.TokenPlus,
 								Right: &ast.Literal{
-									Kind:  lexer.TokenBool,
+									Kind:  "bool",
 									Value: "false",
 								},
 							},
@@ -98,12 +95,12 @@ func TestCompileFunc(t *testing.T) {
 						Arguments: []ast.Node{
 							&ast.Binary{
 								Left: &ast.Literal{
-									Kind:  lexer.TokenString,
+									Kind:  "string",
 									Value: "foo",
 								},
 								Op: lexer.TokenDivide,
 								Right: &ast.Literal{
-									Kind:  lexer.TokenNumber,
+									Kind:  "number",
 									Value: "123",
 								},
 							},

@@ -1,0 +1,23 @@
+func main() {
+    // Arrays are defined within square brackets. If all the elements are the
+    // same type, then the type of the array is inferred. In this case the type
+    // of "a" will be "[]number".
+    a = [1, 2, 3]
+    print(a)
+
+    // Arrays can contain mixed types but the type of the array must be given
+    // explicitly to indicate this.
+    b = []any [123, "foo", true]
+
+    // Arrays are always printed as valid JSON. This makes it easier and more
+    // natural to pass data to other systems.
+    print(b)
+
+    // Access an element in an array by using its index. Remember, 0 is the
+    // index for the first element.
+    print(a[0], b[1])
+
+    // Assigning an element works the same way with the index.
+    a[1] = 7
+    print(a)
+}
