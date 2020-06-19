@@ -7,6 +7,7 @@ type Literal struct {
 	Kind  string
 	Value string
 	Array []*Literal
+	Map   map[string]*Literal
 }
 
 // NewLiteralData create a new literal representing a data value.

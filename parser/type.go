@@ -9,11 +9,23 @@ func consumeType(parser *Parser, offset int) (string, int, error) {
 	originalOffset := offset
 	ty := ""
 
-	if parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen &&
-		parser.File.Tokens[offset+1].Kind == lexer.TokenSquareClose {
-		offset += 2
-		ty += "[]"
+	for {
+		switch {
+		case parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen &&
+			parser.File.Tokens[offset+1].Kind == lexer.TokenSquareClose:
+			offset += 2
+			ty += "[]"
+
+		case parser.File.Tokens[offset].Kind == lexer.TokenCurlyOpen &&
+			parser.File.Tokens[offset+1].Kind == lexer.TokenCurlyClose:
+			offset += 2
+			ty += "{}"
+
+		default:
+			goto done
+		}
 	}
+done:
 
 	var err error
 	var t lexer.Token

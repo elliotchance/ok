@@ -452,95 +452,6 @@ func TestParseString(t *testing.T) {
 				},
 			),
 		},
-		"for-empty-body": {
-			str: "func main() { for true {} }",
-			expected: newFunc(
-				&ast.For{
-					Condition: ast.NewLiteralBool(true),
-				},
-			),
-		},
-		"for-1": {
-			str: "func main() { for true { print(a)\nprint(b) } }",
-			expected: newFunc(
-				&ast.For{
-					Condition: ast.NewLiteralBool(true),
-					Statements: []ast.Node{
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "a"},
-							},
-						},
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "b"},
-							},
-						},
-					},
-				},
-			),
-		},
-		"for-empty-without-condition": {
-			str: "func main() { for {} }",
-			expected: newFunc(
-				&ast.For{},
-			),
-		},
-		"for-2": {
-			str: "func main() { for { print(a)\nprint(b) } }",
-			expected: newFunc(
-				&ast.For{
-					Statements: []ast.Node{
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "a"},
-							},
-						},
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "b"},
-							},
-						},
-					},
-				},
-			),
-		},
-		"break-1": {
-			str: "func main() { for { break\nprint(a) } }",
-			expected: newFunc(
-				&ast.For{
-					Statements: []ast.Node{
-						&ast.Break{},
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "a"},
-							},
-						},
-					},
-				},
-			),
-		},
-		"continue-1": {
-			str: "func main() { for { print(a)\ncontinue } }",
-			expected: newFunc(
-				&ast.For{
-					Statements: []ast.Node{
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "a"},
-							},
-						},
-						&ast.Continue{},
-					},
-				},
-			),
-		},
 		"increment": {
 			str: "func main() { ++a }",
 			expected: newFunc(
@@ -683,35 +594,6 @@ func TestParseString(t *testing.T) {
 						&ast.Unary{
 							Op:   lexer.TokenIncrement,
 							Expr: &ast.Identifier{Name: "a"},
-						},
-					},
-				},
-			),
-		},
-		"for-3": {
-			str: "func main() { for a = 0; a < 10; ++a { print(a) } }",
-			expected: newFunc(
-				&ast.For{
-					Init: &ast.Binary{
-						Left:  &ast.Identifier{Name: "a"},
-						Op:    lexer.TokenAssign,
-						Right: ast.NewLiteralNumber("0"),
-					},
-					Condition: &ast.Binary{
-						Left:  &ast.Identifier{Name: "a"},
-						Op:    lexer.TokenLessThan,
-						Right: ast.NewLiteralNumber("10"),
-					},
-					Next: &ast.Unary{
-						Op:   lexer.TokenIncrement,
-						Expr: &ast.Identifier{Name: "a"},
-					},
-					Statements: []ast.Node{
-						&ast.Call{
-							FunctionName: "print",
-							Arguments: []ast.Node{
-								&ast.Identifier{Name: "a"},
-							},
 						},
 					},
 				},

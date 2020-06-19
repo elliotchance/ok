@@ -22,6 +22,12 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 			break
 		}
 
+		// Some tokens signal the end of the expression.
+		if tok.Kind == lexer.TokenColon ||
+			tok.Kind == lexer.TokenComma {
+			break
+		}
+
 		// Try to consume a literal.
 		var literal *ast.Literal
 		literal, offset, err = consumeLiteral(parser.File, offset)
@@ -42,6 +48,15 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		array, offset, err = consumeArray(parser, offset)
 		if err == nil {
 			parts = append(parts, array)
+			didJustConsumeLiteral = false
+			continue
+		}
+
+		// Map
+		var m *ast.Map
+		m, offset, err = consumeMap(parser, offset)
+		if err == nil {
+			parts = append(parts, m)
 			didJustConsumeLiteral = false
 			continue
 		}

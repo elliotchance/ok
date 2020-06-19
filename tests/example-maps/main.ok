@@ -1,0 +1,23 @@
+func main() {
+    // Maps are defined within curly brackets. If all the elements are the
+    // same type, then the type of the map is inferred. In this case the type
+    // of "a" will be "{}number".
+    a = {"a": 1, "b": 2, "c": 3}
+    print(a)
+
+    // Like arrays, maps can contain mixed values by it has to be declared
+    // explicitly.
+    b = {}any {"a": 123, "b": "foo", "c": true}
+
+    // Maps are always printed as valid JSON with their keys sorted. This makes
+    // it easier and more natural to pass data to other systems.
+    print(b)
+
+    // Access an element in an map by using its key. Maps only support strings
+    // as the key.
+    print(a["b"], b["b"])
+
+    // Assigning an element works the same way with the key.
+    a["b"] = 7
+    print(a)
+}
