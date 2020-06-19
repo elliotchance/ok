@@ -75,6 +75,34 @@ func TestPrint_Execute(t *testing.T) {
 			},
 			"[true, \"a\", \"data\", 123, \"789\"]\n",
 		},
+		"number-map": {
+			[]*ast.Literal{
+				{
+					Kind: "{}number",
+					Map: map[string]*ast.Literal{
+						"a": ast.NewLiteralNumber("123"),
+						"b": ast.NewLiteralNumber("456"),
+						"c": ast.NewLiteralNumber("789"),
+					},
+				},
+			},
+			"{\"a\": 123, \"b\": 456, \"c\": 789}\n",
+		},
+		"any-map": {
+			[]*ast.Literal{
+				{
+					Kind: "{}any",
+					Map: map[string]*ast.Literal{
+						"a": ast.NewLiteralBool(true),
+						"b": ast.NewLiteralChar('a'),
+						"c": ast.NewLiteralData([]byte("data")),
+						"d": ast.NewLiteralNumber("123"),
+						"e": ast.NewLiteralString("789"),
+					},
+				},
+			},
+			"{\"a\": true, \"b\": \"a\", \"c\": \"data\", \"d\": 123, \"e\": \"789\"}\n",
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			registers := map[string]*ast.Literal{}

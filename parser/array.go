@@ -6,6 +6,7 @@ import (
 )
 
 func consumeArray(parser *Parser, offset int) (*ast.Array, int, error) {
+	originalOffset := offset
 	var err error
 	node := &ast.Array{}
 
@@ -17,7 +18,7 @@ func consumeArray(parser *Parser, offset int) (*ast.Array, int, error) {
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenSquareOpen})
 	if err != nil {
-		return nil, offset, err
+		return nil, originalOffset, err
 	}
 
 	// Detect zero elements because consumeExprs will require at least one
@@ -28,12 +29,12 @@ func consumeArray(parser *Parser, offset int) (*ast.Array, int, error) {
 
 	node.Elements, offset, err = consumeExprs(parser, offset)
 	if err != nil {
-		return nil, offset, err
+		return nil, originalOffset, err
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenSquareClose})
 	if err != nil {
-		return nil, offset, err
+		return nil, originalOffset, err
 	}
 
 	return node, offset, nil

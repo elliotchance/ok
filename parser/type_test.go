@@ -46,6 +46,14 @@ func TestType(t *testing.T) {
 			str:      "[] string",
 			expected: "[]string",
 		},
+		"any-map": {
+			str:      "{}any",
+			expected: "{}any",
+		},
+		"string-map": {
+			str:      "{} string",
+			expected: "{}string",
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s [] }", test.str)

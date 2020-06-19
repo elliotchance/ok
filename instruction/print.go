@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"ok/ast"
+	"sort"
 	"strings"
 )
 
@@ -21,7 +22,8 @@ func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int) error {
 		}
 
 		r := registers[register]
-		if strings.HasPrefix(r.Kind, "[]") {
+		switch {
+		case strings.HasPrefix(r.Kind, "[]"):
 			fmt.Fprint(ins.Stdout, "[")
 			for j, element := range r.Array {
 				if j > 0 {
@@ -31,7 +33,28 @@ func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int) error {
 				printLiteral(ins.Stdout, element, true)
 			}
 			fmt.Fprint(ins.Stdout, "]")
-		} else {
+
+		case strings.HasPrefix(r.Kind, "{}"):
+			// Keys are always sorted.
+			var keys []string
+			for key := range r.Map {
+				keys = append(keys, key)
+			}
+			sort.Strings(keys)
+
+			fmt.Fprint(ins.Stdout, "{")
+			for j, key := range keys {
+				element := r.Map[key]
+				if j > 0 {
+					fmt.Fprint(ins.Stdout, ", ")
+				}
+
+				fmt.Fprintf(ins.Stdout, `"%s": `, key)
+				printLiteral(ins.Stdout, element, true)
+			}
+			fmt.Fprint(ins.Stdout, "}")
+
+		default:
 			printLiteral(ins.Stdout, r, false)
 		}
 	}

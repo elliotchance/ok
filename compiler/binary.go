@@ -5,6 +5,7 @@ import (
 	"ok/ast"
 	"ok/instruction"
 	"ok/lexer"
+	"strings"
 )
 
 func getBinaryInstruction(op string, left, right, result string) (instruction.Instruction, string) {
@@ -112,7 +113,7 @@ func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string
 
 		// TODO(elliot): Check +=, etc.
 		if key, ok := node.Left.(*ast.Key); ok {
-			arrayResult, _, err := compileExpr(compiledFunc, key.Expr)
+			arrayOrMapResult, arrayOrMapKind, err := compileExpr(compiledFunc, key.Expr)
 			if err != nil {
 				return "", "", err
 			}
@@ -123,12 +124,21 @@ func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string
 				return "", "", err
 			}
 
-			ins := &instruction.ArraySet{
-				Array: arrayResult,
-				Index: keyResult,
-				Value: right,
+			if strings.HasPrefix(arrayOrMapKind, "[]") {
+				ins := &instruction.ArraySet{
+					Array: arrayOrMapResult,
+					Index: keyResult,
+					Value: right,
+				}
+				compiledFunc.append(ins)
+			} else {
+				ins := &instruction.MapSet{
+					Map:   arrayOrMapResult,
+					Key:   keyResult,
+					Value: right,
+				}
+				compiledFunc.append(ins)
 			}
-			compiledFunc.append(ins)
 
 			// TODO(elliot): Return something more reasonable here.
 			return "", "", nil

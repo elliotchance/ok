@@ -38,6 +38,7 @@ const (
 
 	// Operators
 	TokenAssign           = "="
+	TokenColon            = ":"
 	TokenComma            = ","
 	TokenCurlyClose       = "}"
 	TokenCurlyOpen        = "{"

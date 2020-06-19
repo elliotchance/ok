@@ -24,8 +24,17 @@ func compileExpr(compiledFunc *CompiledFunc, expr ast.Node) (string, string, err
 			return "", "", err
 		}
 
-		// FIXME: doesn't return type
-		return returns, "", nil
+		// TODO(elliot): Doesn't return type.
+		return returns, "[]", nil
+
+	case *ast.Map:
+		returns, err := compileMap(compiledFunc, e)
+		if err != nil {
+			return "", "", err
+		}
+
+		// TODO(elliot): Doesn't return type.
+		return returns, "{}", nil
 
 	case *ast.Call:
 		err := compileCall(compiledFunc, e)

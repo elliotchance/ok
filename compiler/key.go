@@ -3,10 +3,11 @@ package compiler
 import (
 	"ok/ast"
 	"ok/instruction"
+	"strings"
 )
 
 func compileKey(compiledFunc *CompiledFunc, n *ast.Key) (string, string, error) {
-	arrayRegister, _, err := compileExpr(compiledFunc, n.Expr)
+	arrayOrMapRegister, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr)
 	if err != nil {
 		return "", "", err
 	}
@@ -18,11 +19,19 @@ func compileKey(compiledFunc *CompiledFunc, n *ast.Key) (string, string, error) 
 	}
 
 	resultRegister := compiledFunc.nextRegister()
-	compiledFunc.append(&instruction.ArrayGet{
-		Array:  arrayRegister,
-		Index:  keyRegister,
-		Result: resultRegister,
-	})
+	if strings.HasPrefix(arrayOrMapKind, "[]") {
+		compiledFunc.append(&instruction.ArrayGet{
+			Array:  arrayOrMapRegister,
+			Index:  keyRegister,
+			Result: resultRegister,
+		})
+	} else {
+		compiledFunc.append(&instruction.MapGet{
+			Map:    arrayOrMapRegister,
+			Key:    keyRegister,
+			Result: resultRegister,
+		})
+	}
 
 	// TODO(elliot): Does not return element type.
 	return resultRegister, "", nil
