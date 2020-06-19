@@ -1,0 +1,4 @@
+func main() {
+    print("array len =", len(["foo", "bar"]))
+    print("map len =", len({"foo": 50, "bar": 100, "baz": 75}))
+}

@@ -37,13 +37,13 @@ func compileExpr(compiledFunc *CompiledFunc, expr ast.Node) (string, string, err
 		return returns, "{}", nil
 
 	case *ast.Call:
-		err := compileCall(compiledFunc, e)
+		result, err := compileCall(compiledFunc, e)
 		if err != nil {
 			return "", "", err
 		}
 
-		// FIXME: doesn't return register
-		return "", "", nil
+		// TODO(elliot): Doesn't return kind.
+		return result, "", nil
 
 	case *ast.Identifier:
 		if v, ok := compiledFunc.variables[e.Name]; ok {
