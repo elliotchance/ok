@@ -17,9 +17,14 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 
 	// Condition is optional.
 	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
-		node.Condition, offset, err = consumeExpr(parser, offset)
+		// Condition may be an "in" expression.
+		node.Condition, offset, err = consumeIn(parser, offset)
 		if err != nil {
-			return nil, offset, err
+			// So it must be an expression.
+			node.Condition, offset, err = consumeExpr(parser, offset)
+			if err != nil {
+				return nil, offset, err
+			}
 		}
 	}
 
@@ -29,9 +34,14 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 	if err == nil {
 		node.Init = node.Condition
 
-		node.Condition, offset, err = consumeExpr(parser, offset)
+		// Condition may be an "in" expression.
+		node.Condition, offset, err = consumeIn(parser, offset)
 		if err != nil {
-			return nil, offset, err
+			// So it must be an expression.
+			node.Condition, offset, err = consumeExpr(parser, offset)
+			if err != nil {
+				return nil, offset, err
+			}
 		}
 
 		offset, err = consume(parser.File, offset, []string{lexer.TokenSemiColon})
@@ -48,6 +58,37 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 	node.Statements, offset, err = consumeBlock(parser, offset)
 	if err != nil {
 		return nil, offset, err
+	}
+
+	return node, offset, nil
+}
+
+func consumeIn(parser *Parser, offset int) (*ast.In, int, error) {
+	originalOffset := offset
+	var err error
+	node := &ast.In{}
+
+	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+	if err != nil {
+		return nil, originalOffset, err
+	}
+	node.Key = parser.File.Tokens[originalOffset].Value
+
+	// Value is optional.
+	offset, err = consume(parser.File, offset, []string{
+		lexer.TokenComma, lexer.TokenIdentifier})
+	if err == nil {
+		node.Value = parser.File.Tokens[offset-1].Value
+	}
+
+	offset, err = consume(parser.File, offset, []string{lexer.TokenIn})
+	if err != nil {
+		return nil, originalOffset, err
+	}
+
+	node.Expr, offset, err = consumeExpr(parser, offset)
+	if err != nil {
+		return nil, originalOffset, err
 	}
 
 	return node, offset, nil

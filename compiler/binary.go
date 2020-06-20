@@ -220,7 +220,7 @@ func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string
 			Register:     returns,
 		}
 		compiledFunc.append(ins)
-		compiledFunc.variables[variable.Name] = rightKind
+		compiledFunc.newVariable(variable.Name, rightKind)
 
 		return variable.Name, rightKind, nil
 	}

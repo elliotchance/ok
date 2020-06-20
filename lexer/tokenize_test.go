@@ -750,6 +750,13 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false},
 			},
 		},
+		"in": {
+			str: `in`,
+			expected: []lexer.Token{
+				{lexer.TokenIn, "in", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

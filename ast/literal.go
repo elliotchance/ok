@@ -6,8 +6,12 @@ import "strconv"
 type Literal struct {
 	Kind  string
 	Value string
+
+	// Array is also used to hold the keys of the map. This is required for
+	// iteration.
 	Array []*Literal
-	Map   map[string]*Literal
+
+	Map map[string]*Literal
 }
 
 // NewLiteralData create a new literal representing a data value.

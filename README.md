@@ -1,7 +1,8 @@
 [![GitHub release](https://img.shields.io/github/release/elliotchance/ok.svg)](https://github.com/elliotchance/ok/releases/)
 [![Build Status](https://travis-ci.org/elliotchance/ok.svg?branch=master)](https://travis-ci.org/elliotchance/ok)
 [![codecov](https://codecov.io/gh/elliotchance/ok/branch/master/graph/badge.svg)](https://codecov.io/gh/elliotchance/ok)
-[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Join the chat at https://gitter.im/ok-lang/community](https://badges.gitter.im/ok-lang/community.svg)](https://gitter.im/ok-lang/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Join the chat at https://gitter.im/ok-lang/community](https://badges.gitter.im/ok-lang/community.svg)](https://gitter.im/ok-lang/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **ok** is a strongly-duck-typed language, heavily influenced by Go. The goals
 are:
@@ -31,8 +32,9 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Switch](#switch)
       * [Arrays](#arrays)
       * [Maps](#maps)
+      * [Iteration](#iteration)
 
-<!-- Added by: elliot, at: Fri Jun 19 14:38:08 EDT 2020 -->
+<!-- Added by: elliot, at: Sat Jun 20 10:53:26 EDT 2020 -->
 
 <!--te-->
 
@@ -403,4 +405,57 @@ func main() {
 {"a": 123, "b": "foo", "c": true}
 2 foo
 {"a": 1, "b": 7, "c": 3}
+```
+
+Iteration
+---------
+
+```
+func main() {
+    myArray = [7, 11, 13]
+
+    // When iterating an array the first and second variable are assigned the
+    // index and the value respectively.
+    for i, v in myArray {
+        print(i, v)
+    }
+
+    myMap = {"foo": 1.23, "bar": 4.56}
+
+    // Maps work the same way but the first variable will be the key.
+    for key, value in myMap {
+        print(key, value)
+    }
+
+    // For both arrays and maps you may omit the second variable if you only
+    // need to iterate the index or keys.
+    for index in myArray {
+        print(index)
+    }
+
+    for key in myMap {
+        print("key is", key)
+    }
+
+    // If you also need to keep a numeric iterator while iterating a map you can
+    // use another form of for.
+    for i = 0; key, value in myMap; ++i {
+        print(i, key, value)
+    }
+}
+```
+
+```
+0 7
+1 11
+2 13
+foo 1.23
+bar 4.56
+0
+1
+2
+key is foo
+key is bar
+0 foo 1.23
+1 bar 4.56
 ```

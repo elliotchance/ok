@@ -30,6 +30,7 @@ const (
 	TokenFor      = "for"
 	TokenFunc     = "func"
 	TokenIf       = "if"
+	TokenIn       = "in"
 	TokenNot      = "not"
 	TokenNumber   = "number"
 	TokenOr       = "or"

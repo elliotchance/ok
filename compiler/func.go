@@ -21,6 +21,11 @@ func (c *CompiledFunc) append(instruction instruction.Instruction) {
 	c.Instructions = append(c.Instructions, instruction)
 }
 
+func (c *CompiledFunc) newVariable(variableName string, kind string) {
+	// TODO(elliot): Check already registered variables.
+	c.variables[variableName] = kind
+}
+
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
 func CompileFunc(fn *ast.Func) (*CompiledFunc, error) {

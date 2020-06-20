@@ -13,6 +13,7 @@ type MapSet struct {
 func (ins *MapSet) Execute(registers map[string]*ast.Literal, _ *int) error {
 	key := registers[ins.Key].Value
 	registers[ins.Map].Map[key] = registers[ins.Value]
+	registers[ins.Map].Array = append(registers[ins.Map].Array, registers[ins.Key])
 
 	return nil
 }

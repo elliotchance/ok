@@ -8,3 +8,9 @@ type For struct {
 	// Statements may be nil.
 	Statements []Node
 }
+
+// In represents an "in" expression in for loops.
+type In struct {
+	Key, Value string
+	Expr       Node
+}

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"ok/ast"
 	"ok/instruction"
+	"strings"
 )
 
 func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
@@ -16,21 +17,65 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 		}
 	}
 
-	// Condition is optionally present, but must always be of type bool.
-	condition := n.Condition
-	if condition == nil {
-		condition = ast.NewLiteralBool(true)
-	}
+	var conditionResult string
+	switch cond := n.Condition.(type) {
+	case nil:
+		// Error here should not be possible.
+		conditionResult, _, _ = compileExpr(compiledFunc, ast.NewLiteralBool(true))
 
-	conditionResult, conditionKind, err := compileExpr(compiledFunc, condition)
-	if err != nil {
-		return err
-	}
+	case *ast.In:
+		// TODO(elliot): Check arrayOrMapResult is actually an array or map.
+		arrayOrMapResult, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr)
+		if err != nil {
+			return err
+		}
 
-	if conditionKind != "bool" {
-		return fmt.Errorf(
-			"expression in for condition must be a bool, got %s",
-			conditionKind)
+		// TODO(elliot): Not always a number.
+		compiledFunc.newVariable(cond.Key, "number")
+
+		if cond.Value != "" {
+			// TODO(elliot): Not always a number.
+			compiledFunc.newVariable(cond.Value, "number")
+		}
+
+		cursorRegister := compiledFunc.nextRegister()
+		compiledFunc.append(&instruction.Assign{
+			VariableName: cursorRegister,
+			Value:        ast.NewLiteralNumber("0"),
+		})
+
+		conditionResult = compiledFunc.nextRegister()
+		if strings.HasPrefix(arrayOrMapKind, "[]") {
+			compiledFunc.append(&instruction.NextArray{
+				Array:       arrayOrMapResult,
+				Cursor:      cursorRegister,
+				KeyResult:   cond.Key,
+				ValueResult: cond.Value,
+				Result:      conditionResult,
+			})
+		} else {
+			compiledFunc.append(&instruction.NextMap{
+				Map:         arrayOrMapResult,
+				Cursor:      cursorRegister,
+				KeyResult:   cond.Key,
+				ValueResult: cond.Value,
+				Result:      conditionResult,
+			})
+		}
+
+	default:
+		var conditionKind string
+		var err error
+		conditionResult, conditionKind, err = compileExpr(compiledFunc, n.Condition)
+		if err != nil {
+			return err
+		}
+
+		if conditionKind != "bool" {
+			return fmt.Errorf(
+				"expression in for condition must be a bool, got %s",
+				conditionKind)
+		}
 	}
 
 	// "-2" because we need to jump before the previous instruction + we
@@ -49,7 +94,7 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 	continueIns := &instruction.Jump{
 		To: 0, // This is corrected later on.
 	}
-	err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns)
+	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns)
 	if err != nil {
 		return err
 	}
