@@ -1,0 +1,12 @@
+func foo() {
+    print("called foo")
+}
+
+func main() {
+    foo()
+    print(add(2.3, 7.90))
+}
+
+func add(a, b number) number {
+    return a + b
+}

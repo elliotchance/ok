@@ -3,16 +3,16 @@ package compiler
 import (
 	"fmt"
 	"ok/ast"
-	"ok/instruction"
+	"ok/vm"
 )
 
-func compileCase(compiledFunc *CompiledFunc, n *ast.Case, valueRegister, expectedConditionKind string, afterMatch, breakIns, continueIns instruction.Instruction) error {
+func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
 	// TODO(elliot): This is a poor solution. It simply expands the conditions
 	//  out as if they were individual case statements. This duplicates
 	//  statements and uses more memory.
 
 	for _, condition := range n.Conditions {
-		conditionResult, conditionKind, err := compileExpr(compiledFunc, condition)
+		conditionResults, conditionKind, err := compileExpr(compiledFunc, condition, fns)
 		if err != nil {
 			return err
 		}
@@ -25,27 +25,27 @@ func compileCase(compiledFunc *CompiledFunc, n *ast.Case, valueRegister, expecte
 
 		// If we are comparing against a value we need to add the equality step.
 		if valueRegister != "" {
-			result := compiledFunc.nextRegister()
+			result := compiledFunc.NextRegister()
 
 			op := fmt.Sprintf("%s == %s", conditionKind, conditionKind)
-			bop, _ := getBinaryInstruction(op, valueRegister, conditionResult, result)
-			compiledFunc.append(bop)
+			bop, _ := getBinaryInstruction(op, valueRegister, conditionResults[0], result)
+			compiledFunc.Append(bop)
 
-			conditionResult = result
+			conditionResults = []string{result}
 		}
 
-		ins := &instruction.JumpUnless{
-			Condition: conditionResult,
+		ins := &vm.JumpUnless{
+			Condition: conditionResults[0],
 			To:        -1, // This is corrected at the end.
 		}
-		compiledFunc.append(ins)
+		compiledFunc.Append(ins)
 
-		err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns)
+		err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns, fns)
 		if err != nil {
 			return err
 		}
 
-		compiledFunc.append(afterMatch)
+		compiledFunc.Append(afterMatch)
 
 		// Correct case jump. This is the jump to the next case statement. Or,
 		// if it's the last case it will jump to outside the switch.
@@ -55,31 +55,31 @@ func compileCase(compiledFunc *CompiledFunc, n *ast.Case, valueRegister, expecte
 	return nil
 }
 
-func compileSwitch(compiledFunc *CompiledFunc, n *ast.Switch, breakIns, continueIns instruction.Instruction) error {
-	afterMatch := &instruction.Jump{
+func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
+	afterMatch := &vm.Jump{
 		To: -1, // Corrected later.
 	}
 
 	// Condition must be a bool if no value has been provided, otherwise all
 	// conditions must be the same type as the value.
 	expectedConditionKind := "bool"
-	var valueRegister string
+	valueRegisters := []string{""}
 	if n.Expr != nil {
 		var err error
-		valueRegister, expectedConditionKind, err = compileExpr(compiledFunc, n.Expr)
+		valueRegisters, expectedConditionKind, err = compileExpr(compiledFunc, n.Expr, fns)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, caseStmt := range n.Cases {
-		err := compileCase(compiledFunc, caseStmt, valueRegister, expectedConditionKind, afterMatch, breakIns, continueIns)
+		err := compileCase(compiledFunc, caseStmt, valueRegisters[0], expectedConditionKind, afterMatch, breakIns, continueIns, fns)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := compileBlock(compiledFunc, n.Else, breakIns, continueIns)
+	err := compileBlock(compiledFunc, n.Else, breakIns, continueIns, fns)
 	if err != nil {
 		return err
 	}

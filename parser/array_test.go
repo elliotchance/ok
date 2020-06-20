@@ -97,7 +97,9 @@ func TestArray(t *testing.T) {
 			p := parser.ParseString(str)
 
 			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, newFunc(test.expected), p.File.Root)
+			assert.Equal(t, map[string]*ast.Func{
+				"main": newFunc(test.expected),
+			}, p.File.Funcs)
 		})
 	}
 }

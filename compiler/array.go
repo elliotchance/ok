@@ -4,39 +4,39 @@ import (
 	"errors"
 	"fmt"
 	"ok/ast"
-	"ok/instruction"
+	"ok/vm"
 )
 
-func compileArray(compiledFunc *CompiledFunc, n *ast.Array) (string, error) {
+func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (string, error) {
 	if len(n.Elements) == 0 && n.Kind == "" {
 		return "", errors.New("empty array needs to specify a type")
 	}
 
-	sizeRegister := compiledFunc.nextRegister()
-	compiledFunc.append(&instruction.Assign{
+	sizeRegister := compiledFunc.NextRegister()
+	compiledFunc.Append(&vm.Assign{
 		VariableName: sizeRegister,
 		Value:        ast.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
 	})
 
-	arrayRegister := compiledFunc.nextRegister()
-	compiledFunc.append(&instruction.ArrayAllocNumber{
+	arrayRegister := compiledFunc.NextRegister()
+	compiledFunc.Append(&vm.ArrayAllocNumber{
 		Size:   sizeRegister,
 		Result: arrayRegister,
 	})
 
 	for index, value := range n.Elements {
-		indexRegister := compiledFunc.nextRegister()
-		compiledFunc.append(&instruction.Assign{
+		indexRegister := compiledFunc.NextRegister()
+		compiledFunc.Append(&vm.Assign{
 			VariableName: indexRegister,
 			Value:        ast.NewLiteralNumber(fmt.Sprintf("%d", index)),
 		})
 
-		valueRegister, _, _ := compileExpr(compiledFunc, value)
+		valueRegisters, _, _ := compileExpr(compiledFunc, value, fns)
 
-		compiledFunc.append(&instruction.ArraySet{
+		compiledFunc.Append(&vm.ArraySet{
 			Array: arrayRegister,
 			Index: indexRegister,
-			Value: valueRegister,
+			Value: valueRegisters[0],
 		})
 	}
 

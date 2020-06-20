@@ -3,7 +3,8 @@ package compiler_test
 import (
 	"ok/ast"
 	"ok/compiler"
-	"ok/instruction"
+	"ok/lexer"
+	"ok/vm"
 	"os"
 	"testing"
 
@@ -14,7 +15,7 @@ import (
 func TestCall(t *testing.T) {
 	for testName, test := range map[string]struct {
 		nodes    []ast.Node
-		expected []instruction.Instruction
+		expected []vm.Instruction
 		err      error
 	}{
 		"print-0": {
@@ -23,8 +24,8 @@ func TestCall(t *testing.T) {
 					FunctionName: "print",
 				},
 			},
-			expected: []instruction.Instruction{
-				&instruction.Print{
+			expected: []vm.Instruction{
+				&vm.Print{
 					Stdout: os.Stdout,
 				},
 			},
@@ -38,24 +39,109 @@ func TestCall(t *testing.T) {
 					},
 				},
 			},
-			expected: []instruction.Instruction{
-				&instruction.Assign{
+			expected: []vm.Instruction{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.ArrayAllocNumber{
+				&vm.ArrayAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
-				&instruction.Len{
+				&vm.Len{
 					Argument: "2",
 					Result:   "3",
 				},
 			},
 		},
+		"assign-print": {
+			nodes: []ast.Node{
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.5"),
+				},
+				&ast.Call{
+					FunctionName: "print",
+					Arguments: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.5"),
+				},
+				&vm.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+				&vm.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"foo"},
+				},
+			},
+		},
+		"assign-print-2": {
+			nodes: []ast.Node{
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenAssign,
+					Right: ast.NewLiteralNumber("1.5"),
+				},
+				&ast.Call{
+					FunctionName: "print",
+					Arguments: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "foo"},
+							Op:    lexer.TokenPlus,
+							Right: ast.NewLiteralNumber("2"),
+						},
+						&ast.Binary{
+							Left:  ast.NewLiteralNumber("10"),
+							Op:    lexer.TokenTimes,
+							Right: &ast.Identifier{Name: "foo"},
+						},
+					},
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.Assign{
+					VariableName: "1",
+					Value:        ast.NewLiteralNumber("1.5"),
+				},
+				&vm.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+				&vm.Assign{
+					VariableName: "2",
+					Value:        ast.NewLiteralNumber("2"),
+				},
+				&vm.Add{
+					Left:   "foo",
+					Right:  "2",
+					Result: "3",
+				},
+				&vm.Assign{
+					VariableName: "4",
+					Value:        ast.NewLiteralNumber("10"),
+				},
+				&vm.Multiply{
+					Left:   "4",
+					Right:  "foo",
+					Result: "5",
+				},
+				&vm.Print{
+					Stdout:    os.Stdout,
+					Arguments: []string{"3", "5"},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...))
+			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...), nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

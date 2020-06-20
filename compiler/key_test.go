@@ -3,8 +3,8 @@ package compiler_test
 import (
 	"ok/ast"
 	"ok/compiler"
-	"ok/instruction"
 	"ok/lexer"
+	"ok/vm"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,7 +14,7 @@ import (
 func TestKey(t *testing.T) {
 	for testName, test := range map[string]struct {
 		nodes    []ast.Node
-		expected []instruction.Instruction
+		expected []vm.Instruction
 		err      error
 	}{
 		"array-number-index": {
@@ -34,59 +34,59 @@ func TestKey(t *testing.T) {
 					Key:  ast.NewLiteralNumber("1"),
 				},
 			},
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.ArrayAllocNumber{
+				&vm.ArrayAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
 
 				// set 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "3",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralNumber("123"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "3",
 					Value: "4",
 				},
 
 				// set 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "6",
 					Value:        ast.NewLiteralNumber("456"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "5",
 					Value: "6",
 				},
 
 				// assign foo
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "foo",
 					Register:     "2",
 				},
 
 				// get 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.ArrayGet{
+				&vm.ArrayGet{
 					Array:  "foo",
 					Index:  "7",
 					Result: "8",
@@ -116,59 +116,59 @@ func TestKey(t *testing.T) {
 					Key:  ast.NewLiteralString("b"),
 				},
 			},
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.MapAllocNumber{
+				&vm.MapAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
 
 				// "a": 123
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "3",
 					Value:        ast.NewLiteralString("a"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralNumber("123"),
 				},
-				&instruction.MapSet{
+				&vm.MapSet{
 					Map:   "2",
 					Key:   "3",
 					Value: "4",
 				},
 
 				// "b": 456
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralString("b"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "6",
 					Value:        ast.NewLiteralNumber("456"),
 				},
-				&instruction.MapSet{
+				&vm.MapSet{
 					Map:   "2",
 					Key:   "5",
 					Value: "6",
 				},
 
 				// assign foo
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "foo",
 					Register:     "2",
 				},
 
 				// get "b"
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralString("b"),
 				},
-				&instruction.MapGet{
+				&vm.MapGet{
 					Map:    "foo",
 					Key:    "7",
 					Result: "8",
@@ -196,63 +196,63 @@ func TestKey(t *testing.T) {
 					ast.NewLiteralNumber("2"),
 				),
 			},
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.ArrayAllocNumber{
+				&vm.ArrayAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
 
 				// set 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "3",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralNumber("123"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "3",
 					Value: "4",
 				},
 
 				// set 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "6",
 					Value:        ast.NewLiteralNumber("456"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "5",
 					Value: "6",
 				},
 
 				// assign foo
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "foo",
 					Register:     "2",
 				},
 
 				// foo[1] = 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "8",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "foo",
 					Index: "8",
 					Value: "7",
@@ -286,63 +286,63 @@ func TestKey(t *testing.T) {
 					ast.NewLiteralNumber("2"),
 				),
 			},
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.MapAllocNumber{
+				&vm.MapAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
 
 				// "a": 123
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "3",
 					Value:        ast.NewLiteralString("a"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralNumber("123"),
 				},
-				&instruction.MapSet{
+				&vm.MapSet{
 					Map:   "2",
 					Key:   "3",
 					Value: "4",
 				},
 
 				// "b": 456
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralString("b"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "6",
 					Value:        ast.NewLiteralNumber("456"),
 				},
-				&instruction.MapSet{
+				&vm.MapSet{
 					Map:   "2",
 					Key:   "5",
 					Value: "6",
 				},
 
 				// assign foo
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "foo",
 					Register:     "2",
 				},
 
 				// foo["b"] = 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "8",
 					Value:        ast.NewLiteralString("b"),
 				},
-				&instruction.MapSet{
+				&vm.MapSet{
 					Map:   "foo",
 					Key:   "8",
 					Value: "7",
@@ -353,7 +353,7 @@ func TestKey(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(&ast.Func{
 				Statements: test.nodes,
-			})
+			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

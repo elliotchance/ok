@@ -3,11 +3,11 @@ package compiler
 import (
 	"fmt"
 	"ok/ast"
-	"ok/instruction"
+	"ok/vm"
 )
 
-func compileIf(compiledFunc *CompiledFunc, n *ast.If, breakIns, continueIns instruction.Instruction) error {
-	conditionResult, conditionKind, err := compileExpr(compiledFunc, n.Condition)
+func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
+	conditionResults, conditionKind, err := compileExpr(compiledFunc, n.Condition, fns)
 	if err != nil {
 		return err
 	}
@@ -18,27 +18,27 @@ func compileIf(compiledFunc *CompiledFunc, n *ast.If, breakIns, continueIns inst
 			conditionKind)
 	}
 
-	ins := &instruction.JumpUnless{
-		Condition: conditionResult,
+	ins := &vm.JumpUnless{
+		Condition: conditionResults[0],
 		To:        -1,
 	}
-	compiledFunc.append(ins)
+	compiledFunc.Append(ins)
 
-	err = compileBlock(compiledFunc, n.True, breakIns, continueIns)
+	err = compileBlock(compiledFunc, n.True, breakIns, continueIns, fns)
 	if err != nil {
 		return err
 	}
 
 	// Else
 	if len(n.False) > 0 {
-		elseIns := &instruction.Jump{
+		elseIns := &vm.Jump{
 			To: -1,
 		}
-		compiledFunc.append(elseIns)
+		compiledFunc.Append(elseIns)
 
 		ins.To = len(compiledFunc.Instructions) - 1
 
-		err = compileBlock(compiledFunc, n.False, breakIns, continueIns)
+		err = compileBlock(compiledFunc, n.False, breakIns, continueIns, fns)
 		if err != nil {
 			return err
 		}

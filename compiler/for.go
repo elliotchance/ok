@@ -3,70 +3,70 @@ package compiler
 import (
 	"fmt"
 	"ok/ast"
-	"ok/instruction"
+	"ok/vm"
 	"strings"
 )
 
-func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
+func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.Func) error {
 	// There's nothing special about Init here. It just executes once before the
 	// loop.
 	if n.Init != nil {
-		_, _, err := compileExpr(compiledFunc, n.Init)
+		_, _, err := compileExpr(compiledFunc, n.Init, fns)
 		if err != nil {
 			return err
 		}
 	}
 
-	var conditionResult string
+	var conditionResults []string
 	switch cond := n.Condition.(type) {
 	case nil:
 		// Error here should not be possible.
-		conditionResult, _, _ = compileExpr(compiledFunc, ast.NewLiteralBool(true))
+		conditionResults, _, _ = compileExpr(compiledFunc, ast.NewLiteralBool(true), fns)
 
 	case *ast.In:
 		// TODO(elliot): Check arrayOrMapResult is actually an array or map.
-		arrayOrMapResult, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr)
+		arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr, fns)
 		if err != nil {
 			return err
 		}
 
 		// TODO(elliot): Not always a number.
-		compiledFunc.newVariable(cond.Key, "number")
+		compiledFunc.NewVariable(cond.Key, "number")
 
 		if cond.Value != "" {
 			// TODO(elliot): Not always a number.
-			compiledFunc.newVariable(cond.Value, "number")
+			compiledFunc.NewVariable(cond.Value, "number")
 		}
 
-		cursorRegister := compiledFunc.nextRegister()
-		compiledFunc.append(&instruction.Assign{
+		cursorRegister := compiledFunc.NextRegister()
+		compiledFunc.Append(&vm.Assign{
 			VariableName: cursorRegister,
 			Value:        ast.NewLiteralNumber("0"),
 		})
 
-		conditionResult = compiledFunc.nextRegister()
+		conditionResults = []string{compiledFunc.NextRegister()}
 		if strings.HasPrefix(arrayOrMapKind, "[]") {
-			compiledFunc.append(&instruction.NextArray{
-				Array:       arrayOrMapResult,
+			compiledFunc.Append(&vm.NextArray{
+				Array:       arrayOrMapResults[0],
 				Cursor:      cursorRegister,
 				KeyResult:   cond.Key,
 				ValueResult: cond.Value,
-				Result:      conditionResult,
+				Result:      conditionResults[0],
 			})
 		} else {
-			compiledFunc.append(&instruction.NextMap{
-				Map:         arrayOrMapResult,
+			compiledFunc.Append(&vm.NextMap{
+				Map:         arrayOrMapResults[0],
 				Cursor:      cursorRegister,
 				KeyResult:   cond.Key,
 				ValueResult: cond.Value,
-				Result:      conditionResult,
+				Result:      conditionResults[0],
 			})
 		}
 
 	default:
 		var conditionKind string
 		var err error
-		conditionResult, conditionKind, err = compileExpr(compiledFunc, n.Condition)
+		conditionResults, conditionKind, err = compileExpr(compiledFunc, n.Condition, fns)
 		if err != nil {
 			return err
 		}
@@ -82,19 +82,19 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 	// need to offset the +1 that will always occur after an instruction.
 	conditionPosition := len(compiledFunc.Instructions) - 2
 
-	ins := &instruction.JumpUnless{
-		Condition: conditionResult,
+	ins := &vm.JumpUnless{
+		Condition: conditionResults[0],
 		To:        -1,
 	}
-	compiledFunc.append(ins)
+	compiledFunc.Append(ins)
 
-	breakIns := &instruction.Jump{
+	breakIns := &vm.Jump{
 		To: 0, // This is corrected later on.
 	}
-	continueIns := &instruction.Jump{
+	continueIns := &vm.Jump{
 		To: 0, // This is corrected later on.
 	}
-	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns)
+	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns, fns)
 	if err != nil {
 		return err
 	}
@@ -107,7 +107,7 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 		// next iteration.
 		continueIns.To = len(compiledFunc.Instructions) - 1
 
-		_, _, err := compileExpr(compiledFunc, n.Next)
+		_, _, err := compileExpr(compiledFunc, n.Next, fns)
 		if err != nil {
 			return err
 		}
@@ -118,7 +118,7 @@ func compileFor(compiledFunc *CompiledFunc, n *ast.For) error {
 	}
 
 	// Jump back to the condition.
-	compiledFunc.append(&instruction.Jump{
+	compiledFunc.Append(&vm.Jump{
 		To: conditionPosition,
 	})
 

@@ -94,7 +94,6 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		var identifier *ast.Identifier
 		identifier, offset, err = consumeIdentifier(parser, offset)
 		if err == nil {
-
 			// Read ahead for key expression.
 			if parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen {
 				offset++ // skip "["

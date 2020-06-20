@@ -4,8 +4,8 @@ import (
 	"errors"
 	"ok/ast"
 	"ok/compiler"
-	"ok/instruction"
 	"ok/lexer"
+	"ok/vm"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +15,7 @@ import (
 func TestArray(t *testing.T) {
 	for testName, test := range map[string]struct {
 		node     ast.Node
-		expected []instruction.Instruction
+		expected []vm.Instruction
 		err      error
 	}{
 		"unknown-array-empty": {
@@ -26,13 +26,13 @@ func TestArray(t *testing.T) {
 			node: &ast.Array{
 				Kind: "[]number",
 			},
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.ArrayAllocNumber{
+				&vm.ArrayAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
@@ -46,57 +46,57 @@ func TestArray(t *testing.T) {
 					ast.NewLiteralNumber("13"),
 				},
 			},
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("3"),
 				},
-				&instruction.ArrayAllocNumber{
+				&vm.ArrayAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
 
 				// set 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "3",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "3",
 					Value: "4",
 				},
 
 				// set 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "6",
 					Value:        ast.NewLiteralNumber("5"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "5",
 					Value: "6",
 				},
 
 				// set 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "8",
 					Value:        ast.NewLiteralNumber("13"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "7",
 					Value: "8",
@@ -113,34 +113,34 @@ func TestArray(t *testing.T) {
 					},
 				},
 			),
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// alloc
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.ArrayAllocNumber{
+				&vm.ArrayAllocNumber{
 					Size:   "1",
 					Result: "2",
 				},
 
 				// set 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "3",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.ArraySet{
+				&vm.ArraySet{
 					Array: "2",
 					Index: "3",
 					Value: "4",
 				},
 
 				// assign a
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "a",
 					Register:     "2",
 				},
@@ -152,7 +152,7 @@ func TestArray(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			})
+			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

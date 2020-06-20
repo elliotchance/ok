@@ -42,5 +42,6 @@ func (*Command) Run(args []string) {
 	check(err)
 
 	m := vm.NewVM(f)
-	m.Run()
+	err = m.Run()
+	check(err)
 }
