@@ -16,7 +16,12 @@ func (ins *MapAllocNumber) Execute(registers map[string]*ast.Literal, _ *int) er
 
 	registers[ins.Result] = &ast.Literal{
 		Kind: "{}number",
-		Map:  make(map[string]*ast.Literal, size),
+
+		// Array must also be allocated because it will contain the keys for the
+		// map.
+		Array: make([]*ast.Literal, 0, size),
+
+		Map: make(map[string]*ast.Literal, size),
 	}
 
 	return nil

@@ -46,6 +46,13 @@ func (n *Number) Int64() int64 {
 	return i64
 }
 
+// Int returns the int value. This is only for internal use when we need the
+// actual int for things like array lengths. Non-integers will be rounded to the
+// nearest integer.
+func (n *Number) Int() int {
+	return int(n.Int64())
+}
+
 func precision(s string) int {
 	if idx := strings.Index(s, "."); idx > 0 {
 		return len(s) - idx - 1

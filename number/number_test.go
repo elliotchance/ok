@@ -144,18 +144,29 @@ func TestNumber_IsZero(t *testing.T) {
 	}
 }
 
+var intTests = map[string]int64{
+	"0":                0,
+	"1234":             1234,
+	"-100":             -100,
+	"123.4":            123,
+	"123.8":            124,
+	"1234567890123456": 1234567890123456,
+}
+
 func TestNumber_Int64(t *testing.T) {
-	for n, expected := range map[string]int64{
-		"0":                0,
-		"1234":             1234,
-		"-100":             -100,
-		"123.4":            123,
-		"123.8":            124,
-		"1234567890123456": 1234567890123456,
-	} {
+	for n, expected := range intTests {
 		t.Run(n, func(t *testing.T) {
 			num := number.NewNumber(n)
 			assert.Equal(t, expected, num.Int64())
+		})
+	}
+}
+
+func TestNumber_Int(t *testing.T) {
+	for n, expected := range intTests {
+		t.Run(n, func(t *testing.T) {
+			num := number.NewNumber(n)
+			assert.Equal(t, int(expected), num.Int())
 		})
 	}
 }

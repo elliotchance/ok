@@ -121,6 +121,44 @@ func TestFor(t *testing.T) {
 				},
 			},
 		},
+		"for-in-1": {
+			str: "for k in something { }",
+			expected: &ast.For{
+				Condition: &ast.In{
+					Key:  "k",
+					Expr: &ast.Identifier{Name: "something"},
+				},
+			},
+		},
+		"for-in-2": {
+			str: "for k, v in something { }",
+			expected: &ast.For{
+				Condition: &ast.In{
+					Key:   "k",
+					Value: "v",
+					Expr:  &ast.Identifier{Name: "something"},
+				},
+			},
+		},
+		"for-in-3": {
+			str: "for i = 0; k, v in something; ++i { }",
+			expected: &ast.For{
+				Init: ast.NewBinary(
+					&ast.Identifier{Name: "i"},
+					lexer.TokenAssign,
+					ast.NewLiteralNumber("0"),
+				),
+				Condition: &ast.In{
+					Key:   "k",
+					Value: "v",
+					Expr:  &ast.Identifier{Name: "something"},
+				},
+				Next: &ast.Unary{
+					Expr: &ast.Identifier{Name: "i"},
+					Op:   lexer.TokenIncrement,
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

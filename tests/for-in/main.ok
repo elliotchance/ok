@@ -1,0 +1,15 @@
+func main() {
+    values = [7, 11, 13]
+    for k1 in values {
+        print(k1)
+    }
+
+    for k2, v2 in values {
+        print(k2, v2)
+    }
+
+    m = {"foo": 1.23, "bar": 4.56}
+    for k3, v3 in m {
+        print(k3, v3)
+    }
+}

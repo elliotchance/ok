@@ -1,0 +1,12 @@
+0 7
+1 11
+2 13
+foo 1.23
+bar 4.56
+0
+1
+2
+key is foo
+key is bar
+0 foo 1.23
+1 bar 4.56

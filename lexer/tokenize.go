@@ -167,7 +167,7 @@ func tokenWord(word string) Token {
 		return NewToken(TokenBoolLiteral, word)
 
 	case "and", "break", "case", "continue", "else", "if", "for", "func", "not",
-		"or", "switch", "any", "bool", "char", "data", "number", "string":
+		"or", "switch", "any", "bool", "char", "data", "number", "string", "in":
 		return NewToken(word, word)
 	}
 
