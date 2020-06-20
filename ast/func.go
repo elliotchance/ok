@@ -1,9 +1,23 @@
 package ast
 
+// Argument is used to define a name and type for a function argument.
+type Argument struct {
+	Name string
+	Type string
+}
+
 // Func represents the definition of a function.
 type Func struct {
 	// Name is the name of the function being declared.
 	Name string
+
+	// Arguments may contain zero or more elements. They will always be in the
+	// order in which their are declared.
+	Arguments []*Argument
+
+	// Returns may contain zero or more types. They will always be in the order
+	// in which they are declared.
+	Returns []string
 
 	// Statements can have zero or more elements for each of the ordered
 	// discreet statements in the function.

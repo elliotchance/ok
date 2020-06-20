@@ -1,38 +1,26 @@
 package compiler
 
 import (
-	"fmt"
 	"ok/ast"
-	"ok/instruction"
+	"ok/vm"
 )
-
-type CompiledFunc struct {
-	Instructions []instruction.Instruction
-	Registers    int
-	variables    map[string]string
-}
-
-func (c *CompiledFunc) nextRegister() string {
-	c.Registers++
-	return fmt.Sprintf("%d", c.Registers)
-}
-
-func (c *CompiledFunc) append(instruction instruction.Instruction) {
-	c.Instructions = append(c.Instructions, instruction)
-}
-
-func (c *CompiledFunc) newVariable(variableName string, kind string) {
-	// TODO(elliot): Check already registered variables.
-	c.variables[variableName] = kind
-}
 
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunc(fn *ast.Func) (*CompiledFunc, error) {
-	compiled := &CompiledFunc{
-		variables: map[string]string{},
+func CompileFunc(fn *ast.Func, fns map[string]*ast.Func) (*vm.CompiledFunc, error) {
+	compiled := &vm.CompiledFunc{
+		Variables: map[string]string{},
 	}
-	err := compileBlock(compiled, fn.Statements, nil, nil)
+
+	// Load the arguments from the registers.
+	for _, arg := range fn.Arguments {
+		compiled.NextRegister()
+		compiled.NewVariable(arg.Name, arg.Type)
+
+		compiled.Arguments = append(compiled.Arguments, arg.Name)
+	}
+
+	err := compileBlock(compiled, fn.Statements, nil, nil, fns)
 	if err != nil {
 		return nil, err
 	}

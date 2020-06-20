@@ -3,102 +3,102 @@ package compiler
 import (
 	"fmt"
 	"ok/ast"
-	"ok/instruction"
 	"ok/lexer"
+	"ok/vm"
 	"strings"
 )
 
-func getBinaryInstruction(op string, left, right, result string) (instruction.Instruction, string) {
+func getBinaryInstruction(op string, left, right, result string) (vm.Instruction, string) {
 	switch op {
 	case "data + data":
-		return &instruction.Combine{Left: left, Right: right, Result: result}, "data"
+		return &vm.Combine{Left: left, Right: right, Result: result}, "data"
 
 	case "data += data":
-		return &instruction.Combine{Left: left, Right: right, Result: left}, "data"
+		return &vm.Combine{Left: left, Right: right, Result: left}, "data"
 
 	case "number + number":
-		return &instruction.Add{Left: left, Right: right, Result: result}, "number"
+		return &vm.Add{Left: left, Right: right, Result: result}, "number"
 
 	case "number += number":
-		return &instruction.Add{Left: left, Right: right, Result: left}, "number"
+		return &vm.Add{Left: left, Right: right, Result: left}, "number"
 
 	case "number - number":
-		return &instruction.Subtract{Left: left, Right: right, Result: result}, "number"
+		return &vm.Subtract{Left: left, Right: right, Result: result}, "number"
 
 	case "number -= number":
-		return &instruction.Subtract{Left: left, Right: right, Result: left}, "number"
+		return &vm.Subtract{Left: left, Right: right, Result: left}, "number"
 
 	case "number * number":
-		return &instruction.Multiply{Left: left, Right: right, Result: result}, "number"
+		return &vm.Multiply{Left: left, Right: right, Result: result}, "number"
 
 	case "number *= number":
-		return &instruction.Multiply{Left: left, Right: right, Result: left}, "number"
+		return &vm.Multiply{Left: left, Right: right, Result: left}, "number"
 
 	case "number / number":
-		return &instruction.Divide{Left: left, Right: right, Result: result}, "number"
+		return &vm.Divide{Left: left, Right: right, Result: result}, "number"
 
 	case "number /= number":
-		return &instruction.Divide{Left: left, Right: right, Result: left}, "number"
+		return &vm.Divide{Left: left, Right: right, Result: left}, "number"
 
 	case "number % number":
-		return &instruction.Remainder{Left: left, Right: right, Result: result}, "number"
+		return &vm.Remainder{Left: left, Right: right, Result: result}, "number"
 
 	case "number %= number":
-		return &instruction.Remainder{Left: left, Right: right, Result: left}, "number"
+		return &vm.Remainder{Left: left, Right: right, Result: left}, "number"
 
 	case "string + string":
-		return &instruction.Concat{Left: left, Right: right, Result: result}, "string"
+		return &vm.Concat{Left: left, Right: right, Result: result}, "string"
 
 	case "string += string":
-		return &instruction.Concat{Left: left, Right: right, Result: left}, "string"
+		return &vm.Concat{Left: left, Right: right, Result: left}, "string"
 
 	case "bool and bool":
-		return &instruction.And{Left: left, Right: right, Result: result}, "bool"
+		return &vm.And{Left: left, Right: right, Result: result}, "bool"
 
 	case "bool or bool":
-		return &instruction.Or{Left: left, Right: right, Result: result}, "bool"
+		return &vm.Or{Left: left, Right: right, Result: result}, "bool"
 
 	case "bool == bool", "char == char", "data == data", "string == string":
-		return &instruction.Equal{Left: left, Right: right, Result: result}, "bool"
+		return &vm.Equal{Left: left, Right: right, Result: result}, "bool"
 
 	case "number == number":
-		return &instruction.EqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.EqualNumber{Left: left, Right: right, Result: result}, "bool"
 
 	case "bool != bool", "char != char", "data != data", "string != string":
-		return &instruction.NotEqual{Left: left, Right: right, Result: result}, "bool"
+		return &vm.NotEqual{Left: left, Right: right, Result: result}, "bool"
 
 	case "number != number":
-		return &instruction.NotEqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.NotEqualNumber{Left: left, Right: right, Result: result}, "bool"
 
 	case "number > number":
-		return &instruction.GreaterThanNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanNumber{Left: left, Right: right, Result: result}, "bool"
 
 	case "string > string":
-		return &instruction.GreaterThanString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanString{Left: left, Right: right, Result: result}, "bool"
 
 	case "number < number":
-		return &instruction.LessThanNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanNumber{Left: left, Right: right, Result: result}, "bool"
 
 	case "string < string":
-		return &instruction.LessThanString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanString{Left: left, Right: right, Result: result}, "bool"
 
 	case "number >= number":
-		return &instruction.GreaterThanEqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanEqualNumber{Left: left, Right: right, Result: result}, "bool"
 
 	case "string >= string":
-		return &instruction.GreaterThanEqualString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanEqualString{Left: left, Right: right, Result: result}, "bool"
 
 	case "number <= number":
-		return &instruction.LessThanEqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanEqualNumber{Left: left, Right: right, Result: result}, "bool"
 
 	case "string <= string":
-		return &instruction.LessThanEqualString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanEqualString{Left: left, Right: right, Result: result}, "bool"
 	}
 
 	return nil, ""
 }
 
-func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string, error) {
+func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (string, string, error) {
 	if node.Op == lexer.TokenAssign ||
 		node.Op == lexer.TokenPlusAssign ||
 		node.Op == lexer.TokenMinusAssign ||
@@ -106,38 +106,38 @@ func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string
 		node.Op == lexer.TokenDivideAssign ||
 		node.Op == lexer.TokenRemainderAssign {
 
-		right, rightKind, err := compileExpr(compiledFunc, node.Right)
+		right, rightKind, err := compileExpr(compiledFunc, node.Right, fns)
 		if err != nil {
 			return "", "", err
 		}
 
 		// TODO(elliot): Check +=, etc.
 		if key, ok := node.Left.(*ast.Key); ok {
-			arrayOrMapResult, arrayOrMapKind, err := compileExpr(compiledFunc, key.Expr)
+			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, key.Expr, fns)
 			if err != nil {
 				return "", "", err
 			}
 
 			// TODO(elliot): Check this is a sane operation.
-			keyResult, _, err := compileExpr(compiledFunc, key.Key)
+			keyResults, _, err := compileExpr(compiledFunc, key.Key, fns)
 			if err != nil {
 				return "", "", err
 			}
 
 			if strings.HasPrefix(arrayOrMapKind, "[]") {
-				ins := &instruction.ArraySet{
-					Array: arrayOrMapResult,
-					Index: keyResult,
-					Value: right,
+				ins := &vm.ArraySet{
+					Array: arrayOrMapResults[0],
+					Index: keyResults[0],
+					Value: right[0],
 				}
-				compiledFunc.append(ins)
+				compiledFunc.Append(ins)
 			} else {
-				ins := &instruction.MapSet{
-					Map:   arrayOrMapResult,
-					Key:   keyResult,
-					Value: right,
+				ins := &vm.MapSet{
+					Map:   arrayOrMapResults[0],
+					Key:   keyResults[0],
+					Value: right[0],
 				}
-				compiledFunc.append(ins)
+				compiledFunc.Append(ins)
 			}
 
 			// TODO(elliot): Return something more reasonable here.
@@ -150,99 +150,99 @@ func compileBinary(compiledFunc *CompiledFunc, node *ast.Binary) (string, string
 		}
 
 		// Make sure we do not assign the wrong type to an existing variable.
-		if v, ok := compiledFunc.variables[variable.Name]; ok && rightKind != v {
+		if v, ok := compiledFunc.Variables[variable.Name]; ok && rightKind != v {
 			return "", "", fmt.Errorf(
 				"cannot assign %s to variable %s (expecting %s)",
 				rightKind, variable.Name, v)
 		}
 
-		returns := right
+		returns := right[0]
 		if node.Op != lexer.TokenAssign {
-			returns = compiledFunc.nextRegister()
+			returns = compiledFunc.NextRegister()
 		}
 
 		switch node.Op {
 		case lexer.TokenPlusAssign:
 			switch rightKind {
 			case "data":
-				compiledFunc.append(&instruction.Combine{
+				compiledFunc.Append(&vm.Combine{
 					Left:   variable.Name,
-					Right:  right,
+					Right:  right[0],
 					Result: returns,
 				})
 
 			case "number":
-				compiledFunc.append(&instruction.Add{
+				compiledFunc.Append(&vm.Add{
 					Left:   variable.Name,
-					Right:  right,
+					Right:  right[0],
 					Result: returns,
 				})
 
 			case "string":
-				compiledFunc.append(&instruction.Concat{
+				compiledFunc.Append(&vm.Concat{
 					Left:   variable.Name,
-					Right:  right,
+					Right:  right[0],
 					Result: returns,
 				})
 			}
 
 		case lexer.TokenMinusAssign:
-			compiledFunc.append(&instruction.Subtract{
+			compiledFunc.Append(&vm.Subtract{
 				Left:   variable.Name,
-				Right:  right,
+				Right:  right[0],
 				Result: returns,
 			})
 
 		case lexer.TokenTimesAssign:
-			compiledFunc.append(&instruction.Multiply{
+			compiledFunc.Append(&vm.Multiply{
 				Left:   variable.Name,
-				Right:  right,
+				Right:  right[0],
 				Result: returns,
 			})
 
 		case lexer.TokenDivideAssign:
-			compiledFunc.append(&instruction.Divide{
+			compiledFunc.Append(&vm.Divide{
 				Left:   variable.Name,
-				Right:  right,
+				Right:  right[0],
 				Result: returns,
 			})
 
 		case lexer.TokenRemainderAssign:
-			compiledFunc.append(&instruction.Remainder{
+			compiledFunc.Append(&vm.Remainder{
 				Left:   variable.Name,
-				Right:  right,
+				Right:  right[0],
 				Result: returns,
 			})
 		}
 
-		ins := &instruction.Assign{
+		ins := &vm.Assign{
 			VariableName: variable.Name,
 			Register:     returns,
 		}
-		compiledFunc.append(ins)
-		compiledFunc.newVariable(variable.Name, rightKind)
+		compiledFunc.Append(ins)
+		compiledFunc.NewVariable(variable.Name, rightKind)
 
 		return variable.Name, rightKind, nil
 	}
 
-	left, leftKind, err := compileExpr(compiledFunc, node.Left)
+	left, leftKind, err := compileExpr(compiledFunc, node.Left, fns)
 	if err != nil {
 		return "", "", err
 	}
 
-	right, rightKind, err := compileExpr(compiledFunc, node.Right)
+	right, rightKind, err := compileExpr(compiledFunc, node.Right, fns)
 	if err != nil {
 		return "", "", err
 	}
 
-	returns := compiledFunc.nextRegister()
+	returns := compiledFunc.NextRegister()
 
 	op := fmt.Sprintf("%s %s %s", leftKind, node.Op, rightKind)
-	if bop, kind := getBinaryInstruction(op, left, right, returns); bop != nil {
+	if bop, kind := getBinaryInstruction(op, left[0], right[0], returns); bop != nil {
 		// TODO(elliot): It would be nice to be able to evaluate expressions
 		//  involving literals here. So, 1 + 1 just becomes 2.
 
-		compiledFunc.append(bop)
+		compiledFunc.Append(bop)
 
 		return returns, kind, nil
 	}

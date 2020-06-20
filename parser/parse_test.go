@@ -41,13 +41,13 @@ func TestParseString(t *testing.T) {
 		"func-name-paren-open": {
 			str: "func main (",
 			errs: []error{
-				errors.New("expecting ) after (, but found end of file"),
+				errors.New("expecting identifier after (, but found end of file"),
 			},
 		},
 		"func-name-paren-open-close": {
 			str: "func main ()",
 			errs: []error{
-				errors.New("expecting { after ), but found end of file"),
+				errors.New("no token found"),
 			},
 		},
 		"func-name-paren-open-close-open": {
@@ -604,7 +604,13 @@ func TestParseString(t *testing.T) {
 			p := parser.ParseString(test.str)
 
 			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, test.expected, p.File.Root)
+			if test.expected == nil {
+				assert.Equal(t, map[string]*ast.Func{}, p.File.Funcs)
+			} else {
+				assert.Equal(t, map[string]*ast.Func{
+					"main": test.expected,
+				}, p.File.Funcs)
+			}
 			assert.Equal(t, test.comments, p.File.Comments)
 		})
 	}

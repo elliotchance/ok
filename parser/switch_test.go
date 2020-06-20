@@ -162,7 +162,9 @@ func TestSwitch(t *testing.T) {
 			p := parser.ParseString(test.str)
 
 			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, test.expected, p.File.Root)
+			assert.Equal(t, map[string]*ast.Func{
+				"main": test.expected,
+			}, p.File.Funcs)
 			assert.Equal(t, test.comments, p.File.Comments)
 		})
 	}

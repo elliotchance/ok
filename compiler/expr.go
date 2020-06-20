@@ -3,66 +3,81 @@ package compiler
 import (
 	"fmt"
 	"ok/ast"
-	"ok/instruction"
+	"ok/vm"
 )
 
 // compileExpr return the (result register, result type, error)
-func compileExpr(compiledFunc *CompiledFunc, expr ast.Node) (string, string, error) {
+func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*ast.Func) ([]string, string, error) {
 	switch e := expr.(type) {
 	case *ast.Literal:
-		returns := compiledFunc.nextRegister()
-		compiledFunc.append(&instruction.Assign{
+		returns := compiledFunc.NextRegister()
+		compiledFunc.Append(&vm.Assign{
 			VariableName: returns,
 			Value:        e,
 		})
 
-		return returns, e.Kind, nil
+		return []string{returns}, e.Kind, nil
 
 	case *ast.Array:
-		returns, err := compileArray(compiledFunc, e)
+		returns, err := compileArray(compiledFunc, e, fns)
 		if err != nil {
-			return "", "", err
+			return nil, "", err
 		}
 
 		// TODO(elliot): Doesn't return type.
-		return returns, "[]", nil
+		return []string{returns}, "[]", nil
 
 	case *ast.Map:
-		returns, err := compileMap(compiledFunc, e)
+		returns, err := compileMap(compiledFunc, e, fns)
 		if err != nil {
-			return "", "", err
+			return nil, "", err
 		}
 
 		// TODO(elliot): Doesn't return type.
-		return returns, "{}", nil
+		return []string{returns}, "{}", nil
 
 	case *ast.Call:
-		result, err := compileCall(compiledFunc, e)
+		results, err := compileCall(compiledFunc, e, fns)
 		if err != nil {
-			return "", "", err
+			return nil, "", err
 		}
 
 		// TODO(elliot): Doesn't return kind.
-		return result, "", nil
+		return results, "", nil
 
 	case *ast.Identifier:
-		if v, ok := compiledFunc.variables[e.Name]; ok {
-			return e.Name, v, nil
+		if v, ok := compiledFunc.Variables[e.Name]; ok {
+			return []string{e.Name}, v, nil
 		}
 
-		return "", "", fmt.Errorf("undefined variable: %s", e.Name)
+		return nil, "", fmt.Errorf("undefined variable: %s", e.Name)
 
 	case *ast.Binary:
-		return compileBinary(compiledFunc, e)
+		result, ty, err := compileBinary(compiledFunc, e, fns)
+		if err != nil {
+			return nil, "", err
+		}
+
+		return []string{result}, ty, nil
 
 	case *ast.Group:
-		return compileExpr(compiledFunc, e.Expr)
+		return compileExpr(compiledFunc, e.Expr, fns)
 
 	case *ast.Unary:
-		return compileUnary(compiledFunc, e)
+		result, ty, err := compileUnary(compiledFunc, e, fns)
+		if err != nil {
+			return nil, "", err
+		}
+
+		return []string{result}, ty, nil
 
 	case *ast.Key:
-		return compileKey(compiledFunc, e)
+		result, ty, err := compileKey(compiledFunc, e, fns)
+		if err != nil {
+			return nil, "", err
+		}
+
+		return []string{result}, ty, nil
 	}
 
 	panic(expr)

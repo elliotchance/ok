@@ -33,8 +33,9 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Arrays](#arrays)
       * [Maps](#maps)
       * [Iteration](#iteration)
+      * [Functions](#functions)
 
-<!-- Added by: elliot, at: Sat Jun 20 10:53:26 EDT 2020 -->
+<!-- Added by: elliot, at: Sat Jun 20 18:07:29 EDT 2020 -->
 
 <!--te-->
 
@@ -401,6 +402,7 @@ func main() {
 ```
 
 ```
+$ ok run maps
 {"a": 1, "b": 2, "c": 3}
 {"a": 123, "b": "foo", "c": true}
 2 foo
@@ -446,6 +448,7 @@ func main() {
 ```
 
 ```
+$ ok run iteration
 0 7
 1 11
 2 13
@@ -459,3 +462,44 @@ key is bar
 0 foo 1.23
 1 bar 4.56
 ```
+
+Functions
+---------
+
+Functions are central in ok. We'll learn about functions with a few different
+examples.
+
+```
+// Here's a function that takes two numbers and returns their sum.
+func plus(a number, b number) number {
+    // ok requires explicit returns, i.e. it won’t automatically return the
+    // value of the last expression.
+    return a + b
+}
+
+// When you have multiple consecutive parameters of the same type, you may omit
+// the type name for the like-typed parameters up to the final parameter that
+// declares the type.
+func plusPlus(a, b, c number) number {
+    return a + b + c
+}
+
+func main() {
+    // Call a function just as you'd expect, with name(args).
+
+    res = plus(1, 2)
+    print("1+2 =", res)
+
+    res = plusPlus(1, 2, 3)
+    print("1+2+3 =", res)
+}
+```
+
+```
+$ ok run functions
+1+2 = 3
+1+2+3 = 6
+```
+
+There are several other features to Go functions. One is multiple return values,
+which we'll look at next.

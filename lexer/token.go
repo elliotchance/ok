@@ -34,6 +34,7 @@ const (
 	TokenNot      = "not"
 	TokenNumber   = "number"
 	TokenOr       = "or"
+	TokenReturn   = "return"
 	TokenString   = "string"
 	TokenSwitch   = "switch"
 

@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"ok/ast"
 	"ok/lexer"
 )
 
@@ -10,6 +11,7 @@ func ParseString(s string) *Parser {
 	parser := &Parser{
 		File: &File{},
 	}
+	parser.File.Funcs = map[string]*ast.Func{}
 
 	var err error
 	parser.File.Tokens, parser.File.Comments, err = lexer.TokenizeString(s, lexer.Options{
@@ -28,22 +30,31 @@ func ParseString(s string) *Parser {
 	}
 
 	var offset int
-	var consumedNothing bool
-	parser.File.Root, offset, consumedNothing, err = consumeFunc(parser, offset)
-	if consumedNothing {
-		// This is OK. It means there was no function in the file.
-	} else if err != nil {
-		// Something went wrong consuming the function.
-		parser.Errors = append(parser.Errors, err)
+	for {
+		switch parser.File.Tokens[offset].Kind {
+		case lexer.TokenFunc:
+			// TODO(elliot): Check for already declared functions.
+			var fn *ast.Func
+			fn, offset, err = consumeFunc(parser, offset)
+			if err != nil {
+				parser.Errors = append(parser.Errors, err)
 
-		return parser
-	}
+				goto done
+			}
+			parser.File.Funcs[fn.Name] = fn
 
-	if parser.File.Tokens[offset].Kind != lexer.TokenEOF {
-		parser.Errors = append(parser.Errors,
-			fmt.Errorf("found extra %s at the end of the file",
-				parser.File.Tokens[offset]))
+		case lexer.TokenEOF:
+			goto done
+
+		default:
+			parser.Errors = append(parser.Errors,
+				fmt.Errorf("found extra %s at the end of the file",
+					parser.File.Tokens[offset]))
+
+			return parser
+		}
 	}
+done:
 
 	return parser
 }

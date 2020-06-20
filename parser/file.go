@@ -7,7 +7,7 @@ import (
 
 // File contains the output state of the parser for a single input.
 type File struct {
-	Root     *ast.Func
+	Funcs    map[string]*ast.Func
 	Comments []*ast.Comment
 	Tokens   []lexer.Token
 }

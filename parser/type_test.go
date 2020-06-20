@@ -60,7 +60,9 @@ func TestType(t *testing.T) {
 			p := parser.ParseString(str)
 
 			assert.Nil(t, p.Errors)
-			assert.Equal(t, newFunc(&ast.Array{Kind: test.expected}), p.File.Root)
+			assert.Equal(t, map[string]*ast.Func{
+				"main": newFunc(&ast.Array{Kind: test.expected}),
+			}, p.File.Funcs)
 			assert.Nil(t, p.File.Comments)
 		})
 	}

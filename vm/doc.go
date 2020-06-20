@@ -1,2 +1,3 @@
-// Package vm runs the instructions created by the compiler.
+// Package instruction contains all the instructions created by the compiler and
+// executed by the VM.
 package vm

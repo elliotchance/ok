@@ -3,8 +3,8 @@ package compiler_test
 import (
 	"ok/ast"
 	"ok/compiler"
-	"ok/instruction"
 	"ok/lexer"
+	"ok/vm"
 	"os"
 	"testing"
 
@@ -15,7 +15,7 @@ import (
 func TestSwitch(t *testing.T) {
 	for testName, test := range map[string]struct {
 		fn       *ast.Func
-		expected []instruction.Instruction
+		expected []vm.Instruction
 		err      error
 	}{
 		"switch-1": {
@@ -70,70 +70,70 @@ func TestSwitch(t *testing.T) {
 					},
 				},
 			),
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// a = 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "a",
 					Register:     "1",
 				},
 
 				// a == 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "2",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "2",
 					Result: "3",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "3",
 					To:        7,
 				},
 
 				// print("ONE")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralString("ONE"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 13,
 				},
 
 				// a == 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "5",
 					Result: "6",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "6",
 					To:        13,
 				},
 
 				// print("TWO")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralString("TWO"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 13,
 				},
 			},
@@ -192,79 +192,79 @@ func TestSwitch(t *testing.T) {
 					},
 				},
 			),
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// a = 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "a",
 					Register:     "1",
 				},
 
 				// a == 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "2",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "2",
 					Result: "3",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "3",
 					To:        7,
 				},
 
 				// print("ONE")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralString("ONE"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 15,
 				},
 
 				// a == 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "5",
 					Result: "6",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "6",
 					To:        13,
 				},
 
 				// print("TWO")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralString("TWO"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 15,
 				},
 
 				// print("NO MATCH")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "8",
 					Value:        ast.NewLiteralString("NO MATCH"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"8"},
 				},
@@ -321,98 +321,98 @@ func TestSwitch(t *testing.T) {
 					},
 				},
 			),
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// a = 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "a",
 					Register:     "1",
 				},
 
 				// a == 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "2",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "2",
 					Result: "3",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "3",
 					To:        7,
 				},
 
 				// print("ONE OR TWO")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 19,
 				},
 
 				// a == 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "5",
 					Result: "6",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "6",
 					To:        13,
 				},
 
 				// print("ONE OR TWO")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 19,
 				},
 
 				// a == 3
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "8",
 					Value:        ast.NewLiteralNumber("3"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "8",
 					Result: "9",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "9",
 					To:        19,
 				},
 
 				// print("THREE")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "10",
 					Value:        ast.NewLiteralString("THREE"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"10"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 19,
 				},
 			},
@@ -428,13 +428,13 @@ func TestSwitch(t *testing.T) {
 					Expr: &ast.Identifier{Name: "a"},
 				},
 			),
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// a = 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "a",
 					Register:     "1",
 				},
@@ -480,105 +480,105 @@ func TestSwitch(t *testing.T) {
 					},
 				},
 			),
-			expected: []instruction.Instruction{
+			expected: []vm.Instruction{
 				// a = 0
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralNumber("0"),
 				},
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "a",
 					Register:     "1",
 				},
 
 				// case 1
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "2",
 					Value:        ast.NewLiteralNumber("1"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "2",
 					Result: "3",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "3",
 					To:        7,
 				},
 
 				// print("ONE OR TWO")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "4",
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 19,
 				},
 
 				// case 2
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "5",
 					Value:        ast.NewLiteralNumber("2"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "5",
 					Result: "6",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "6",
 					To:        13,
 				},
 
 				// print("ONE OR TWO")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "7",
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 19,
 				},
 
 				// case 3
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "8",
 					Value:        ast.NewLiteralNumber("3"),
 				},
-				&instruction.EqualNumber{
+				&vm.EqualNumber{
 					Left:   "a",
 					Right:  "8",
 					Result: "9",
 				},
-				&instruction.JumpUnless{
+				&vm.JumpUnless{
 					Condition: "9",
 					To:        19,
 				},
 
 				// print("THREE")
-				&instruction.Assign{
+				&vm.Assign{
 					VariableName: "10",
 					Value:        ast.NewLiteralString("THREE"),
 				},
-				&instruction.Print{
+				&vm.Print{
 					Stdout:    os.Stdout,
 					Arguments: []string{"10"},
 				},
-				&instruction.Jump{
+				&vm.Jump{
 					To: 19,
 				},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			compiledFunc, err := compiler.CompileFunc(test.fn)
+			compiledFunc, err := compiler.CompileFunc(test.fn, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
