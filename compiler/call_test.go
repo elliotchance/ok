@@ -56,10 +56,13 @@ func TestCall(t *testing.T) {
 		},
 		"assign-print": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1.5"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("1.5"),
+					},
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -85,10 +88,13 @@ func TestCall(t *testing.T) {
 		},
 		"assign-print-2": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1.5"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("1.5"),
+					},
 				},
 				&ast.Call{
 					FunctionName: "print",

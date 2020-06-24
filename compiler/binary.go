@@ -99,8 +99,9 @@ func getBinaryInstruction(op string, left, right, result string) (vm.Instruction
 }
 
 func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (string, string, error) {
-	if node.Op == lexer.TokenAssign ||
-		node.Op == lexer.TokenPlusAssign ||
+	// TokenAssign is not possible here because that is handled by an Assign
+	// operation.
+	if node.Op == lexer.TokenPlusAssign ||
 		node.Op == lexer.TokenMinusAssign ||
 		node.Op == lexer.TokenTimesAssign ||
 		node.Op == lexer.TokenDivideAssign ||
@@ -156,10 +157,7 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 				rightKind, variable.Name, v)
 		}
 
-		returns := right[0]
-		if node.Op != lexer.TokenAssign {
-			returns = compiledFunc.NextRegister()
-		}
+		returns := compiledFunc.NextRegister()
 
 		switch node.Op {
 		case lexer.TokenPlusAssign:

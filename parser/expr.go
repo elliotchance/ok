@@ -90,33 +90,11 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 			}
 		}
 
-		// An identifier. It's important this happens last if all else fails.
-		var identifier *ast.Identifier
-		identifier, offset, err = consumeIdentifier(parser, offset)
+		// An assignable. It's important this happens last if all else fails.
+		var assignable ast.Node
+		assignable, offset, err = consumeAssignable(parser, offset)
 		if err == nil {
-			// Read ahead for key expression.
-			if parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen {
-				offset++ // skip "["
-
-				var key ast.Node
-				key, offset, err = consumeExpr(parser, offset)
-				if err != nil {
-					return nil, originalOffset, err
-				}
-
-				offset, err = consume(parser.File, offset, []string{lexer.TokenSquareClose})
-				if err != nil {
-					return nil, originalOffset, err
-				}
-
-				parts = append(parts, &ast.Key{
-					Expr: identifier,
-					Key:  key,
-				})
-			} else {
-				parts = append(parts, identifier)
-			}
-
+			parts = append(parts, assignable)
 			continue
 		}
 

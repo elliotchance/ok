@@ -9,6 +9,11 @@ import (
 // compileExpr return the (result register, result type, error)
 func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*ast.Func) ([]string, string, error) {
 	switch e := expr.(type) {
+	case *ast.Assign:
+		err := compileAssign(compiledFunc, e, fns)
+
+		return nil, "", err
+
 	case *ast.Literal:
 		returns := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{

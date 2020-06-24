@@ -34,8 +34,9 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Maps](#maps)
       * [Iteration](#iteration)
       * [Functions](#functions)
+      * [Multiple Return Values](#multiple-return-values)
 
-<!-- Added by: elliot, at: Sat Jun 20 18:07:29 EDT 2020 -->
+<!-- Added by: elliot, at: Tue Jun 23 20:07:24 EDT 2020 -->
 
 <!--te-->
 
@@ -503,3 +504,36 @@ $ ok run functions
 
 There are several other features to Go functions. One is multiple return values,
 which we'll look at next.
+
+Multiple Return Values
+----------------------
+
+OK has built-in support for multiple return values.
+
+```
+// The (number, number) in this function signature shows
+// that the function returns 2 numbers.
+func vals() (number, number) {
+    return 3, 7
+}
+
+func main() {
+    // Here we use the 2 different return values from the
+    // call with multiple assignment.
+    a, b = vals()
+    print(a)
+    print(b)
+
+    // If you only want a subset of the returned values,
+    // use the blank identifier _.
+    _, c = vals()
+    print(c)
+}
+```
+
+```
+$ ok run multiple-return-values
+3
+7
+7
+```

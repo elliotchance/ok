@@ -3,7 +3,6 @@ package compiler_test
 import (
 	"ok/ast"
 	"ok/compiler"
-	"ok/lexer"
 	"ok/vm"
 	"testing"
 
@@ -19,16 +18,19 @@ func TestKey(t *testing.T) {
 	}{
 		"array-number-index": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					&ast.Array{
-						Elements: []ast.Node{
-							ast.NewLiteralNumber("123"),
-							ast.NewLiteralNumber("456"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						&ast.Array{
+							Elements: []ast.Node{
+								ast.NewLiteralNumber("123"),
+								ast.NewLiteralNumber("456"),
+							},
 						},
 					},
-				),
+				},
 				&ast.Key{
 					Expr: &ast.Identifier{Name: "foo"},
 					Key:  ast.NewLiteralNumber("1"),
@@ -95,22 +97,25 @@ func TestKey(t *testing.T) {
 		},
 		"map-number-key": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					&ast.Map{
-						Elements: []*ast.KeyValue{
-							{
-								Key:   ast.NewLiteralString("a"),
-								Value: ast.NewLiteralNumber("123"),
-							},
-							{
-								Key:   ast.NewLiteralString("b"),
-								Value: ast.NewLiteralNumber("456"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						&ast.Map{
+							Elements: []*ast.KeyValue{
+								{
+									Key:   ast.NewLiteralString("a"),
+									Value: ast.NewLiteralNumber("123"),
+								},
+								{
+									Key:   ast.NewLiteralString("b"),
+									Value: ast.NewLiteralNumber("456"),
+								},
 							},
 						},
 					},
-				),
+				},
 				&ast.Key{
 					Expr: &ast.Identifier{Name: "foo"},
 					Key:  ast.NewLiteralString("b"),
@@ -177,24 +182,30 @@ func TestKey(t *testing.T) {
 		},
 		"assign-array-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					&ast.Array{
-						Elements: []ast.Node{
-							ast.NewLiteralNumber("123"),
-							ast.NewLiteralNumber("456"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						&ast.Array{
+							Elements: []ast.Node{
+								ast.NewLiteralNumber("123"),
+								ast.NewLiteralNumber("456"),
+							},
 						},
 					},
-				),
-				ast.NewBinary(
-					&ast.Key{
-						Expr: &ast.Identifier{Name: "foo"},
-						Key:  ast.NewLiteralNumber("1"),
+				},
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Key{
+							Expr: &ast.Identifier{Name: "foo"},
+							Key:  ast.NewLiteralNumber("1"),
+						},
 					},
-					lexer.TokenAssign,
-					ast.NewLiteralNumber("2"),
-				),
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("2"),
+					},
+				},
 			},
 			expected: []vm.Instruction{
 				// alloc
@@ -261,30 +272,36 @@ func TestKey(t *testing.T) {
 		},
 		"assign-map-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					&ast.Map{
-						Elements: []*ast.KeyValue{
-							{
-								Key:   ast.NewLiteralString("a"),
-								Value: ast.NewLiteralNumber("123"),
-							},
-							{
-								Key:   ast.NewLiteralString("b"),
-								Value: ast.NewLiteralNumber("456"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						&ast.Map{
+							Elements: []*ast.KeyValue{
+								{
+									Key:   ast.NewLiteralString("a"),
+									Value: ast.NewLiteralNumber("123"),
+								},
+								{
+									Key:   ast.NewLiteralString("b"),
+									Value: ast.NewLiteralNumber("456"),
+								},
 							},
 						},
 					},
-				),
-				ast.NewBinary(
-					&ast.Key{
-						Expr: &ast.Identifier{Name: "foo"},
-						Key:  ast.NewLiteralString("b"),
+				},
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Key{
+							Expr: &ast.Identifier{Name: "foo"},
+							Key:  ast.NewLiteralString("b"),
+						},
 					},
-					lexer.TokenAssign,
-					ast.NewLiteralNumber("2"),
-				),
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("2"),
+					},
+				},
 			},
 			expected: []vm.Instruction{
 				// alloc

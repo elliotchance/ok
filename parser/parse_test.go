@@ -395,33 +395,16 @@ func TestParseString(t *testing.T) {
 				ast.NewLiteralBool(false),
 			),
 		},
-		"assign-string": {
-			str: `func main() { foo = "bar" }`,
-			expected: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralString("bar"),
-				},
-			),
-		},
-		"read-variable": {
-			str: `func main() { foo = bar }`,
-			expected: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: &ast.Identifier{Name: "bar"},
-				},
-			),
-		},
 		"end-of-line-1": {
 			str: "func main() { a = 1\nprint(a) }",
 			expected: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("1"),
+					},
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -434,10 +417,13 @@ func TestParseString(t *testing.T) {
 		"end-of-line-2": {
 			str: "func main() { b = true\nprint(b)\nc = 1.23 }",
 			expected: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "b"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralBool(true),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "b"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralBool(true),
+					},
 				},
 				&ast.Call{
 					FunctionName: "print",
@@ -445,10 +431,13 @@ func TestParseString(t *testing.T) {
 						&ast.Identifier{Name: "b"},
 					},
 				},
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "c"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1.23"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "c"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("1.23"),
+					},
 				},
 			),
 		},
@@ -542,10 +531,13 @@ func TestParseString(t *testing.T) {
 						Right: ast.NewLiteralNumber("3"),
 					},
 					True: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "a"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 						&ast.Unary{
 							Op:   lexer.TokenIncrement,
@@ -565,10 +557,13 @@ func TestParseString(t *testing.T) {
 						Right: ast.NewLiteralNumber("3"),
 					},
 					True: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "a"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 					},
 				},
@@ -584,10 +579,13 @@ func TestParseString(t *testing.T) {
 						Right: ast.NewLiteralNumber("3"),
 					},
 					True: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "a"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 					},
 					False: []ast.Node{

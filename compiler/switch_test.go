@@ -26,10 +26,13 @@ func TestSwitch(t *testing.T) {
 		},
 		"switch-6": {
 			fn: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Switch{
 					Cases: []*ast.Case{
@@ -140,10 +143,13 @@ func TestSwitch(t *testing.T) {
 		},
 		"switch-else-1": {
 			fn: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Switch{
 					Cases: []*ast.Case{
@@ -272,10 +278,13 @@ func TestSwitch(t *testing.T) {
 		},
 		"switch-7": {
 			fn: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Switch{
 					Cases: []*ast.Case{
@@ -419,10 +428,13 @@ func TestSwitch(t *testing.T) {
 		},
 		"switch-value-1": {
 			fn: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Switch{
 					Expr: &ast.Identifier{Name: "a"},
@@ -442,10 +454,13 @@ func TestSwitch(t *testing.T) {
 		},
 		"switch-value-2": {
 			fn: newFunc(
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Switch{
 					Expr: &ast.Identifier{Name: "a"},

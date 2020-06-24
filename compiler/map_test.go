@@ -3,7 +3,6 @@ package compiler_test
 import (
 	"ok/ast"
 	"ok/compiler"
-	"ok/lexer"
 	"ok/vm"
 	"testing"
 
@@ -108,18 +107,21 @@ func TestMap(t *testing.T) {
 			},
 		},
 		"assign-implicit-numbers": {
-			node: ast.NewBinary(
-				&ast.Identifier{Name: "a"},
-				lexer.TokenAssign,
-				&ast.Map{
-					Elements: []*ast.KeyValue{
-						{
-							Key:   ast.NewLiteralString("b"),
-							Value: ast.NewLiteralNumber("123"),
+			node: &ast.Assign{
+				Lefts: []ast.Node{
+					&ast.Identifier{Name: "a"},
+				},
+				Rights: []ast.Node{
+					&ast.Map{
+						Elements: []*ast.KeyValue{
+							{
+								Key:   ast.NewLiteralString("b"),
+								Value: ast.NewLiteralNumber("123"),
+							},
 						},
 					},
 				},
-			),
+			},
 			expected: []vm.Instruction{
 				// alloc
 				&vm.Assign{

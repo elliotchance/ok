@@ -4,7 +4,6 @@ import (
 	"errors"
 	"ok/ast"
 	"ok/compiler"
-	"ok/lexer"
 	"ok/vm"
 	"testing"
 
@@ -104,15 +103,18 @@ func TestArray(t *testing.T) {
 			},
 		},
 		"assign-implicit-numbers": {
-			node: ast.NewBinary(
-				&ast.Identifier{Name: "a"},
-				lexer.TokenAssign,
-				&ast.Array{
-					Elements: []ast.Node{
-						ast.NewLiteralNumber("1"),
+			node: &ast.Assign{
+				Lefts: []ast.Node{
+					&ast.Identifier{Name: "a"},
+				},
+				Rights: []ast.Node{
+					&ast.Array{
+						Elements: []ast.Node{
+							ast.NewLiteralNumber("1"),
+						},
 					},
 				},
-			),
+			},
 			expected: []vm.Instruction{
 				// alloc
 				&vm.Assign{

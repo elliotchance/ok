@@ -26,6 +26,12 @@ func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 		return rtn, offset, nil
 	}
 
+	var assign *ast.Assign
+	assign, offset, err = consumeAssign(parser, offset)
+	if err == nil {
+		return assign, offset, nil
+	}
+
 	var call *ast.Call
 	call, offset, err = consumeCall(parser, offset)
 	if err == nil {

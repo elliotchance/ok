@@ -19,10 +19,13 @@ func TestIf(t *testing.T) {
 	}{
 		"if-1": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.If{
 					Condition: &ast.Binary{
@@ -58,10 +61,13 @@ func TestIf(t *testing.T) {
 		},
 		"if-2": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.If{
 					Condition: &ast.Binary{
@@ -70,10 +76,13 @@ func TestIf(t *testing.T) {
 						Right: ast.NewLiteralNumber("3"),
 					},
 					True: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "a"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 						&ast.Unary{
 							Op:   lexer.TokenIncrement,
@@ -125,10 +134,13 @@ func TestIf(t *testing.T) {
 		},
 		"if-else-2": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "a"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.If{
 					Condition: &ast.Binary{
@@ -137,10 +149,13 @@ func TestIf(t *testing.T) {
 						Right: ast.NewLiteralNumber("3"),
 					},
 					True: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "a"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "a"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 					},
 					False: []ast.Node{

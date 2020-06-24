@@ -19,10 +19,13 @@ func TestUnary(t *testing.T) {
 	}{
 		"increment-variable": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Unary{
 					Op:   "++",
@@ -51,10 +54,13 @@ func TestUnary(t *testing.T) {
 		},
 		"decrement-variable": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Unary{
 					Op:   "--",
