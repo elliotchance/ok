@@ -20,11 +20,14 @@ func TestFor(t *testing.T) {
 	}{
 		"for-in-array-1": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					ast.NewArrayNumbers([]string{"1.5", "2.3"}),
-				),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewArrayNumbers([]string{"1.5", "2.3"}),
+					},
+				},
 				&ast.For{
 					Condition: &ast.In{
 						Key:  "k",
@@ -100,11 +103,14 @@ func TestFor(t *testing.T) {
 		},
 		"for-in-array-2": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					ast.NewArrayNumbers([]string{"1.5", "2.3"}),
-				),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewArrayNumbers([]string{"1.5", "2.3"}),
+					},
+				},
 				&ast.For{
 					Condition: &ast.In{
 						Key:   "k",
@@ -181,11 +187,14 @@ func TestFor(t *testing.T) {
 		},
 		"for-in-map-1": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					ast.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
-				),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
+					},
+				},
 				&ast.For{
 					Condition: &ast.In{
 						Key:  "k",
@@ -261,11 +270,14 @@ func TestFor(t *testing.T) {
 		},
 		"for-in-map-2": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					&ast.Identifier{Name: "foo"},
-					lexer.TokenAssign,
-					ast.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
-				),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
+					},
+				},
 				&ast.For{
 					Condition: &ast.In{
 						Key:   "k",
@@ -343,10 +355,13 @@ func TestFor(t *testing.T) {
 		"for-3": {
 			nodes: []ast.Node{
 				&ast.For{
-					Init: &ast.Binary{
-						Left:  &ast.Identifier{Name: "a"},
-						Op:    lexer.TokenAssign,
-						Right: ast.NewLiteralNumber("0"),
+					Init: &ast.Assign{
+						Lefts: []ast.Node{
+							&ast.Identifier{Name: "a"},
+						},
+						Rights: []ast.Node{
+							ast.NewLiteralNumber("0"),
+						},
 					},
 					Condition: &ast.Binary{
 						Left:  &ast.Identifier{Name: "a"},
@@ -417,10 +432,13 @@ func TestFor(t *testing.T) {
 		"for-continue-1": {
 			nodes: []ast.Node{
 				&ast.For{
-					Init: &ast.Binary{
-						Left:  &ast.Identifier{Name: "a"},
-						Op:    lexer.TokenAssign,
-						Right: ast.NewLiteralNumber("0"),
+					Init: &ast.Assign{
+						Lefts: []ast.Node{
+							&ast.Identifier{Name: "a"},
+						},
+						Rights: []ast.Node{
+							ast.NewLiteralNumber("0"),
+						},
 					},
 					Condition: &ast.Binary{
 						Left:  &ast.Identifier{Name: "a"},
@@ -502,29 +520,41 @@ func TestFor(t *testing.T) {
 		},
 		"for-true-with-statements": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("1"),
+					},
 				},
 				&ast.For{
 					Statements: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "bar"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("2"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "bar"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("2"),
+							},
 						},
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "baz"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("3"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "baz"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("3"),
+							},
 						},
 					},
 				},
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "qux"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("4"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "qux"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("4"),
+					},
 				},
 			},
 			expected: []vm.Instruction{
@@ -575,10 +605,13 @@ func TestFor(t *testing.T) {
 		},
 		"for-condition": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.For{
 					Condition: ast.NewBinary(
@@ -587,14 +620,17 @@ func TestFor(t *testing.T) {
 						ast.NewLiteralNumber("10"),
 					),
 					Statements: []ast.Node{
-						&ast.Binary{
-							Left: &ast.Identifier{Name: "i"},
-							Op:   lexer.TokenAssign,
-							Right: ast.NewBinary(
+						&ast.Assign{
+							Lefts: []ast.Node{
 								&ast.Identifier{Name: "i"},
-								lexer.TokenPlus,
-								ast.NewLiteralNumber("1"),
-							),
+							},
+							Rights: []ast.Node{
+								ast.NewBinary(
+									&ast.Identifier{Name: "i"},
+									lexer.TokenPlus,
+									ast.NewLiteralNumber("1"),
+								),
+							},
 						},
 					},
 				},
@@ -641,30 +677,42 @@ func TestFor(t *testing.T) {
 		},
 		"for-break": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.For{
 					Statements: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "i"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "i"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 						&ast.Break{},
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "i"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("2"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "i"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("2"),
+							},
 						},
 					},
 				},
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("3"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("3"),
+					},
 				},
 			},
 			expected: []vm.Instruction{
@@ -718,30 +766,42 @@ func TestFor(t *testing.T) {
 		},
 		"for-continue": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.For{
 					Statements: []ast.Node{
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "i"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("1"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "i"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("1"),
+							},
 						},
 						&ast.Continue{},
-						&ast.Binary{
-							Left:  &ast.Identifier{Name: "i"},
-							Op:    lexer.TokenAssign,
-							Right: ast.NewLiteralNumber("2"),
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "i"},
+							},
+							Rights: []ast.Node{
+								ast.NewLiteralNumber("2"),
+							},
 						},
 					},
 				},
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("3"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("3"),
+					},
 				},
 			},
 			expected: []vm.Instruction{

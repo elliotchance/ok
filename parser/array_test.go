@@ -82,14 +82,17 @@ func TestArray(t *testing.T) {
 		},
 		"set-index": {
 			str: `foo[1] = 2`,
-			expected: ast.NewBinary(
-				&ast.Key{
-					Expr: &ast.Identifier{Name: "foo"},
-					Key:  ast.NewLiteralNumber("1"),
+			expected: &ast.Assign{
+				Lefts: []ast.Node{
+					&ast.Key{
+						Expr: &ast.Identifier{Name: "foo"},
+						Key:  ast.NewLiteralNumber("1"),
+					},
 				},
-				lexer.TokenAssign,
-				ast.NewLiteralNumber("2"),
-			),
+				Rights: []ast.Node{
+					ast.NewLiteralNumber("2"),
+				},
+			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

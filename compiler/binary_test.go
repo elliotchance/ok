@@ -20,10 +20,13 @@ func TestBinary(t *testing.T) {
 	}{
 		"plus-assign-data": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralData([]byte("foo")),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralData([]byte("foo")),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -57,10 +60,13 @@ func TestBinary(t *testing.T) {
 		},
 		"plus-assign-string": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralString("foo"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralString("foo"),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -94,10 +100,13 @@ func TestBinary(t *testing.T) {
 		},
 		"plus-assign-number": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -131,10 +140,13 @@ func TestBinary(t *testing.T) {
 		},
 		"minus-assign-number": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -168,10 +180,13 @@ func TestBinary(t *testing.T) {
 		},
 		"times-assign-number": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -205,10 +220,13 @@ func TestBinary(t *testing.T) {
 		},
 		"divide-assign-number": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -242,10 +260,13 @@ func TestBinary(t *testing.T) {
 		},
 		"remainder-assign-number": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "i"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("0"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("0"),
+					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
@@ -468,15 +489,21 @@ func TestBinary(t *testing.T) {
 		},
 		"variable-bad-reassign": {
 			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1.5"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralNumber("1.5"),
+					},
 				},
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralString("1.5"),
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						ast.NewLiteralString("1.5"),
+					},
 				},
 			},
 			err: errors.New("cannot assign string to variable foo (expecting number)"),
@@ -949,25 +976,6 @@ func TestBinary(t *testing.T) {
 					Left:   "2",
 					Right:  "3",
 					Result: "4",
-				},
-			},
-		},
-		"assign-1": {
-			nodes: []ast.Node{
-				&ast.Binary{
-					Left:  &ast.Identifier{Name: "foo"},
-					Op:    lexer.TokenAssign,
-					Right: ast.NewLiteralNumber("1.5"),
-				},
-			},
-			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.5"),
-				},
-				&vm.Assign{
-					VariableName: "foo",
-					Register:     "1",
 				},
 			},
 		},

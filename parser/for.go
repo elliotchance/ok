@@ -34,6 +34,19 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 	if err == nil {
 		node.Init = node.Condition
 
+		// TODO(elliot): This is a crude and problematic way to correct the
+		//  assignment because it doesn't allow for multiple assignments.
+		if n, ok := node.Init.(*ast.Binary); ok && n.Op == lexer.TokenAssign {
+			node.Init = &ast.Assign{
+				Lefts: []ast.Node{
+					n.Left,
+				},
+				Rights: []ast.Node{
+					n.Right,
+				},
+			}
+		}
+
 		// Condition may be an "in" expression.
 		node.Condition, offset, err = consumeIn(parser, offset)
 		if err != nil {
