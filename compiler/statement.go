@@ -18,6 +18,9 @@ func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIn
 	case *ast.Return:
 		return compileReturn(compiledFunc, n, fns)
 
+	case *ast.Assert:
+		return compileAssert(compiledFunc, n, fns)
+
 	case *ast.For:
 		return compileFor(compiledFunc, n, fns)
 

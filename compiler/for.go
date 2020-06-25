@@ -45,7 +45,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		})
 
 		conditionResults = []string{compiledFunc.NextRegister()}
-		if strings.HasPrefix(arrayOrMapKind, "[]") {
+		if strings.HasPrefix(arrayOrMapKind[0], "[]") {
 			compiledFunc.Append(&vm.NextArray{
 				Array:       arrayOrMapResults[0],
 				Cursor:      cursorRegister,
@@ -64,17 +64,17 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		}
 
 	default:
-		var conditionKind string
+		var conditionKinds []string
 		var err error
-		conditionResults, conditionKind, err = compileExpr(compiledFunc, n.Condition, fns)
+		conditionResults, conditionKinds, err = compileExpr(compiledFunc, n.Condition, fns)
 		if err != nil {
 			return err
 		}
 
-		if conditionKind != "bool" {
+		if conditionKinds[0] != "bool" {
 			return fmt.Errorf(
 				"expression in for condition must be a bool, got %s",
-				conditionKind)
+				conditionKinds[0])
 		}
 	}
 

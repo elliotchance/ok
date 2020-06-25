@@ -19,7 +19,7 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.F
 	}
 
 	resultRegister := compiledFunc.NextRegister()
-	if strings.HasPrefix(arrayOrMapKind, "[]") {
+	if strings.HasPrefix(arrayOrMapKind[0], "[]") {
 		compiledFunc.Append(&vm.ArrayGet{
 			Array:  arrayOrMapRegisters[0],
 			Index:  keyRegisters[0],

@@ -20,6 +20,12 @@ func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
 		return &ast.Continue{}, offset, nil
 	}
 
+	var assert *ast.Assert
+	assert, offset, err = consumeAssert(parser, offset)
+	if err == nil {
+		return assert, offset, nil
+	}
+
 	var rtn *ast.Return
 	rtn, offset, err = consumeReturn(parser, offset)
 	if err == nil {

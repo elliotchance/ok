@@ -6,7 +6,7 @@ import (
 )
 
 func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*ast.Func) (string, string, error) {
-	returns1, kind, err := compileExpr(compiledFunc, e.Expr, fns)
+	returns1, kinds, err := compileExpr(compiledFunc, e.Expr, fns)
 	if err != nil {
 		return "", "", err
 	}
@@ -21,7 +21,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		}
 		compiledFunc.Append(ins)
 
-		return returns2, kind, nil
+		return returns2, kinds[0], nil
 
 	case "-":
 		zeroAt := compiledFunc.NextRegister()
@@ -38,7 +38,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		}
 		compiledFunc.Append(ins)
 
-		return returns2, kind, nil
+		return returns2, kinds[0], nil
 
 	case "++":
 		oneAt := compiledFunc.NextRegister()
@@ -54,7 +54,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		}
 		compiledFunc.Append(ins)
 
-		return returns1[0], kind, nil
+		return returns1[0], kinds[0], nil
 
 	case "--":
 		oneAt := compiledFunc.NextRegister()
@@ -70,7 +70,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		}
 		compiledFunc.Append(ins)
 
-		return returns1[0], kind, nil
+		return returns1[0], kinds[0], nil
 	}
 
 	panic(e.Op)

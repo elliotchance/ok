@@ -30,7 +30,7 @@ func add(a, b number) number {
 		f, err := compiler.CompileFile(p.File)
 		require.NoError(t, err)
 
-		m := vm.NewVM(f)
+		m := vm.NewVM(f.Funcs, f.Tests, "pkg")
 		assert.NoError(t, m.Run())
 	})
 }

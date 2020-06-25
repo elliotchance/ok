@@ -6,8 +6,8 @@ import (
 	"os"
 )
 
-func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, error) {
-	builtinFunctions := map[string]func(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, error){
+func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
+	builtinFunctions := map[string]func(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error){
 		"len":   compileCallLen,
 		"print": compileCallPrint,
 	}
@@ -20,7 +20,7 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 	for _, arg := range call.Arguments {
 		argResult, _, err := compileExpr(compiledFunc, arg, fns)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
 		argResults = append(argResults, argResult...)
@@ -43,13 +43,13 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 
 	compiledFunc.Append(ins)
 
-	return returnRegisters, nil
+	return returnRegisters, toCall.Returns, nil
 }
 
-func compileCallLen(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, error) {
+func compileCallLen(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
 	argumentResults, _, err := compileExpr(compiledFunc, call.Arguments[0], fns)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	result := compiledFunc.NextRegister()
@@ -60,17 +60,17 @@ func compileCallLen(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[strin
 
 	compiledFunc.Append(ins)
 
-	return []string{result}, nil
+	return []string{result}, []string{"number"}, nil
 }
 
-func compileCallPrint(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, error) {
+func compileCallPrint(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
 	ins := &vm.Print{
 		Stdout: os.Stdout,
 	}
 	for _, arg := range call.Arguments {
 		returns, _, err := compileExpr(compiledFunc, arg, fns)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
 		ins.Arguments = append(ins.Arguments, returns...)
@@ -78,5 +78,5 @@ func compileCallPrint(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[str
 
 	compiledFunc.Append(ins)
 
-	return nil, nil
+	return nil, nil, nil
 }

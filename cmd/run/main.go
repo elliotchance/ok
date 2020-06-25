@@ -41,7 +41,7 @@ func (*Command) Run(args []string) {
 	f, err := compiler.CompileFile(p.File)
 	check(err)
 
-	m := vm.NewVM(f)
+	m := vm.NewVM(f.Funcs, f.Tests, args[0])
 	err = m.Run()
 	check(err)
 }

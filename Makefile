@@ -41,6 +41,8 @@ tests/*: ok
 	./ok run $@ > /tmp/stdout.txt
 	diff $@/stdout.txt /tmp/stdout.txt
 
+	./ok test $@
+
 ok-macos.zip: version clean
 	GOOS=darwin GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
