@@ -43,6 +43,16 @@ func ParseString(s string) *Parser {
 			}
 			parser.File.Funcs[fn.Name] = fn
 
+		case lexer.TokenTest:
+			var t *ast.Test
+			t, offset, err = consumeTest(parser, offset)
+			if err != nil {
+				parser.Errors = append(parser.Errors, err)
+
+				goto done
+			}
+			parser.File.Tests = append(parser.File.Tests, t)
+
 		case lexer.TokenEOF:
 			goto done
 

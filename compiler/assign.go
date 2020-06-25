@@ -21,8 +21,8 @@ func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[stri
 		}
 
 		// len(right) > 1 when function returns multiple values.
-		for _, r2 := range right {
-			rightResults = append(rightResults, resultKindPair{r2, rightKind})
+		for i, r2 := range right {
+			rightResults = append(rightResults, resultKindPair{r2, rightKind[i]})
 		}
 	}
 
@@ -63,7 +63,7 @@ func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[stri
 				return err
 			}
 
-			if strings.HasPrefix(arrayOrMapKind, "[]") {
+			if strings.HasPrefix(arrayOrMapKind[0], "[]") {
 				ins := &vm.ArraySet{
 					Array: arrayOrMapResults[0],
 					Index: keyResults[0],

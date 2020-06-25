@@ -1,0 +1,4 @@
+test "adding some numbers" {
+    assert(add(3, 5) == 8)
+    assert(add(1.2, 7.90) == 9.10)
+}

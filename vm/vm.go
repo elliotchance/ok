@@ -1,20 +1,37 @@
 package vm
 
 import (
+	"fmt"
 	"ok/ast"
 )
+
+// CompiledTest is a runnable test.
+type CompiledTest struct {
+	*CompiledFunc
+	TestName string
+}
 
 // VM is an instance of a virtual machine to run ok instructions.
 type VM struct {
 	fns    map[string]*CompiledFunc
 	Return []string
 	stack  []map[string]*ast.Literal
+	tests  []*CompiledTest
+	pkg    string
+
+	// Stats when running tests.
+	TestsPass, TestsFailed int
+	TotalAssertions        int
+	CurrentTestName        string
+	CurrentTestPassed      bool
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
-func NewVM(fns map[string]*CompiledFunc) *VM {
+func NewVM(fns map[string]*CompiledFunc, tests []*CompiledTest, pkg string) *VM {
 	return &VM{
-		fns: fns,
+		fns:   fns,
+		tests: tests,
+		pkg:   pkg,
 	}
 }
 
@@ -25,7 +42,25 @@ func (vm *VM) Run() error {
 	return err
 }
 
-// Run will run the program.
+// Run will run the tests only.
+func (vm *VM) RunTests() error {
+	for _, t := range vm.tests {
+		vm.CurrentTestPassed = true
+		err := vm.runTest(t.TestName, t.Instructions)
+		if err != nil {
+			return err
+		}
+
+		if vm.CurrentTestPassed {
+			vm.TestsPass++
+		} else {
+			vm.TestsFailed++
+		}
+	}
+
+	return nil
+}
+
 func (vm *VM) call(name string, arguments []string) ([]string, error) {
 	// TODO(elliot): Check function exists, especially main.
 
@@ -37,12 +72,6 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 		registers[fn.Arguments[i]] = vm.stack[len(vm.stack)-1][arg]
 	}
 	vm.stack = append(vm.stack, registers)
-	//fmt.Println("add")
-	//defer func() {
-	//	//if len(vm.stack) > 1 {
-	//	//}
-	//	//fmt.Println("delete")
-	//}()
 
 	totalInstructions := len(fn.Instructions)
 	for i := 0; i < totalInstructions; i++ {
@@ -58,4 +87,31 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 	}
 
 	return nil, nil
+}
+
+func (vm *VM) runTest(testName string, instructions []Instruction) error {
+	vm.CurrentTestName = testName
+
+	registers := map[string]*ast.Literal{}
+	vm.stack = append(vm.stack, registers)
+
+	totalInstructions := len(instructions)
+	for i := 0; i < totalInstructions; i++ {
+		ins := instructions[i]
+		err := ins.Execute(registers, &i, vm)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (vm *VM) assert(pass bool, left, op, right string) {
+	if !pass {
+		fmt.Printf("%s: %s: assert(%s %s %s) failed\n",
+			vm.pkg, vm.CurrentTestName, left, op, right)
+		vm.CurrentTestPassed = false
+	}
+	vm.TotalAssertions++
 }

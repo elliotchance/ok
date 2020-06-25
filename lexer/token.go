@@ -20,6 +20,7 @@ const (
 	// Keywords
 	TokenAnd      = "and"
 	TokenAny      = "any"
+	TokenAssert   = "assert"
 	TokenBool     = "bool"
 	TokenBreak    = "break"
 	TokenCase     = "case"
@@ -37,6 +38,7 @@ const (
 	TokenReturn   = "return"
 	TokenString   = "string"
 	TokenSwitch   = "switch"
+	TokenTest     = "test"
 
 	// Operators
 	TokenAssign           = "="

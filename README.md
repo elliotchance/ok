@@ -4,18 +4,15 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Join the chat at https://gitter.im/ok-lang/community](https://badges.gitter.im/ok-lang/community.svg)](https://gitter.im/ok-lang/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**ok** is a strongly-duck-typed language, heavily influenced by Go. The goals
-are:
-
-1. **Strongly-typed**, but can use type inference in most places.
-2. **Only decimal math** for absolute precision in all calculations.
-3. **Syntax that is extremely simple** and very fast to parse for compilation.
-4. TODO: **Avoids code that can lead to common runtime bugs** - no global
-variables, nils, dereferencing or variables/arguments that have defaults.
-5. TODO: **Functions are also objects and interfaces as themselves**.
-6. TODO: **Testing is first-class**.
+**ok** is a strongly-duck-typed language. If you notice a lot of similarities
+with Go, that is no accident. There are a lot of things I liked about Go that I
+brought to OK. Also, OK is written in Go until which time it can be written in
+itself.
 
 <!--ts-->
+   * [Why OK?](#why-ok)
+      * [Strongly Typed](#strongly-typed)
+      * [First-class Testing](#first-class-testing)
    * [Installation](#installation)
       * [Precompiled Binaries](#precompiled-binaries)
       * [go get](#go-get)
@@ -36,14 +33,81 @@ variables, nils, dereferencing or variables/arguments that have defaults.
       * [Functions](#functions)
       * [Multiple Return Values](#multiple-return-values)
 
-<!-- Added by: elliot, at: Tue Jun 23 20:07:24 EDT 2020 -->
+<!-- Added by: elliot, at: Thu Jun 25 08:46:07 EDT 2020 -->
 
 <!--te-->
 
 
+Why OK?
+=======
+
+Strongly Typed
+--------------
+
+OK is strongly typed. However, it has less types that most strongly typed
+languages because it doesn't directly expose underlying CPU types. These types
+are:
+
+* [`bool`](https://github.com/elliotchance/ok/wiki/Language-Specification#booleans)
+is a `true` or `false` value.
+* [`char`](https://github.com/elliotchance/ok/wiki/Language-Specification#characters)
+is a single character. Supports all UTF-8 up to 4 bytes.
+* [`data`](https://github.com/elliotchance/ok/wiki/Language-Specification#data)
+is raw binary data.
+* [`number`](https://github.com/elliotchance/ok/wiki/Language-Specification#numbers)
+is a decimal value with an exact value and precision (this is not an
+approximation like floating-point types) so all arithmetic and math operation
+are exact.
+* [`string`](https://github.com/elliotchance/ok/wiki/Language-Specification#strings)
+is a UTF-8 string of any length (including zero).
+
+These five fundamental types can be used in:
+
+* [arrays](https://github.com/elliotchance/ok/wiki/Language-Specification#arrays) -
+an ordered sequence of values.
+* [maps](https://github.com/elliotchance/ok#maps) -
+an unordered collection of key-value pairs
+
+
+First-class Testing
+-------------------
+
+Testing is not just an added library of helpers, but rather it is built into the
+language itself.
+
+Here is an example of some OK code we may want to test:
+
+```
+// main.ok
+
+func add(a, b number) number {
+    return a + b
+}
+```
+
+Tests are placed in the same package (directory) as the source code, but with a
+different extension (`.okt`):
+
+```
+// main.okt
+
+test "adding some numbers" {
+    assert(add(3, 5) == 8)
+    assert(add(3, 5) == 10)
+}
+```
+
+The second assertion will fail. Here is how we run the tests with the output:
+
+```
+$ ok test tests/example-tests
+tests/example-tests: adding some numbers: assert(8 == 10) failed
+tests/example-tests: 1 failed 0 passed 2 asserts (60.638µs)
+```
+
+
 Installation
 ============
-
 
 Precompiled Binaries
 --------------------
@@ -78,10 +142,21 @@ run
 ---
 
 Programs in ok are directories containing one or more `.ok` files. You can run a
-program by specifying the directory (or see the included tests/):
+program by specifying the directory (or see the included `tests/`):
 
 ```bash
 ok run my/program
+```
+
+test
+----
+
+Use `test` to run all tests in a package. Tests are placed in the same package
+(directory) as the code they will test, but with a different file extension
+(`.okt`):
+
+```bash
+ok test my/program
 ```
 
 version

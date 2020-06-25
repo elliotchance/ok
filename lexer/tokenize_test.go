@@ -764,6 +764,20 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false},
 			},
 		},
+		"test": {
+			str: `test`,
+			expected: []lexer.Token{
+				{lexer.TokenTest, "test", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"assert": {
+			str: `assert`,
+			expected: []lexer.Token{
+				{lexer.TokenAssert, "assert", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

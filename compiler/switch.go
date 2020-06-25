@@ -12,22 +12,22 @@ func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister, expe
 	//  statements and uses more memory.
 
 	for _, condition := range n.Conditions {
-		conditionResults, conditionKind, err := compileExpr(compiledFunc, condition, fns)
+		conditionResults, conditionKinds, err := compileExpr(compiledFunc, condition, fns)
 		if err != nil {
 			return err
 		}
 
-		if conditionKind != expectedConditionKind {
+		if conditionKinds[0] != expectedConditionKind {
 			return fmt.Errorf(
 				"expression in case condition must be %s, got %s",
-				expectedConditionKind, conditionKind)
+				expectedConditionKind, conditionKinds[0])
 		}
 
 		// If we are comparing against a value we need to add the equality step.
 		if valueRegister != "" {
 			result := compiledFunc.NextRegister()
 
-			op := fmt.Sprintf("%s == %s", conditionKind, conditionKind)
+			op := fmt.Sprintf("%s == %s", conditionKinds[0], conditionKinds[0])
 			bop, _ := getBinaryInstruction(op, valueRegister, conditionResults[0], result)
 			compiledFunc.Append(bop)
 
@@ -62,18 +62,18 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 
 	// Condition must be a bool if no value has been provided, otherwise all
 	// conditions must be the same type as the value.
-	expectedConditionKind := "bool"
+	expectedConditionKinds := []string{"bool"}
 	valueRegisters := []string{""}
 	if n.Expr != nil {
 		var err error
-		valueRegisters, expectedConditionKind, err = compileExpr(compiledFunc, n.Expr, fns)
+		valueRegisters, expectedConditionKinds, err = compileExpr(compiledFunc, n.Expr, fns)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, caseStmt := range n.Cases {
-		err := compileCase(compiledFunc, caseStmt, valueRegisters[0], expectedConditionKind, afterMatch, breakIns, continueIns, fns)
+		err := compileCase(compiledFunc, caseStmt, valueRegisters[0], expectedConditionKinds[0], afterMatch, breakIns, continueIns, fns)
 		if err != nil {
 			return err
 		}

@@ -125,7 +125,7 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 				return "", "", err
 			}
 
-			if strings.HasPrefix(arrayOrMapKind, "[]") {
+			if strings.HasPrefix(arrayOrMapKind[0], "[]") {
 				ins := &vm.ArraySet{
 					Array: arrayOrMapResults[0],
 					Index: keyResults[0],
@@ -151,7 +151,7 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 		}
 
 		// Make sure we do not assign the wrong type to an existing variable.
-		if v, ok := compiledFunc.Variables[variable.Name]; ok && rightKind != v {
+		if v, ok := compiledFunc.Variables[variable.Name]; ok && rightKind[0] != v {
 			return "", "", fmt.Errorf(
 				"cannot assign %s to variable %s (expecting %s)",
 				rightKind, variable.Name, v)
@@ -161,7 +161,7 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 
 		switch node.Op {
 		case lexer.TokenPlusAssign:
-			switch rightKind {
+			switch rightKind[0] {
 			case "data":
 				compiledFunc.Append(&vm.Combine{
 					Left:   variable.Name,
@@ -218,32 +218,38 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 			Register:     returns,
 		}
 		compiledFunc.Append(ins)
-		compiledFunc.NewVariable(variable.Name, rightKind)
+		compiledFunc.NewVariable(variable.Name, rightKind[0])
 
-		return variable.Name, rightKind, nil
+		return variable.Name, rightKind[0], nil
 	}
 
+	_, _, returns, returnKind, err := compileComparison(compiledFunc, node, fns)
+
+	return returns, returnKind, err
+}
+
+func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (string, string, string, string, error) {
 	left, leftKind, err := compileExpr(compiledFunc, node.Left, fns)
 	if err != nil {
-		return "", "", err
+		return "", "", "", "", err
 	}
 
 	right, rightKind, err := compileExpr(compiledFunc, node.Right, fns)
 	if err != nil {
-		return "", "", err
+		return "", "", "", "", err
 	}
 
 	returns := compiledFunc.NextRegister()
 
-	op := fmt.Sprintf("%s %s %s", leftKind, node.Op, rightKind)
+	op := fmt.Sprintf("%s %s %s", leftKind[0], node.Op, rightKind[0])
 	if bop, kind := getBinaryInstruction(op, left[0], right[0], returns); bop != nil {
 		// TODO(elliot): It would be nice to be able to evaluate expressions
 		//  involving literals here. So, 1 + 1 just becomes 2.
 
 		compiledFunc.Append(bop)
 
-		return returns, kind, nil
+		return left[0], right[0], returns, kind, nil
 	}
 
-	return "", "", fmt.Errorf("cannot perform %s", op)
+	return left[0], right[0], returns, "", fmt.Errorf("cannot perform %s", op)
 }

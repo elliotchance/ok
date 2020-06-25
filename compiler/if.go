@@ -7,15 +7,15 @@ import (
 )
 
 func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
-	conditionResults, conditionKind, err := compileExpr(compiledFunc, n.Condition, fns)
+	conditionResults, conditionKinds, err := compileExpr(compiledFunc, n.Condition, fns)
 	if err != nil {
 		return err
 	}
 
-	if conditionKind != "bool" {
+	if conditionKinds[0] != "bool" {
 		return fmt.Errorf(
 			"expression in if condition must be a bool, got %s",
-			conditionKind)
+			conditionKinds[0])
 	}
 
 	ins := &vm.JumpUnless{

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"ok/cmd/run"
+	"ok/cmd/test"
 	"ok/cmd/version"
 	"os"
 	"sort"
@@ -17,6 +18,7 @@ type command interface {
 
 var commands = map[string]command{
 	"run":     &run.Command{},
+	"test":    &test.Command{},
 	"version": &version.Command{},
 }
 
