@@ -19,6 +19,7 @@ itself.
       * [From Source](#from-source)
    * [Command Line Interface](#command-line-interface)
       * [run](#run)
+      * [test](#test)
       * [version](#version)
    * [Learn By Example](#learn-by-example)
       * [Hello World](#hello-world)
@@ -33,7 +34,6 @@ itself.
       * [Functions](#functions)
       * [Multiple Return Values](#multiple-return-values)
 
-<!-- Added by: elliot, at: Thu Jun 25 08:46:07 EDT 2020 -->
 
 <!--te-->
 

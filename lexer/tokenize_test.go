@@ -778,6 +778,45 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false},
 			},
 		},
+		"import": {
+			str: `import`,
+			expected: []lexer.Token{
+				{lexer.TokenImport, "import", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		".": {
+			str: `.`,
+			expected: []lexer.Token{
+				{lexer.TokenDot, ".", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"string-literal-newline": {
+			str: "\"math\"\n",
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "math", true},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"string-literal-newline-func": {
+			str: "\"math\"\nfunc",
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "math", true},
+				{lexer.TokenFunc, "func", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"import-func": {
+			str: "import \"math\"\nfunc foo",
+			expected: []lexer.Token{
+				{lexer.TokenImport, "import", false},
+				{lexer.TokenStringLiteral, "math", true},
+				{lexer.TokenFunc, "func", false},
+				{lexer.TokenIdentifier, "foo", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

@@ -9,7 +9,7 @@ clean:
 	rm -f ok
 	rm -f coverage.txt
 
-ci: clean test-fmt vet test-coverage run-tests
+ci: clean test-fmt vet test-coverage run-tests check-readme
 
 test:
 	go test -race ./...
@@ -64,4 +64,11 @@ version:
 
 readme:
 	./gh-md-toc --insert README.md
+	sed -i.bak '/Added by:/d' README.md
 	rm -f README.md.orig.* README.md.toc.*
+
+check-readme:
+	cp -f README.md README.md.bak2
+	make readme
+	diff README.md README.md.bak2
+	rm -f README.md.bak README.md.bak2

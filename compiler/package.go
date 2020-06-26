@@ -5,6 +5,7 @@ import (
 	"ok/ast"
 	"ok/parser"
 	"path"
+	"path/filepath"
 )
 
 func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
@@ -19,8 +20,9 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 	funcs := map[string]*ast.Func{}
 	var tests []*ast.Test
 
-	for _, fileName := range fileNames {
-		data, err := ioutil.ReadFile(path.Join(dir, fileName))
+	for len(fileNames) > 0 {
+		fileName := fileNames[0]
+		data, err := ioutil.ReadFile(fileName)
 		if err != nil {
 			return nil, err
 		}
@@ -30,10 +32,27 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 
 		for name, fn := range p.File.Funcs {
 			// TODO(elliot): Check for already defined function.
-			funcs[name] = fn
+			if path.Dir(fileName) != dir {
+				pkg := filepath.Base(path.Dir(fileName))
+				funcs[pkg+"."+name] = fn
+			} else {
+				funcs[name] = fn
+			}
 		}
 
 		tests = append(tests, p.File.Tests...)
+
+		for pkg := range p.File.Imports {
+			// TODO(elliot): Check import location exists.
+			newFileNames, err := getAllOKFilesInPath(path.Join(dir, pkg), false)
+			if err != nil {
+				return nil, err
+			}
+
+			fileNames = append(fileNames, newFileNames...)
+		}
+
+		fileNames = fileNames[1:]
 	}
 
 	// Step 3: Compile everything all at once.
@@ -48,7 +67,7 @@ func getAllOKFilesInPath(dir string, includeTests bool) ([]string, error) {
 
 	var files []string
 	for _, f := range fs {
-		fileName := f.Name()
+		fileName := path.Join(dir, f.Name())
 		if path.Ext(fileName) == ".ok" {
 			files = append(files, fileName)
 		}

@@ -9,6 +9,7 @@ import (
 type File struct {
 	Funcs    map[string]*ast.Func
 	Tests    []*ast.Test
+	Imports  map[string]string
 	Comments []*ast.Comment
 	Tokens   []lexer.Token
 }
