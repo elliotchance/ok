@@ -16,6 +16,7 @@ func TestParseString(t *testing.T) {
 		expected *ast.Func
 		comments []*ast.Comment
 		errs     []error
+		imports  map[string]string
 	}{
 		"empty": {
 			str: "",
@@ -596,6 +597,13 @@ func TestParseString(t *testing.T) {
 					},
 				},
 			),
+		},
+		"import-and-func": {
+			str:      "import \"math\"\nfunc main() {}",
+			expected: newFunc(),
+			imports: map[string]string{
+				"math": "math",
+			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

@@ -12,6 +12,7 @@ func ParseString(s string) *Parser {
 		File: &File{},
 	}
 	parser.File.Funcs = map[string]*ast.Func{}
+	parser.File.Imports = map[string]string{}
 
 	var err error
 	parser.File.Tokens, parser.File.Comments, err = lexer.TokenizeString(s, lexer.Options{
@@ -53,6 +54,16 @@ func ParseString(s string) *Parser {
 			}
 			parser.File.Tests = append(parser.File.Tests, t)
 
+		case lexer.TokenImport:
+			var imp *ast.Import
+			imp, offset, err = consumeImport(parser, offset)
+			if err != nil {
+				parser.Errors = append(parser.Errors, err)
+
+				goto done
+			}
+			parser.File.Imports[imp.PackageName] = imp.PackageName
+
 		case lexer.TokenEOF:
 			goto done
 
@@ -70,6 +81,8 @@ done:
 }
 
 func consume(f *File, offset int, expected []string) (int, error) {
+	originalOffset := offset
+
 	for i, t := range expected {
 		tok := f.Tokens[offset+i]
 
@@ -79,7 +92,7 @@ func consume(f *File, offset int, expected []string) (int, error) {
 				after = f.Tokens[offset+i-1].Kind
 			}
 
-			return offset + i, newTokenMismatch(expected[i], after, tok.Kind)
+			return originalOffset, newTokenMismatch(expected[i], after, tok.Kind)
 		}
 	}
 

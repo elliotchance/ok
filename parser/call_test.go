@@ -29,6 +29,15 @@ func TestCall(t *testing.T) {
 				},
 			},
 		},
+		"math-abs": {
+			str: `math.abs(123)`,
+			expected: &ast.Call{
+				FunctionName: "math.abs",
+				Arguments: []ast.Node{
+					ast.NewLiteralNumber("123"),
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

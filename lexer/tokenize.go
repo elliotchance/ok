@@ -72,9 +72,9 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 
 			i = newI
-			tokens = appendToken(tokens,
-				NewToken(tokenKindForQuote(c), value), &endOfLineForNextToken)
-			continue
+			newToken := NewToken(tokenKindForQuote(c), value)
+			tokens = appendToken(tokens, newToken, &endOfLineForNextToken)
+			found = true
 
 		case ' ':
 			found = true
@@ -101,7 +101,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			token.Kind = token.Value
 
 		case '(', ')', '[', ']', '{', '}',
-			'*', '%', '=', '!', '>', '<', ',', ';', ':':
+			'*', '%', '=', '!', '>', '<', ',', ';', ':', '.':
 			token.Value = string(c)
 			if i < runesLen-1 && runes[i+1] == '=' {
 				token.Value = string(c) + "="
@@ -168,7 +168,7 @@ func tokenWord(word string) Token {
 
 	case "and", "break", "case", "continue", "else", "if", "for", "func", "not",
 		"or", "switch", "any", "bool", "char", "data", "number", "string", "in",
-		"return", "test", "assert":
+		"return", "test", "assert", "import":
 		return NewToken(word, word)
 	}
 

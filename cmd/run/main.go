@@ -1,12 +1,9 @@
 package run
 
 import (
-	"io/ioutil"
 	"log"
 	"ok/compiler"
-	"ok/parser"
 	"ok/vm"
-	"path"
 )
 
 type Command struct{}
@@ -29,19 +26,10 @@ func (*Command) Run(args []string) {
 		args = []string{"."}
 	}
 
-	// TODO(elliot): Fix static file name.
-	data, err := ioutil.ReadFile(path.Join(args[0], "main.ok"))
+	pkg, err := compiler.CompilePackage(args[0], false)
 	check(err)
 
-	p := parser.ParseString(string(data))
-	for _, err := range p.Errors {
-		check(err)
-	}
-
-	f, err := compiler.CompileFile(p.File)
-	check(err)
-
-	m := vm.NewVM(f.Funcs, f.Tests, args[0])
+	m := vm.NewVM(pkg.Funcs, pkg.Tests, args[0])
 	err = m.Run()
 	check(err)
 }

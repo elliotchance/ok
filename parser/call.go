@@ -1,32 +1,54 @@
 package parser
 
 import (
+	"fmt"
 	"ok/ast"
 	"ok/lexer"
 )
 
 func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 	originalOffset := offset
-
 	var err error
+
+	call := &ast.Call{}
+
 	offset, err = consume(parser.File, offset, []string{
+		lexer.TokenIdentifier,
+		lexer.TokenDot,
 		lexer.TokenIdentifier,
 		lexer.TokenParenOpen,
 	})
 	if err != nil {
-		return nil, originalOffset, err
+		offset, err = consume(parser.File, offset, []string{
+			lexer.TokenIdentifier,
+			lexer.TokenParenOpen,
+		})
+		if err != nil {
+			return nil, originalOffset, err
+		}
+
+		call.FunctionName = parser.File.Tokens[offset-2].Value
+	} else {
+		call.FunctionName = fmt.Sprintf("%s.%s",
+			parser.File.Tokens[offset-4].Value,
+			parser.File.Tokens[offset-2].Value)
 	}
 
-	var exprs []ast.Node
-	exprs, offset, err = consumeExprs(parser, offset)
+	// Catch zero arguments.
+	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+	if err == nil {
+		return call, offset, nil
+	}
+
+	call.Arguments, offset, err = consumeExprs(parser, offset)
+	if err != nil {
+		return nil, originalOffset, err
+	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
-	return &ast.Call{
-		FunctionName: parser.File.Tokens[originalOffset].Value,
-		Arguments:    exprs,
-	}, offset, nil
+	return call, offset, nil
 }
