@@ -2,8 +2,9 @@ package compiler
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/vm"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {

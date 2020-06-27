@@ -1,4 +1,4 @@
-module ok
+module github.com/elliotchance/ok
 
 go 1.13
 

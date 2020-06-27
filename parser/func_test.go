@@ -1,9 +1,10 @@
 package parser_test
 
 import (
-	"ok/ast"
-	"ok/parser"
 	"testing"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/parser"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -94,6 +95,14 @@ func TestFunc(t *testing.T) {
 				},
 				"bar": {
 					Name: "bar",
+				},
+			},
+		},
+		"exported-function": {
+			str: "func Abs() {}",
+			expected: map[string]*ast.Func{
+				"Abs": {
+					Name: "Abs",
 				},
 			},
 		},

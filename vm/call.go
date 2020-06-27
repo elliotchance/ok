@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"ok/ast"
+	"github.com/elliotchance/ok/ast"
 )
 
 // Call tells the VM to jump to another function.

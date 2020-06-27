@@ -1,9 +1,9 @@
 package ast_test
 
 import (
-	"ok/ast"
 	"testing"
 
+	"github.com/elliotchance/ok/ast"
 	"github.com/stretchr/testify/assert"
 )
 

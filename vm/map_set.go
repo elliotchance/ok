@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"ok/ast"
+	"github.com/elliotchance/ok/ast"
 )
 
 // MapSet sets a number value to an index.

@@ -2,10 +2,11 @@ package compiler
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/lexer"
-	"ok/vm"
 	"strings"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/vm"
 )
 
 func getBinaryInstruction(op string, left, right, result string) (vm.Instruction, string) {

@@ -2,8 +2,19 @@ package vm
 
 import (
 	"fmt"
-	"ok/ast"
+
+	"github.com/elliotchance/ok/ast"
 )
+
+// InternalDefinition is used by Lib to hold the definitions and compiled code
+// for internal functions.
+type InternalDefinition struct {
+	CompiledFunc *CompiledFunc
+	FuncDef      *ast.Func
+}
+
+// Lib is populated with the generated lib.go file. See Makefile.
+var Lib map[string]*InternalDefinition
 
 // CompiledTest is a runnable test.
 type CompiledTest struct {
@@ -68,6 +79,14 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
+
+	// TODO(elliot): It's probably not a good idea to fallback onto the standard
+	//  lib. Perhaps the compiler can append these functions so this isn't
+	//  necessary?
+	if fn == nil {
+		fn = Lib[name].CompiledFunc
+	}
+
 	for i, arg := range arguments {
 		registers[fn.Arguments[i]] = vm.stack[len(vm.stack)-1][arg]
 	}

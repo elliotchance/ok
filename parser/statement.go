@@ -2,8 +2,9 @@ package parser
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/lexer"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 )
 
 func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {

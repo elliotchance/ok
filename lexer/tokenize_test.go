@@ -2,10 +2,10 @@ package lexer_test
 
 import (
 	"errors"
-	"ok/ast"
-	"ok/lexer"
 	"testing"
 
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -814,6 +814,13 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenStringLiteral, "math", true},
 				{lexer.TokenFunc, "func", false},
 				{lexer.TokenIdentifier, "foo", false},
+				{lexer.TokenEOF, "", false},
+			},
+		},
+		"Abs": {
+			str: "Abs",
+			expected: []lexer.Token{
+				{lexer.TokenIdentifier, "Abs", false},
 				{lexer.TokenEOF, "", false},
 			},
 		},

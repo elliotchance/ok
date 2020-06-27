@@ -1,9 +1,10 @@
 package vm_test
 
 import (
-	"ok/ast"
-	"ok/vm"
 	"testing"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
 )

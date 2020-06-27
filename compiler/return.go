@@ -1,8 +1,8 @@
 package compiler
 
 import (
-	"ok/ast"
-	"ok/vm"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileReturn(compiledFunc *vm.CompiledFunc, n *ast.Return, fns map[string]*ast.Func) error {

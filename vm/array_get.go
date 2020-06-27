@@ -1,8 +1,8 @@
 package vm
 
 import (
-	"ok/ast"
-	"ok/number"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/number"
 )
 
 // ArrayGet gets a value from the array by its index.

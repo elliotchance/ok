@@ -1,8 +1,8 @@
 package vm
 
 import (
-	"ok/ast"
-	"ok/number"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/number"
 )
 
 // Remainder will return the remainder when dividing two numbers. This is not

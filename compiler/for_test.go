@@ -1,13 +1,13 @@
 package compiler_test
 
 import (
-	"ok/ast"
-	"ok/compiler"
-	"ok/lexer"
-	"ok/vm"
 	"os"
 	"testing"
 
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"ok/ast"
-	"ok/lexer"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 )
 
 func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {

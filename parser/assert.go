@@ -2,8 +2,9 @@ package parser
 
 import (
 	"errors"
-	"ok/ast"
-	"ok/lexer"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 )
 
 func consumeAssert(parser *Parser, offset int) (*ast.Assert, int, error) {

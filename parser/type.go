@@ -1,8 +1,9 @@
 package parser
 
 import (
-	"ok/lexer"
 	"strings"
+
+	"github.com/elliotchance/ok/lexer"
 )
 
 func consumeType(parser *Parser, offset int) (string, int, error) {

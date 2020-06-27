@@ -1,6 +1,6 @@
-.PHONY: clean test run-tests tests/* release version readme ok
+.PHONY: clean test run-tests tests/* release version readme ok lib-gen
 
-ok:
+ok: vm/lib.go
 	go build
 
 clean:
@@ -8,6 +8,7 @@ clean:
 	rm -f ok-linux.zip ok-windows.zip
 	rm -f ok
 	rm -f coverage.txt
+	rm -f vm/lib.go
 
 ci: clean test-fmt vet test-coverage run-tests check-readme
 
@@ -43,15 +44,15 @@ tests/*: ok
 
 	./ok test $@
 
-ok-macos.zip: version clean
+ok-macos.zip: version clean vm/lib.go
 	GOOS=darwin GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
-ok-linux.zip: version clean
+ok-linux.zip: version clean vm/lib.go
 	GOOS=linux GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
-ok-windows.zip: version clean
+ok-windows.zip: version clean vm/lib.go
 	GOOS=windows GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
@@ -72,3 +73,9 @@ check-readme:
 	make readme
 	diff README.md README.md.bak2
 	rm -f README.md.bak README.md.bak2
+
+lib-gen:
+	go build ./cmd/lib-gen/
+
+vm/lib.go: lib-gen
+	./lib-gen

@@ -1,8 +1,8 @@
 package compiler
 
 import (
-	"ok/ast"
-	"ok/vm"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 // compileBlock translates list of statements into a set of instructions. The

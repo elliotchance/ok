@@ -2,8 +2,9 @@ package lexer
 
 import (
 	"fmt"
-	"ok/ast"
 	"strings"
+
+	"github.com/elliotchance/ok/ast"
 )
 
 // TokenizeString returns a slice of tokens from the provided str.

@@ -1,9 +1,9 @@
 package number_test
 
 import (
-	"ok/number"
 	"testing"
 
+	"github.com/elliotchance/ok/number"
 	"github.com/stretchr/testify/assert"
 )
 

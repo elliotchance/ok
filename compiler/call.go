@@ -1,9 +1,11 @@
 package compiler
 
 import (
-	"ok/ast"
-	"ok/vm"
+	"fmt"
 	"os"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
@@ -26,8 +28,20 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 		argResults = append(argResults, argResult...)
 	}
 
-	// TODO(elliot): Check function exists.
 	toCall := fns[call.FunctionName]
+	if toCall == nil {
+		// It might be a built in function.
+		//
+		// TODO(elliot): This needs to only allow this usage if its imported.
+		if internal := vm.Lib[call.FunctionName]; internal != nil {
+			toCall = internal.FuncDef
+		}
+
+		if toCall == nil {
+			return nil, nil,
+				fmt.Errorf("no such function: %s", call.FunctionName)
+		}
+	}
 
 	// Prepare enough return registers.
 	var returnRegisters []string

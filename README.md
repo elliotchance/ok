@@ -13,6 +13,7 @@ itself.
    * [Why OK?](#why-ok)
       * [Strongly Typed](#strongly-typed)
       * [First-class Testing](#first-class-testing)
+      * [Everything in a Single Binary](#everything-in-a-single-binary)
    * [Installation](#installation)
       * [Precompiled Binaries](#precompiled-binaries)
       * [go get](#go-get)
@@ -104,6 +105,16 @@ $ ok test tests/example-tests
 tests/example-tests: adding some numbers: assert(8 == 10) failed
 tests/example-tests: 1 failed 0 passed 2 asserts (60.638µs)
 ```
+
+Everything in a Single Binary
+-----------------------------
+
+The binary for the release (you can
+[download it from the Releases page](https://github.com/elliotchance/ok/releases))
+contains all of the tools and
+[standard library](https://github.com/elliotchance/ok/tree/master/lib) so there
+is zero installation or configuration. Just place the binary anywhere and start
+using it.
 
 
 Installation

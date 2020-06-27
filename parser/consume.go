@@ -2,7 +2,8 @@ package parser
 
 import (
 	"errors"
-	"ok/lexer"
+
+	"github.com/elliotchance/ok/lexer"
 )
 
 func consumeOneOf(f *File, offset int, tokens []string) (lexer.Token, int, error) {

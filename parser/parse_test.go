@@ -2,11 +2,11 @@ package parser_test
 
 import (
 	"errors"
-	"ok/ast"
-	"ok/lexer"
-	"ok/parser"
 	"testing"
 
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/parser"
 	"github.com/stretchr/testify/assert"
 )
 

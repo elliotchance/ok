@@ -1,8 +1,8 @@
 package compiler
 
 import (
-	"ok/ast"
-	"ok/vm"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*ast.Func) (string, string, error) {

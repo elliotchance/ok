@@ -2,9 +2,10 @@ package parser
 
 import (
 	"errors"
-	"ok/ast"
-	"ok/lexer"
 	"strings"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 )
 
 func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {

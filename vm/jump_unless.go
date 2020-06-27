@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"ok/ast"
+	"github.com/elliotchance/ok/ast"
 )
 
 // JumpUnless will jump to the instruction if the expression is false.

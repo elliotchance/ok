@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"ok/ast"
+	"github.com/elliotchance/ok/ast"
 )
 
 // MapGet gets a value from the map by its key.

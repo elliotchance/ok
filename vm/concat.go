@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"ok/ast"
+	"github.com/elliotchance/ok/ast"
 )
 
 // Concat will create a new string by joining two other strings.

@@ -1,14 +1,14 @@
 package compiler_test
 
 import (
-	"ok/ast"
-	"ok/compiler"
-	"ok/lexer"
-	"ok/parser"
-	"ok/vm"
 	"os"
 	"testing"
 
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -209,6 +209,11 @@ func TestCompileFile(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFile, err := compiler.CompileFile(test.f)
 			assert.NoError(t, err)
+
+			// It is not worth testing these because the Statements make it very
+			// verbose.
+			compiledFile.FuncDefs = nil
+
 			assert.Equal(t, test.expected, compiledFile)
 		})
 	}

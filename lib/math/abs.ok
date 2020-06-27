@@ -1,0 +1,8 @@
+// Abs returns the absolute (positive number).
+func Abs(x number) number {
+    if x < 0 {
+        return -x
+    }
+
+    return x
+}

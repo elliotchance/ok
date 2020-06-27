@@ -2,8 +2,9 @@ package run
 
 import (
 	"log"
-	"ok/compiler"
-	"ok/vm"
+
+	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/vm"
 )
 
 type Command struct{}
