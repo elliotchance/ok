@@ -1,8 +1,8 @@
 package vm
 
 import (
-	"ok/ast"
-	"ok/number"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/number"
 )
 
 // Subtract will subtract two numbers.

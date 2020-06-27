@@ -3,6 +3,8 @@
 /coverage.txt
 /README.md.bak
 /README.md.bak2
+/vm/lib.go
+/lib-gen
 
 # Releases
 /bin

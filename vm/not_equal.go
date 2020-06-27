@@ -1,8 +1,8 @@
 package vm
 
 import (
-	"ok/ast"
-	"ok/number"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/number"
 )
 
 // NotEqualNumber will compare two numbers for equality.

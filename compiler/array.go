@@ -3,8 +3,9 @@ package compiler
 import (
 	"errors"
 	"fmt"
-	"ok/ast"
-	"ok/vm"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (string, error) {

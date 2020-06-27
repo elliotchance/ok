@@ -1,9 +1,9 @@
 package lexer_test
 
 import (
-	"ok/lexer"
 	"testing"
 
+	"github.com/elliotchance/ok/lexer"
 	"github.com/stretchr/testify/assert"
 )
 

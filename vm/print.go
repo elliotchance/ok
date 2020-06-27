@@ -3,9 +3,10 @@ package vm
 import (
 	"fmt"
 	"io"
-	"ok/ast"
 	"sort"
 	"strings"
+
+	"github.com/elliotchance/ok/ast"
 )
 
 // Print will output a string to stdout.

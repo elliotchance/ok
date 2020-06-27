@@ -4,11 +4,12 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"ok/cmd/run"
-	"ok/cmd/test"
-	"ok/cmd/version"
 	"os"
 	"sort"
+
+	"github.com/elliotchance/ok/cmd/run"
+	"github.com/elliotchance/ok/cmd/test"
+	"github.com/elliotchance/ok/cmd/version"
 )
 
 type command interface {

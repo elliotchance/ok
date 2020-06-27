@@ -1,6 +1,6 @@
 package vm
 
-import "ok/ast"
+import "github.com/elliotchance/ok/ast"
 
 // An Instruction can be executed by the VM.
 type Instruction interface {

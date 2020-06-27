@@ -2,8 +2,9 @@ package compiler
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/vm"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 // compileExpr return the (result register, result type, error)

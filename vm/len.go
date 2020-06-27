@@ -2,8 +2,9 @@ package vm
 
 import (
 	"fmt"
-	"ok/ast"
 	"strings"
+
+	"github.com/elliotchance/ok/ast"
 )
 
 // Len is used to determine the size of an array or map.

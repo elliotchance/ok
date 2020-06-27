@@ -1,11 +1,11 @@
 package vm_test
 
 import (
-	"ok/compiler"
-	"ok/parser"
-	"ok/vm"
 	"testing"
 
+	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

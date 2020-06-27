@@ -1,8 +1,8 @@
 package compiler
 
 import (
-	"ok/ast"
-	"ok/vm"
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {

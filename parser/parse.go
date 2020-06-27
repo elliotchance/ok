@@ -2,8 +2,9 @@ package parser
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/lexer"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 )
 
 // ParseString parses source code and returns the AST for the file.

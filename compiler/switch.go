@@ -2,8 +2,9 @@ package compiler
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/vm"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {

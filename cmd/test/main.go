@@ -3,10 +3,11 @@ package test
 import (
 	"fmt"
 	"log"
-	"ok/compiler"
-	"ok/vm"
 	"os"
 	"time"
+
+	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/vm"
 )
 
 type Command struct{}

@@ -2,8 +2,9 @@ package vm
 
 import (
 	"fmt"
-	"ok/ast"
-	"ok/number"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/number"
 )
 
 // NextArray is used to tick an array iterator forward.

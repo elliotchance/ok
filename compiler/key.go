@@ -1,9 +1,10 @@
 package compiler
 
 import (
-	"ok/ast"
-	"ok/vm"
 	"strings"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/vm"
 )
 
 func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.Func) (string, string, error) {

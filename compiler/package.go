@@ -2,10 +2,11 @@ package compiler
 
 import (
 	"io/ioutil"
-	"ok/ast"
-	"ok/parser"
 	"path"
 	"path/filepath"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/parser"
 )
 
 func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
@@ -14,6 +15,8 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	dir = path.Clean(dir)
 
 	// Step 2: Parse all files and combine.
 	var errs []error
@@ -32,8 +35,8 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 
 		for name, fn := range p.File.Funcs {
 			// TODO(elliot): Check for already defined function.
-			if path.Dir(fileName) != dir {
-				pkg := filepath.Base(path.Dir(fileName))
+			if fileNameDir := path.Clean(path.Dir(fileName)); fileNameDir != dir {
+				pkg := filepath.Base(fileNameDir)
 				funcs[pkg+"."+name] = fn
 			} else {
 				funcs[name] = fn
@@ -44,6 +47,15 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 
 		for pkg := range p.File.Imports {
 			// TODO(elliot): Check import location exists.
+
+			// Ignore builtin libraries as they are already provided to the VM
+			// through vm/lib.go. See Makefile.
+			//
+			// TODO(elliot): This needs to be smarter.
+			if pkg == "math" {
+				continue
+			}
+
 			newFileNames, err := getAllOKFilesInPath(path.Join(dir, pkg), false)
 			if err != nil {
 				return nil, err

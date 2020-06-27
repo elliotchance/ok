@@ -1,9 +1,9 @@
 package parser_test
 
 import (
-	"ok/parser"
 	"testing"
 
+	"github.com/elliotchance/ok/parser"
 	"github.com/stretchr/testify/assert"
 )
 
