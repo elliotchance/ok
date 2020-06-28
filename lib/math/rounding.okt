@@ -1,0 +1,47 @@
+test "Ceil" {
+    assert(Ceil(0) == 0)
+
+    assert(Ceil(1.0) == 1)
+    assert(Ceil(1.1) == 2)
+    assert(Ceil(1.5) == 2)
+    assert(Ceil(1.8) == 2)
+    assert(Ceil(2) == 2)
+
+    assert(Ceil(-1.0) == -1)
+    assert(Ceil(-1.1) == -1)
+    assert(Ceil(-1.5) == -1)
+    assert(Ceil(-1.8) == -1)
+    assert(Ceil(-2) == -2)
+}
+
+test "Floor" {
+    assert(Floor(0) == 0)
+
+    assert(Floor(1.0) == 1)
+    assert(Floor(1.1) == 1)
+    assert(Floor(1.5) == 1)
+    assert(Floor(1.8) == 1)
+    assert(Floor(2) == 2)
+
+    assert(Floor(-1.0) == -1)
+    assert(Floor(-1.1) == -2)
+    assert(Floor(-1.5) == -2)
+    assert(Floor(-1.8) == -2)
+    assert(Floor(-2) == -2)
+}
+
+test "Round" {
+    assert(Round(1.23, 3) == 1.23)
+    assert(Round(1.23, 2) == 1.23)
+    assert(Round(1.23, 1) == 1.2)
+    assert(Round(1.23, 0) == 1)
+
+    assert(Round(-1.23, 3) == -1.23)
+    assert(Round(-1.23, 2) == -1.23)
+    assert(Round(-1.23, 1) == -1.2)
+    assert(Round(-1.23, 0) == -1)
+
+    assert(Round(1.16, 1) == 1.2)
+    assert(Round(1.15, 1) == 1.2)
+    assert(Round(1.14, 1) == 1.1)
+}
