@@ -23,8 +23,7 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		}
 
 		// Some tokens signal the end of the expression.
-		if tok.Kind == lexer.TokenColon ||
-			tok.Kind == lexer.TokenComma {
+		if tok.Kind == lexer.TokenColon || tok.Kind == lexer.TokenComma {
 			break
 		}
 
@@ -95,6 +94,7 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		assignable, offset, err = consumeAssignable(parser, offset)
 		if err == nil {
 			parts = append(parts, assignable)
+			didJustConsumeLiteral = true
 			continue
 		}
 
