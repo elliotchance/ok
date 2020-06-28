@@ -1,0 +1,41 @@
+// Ceil will round x up to the nearest integer.
+func Ceil(x number) number {
+    frac = x % 1
+    if frac == 0 {
+        return x
+    }
+
+    if x < 0 {
+        return x - frac
+    }
+
+    return x + (1 - frac)
+}
+
+// Floor will round x down to the nearest integer.
+func Floor(x number) number {
+    frac = x % 1
+    if frac == 0 {
+        return x
+    }
+
+    if x < 0 {
+        return x - frac + 1
+    }
+
+    return x - frac
+}
+
+// Round will return a new number rounded to prec number of digits after the
+// decimal point. Prec must be at least 0.
+func Round(x, prec number) number {
+    p = __pow(10, prec)
+    y = x * p
+
+    diff = y % 1
+    if diff >= 0.5 {
+        return (y + (1 - diff)) / p
+    }
+
+    return (y - diff) / p
+}
