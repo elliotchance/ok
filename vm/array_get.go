@@ -12,7 +12,7 @@ type ArrayGet struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *ArrayGet) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	index := number.NewNumber(registers[ins.Index].Value).Int64()
+	index := number.Int64(number.NewNumber(registers[ins.Index].Value))
 	registers[ins.Result] = registers[ins.Array].Array[index]
 
 	return nil

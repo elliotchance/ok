@@ -19,7 +19,7 @@ type NextMap struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *NextMap) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
 	array := registers[ins.Map].Array
-	pos := number.NewNumber(registers[ins.Cursor].Value).Int()
+	pos := number.Int(number.NewNumber(registers[ins.Cursor].Value))
 
 	hasMore := pos < len(array)
 	registers[ins.Result] = ast.NewLiteralBool(hasMore)

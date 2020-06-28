@@ -12,7 +12,7 @@ type ArrayAllocNumber struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *ArrayAllocNumber) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	size := number.NewNumber(registers[ins.Size].Value).Int64()
+	size := number.Int64(number.NewNumber(registers[ins.Size].Value))
 
 	registers[ins.Result] = &ast.Literal{
 		Kind:  "[]number",

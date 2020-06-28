@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/number"
 	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
@@ -14,7 +15,7 @@ func TestMultiply_Execute(t *testing.T) {
 		left, right string
 		expected    string
 	}{
-		"maintain-precision": {"1.2200", "4.7", "5.7340"},
+		"success": {"1.2200", "4.7", "5.734"},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			registers := map[string]*ast.Literal{
@@ -23,7 +24,8 @@ func TestMultiply_Execute(t *testing.T) {
 			}
 			ins := &vm.Multiply{Left: "0", Right: "1", Result: "2"}
 			assert.NoError(t, ins.Execute(registers, nil, nil))
-			assert.Equal(t, test.expected, registers[ins.Result].Value)
+			actual := number.NewNumber(registers[ins.Result].Value)
+			assert.Equal(t, test.expected, number.Format(actual, -1))
 		})
 	}
 }
