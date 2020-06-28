@@ -56,9 +56,9 @@ is a single character. Supports all UTF-8 up to 4 bytes.
 * [`data`](https://github.com/elliotchance/ok/wiki/Language-Specification#data)
 is raw binary data.
 * [`number`](https://github.com/elliotchance/ok/wiki/Language-Specification#numbers)
-is a decimal value with an exact value and precision (this is not an
-approximation like floating-point types) so all arithmetic and math operation
-are exact.
+is a decimal value with an exact value (this is not an approximation like
+floating-point types) so all arithmetic and math operation are exact. An
+internal maximum precision is used for non-exact calculations.
 * [`string`](https://github.com/elliotchance/ok/wiki/Language-Specification#strings)
 is a UTF-8 string of any length (including zero).
 

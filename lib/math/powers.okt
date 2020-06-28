@@ -1,0 +1,19 @@
+test "Exp" {
+    assert(Exp(0) == 1)
+    assert(Exp(1.23) == 3.4212295362896735738)
+}
+
+test "Pow" {
+    assert(Pow(0, 1) == 0)
+    assert(Pow(1.23, 4.56) == 2.5702023016193030109)
+}
+
+test "Sqrt" {
+    assert(Sqrt(0) == 0)
+    assert(Sqrt(12.34) == 3.5128336140500591606)
+}
+
+test "Cbrt" {
+    assert(Cbrt(0) == 0)
+    assert(Cbrt(12.34) == 2.3108498088312434878)
+}

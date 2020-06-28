@@ -76,6 +76,12 @@ func renderSlice(x interface{}, indent string) {
 func renderPtr(x interface{}, indent string) {
 	v := reflect.ValueOf(x).Elem()
 	ty := reflect.TypeOf(x).Elem()
+
+	if !v.IsValid() {
+		fmt.Fprintf(f, "nil")
+		return
+	}
+
 	fmt.Fprintf(f, "&%s{\n", localType(x)[1:])
 	for i := 0; i < v.NumField(); i++ {
 		field := v.Field(i)
