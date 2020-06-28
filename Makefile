@@ -36,7 +36,7 @@ test-coverage:
 		fi \
 	done
 
-run-tests: tests/*
+run-tests: tests/* run-lib-tests
 
 tests/*: ok
 	./ok run $@ > /tmp/stdout.txt
@@ -79,3 +79,6 @@ lib-gen:
 
 vm/lib.go: lib-gen
 	./lib-gen
+
+run-lib-tests:
+	./ok test lib/math

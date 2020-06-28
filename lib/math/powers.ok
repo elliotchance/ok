@@ -1,0 +1,22 @@
+// Exp returns e to the power of x.
+func Exp(x number) number {
+    // TODO(elliot): Shall we find a better place for constants?
+    e = 2.71828182845904523536028747135266249775724709369995
+
+    return __pow(e, x)
+}
+
+// Pow returns base to power.
+func Pow(base, power number) number {
+    return __pow(base, power)
+}
+
+// Sqrt returns the square root of x.
+func Sqrt(x number) number {
+    return __pow(x, 0.5)
+}
+
+// Cbrt returns the cube root of x.
+func Cbrt(x number) number {
+    return __pow(x, 1/3)
+}

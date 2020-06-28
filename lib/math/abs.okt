@@ -1,5 +1,5 @@
 test "Abs" {
     assert(Abs(-2) == 2)
     assert(Abs(3.1) == 3.1)
-    assert(Abs(0.00) == 0.00)
+    assert(Abs(0.00) == 0)
 }
