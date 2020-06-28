@@ -231,7 +231,7 @@ func main() {
 $ ok run values
 hello
 1+1 = 2
-7.0/3.0 = 2.3
+7.0/3.0 = 2.3333333333333333333
 false
 true
 false
