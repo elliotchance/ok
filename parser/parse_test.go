@@ -117,13 +117,10 @@ func TestParseString(t *testing.T) {
 			str:      "// foo\n //bar\nfunc main() {\n// baz\nprint(\"hello\") // qux\n// quux\n}//corge\n//grault",
 			expected: newFuncPrint(ast.NewLiteralString("hello")),
 			comments: []*ast.Comment{
-				{Comment: " foo"},
-				{Comment: "bar"},
+				{Comment: " foo\nbar", Func: "main"},
 				{Comment: " baz"},
-				{Comment: " qux"},
-				{Comment: " quux"},
-				{Comment: "corge"},
-				{Comment: "grault"},
+				{Comment: " qux\n quux"},
+				{Comment: "corge\ngrault"},
 			},
 		},
 		"call-identifier-close": {

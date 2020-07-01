@@ -15,6 +15,7 @@ func TestTokenizeString(t *testing.T) {
 		expected []lexer.Token
 		comments []*ast.Comment
 		err      error
+		options  *lexer.Options
 	}{
 		"empty": {
 			str: "",
@@ -192,6 +193,162 @@ func TestTokenizeString(t *testing.T) {
 			},
 			comments: []*ast.Comment{
 				{Comment: " hello"},
+			},
+		},
+		"multiline-comment": {
+			str: "// hello\n// world",
+			expected: []lexer.Token{
+				{lexer.TokenComment, " hello\n world", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello\n world"},
+			},
+		},
+		"multiline-comments-joined": {
+			str: "// hello\n//\n// world",
+			expected: []lexer.Token{
+				{lexer.TokenComment, " hello\n\n world", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello\n\n world"},
+			},
+		},
+		"multiline-comments-not-joined": {
+			str: "// hello\n\n// world",
+			expected: []lexer.Token{
+				{lexer.TokenComment, " hello", true},
+				{lexer.TokenComment, " world", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello"},
+				{Comment: " world"},
+			},
+		},
+		"comment-attached-to-func": {
+			str: "// Foo is cool\nfunc Foo(",
+			expected: []lexer.Token{
+				{lexer.TokenComment, " Foo is cool", false},
+				{lexer.TokenFunc, "func", false},
+				{lexer.TokenIdentifier, "Foo", false},
+				// The ( is important for the test because the last token in the
+				// file will not be tested for attaching a comment to a
+				// function.
+				{lexer.TokenParenOpen, "(", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " Foo is cool", Func: "Foo"},
+			},
+		},
+		"comment-not-attached-to-func": {
+			str: "// Foo is cool\n\nfunc Foo(",
+			expected: []lexer.Token{
+				{lexer.TokenComment, " Foo is cool", true},
+				{lexer.TokenFunc, "func", false},
+				{lexer.TokenIdentifier, "Foo", false},
+				// The ( is important for the test because the last token in the
+				// file will not be tested for attaching a comment to a
+				// function.
+				{lexer.TokenParenOpen, "(", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " Foo is cool"},
+			},
+		},
+		"comment-attached-to-func-2": {
+			str: "// Foo is cool\nfunc Foo(",
+			expected: []lexer.Token{
+				{lexer.TokenFunc, "func", false},
+				{lexer.TokenIdentifier, "Foo", false},
+				// The ( is important for the test because the last token in the
+				// file will not be tested for attaching a comment to a
+				// function.
+				{lexer.TokenParenOpen, "(", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " Foo is cool", Func: "Foo"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
+			},
+		},
+		"comment-not-attached-to-func-2": {
+			str: "// Foo is cool\n\nfunc Foo(",
+			expected: []lexer.Token{
+				// TODO(elliot): IsEndOfLine is not correct here, but it doesn't
+				//  break anything right now.
+				{lexer.TokenFunc, "func", true},
+				{lexer.TokenIdentifier, "Foo", false},
+				// The ( is important for the test because the last token in the
+				// file will not be tested for attaching a comment to a
+				// function.
+				{lexer.TokenParenOpen, "(", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " Foo is cool"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
+			},
+		},
+		"multiline-comments-joined-2": {
+			str: "// hello\n//\n// world",
+			expected: []lexer.Token{
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello\n\n world"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
+			},
+		},
+		"tokens-between-comments": {
+			str: "// hello\na\n// world",
+			expected: []lexer.Token{
+				{lexer.TokenIdentifier, "a", true},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello"},
+				{Comment: " world"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
+			},
+		},
+		"operator-between-comments": {
+			str: "// hello\n}\n// world",
+			expected: []lexer.Token{
+				{lexer.TokenCurlyClose, "}", true},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello"},
+				{Comment: " world"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
+			},
+		},
+		"operator-between-comments-2": {
+			str: "// hello\n}// world",
+			expected: []lexer.Token{
+				{lexer.TokenCurlyClose, "}", false},
+				{lexer.TokenEOF, "", false},
+			},
+			comments: []*ast.Comment{
+				{Comment: " hello"},
+				{Comment: " world"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
 			},
 		},
 		"number-0": {
@@ -829,6 +986,10 @@ func TestTokenizeString(t *testing.T) {
 			options := lexer.Options{
 				IncludeComments: true,
 			}
+			if test.options != nil {
+				options = *test.options
+			}
+
 			actual, comments, err := lexer.TokenizeString(test.str, options)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
