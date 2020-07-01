@@ -1,5 +1,7 @@
 package ast
 
+import "strings"
+
 // Argument is used to define a name and type for a function argument.
 type Argument struct {
 	Name string
@@ -22,4 +24,19 @@ type Func struct {
 	// Statements can have zero or more elements for each of the ordered
 	// discreet statements in the function.
 	Statements []Node
+}
+
+// Signature returns the signature, like `Foo(x number, y number)`.
+func (f *Func) Signature() string {
+	var args []string
+	for _, arg := range f.Arguments {
+		args = append(args, arg.Name+" "+arg.Type)
+	}
+
+	return f.Name + "(" + strings.Join(args, ", ") + ")"
+}
+
+// String returns the signature, like `func Foo(x number, y number)`.
+func (f *Func) String() string {
+	return "func " + f.Signature()
 }

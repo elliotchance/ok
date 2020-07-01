@@ -16,6 +16,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 	runes := []rune(str)
 	runesLen := len(runes)
 	endOfLineForNextToken := false
+	var lastComment *ast.Comment
 	for i := 0; i < runesLen; i++ {
 		c := runes[i]
 		var token Token
@@ -44,12 +45,28 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 					token.Value += string(runes[i])
 				}
 
-				comments = append(comments, &ast.Comment{
-					Comment: token.Value,
-				})
-				if options.IncludeComments {
-					tokens = appendToken(tokens, token, &endOfLineForNextToken)
+				// If the previous token was a comment we append to it. However,
+				// if there is a new line just before this comment then it
+				// cannot be joined to the previous one.
+				if lastComment != nil {
+					lastComment.Comment += "\n" + token.Value
+
+					// If we are including comments as tokens we will need to
+					// append to the previous token as well.
+					if len(tokens) > 0 &&
+						tokens[len(tokens)-1].Kind == TokenComment {
+						tokens[len(tokens)-1].Value += "\n" + token.Value
+					}
+				} else {
+					comments = append(comments, &ast.Comment{
+						Comment: token.Value,
+					})
+					if options.IncludeComments {
+						tokens = appendToken(tokens, token, &endOfLineForNextToken)
+					}
+					lastComment = comments[len(comments)-1]
 				}
+
 				continue
 
 			} else if i+1 < runesLen && runes[i+1] == '=' {
@@ -90,6 +107,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 				endOfLineForNextToken = true
 			}
 			found = true
+			lastComment = nil
 
 		case '+', '-':
 			token.Value = string(c)
@@ -110,9 +128,26 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 			found = true
 			token.Kind = token.Value
+
+			// This is to stop comments on either side of an operator from being
+			// considered a continuous comment block. However, be careful that
+			// we don't reset the comment if the token is `(` because that would
+			// cause us to lose the attachment of a function to its comment.
+			if c != '(' {
+				lastComment = nil
+			}
 		}
 
 		if found && word != "" {
+			// If we find a function, we might have to attach the comment.
+			if len(tokens) > 0 &&
+				tokens[len(tokens)-1].Kind == TokenFunc &&
+				lastComment != nil &&
+				// This is only needed to satisfy the IDE static analyzer.
+				len(comments) > 0 {
+				comments[len(comments)-1].Func = word
+			}
+
 			tokens = appendToken(tokens, tokenWord(word), &endOfLineForNextToken)
 			word = ""
 		}

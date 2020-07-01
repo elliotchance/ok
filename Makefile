@@ -10,7 +10,7 @@ clean:
 	rm -f coverage.txt
 	rm -f vm/lib.go
 
-ci: clean test-fmt vet test-coverage run-tests check-readme
+ci: clean test-fmt vet test-coverage run-tests check-readme check-doc
 
 test:
 	go test -race ./...
@@ -82,3 +82,12 @@ vm/lib.go: lib-gen
 
 run-lib-tests:
 	./ok test lib/math
+
+check-doc:
+	cp -f lib/math/README.md lib/math/README.md.bak2
+	make doc
+	diff lib/math/README.md lib/math/README.md.bak2
+	rm -f lib/math/README.md.bak lib/math/README.md.bak2
+
+doc: ok
+	./ok doc lib/math > lib/math/README.md

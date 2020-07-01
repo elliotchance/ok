@@ -19,6 +19,7 @@ itself.
       * [go get](#go-get)
       * [From Source](#from-source)
    * [Command Line Interface](#command-line-interface)
+      * [doc](#doc)
       * [run](#run)
       * [test](#test)
       * [version](#version)
@@ -148,6 +149,17 @@ You will need to have Go 1.14+ installed to build from source.
 
 Command Line Interface
 ======================
+
+doc
+---
+
+The doc tool will generate Github-friendly Markdown for a package. To
+see what this looks like you can have a look at the
+[standard library](https://github.com/elliotchance/ok/tree/master/lib).
+
+```bash
+ok doc my/package
+```
 
 run
 ---

@@ -86,6 +86,13 @@ type Token struct {
 	// after this token (ignoring other whitespace). This is needed by some
 	// grammars to determine the end of the line, but newlines have no effect in
 	// between most tokens.
+	//
+	// One exception to this is comments. Comment always have to be terminated
+	// by a new line, however, IsEndOfLine will only be true if the comment is
+	// followed by an empty line. This is because IsEndOfLine is also used by
+	// the lexer to determine if comments are part of the same block as their
+	// previous lines and/or if they might be attached to functions are
+	// documentation.
 	IsEndOfLine bool
 }
 

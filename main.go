@@ -7,6 +7,7 @@ import (
 	"os"
 	"sort"
 
+	"github.com/elliotchance/ok/cmd/doc"
 	"github.com/elliotchance/ok/cmd/run"
 	"github.com/elliotchance/ok/cmd/test"
 	"github.com/elliotchance/ok/cmd/version"
@@ -18,6 +19,7 @@ type command interface {
 }
 
 var commands = map[string]command{
+	"doc":     &doc.Command{},
 	"run":     &run.Command{},
 	"test":    &test.Command{},
 	"version": &version.Command{},
