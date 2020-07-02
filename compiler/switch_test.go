@@ -1,7 +1,6 @@
 package compiler_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -105,7 +104,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("ONE"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
 				&vm.Jump{
@@ -133,7 +131,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("TWO"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
 				&vm.Jump{
@@ -230,7 +227,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("ONE"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
 				&vm.Jump{
@@ -258,7 +254,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("TWO"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
 				&vm.Jump{
@@ -271,7 +266,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("NO MATCH"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"8"},
 				},
 			},
@@ -362,7 +356,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
 				&vm.Jump{
@@ -390,7 +383,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
 				&vm.Jump{
@@ -418,7 +410,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("THREE"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"10"},
 				},
 				&vm.Jump{
@@ -527,7 +518,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"4"},
 				},
 				&vm.Jump{
@@ -555,7 +545,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"7"},
 				},
 				&vm.Jump{
@@ -583,7 +572,6 @@ func TestSwitch(t *testing.T) {
 					Value:        ast.NewLiteralString("THREE"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"10"},
 				},
 				&vm.Jump{

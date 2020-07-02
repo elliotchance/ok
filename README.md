@@ -19,6 +19,7 @@ itself.
       * [go get](#go-get)
       * [From Source](#from-source)
    * [Command Line Interface](#command-line-interface)
+      * [build](#build)
       * [doc](#doc)
       * [run](#run)
       * [test](#test)
@@ -149,6 +150,18 @@ You will need to have Go 1.14+ installed to build from source.
 
 Command Line Interface
 ======================
+
+build
+-----
+
+The build tool will compile a package and produce a binary. The binary
+is completely standalone and can be run on another computer.
+
+```bash
+$ ok build tests/hello-world
+$ ./hello-world
+Hello, World!
+```
 
 doc
 ---

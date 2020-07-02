@@ -1,7 +1,6 @@
 package compiler_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -25,9 +24,7 @@ func TestCall(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Print{
-					Stdout: os.Stdout,
-				},
+				&vm.Print{},
 			},
 		},
 		"len-1": {
@@ -81,7 +78,6 @@ func TestCall(t *testing.T) {
 					Register:     "1",
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"foo"},
 				},
 			},
@@ -140,7 +136,6 @@ func TestCall(t *testing.T) {
 					Result: "5",
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"3", "5"},
 				},
 			},

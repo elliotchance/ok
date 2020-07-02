@@ -1,7 +1,6 @@
 package compiler_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -29,9 +28,7 @@ func TestFunc(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Print{
-					Stdout: os.Stdout,
-				},
+				&vm.Print{},
 			},
 		},
 		"two-statements-with-args": {
@@ -49,15 +46,12 @@ func TestFunc(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Print{
-					Stdout: os.Stdout,
-				},
+				&vm.Print{},
 				&vm.Assign{
 					VariableName: "1",
 					Value:        ast.NewLiteralString("hello"),
 				},
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"1"},
 				},
 			},

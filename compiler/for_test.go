@@ -1,7 +1,6 @@
 package compiler_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -410,7 +409,6 @@ func TestFor(t *testing.T) {
 
 				// print(a)
 				&vm.Print{
-					Stdout:    os.Stdout,
 					Arguments: []string{"a"},
 				},
 

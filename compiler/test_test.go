@@ -1,7 +1,6 @@
 package compiler_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -29,9 +28,7 @@ func TestTest(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Print{
-					Stdout: os.Stdout,
-				},
+				&vm.Print{},
 			},
 		},
 	} {
