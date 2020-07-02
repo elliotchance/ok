@@ -1,0 +1,9 @@
+// LogE is the natural logarithm (base e).
+func LogE(x number) number {
+    return __log(x)
+}
+
+// Log10 is a logarithm with base 10.
+func Log10(x number) number {
+    return __log(x) / __log(10)
+}

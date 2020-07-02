@@ -10,6 +10,7 @@ import (
 
 func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
 	builtinFunctions := map[string]func(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error){
+		"__log": compileCallLog,
 		"__pow": compileCallPow,
 		"len":   compileCallLen,
 		"print": compileCallPrint,
@@ -59,6 +60,23 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 	compiledFunc.Append(ins)
 
 	return returnRegisters, toCall.Returns, nil
+}
+
+func compileCallLog(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
+	x, _, err := compileExpr(compiledFunc, call.Arguments[0], fns)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	result := compiledFunc.NextRegister()
+	ins := &vm.Log{
+		X:      x[0],
+		Result: result,
+	}
+
+	compiledFunc.Append(ins)
+
+	return []string{result}, []string{"number"}, nil
 }
 
 func compileCallPow(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
