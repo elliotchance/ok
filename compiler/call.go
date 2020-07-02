@@ -2,7 +2,6 @@ package compiler
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/vm"
@@ -120,9 +119,7 @@ func compileCallLen(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[strin
 }
 
 func compileCallPrint(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
-	ins := &vm.Print{
-		Stdout: os.Stdout,
-	}
+	ins := &vm.Print{}
 	for _, arg := range call.Arguments {
 		returns, _, err := compileExpr(compiledFunc, arg, fns)
 		if err != nil {

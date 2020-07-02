@@ -116,10 +116,9 @@ func TestPrint_Execute(t *testing.T) {
 
 			buf := bytes.NewBuffer(nil)
 			ins := &vm.Print{
-				Stdout:    buf,
 				Arguments: arguments,
 			}
-			assert.NoError(t, ins.Execute(registers, nil, nil))
+			assert.NoError(t, ins.Execute(registers, nil, &vm.VM{Stdout: buf}))
 			assert.Equal(t, test.expectedStdout, buf.String())
 		})
 	}

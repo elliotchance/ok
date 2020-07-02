@@ -2,6 +2,8 @@ package vm
 
 import (
 	"fmt"
+	"io"
+	"os"
 
 	"github.com/elliotchance/ok/ast"
 )
@@ -29,6 +31,7 @@ type VM struct {
 	stack  []map[string]*ast.Literal
 	tests  []*CompiledTest
 	pkg    string
+	Stdout io.Writer
 
 	// Stats when running tests.
 	TestsPass, TestsFailed int
@@ -40,9 +43,10 @@ type VM struct {
 // NewVM will create a new VM ready to run the provided instructions.
 func NewVM(fns map[string]*CompiledFunc, tests []*CompiledTest, pkg string) *VM {
 	return &VM{
-		fns:   fns,
-		tests: tests,
-		pkg:   pkg,
+		fns:    fns,
+		tests:  tests,
+		pkg:    pkg,
+		Stdout: os.Stdout,
 	}
 }
 

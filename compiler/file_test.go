@@ -1,7 +1,6 @@
 package compiler_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -39,7 +38,7 @@ func TestCompileFile(t *testing.T) {
 				Funcs: map[string]*vm.CompiledFunc{
 					"main": {
 						Instructions: []vm.Instruction{
-							&vm.Print{Stdout: os.Stdout},
+							&vm.Print{},
 						},
 						Variables: map[string]string{},
 					},
@@ -130,7 +129,6 @@ func TestCompileFile(t *testing.T) {
 						Registers: 1,
 						Instructions: []vm.Instruction{
 							&vm.Print{
-								Stdout:    os.Stdout,
 								Arguments: []string{"x"},
 							},
 						},
@@ -168,7 +166,7 @@ func TestCompileFile(t *testing.T) {
 				Funcs: map[string]*vm.CompiledFunc{
 					"foo": {
 						Instructions: []vm.Instruction{
-							&vm.Print{Stdout: os.Stdout},
+							&vm.Print{},
 						},
 						Variables: map[string]string{},
 					},
