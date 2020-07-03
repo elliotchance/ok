@@ -2,6 +2,7 @@ package vm
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -12,7 +13,7 @@ type NotEqualNumber struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *NotEqualNumber) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
+	registers[ins.Result] = asttest.NewLiteralBool(number.Cmp(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),
 	) != 0)
@@ -30,7 +31,7 @@ type NotEqual struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *NotEqual) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = ast.NewLiteralBool(
+	registers[ins.Result] = asttest.NewLiteralBool(
 		registers[ins.Left].Value != registers[ins.Right].Value,
 	)
 

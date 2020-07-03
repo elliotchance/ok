@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
@@ -25,22 +26,22 @@ func TestKey(t *testing.T) {
 					Rights: []ast.Node{
 						&ast.Array{
 							Elements: []ast.Node{
-								ast.NewLiteralNumber("123"),
-								ast.NewLiteralNumber("456"),
+								asttest.NewLiteralNumber("123"),
+								asttest.NewLiteralNumber("456"),
 							},
 						},
 					},
 				},
 				&ast.Key{
 					Expr: &ast.Identifier{Name: "foo"},
-					Key:  ast.NewLiteralNumber("1"),
+					Key:  asttest.NewLiteralNumber("1"),
 				},
 			},
 			expected: []vm.Instruction{
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -50,11 +51,11 @@ func TestKey(t *testing.T) {
 				// set 0
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -65,11 +66,11 @@ func TestKey(t *testing.T) {
 				// set 1
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("456"),
+					Value:        asttest.NewLiteralNumber("456"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -86,7 +87,7 @@ func TestKey(t *testing.T) {
 				// get 1
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.ArrayGet{
 					Array:  "foo",
@@ -105,12 +106,12 @@ func TestKey(t *testing.T) {
 						&ast.Map{
 							Elements: []*ast.KeyValue{
 								{
-									Key:   ast.NewLiteralString("a"),
-									Value: ast.NewLiteralNumber("123"),
+									Key:   asttest.NewLiteralString("a"),
+									Value: asttest.NewLiteralNumber("123"),
 								},
 								{
-									Key:   ast.NewLiteralString("b"),
-									Value: ast.NewLiteralNumber("456"),
+									Key:   asttest.NewLiteralString("b"),
+									Value: asttest.NewLiteralNumber("456"),
 								},
 							},
 						},
@@ -118,14 +119,14 @@ func TestKey(t *testing.T) {
 				},
 				&ast.Key{
 					Expr: &ast.Identifier{Name: "foo"},
-					Key:  ast.NewLiteralString("b"),
+					Key:  asttest.NewLiteralString("b"),
 				},
 			},
 			expected: []vm.Instruction{
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -135,11 +136,11 @@ func TestKey(t *testing.T) {
 				// "a": 123
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralString("a"),
+					Value:        asttest.NewLiteralString("a"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -150,11 +151,11 @@ func TestKey(t *testing.T) {
 				// "b": 456
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralString("b"),
+					Value:        asttest.NewLiteralString("b"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("456"),
+					Value:        asttest.NewLiteralNumber("456"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -171,7 +172,7 @@ func TestKey(t *testing.T) {
 				// get "b"
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralString("b"),
+					Value:        asttest.NewLiteralString("b"),
 				},
 				&vm.MapGet{
 					Map:    "foo",
@@ -189,8 +190,8 @@ func TestKey(t *testing.T) {
 					Rights: []ast.Node{
 						&ast.Array{
 							Elements: []ast.Node{
-								ast.NewLiteralNumber("123"),
-								ast.NewLiteralNumber("456"),
+								asttest.NewLiteralNumber("123"),
+								asttest.NewLiteralNumber("456"),
 							},
 						},
 					},
@@ -199,11 +200,11 @@ func TestKey(t *testing.T) {
 					Lefts: []ast.Node{
 						&ast.Key{
 							Expr: &ast.Identifier{Name: "foo"},
-							Key:  ast.NewLiteralNumber("1"),
+							Key:  asttest.NewLiteralNumber("1"),
 						},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("2"),
+						asttest.NewLiteralNumber("2"),
 					},
 				},
 			},
@@ -211,7 +212,7 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -221,11 +222,11 @@ func TestKey(t *testing.T) {
 				// set 0
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -236,11 +237,11 @@ func TestKey(t *testing.T) {
 				// set 1
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("456"),
+					Value:        asttest.NewLiteralNumber("456"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -257,11 +258,11 @@ func TestKey(t *testing.T) {
 				// foo[1] = 2
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.ArraySet{
 					Array: "foo",
@@ -280,12 +281,12 @@ func TestKey(t *testing.T) {
 						&ast.Map{
 							Elements: []*ast.KeyValue{
 								{
-									Key:   ast.NewLiteralString("a"),
-									Value: ast.NewLiteralNumber("123"),
+									Key:   asttest.NewLiteralString("a"),
+									Value: asttest.NewLiteralNumber("123"),
 								},
 								{
-									Key:   ast.NewLiteralString("b"),
-									Value: ast.NewLiteralNumber("456"),
+									Key:   asttest.NewLiteralString("b"),
+									Value: asttest.NewLiteralNumber("456"),
 								},
 							},
 						},
@@ -295,11 +296,11 @@ func TestKey(t *testing.T) {
 					Lefts: []ast.Node{
 						&ast.Key{
 							Expr: &ast.Identifier{Name: "foo"},
-							Key:  ast.NewLiteralString("b"),
+							Key:  asttest.NewLiteralString("b"),
 						},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("2"),
+						asttest.NewLiteralNumber("2"),
 					},
 				},
 			},
@@ -307,7 +308,7 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -317,11 +318,11 @@ func TestKey(t *testing.T) {
 				// "a": 123
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralString("a"),
+					Value:        asttest.NewLiteralString("a"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -332,11 +333,11 @@ func TestKey(t *testing.T) {
 				// "b": 456
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralString("b"),
+					Value:        asttest.NewLiteralString("b"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("456"),
+					Value:        asttest.NewLiteralNumber("456"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -353,11 +354,11 @@ func TestKey(t *testing.T) {
 				// foo["b"] = 2
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralString("b"),
+					Value:        asttest.NewLiteralString("b"),
 				},
 				&vm.MapSet{
 					Map:   "foo",

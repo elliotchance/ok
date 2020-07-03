@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/vm"
@@ -25,19 +26,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralData([]byte("foo")),
+						asttest.NewLiteralData([]byte("foo")),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenPlusAssign,
-					Right: ast.NewLiteralData([]byte("bar")),
+					Right: asttest.NewLiteralData([]byte("bar")),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralData([]byte("foo")),
+					Value:        asttest.NewLiteralData([]byte("foo")),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -45,7 +46,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralData([]byte("bar")),
+					Value:        asttest.NewLiteralData([]byte("bar")),
 				},
 				&vm.Combine{
 					Left:   "i",
@@ -65,19 +66,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralString("foo"),
+						asttest.NewLiteralString("foo"),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenPlusAssign,
-					Right: ast.NewLiteralString("bar"),
+					Right: asttest.NewLiteralString("bar"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -85,7 +86,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("bar"),
+					Value:        asttest.NewLiteralString("bar"),
 				},
 				&vm.Concat{
 					Left:   "i",
@@ -105,19 +106,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenPlusAssign,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -125,7 +126,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Add{
 					Left:   "i",
@@ -145,19 +146,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenMinusAssign,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -165,7 +166,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Subtract{
 					Left:   "i",
@@ -185,19 +186,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenTimesAssign,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -205,7 +206,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Multiply{
 					Left:   "i",
@@ -225,19 +226,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenDivideAssign,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -245,7 +246,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Divide{
 					Left:   "i",
@@ -265,19 +266,19 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Binary{
 					Left:  &ast.Identifier{Name: "i"},
 					Op:    lexer.TokenRemainderAssign,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -285,7 +286,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Remainder{
 					Left:   "i",
@@ -321,20 +322,20 @@ func TestBinary(t *testing.T) {
 		},
 		"data-plus-data": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralData([]byte("foo")),
+				asttest.NewBinary(
+					asttest.NewLiteralData([]byte("foo")),
 					lexer.TokenPlus,
-					ast.NewLiteralData([]byte("bar")),
+					asttest.NewLiteralData([]byte("bar")),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralData([]byte("foo")),
+					Value:        asttest.NewLiteralData([]byte("foo")),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralData([]byte("bar")),
+					Value:        asttest.NewLiteralData([]byte("bar")),
 				},
 				&vm.Combine{
 					Left:   "1",
@@ -345,20 +346,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-plus-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.20"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.20"),
 					lexer.TokenPlus,
-					ast.NewLiteralNumber("5"),
+					asttest.NewLiteralNumber("5"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.20"),
+					Value:        asttest.NewLiteralNumber("1.20"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.Add{
 					Left:   "1",
@@ -369,20 +370,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-plus-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("foo"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("foo"),
 					lexer.TokenPlus,
-					ast.NewLiteralString("bar"),
+					asttest.NewLiteralString("bar"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("bar"),
+					Value:        asttest.NewLiteralString("bar"),
 				},
 				&vm.Concat{
 					Left:   "1",
@@ -393,20 +394,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-minus-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.20"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.20"),
 					lexer.TokenMinus,
-					ast.NewLiteralNumber("5"),
+					asttest.NewLiteralNumber("5"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.20"),
+					Value:        asttest.NewLiteralNumber("1.20"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.Subtract{
 					Left:   "1",
@@ -417,20 +418,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-times-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.20"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.20"),
 					lexer.TokenTimes,
-					ast.NewLiteralNumber("5"),
+					asttest.NewLiteralNumber("5"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.20"),
+					Value:        asttest.NewLiteralNumber("1.20"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.Multiply{
 					Left:   "1",
@@ -441,20 +442,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-divide-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.20"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.20"),
 					lexer.TokenDivide,
-					ast.NewLiteralNumber("5"),
+					asttest.NewLiteralNumber("5"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.20"),
+					Value:        asttest.NewLiteralNumber("1.20"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.Divide{
 					Left:   "1",
@@ -465,20 +466,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-remainder-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("5"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("5"),
 					lexer.TokenRemainder,
-					ast.NewLiteralNumber("1.20"),
+					asttest.NewLiteralNumber("1.20"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1.20"),
+					Value:        asttest.NewLiteralNumber("1.20"),
 				},
 				&vm.Remainder{
 					Left:   "1",
@@ -494,7 +495,7 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1.5"),
+						asttest.NewLiteralNumber("1.5"),
 					},
 				},
 				&ast.Assign{
@@ -502,7 +503,7 @@ func TestBinary(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralString("1.5"),
+						asttest.NewLiteralString("1.5"),
 					},
 				},
 			},
@@ -510,30 +511,30 @@ func TestBinary(t *testing.T) {
 		},
 		"bool-greater-than-bool": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenGreaterThan,
-					ast.NewLiteralBool(true),
+					asttest.NewLiteralBool(true),
 				),
 			},
 			err: errors.New("cannot perform bool > bool"),
 		},
 		"bool-equals-bool": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenEqual,
-					ast.NewLiteralBool(true),
+					asttest.NewLiteralBool(true),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -544,20 +545,20 @@ func TestBinary(t *testing.T) {
 		},
 		"char-equals-char": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralChar('a'),
+				asttest.NewBinary(
+					asttest.NewLiteralChar('a'),
 					lexer.TokenEqual,
-					ast.NewLiteralChar('B'),
+					asttest.NewLiteralChar('B'),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralChar('a'),
+					Value:        asttest.NewLiteralChar('a'),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralChar('B'),
+					Value:        asttest.NewLiteralChar('B'),
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -568,20 +569,20 @@ func TestBinary(t *testing.T) {
 		},
 		"data-equals-data": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralData([]byte("a")),
+				asttest.NewBinary(
+					asttest.NewLiteralData([]byte("a")),
 					lexer.TokenEqual,
-					ast.NewLiteralData([]byte("B")),
+					asttest.NewLiteralData([]byte("B")),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralData([]byte("a")),
+					Value:        asttest.NewLiteralData([]byte("a")),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralData([]byte("B")),
+					Value:        asttest.NewLiteralData([]byte("B")),
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -592,20 +593,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-equals-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.0"),
 					lexer.TokenEqual,
-					ast.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.0"),
+					Value:        asttest.NewLiteralNumber("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.EqualNumber{
 					Left:   "1",
@@ -616,20 +617,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-equals-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("foo"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("foo"),
 					lexer.TokenEqual,
-					ast.NewLiteralString("bar"),
+					asttest.NewLiteralString("bar"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("bar"),
+					Value:        asttest.NewLiteralString("bar"),
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -640,20 +641,20 @@ func TestBinary(t *testing.T) {
 		},
 		"bool-not-equals-bool": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenNotEqual,
-					ast.NewLiteralBool(true),
+					asttest.NewLiteralBool(true),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -664,20 +665,20 @@ func TestBinary(t *testing.T) {
 		},
 		"char-not-equals-char": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralChar('a'),
+				asttest.NewBinary(
+					asttest.NewLiteralChar('a'),
 					lexer.TokenNotEqual,
-					ast.NewLiteralChar('B'),
+					asttest.NewLiteralChar('B'),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralChar('a'),
+					Value:        asttest.NewLiteralChar('a'),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralChar('B'),
+					Value:        asttest.NewLiteralChar('B'),
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -688,20 +689,20 @@ func TestBinary(t *testing.T) {
 		},
 		"data-not-equals-data": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralData([]byte("a")),
+				asttest.NewBinary(
+					asttest.NewLiteralData([]byte("a")),
 					lexer.TokenNotEqual,
-					ast.NewLiteralData([]byte("B")),
+					asttest.NewLiteralData([]byte("B")),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralData([]byte("a")),
+					Value:        asttest.NewLiteralData([]byte("a")),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralData([]byte("B")),
+					Value:        asttest.NewLiteralData([]byte("B")),
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -712,20 +713,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-not-equals-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.0"),
 					lexer.TokenNotEqual,
-					ast.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.0"),
+					Value:        asttest.NewLiteralNumber("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.NotEqualNumber{
 					Left:   "1",
@@ -736,20 +737,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-not-equals-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("foo"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("foo"),
 					lexer.TokenNotEqual,
-					ast.NewLiteralString("bar"),
+					asttest.NewLiteralString("bar"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("bar"),
+					Value:        asttest.NewLiteralString("bar"),
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -760,20 +761,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-greater-than-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.0"),
 					lexer.TokenGreaterThan,
-					ast.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.0"),
+					Value:        asttest.NewLiteralNumber("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.GreaterThanNumber{
 					Left:   "1",
@@ -784,20 +785,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-greater-than-equal-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.0"),
 					lexer.TokenGreaterThanEqual,
-					ast.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.0"),
+					Value:        asttest.NewLiteralNumber("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.GreaterThanEqualNumber{
 					Left:   "1",
@@ -808,20 +809,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-less-than-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.0"),
 					lexer.TokenLessThan,
-					ast.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.0"),
+					Value:        asttest.NewLiteralNumber("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.LessThanNumber{
 					Left:   "1",
@@ -832,20 +833,20 @@ func TestBinary(t *testing.T) {
 		},
 		"number-less-than-equal-number": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.0"),
 					lexer.TokenLessThanEqual,
-					ast.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.0"),
+					Value:        asttest.NewLiteralNumber("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.LessThanEqualNumber{
 					Left:   "1",
@@ -856,20 +857,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-greater-than-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("1.0"),
 					lexer.TokenGreaterThan,
-					ast.NewLiteralString("1"),
+					asttest.NewLiteralString("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("1.0"),
+					Value:        asttest.NewLiteralString("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("1"),
+					Value:        asttest.NewLiteralString("1"),
 				},
 				&vm.GreaterThanString{
 					Left:   "1",
@@ -880,20 +881,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-greater-than-equal-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("1.0"),
 					lexer.TokenGreaterThanEqual,
-					ast.NewLiteralString("1"),
+					asttest.NewLiteralString("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("1.0"),
+					Value:        asttest.NewLiteralString("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("1"),
+					Value:        asttest.NewLiteralString("1"),
 				},
 				&vm.GreaterThanEqualString{
 					Left:   "1",
@@ -904,20 +905,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-less-than-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("1.0"),
 					lexer.TokenLessThan,
-					ast.NewLiteralString("1"),
+					asttest.NewLiteralString("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("1.0"),
+					Value:        asttest.NewLiteralString("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("1"),
+					Value:        asttest.NewLiteralString("1"),
 				},
 				&vm.LessThanString{
 					Left:   "1",
@@ -928,20 +929,20 @@ func TestBinary(t *testing.T) {
 		},
 		"string-less-than-equal-string": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralString("1.0"),
+				asttest.NewBinary(
+					asttest.NewLiteralString("1.0"),
 					lexer.TokenLessThanEqual,
-					ast.NewLiteralString("1"),
+					asttest.NewLiteralString("1"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("1.0"),
+					Value:        asttest.NewLiteralString("1.0"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("1"),
+					Value:        asttest.NewLiteralString("1"),
 				},
 				&vm.LessThanEqualString{
 					Left:   "1",
@@ -952,25 +953,25 @@ func TestBinary(t *testing.T) {
 		},
 		"print-2": {
 			nodes: []ast.Node{
-				ast.NewLiteralString("total is"),
-				ast.NewBinary(
-					ast.NewLiteralNumber("1.5"),
+				asttest.NewLiteralString("total is"),
+				asttest.NewBinary(
+					asttest.NewLiteralNumber("1.5"),
 					lexer.TokenPlus,
-					ast.NewLiteralNumber("0.8"),
+					asttest.NewLiteralNumber("0.8"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("total is"),
+					Value:        asttest.NewLiteralString("total is"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0.8"),
+					Value:        asttest.NewLiteralNumber("0.8"),
 				},
 				&vm.Add{
 					Left:   "2",
@@ -981,20 +982,20 @@ func TestBinary(t *testing.T) {
 		},
 		"true-and-true": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenAnd,
-					ast.NewLiteralBool(true),
+					asttest.NewLiteralBool(true),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.And{
 					Left:   "1",
@@ -1005,20 +1006,20 @@ func TestBinary(t *testing.T) {
 		},
 		"true-and-false": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenAnd,
-					ast.NewLiteralBool(false),
+					asttest.NewLiteralBool(false),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(false),
+					Value:        asttest.NewLiteralBool(false),
 				},
 				&vm.And{
 					Left:   "1",
@@ -1029,20 +1030,20 @@ func TestBinary(t *testing.T) {
 		},
 		"true-or-true": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenOr,
-					ast.NewLiteralBool(true),
+					asttest.NewLiteralBool(true),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Or{
 					Left:   "1",
@@ -1053,20 +1054,20 @@ func TestBinary(t *testing.T) {
 		},
 		"true-or-false": {
 			nodes: []ast.Node{
-				ast.NewBinary(
-					ast.NewLiteralBool(true),
+				asttest.NewBinary(
+					asttest.NewLiteralBool(true),
 					lexer.TokenOr,
-					ast.NewLiteralBool(false),
+					asttest.NewLiteralBool(false),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(false),
+					Value:        asttest.NewLiteralBool(false),
 				},
 				&vm.Or{
 					Left:   "1",

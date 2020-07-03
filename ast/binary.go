@@ -9,11 +9,7 @@ type Binary struct {
 	Left, Right Node
 }
 
-// NewBinary creates a binary operation.
-func NewBinary(left Node, op string, right Node) *Binary {
-	return &Binary{
-		Left:  left,
-		Op:    op,
-		Right: right,
-	}
+// Position returns the position.
+func (node *Binary) Position() string {
+	return node.Left.Position()
 }

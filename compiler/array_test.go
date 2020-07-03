@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
@@ -29,7 +30,7 @@ func TestArray(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -40,16 +41,16 @@ func TestArray(t *testing.T) {
 		"implicit-numbers": {
 			node: &ast.Array{
 				Elements: []ast.Node{
-					ast.NewLiteralNumber("2"),
-					ast.NewLiteralNumber("5"),
-					ast.NewLiteralNumber("13"),
+					asttest.NewLiteralNumber("2"),
+					asttest.NewLiteralNumber("5"),
+					asttest.NewLiteralNumber("13"),
 				},
 			},
 			expected: []vm.Instruction{
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -59,11 +60,11 @@ func TestArray(t *testing.T) {
 				// set 0
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -74,11 +75,11 @@ func TestArray(t *testing.T) {
 				// set 1
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -89,11 +90,11 @@ func TestArray(t *testing.T) {
 				// set 2
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralNumber("13"),
+					Value:        asttest.NewLiteralNumber("13"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -110,7 +111,7 @@ func TestArray(t *testing.T) {
 				Rights: []ast.Node{
 					&ast.Array{
 						Elements: []ast.Node{
-							ast.NewLiteralNumber("1"),
+							asttest.NewLiteralNumber("1"),
 						},
 					},
 				},
@@ -119,7 +120,7 @@ func TestArray(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -129,11 +130,11 @@ func TestArray(t *testing.T) {
 				// set 0
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.ArraySet{
 					Array: "2",

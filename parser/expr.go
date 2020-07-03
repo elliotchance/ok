@@ -34,7 +34,7 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 			err = validateLiteral(literal)
 			if err != nil {
 				// This kind of error should not stop the parsing.
-				parser.Errors = append(parser.Errors, err)
+				parser.AppendError(literal, err.Error())
 			}
 
 			parts = append(parts, literal)
@@ -195,14 +195,14 @@ var operatorPrecedence = map[string]int{
 
 func reduceExpr(parts []interface{}) ast.Node {
 	if len(parts) == 1 {
-		return parts[0]
+		return parts[0].(ast.Node)
 	}
 
 	if len(parts) == 3 {
 		return &ast.Binary{
-			Left:  parts[0],
+			Left:  parts[0].(ast.Node),
 			Op:    parts[1].(lexer.Token).Kind,
-			Right: parts[2],
+			Right: parts[2].(ast.Node),
 		}
 	}
 
@@ -217,7 +217,7 @@ func reduceExpr(parts []interface{}) ast.Node {
 	}
 
 	return &ast.Binary{
-		Left:  parts[0],
+		Left:  parts[0].(ast.Node),
 		Op:    parts[1].(lexer.Token).Kind,
 		Right: reduceExpr(parts[2:]),
 	}

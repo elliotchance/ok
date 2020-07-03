@@ -9,6 +9,18 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func pos(characterNumber int) lexer.Pos {
+	return pos2(1, characterNumber)
+}
+
+func pos2(lineNumber, characterNumber int) lexer.Pos {
+	return lexer.Pos{
+		FileName:        "a.ok",
+		LineNumber:      lineNumber,
+		CharacterNumber: characterNumber,
+	}
+}
+
 func TestTokenizeString(t *testing.T) {
 	for testName, test := range map[string]struct {
 		str      string
@@ -20,258 +32,258 @@ func TestTokenizeString(t *testing.T) {
 		"empty": {
 			str: "",
 			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEOF, "", false, pos(1)},
 			},
 		},
 		"func": {
 			str: "func",
 			expected: []lexer.Token{
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenFunc, "func", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"main": {
 			str: "main",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "main", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "main", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"Main": {
 			str: "Main",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "Main", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "Main", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"space": {
 			str: " ",
 			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"func-main": {
 			str: "func main",
 			expected: []lexer.Token{
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenIdentifier, "main", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenFunc, "func", false, pos(1)},
+				{lexer.TokenIdentifier, "main", false, pos(6)},
+				{lexer.TokenEOF, "", false, pos(10)},
 			},
 		},
 		"paren-open": {
 			str: "(",
 			expected: []lexer.Token{
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenOpen, "(", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"paren-close": {
 			str: ")",
 			expected: []lexer.Token{
-				{lexer.TokenParenClose, ")", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenClose, ")", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"curly-open": {
 			str: "{",
 			expected: []lexer.Token{
-				{lexer.TokenCurlyOpen, "{", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCurlyOpen, "{", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"curly-close": {
 			str: "}",
 			expected: []lexer.Token{
-				{lexer.TokenCurlyClose, "}", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCurlyClose, "}", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"newline": {
 			str: "\n",
 			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEOF, "", false, pos2(2, 1)},
 			},
 		},
 		"paren-open-close": {
 			str: "()",
 			expected: []lexer.Token{
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenParenClose, ")", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenOpen, "(", false, pos(1)},
+				{lexer.TokenParenClose, ")", false, pos(2)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"main-open-param": {
 			str: "main(",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "main", false},
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "main", false, pos(1)},
+				{lexer.TokenParenOpen, "(", false, pos(5)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 		},
 		"func-open-curly": {
 			str: "func{",
 			expected: []lexer.Token{
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenCurlyOpen, "{", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenFunc, "func", false, pos(1)},
+				{lexer.TokenCurlyOpen, "{", false, pos(5)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 		},
 		"func-space-open-curly": {
 			str: "func {",
 			expected: []lexer.Token{
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenCurlyOpen, "{", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenFunc, "func", false, pos(1)},
+				{lexer.TokenCurlyOpen, "{", false, pos(6)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		"unterminated-string": {
 			str: `"`,
-			err: errors.New("unterminated literal, did not find closing \""),
+			err: errors.New("a.ok:1:1 unterminated literal, did not find closing \""),
 		},
 		"func-unterminated-string": {
 			str: `func "`,
 			expected: []lexer.Token{
-				{lexer.TokenFunc, "func", false},
+				{lexer.TokenFunc, "func", false, pos(1)},
 			},
-			err: errors.New("unterminated literal, did not find closing \""),
+			err: errors.New("a.ok:1:6 unterminated literal, did not find closing \""),
 		},
 		"empty-string": {
 			str: `""`,
 			expected: []lexer.Token{
-				{lexer.TokenStringLiteral, "", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenStringLiteral, "", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"non-empty-string": {
 			str: `"foo"`,
 			expected: []lexer.Token{
-				{lexer.TokenStringLiteral, "foo", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenStringLiteral, "foo", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 		},
 		"non-empty-unterminated-string": {
 			str: `"foo`,
-			err: errors.New("unterminated literal, did not find closing \""),
+			err: errors.New("a.ok:1:1 unterminated literal, did not find closing \""),
 		},
 		"empty-comment": {
 			str: `//`,
 			expected: []lexer.Token{
-				{lexer.TokenComment, "", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComment, "", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 			comments: []*ast.Comment{
-				{},
+				{Pos: "a.ok:1:1"},
 			},
 		},
 		"single-comment": {
 			str: `// hi`,
 			expected: []lexer.Token{
-				{lexer.TokenComment, " hi", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComment, " hi", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hi"},
+				{Comment: " hi", Pos: "a.ok:1:1"},
 			},
 		},
 		"comment-after-code": {
 			str: `word //hello`,
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "word", false},
-				{lexer.TokenComment, "hello", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "word", false, pos(1)},
+				{lexer.TokenComment, "hello", false, pos(6)},
+				{lexer.TokenEOF, "", false, pos(13)},
 			},
 			comments: []*ast.Comment{
-				{Comment: "hello"},
+				{Comment: "hello", Pos: "a.ok:1:6"},
 			},
 		},
 		"code-after-comment": {
 			str: "// hello\nworld",
 			expected: []lexer.Token{
-				{lexer.TokenComment, " hello", false},
-				{lexer.TokenIdentifier, "world", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComment, " hello", false, pos(1)},
+				{lexer.TokenIdentifier, "world", false, pos2(2, 1)},
+				{lexer.TokenEOF, "", false, pos2(2, 6)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello"},
+				{Comment: " hello", Pos: "a.ok:1:1"},
 			},
 		},
 		"multiline-comment": {
 			str: "// hello\n// world",
 			expected: []lexer.Token{
-				{lexer.TokenComment, " hello\n world", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComment, " hello\n world", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos2(2, 9)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello\n world"},
+				{Comment: " hello\n world", Pos: "a.ok:1:1"},
 			},
 		},
 		"multiline-comments-joined": {
 			str: "// hello\n//\n// world",
 			expected: []lexer.Token{
-				{lexer.TokenComment, " hello\n\n world", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComment, " hello\n\n world", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos2(3, 9)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello\n\n world"},
+				{Comment: " hello\n\n world", Pos: "a.ok:1:1"},
 			},
 		},
 		"multiline-comments-not-joined": {
 			str: "// hello\n\n// world",
 			expected: []lexer.Token{
-				{lexer.TokenComment, " hello", true},
-				{lexer.TokenComment, " world", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComment, " hello", true, pos(1)},
+				{lexer.TokenComment, " world", false, pos2(3, 1)},
+				{lexer.TokenEOF, "", false, pos2(3, 9)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello"},
-				{Comment: " world"},
+				{Comment: " hello", Pos: "a.ok:1:1"},
+				{Comment: " world", Pos: "a.ok:3:1"},
 			},
 		},
 		"comment-attached-to-func": {
 			str: "// Foo is cool\nfunc Foo(",
 			expected: []lexer.Token{
-				{lexer.TokenComment, " Foo is cool", false},
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenIdentifier, "Foo", false},
+				{lexer.TokenComment, " Foo is cool", false, pos(1)},
+				{lexer.TokenFunc, "func", false, pos2(2, 1)},
+				{lexer.TokenIdentifier, "Foo", false, pos2(2, 6)},
 				// The ( is important for the test because the last token in the
 				// file will not be tested for attaching a comment to a
 				// function.
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenOpen, "(", false, pos2(2, 9)},
+				{lexer.TokenEOF, "", false, pos2(2, 10)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " Foo is cool", Func: "Foo"},
+				{Comment: " Foo is cool", Func: "Foo", Pos: "a.ok:1:1"},
 			},
 		},
 		"comment-not-attached-to-func": {
 			str: "// Foo is cool\n\nfunc Foo(",
 			expected: []lexer.Token{
-				{lexer.TokenComment, " Foo is cool", true},
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenIdentifier, "Foo", false},
+				{lexer.TokenComment, " Foo is cool", true, pos(1)},
+				{lexer.TokenFunc, "func", false, pos2(3, 1)},
+				{lexer.TokenIdentifier, "Foo", false, pos2(3, 6)},
 				// The ( is important for the test because the last token in the
 				// file will not be tested for attaching a comment to a
 				// function.
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenOpen, "(", false, pos2(3, 9)},
+				{lexer.TokenEOF, "", false, pos2(3, 10)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " Foo is cool"},
+				{Comment: " Foo is cool", Pos: "a.ok:1:1"},
 			},
 		},
 		"comment-attached-to-func-2": {
 			str: "// Foo is cool\nfunc Foo(",
 			expected: []lexer.Token{
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenIdentifier, "Foo", false},
+				{lexer.TokenFunc, "func", false, pos2(2, 1)},
+				{lexer.TokenIdentifier, "Foo", false, pos2(2, 6)},
 				// The ( is important for the test because the last token in the
 				// file will not be tested for attaching a comment to a
 				// function.
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenOpen, "(", false, pos2(2, 9)},
+				{lexer.TokenEOF, "", false, pos2(2, 10)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " Foo is cool", Func: "Foo"},
+				{Comment: " Foo is cool", Func: "Foo", Pos: "a.ok:1:1"},
 			},
 			options: &lexer.Options{
 				IncludeComments: false,
@@ -280,18 +292,16 @@ func TestTokenizeString(t *testing.T) {
 		"comment-not-attached-to-func-2": {
 			str: "// Foo is cool\n\nfunc Foo(",
 			expected: []lexer.Token{
-				// TODO(elliot): IsEndOfLine is not correct here, but it doesn't
-				//  break anything right now.
-				{lexer.TokenFunc, "func", true},
-				{lexer.TokenIdentifier, "Foo", false},
+				{lexer.TokenFunc, "func", false, pos2(3, 1)},
+				{lexer.TokenIdentifier, "Foo", false, pos2(3, 6)},
 				// The ( is important for the test because the last token in the
 				// file will not be tested for attaching a comment to a
 				// function.
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenParenOpen, "(", false, pos2(3, 9)},
+				{lexer.TokenEOF, "", false, pos2(3, 10)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " Foo is cool"},
+				{Comment: " Foo is cool", Pos: "a.ok:1:1"},
 			},
 			options: &lexer.Options{
 				IncludeComments: false,
@@ -300,10 +310,10 @@ func TestTokenizeString(t *testing.T) {
 		"multiline-comments-joined-2": {
 			str: "// hello\n//\n// world",
 			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEOF, "", false, pos2(3, 9)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello\n\n world"},
+				{Comment: " hello\n\n world", Pos: "a.ok:1:1"},
 			},
 			options: &lexer.Options{
 				IncludeComments: false,
@@ -312,12 +322,12 @@ func TestTokenizeString(t *testing.T) {
 		"tokens-between-comments": {
 			str: "// hello\na\n// world",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "a", true},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "a", true, pos2(2, 1)},
+				{lexer.TokenEOF, "", false, pos2(3, 9)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello"},
-				{Comment: " world"},
+				{Comment: " hello", Pos: "a.ok:1:1"},
+				{Comment: " world", Pos: "a.ok:3:1"},
 			},
 			options: &lexer.Options{
 				IncludeComments: false,
@@ -326,12 +336,12 @@ func TestTokenizeString(t *testing.T) {
 		"operator-between-comments": {
 			str: "// hello\n}\n// world",
 			expected: []lexer.Token{
-				{lexer.TokenCurlyClose, "}", true},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCurlyClose, "}", true, pos2(2, 1)},
+				{lexer.TokenEOF, "", false, pos2(3, 9)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello"},
-				{Comment: " world"},
+				{Comment: " hello", Pos: "a.ok:1:1"},
+				{Comment: " world", Pos: "a.ok:3:1"},
 			},
 			options: &lexer.Options{
 				IncludeComments: false,
@@ -340,12 +350,12 @@ func TestTokenizeString(t *testing.T) {
 		"operator-between-comments-2": {
 			str: "// hello\n}// world",
 			expected: []lexer.Token{
-				{lexer.TokenCurlyClose, "}", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCurlyClose, "}", false, pos2(2, 1)},
+				{lexer.TokenEOF, "", false, pos2(2, 10)},
 			},
 			comments: []*ast.Comment{
-				{Comment: " hello"},
-				{Comment: " world"},
+				{Comment: " hello", Pos: "a.ok:1:1"},
+				{Comment: " world", Pos: "a.ok:2:2"},
 			},
 			options: &lexer.Options{
 				IncludeComments: false,
@@ -354,631 +364,646 @@ func TestTokenizeString(t *testing.T) {
 		"number-0": {
 			str: `0`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "0", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "0", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-1": {
 			str: `1`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "1", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "1", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-2": {
 			str: `2`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "2", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "2", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-3": {
 			str: `3`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "3", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "3", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-4": {
 			str: `4`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "4", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "4", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-5": {
 			str: `5`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "5", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "5", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-6": {
 			str: `6`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "6", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "6", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-7": {
 			str: `7`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "7", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "7", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-8": {
 			str: `8`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "8", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "8", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-9": {
 			str: `9`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "9", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "9", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-10": {
 			str: `10`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "10", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "10", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"number-7676673479634790000000000": {
 			str: `7676673479634790000000000`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "7676673479634790000000000", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "7676673479634790000000000", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(26)},
 			},
 		},
 		"number-0045": {
 			str: `0045`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "0045", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "0045", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"number-0.12": {
 			str: `0.12`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "0.12", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "0.12", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"number-0.1200": {
 			str: `0.1200`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "0.1200", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "0.1200", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		"true": {
 			str: `true`,
 			expected: []lexer.Token{
-				{lexer.TokenBoolLiteral, "true", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenBoolLiteral, "true", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"false": {
 			str: `false`,
 			expected: []lexer.Token{
-				{lexer.TokenBoolLiteral, "false", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenBoolLiteral, "false", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 		},
 		"ascii-char": {
 			str: `'a'`,
 			expected: []lexer.Token{
-				{lexer.TokenCharLiteral, "a", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCharLiteral, "a", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"zero-length-char": {
 			str: `''`,
 			expected: []lexer.Token{
-				{lexer.TokenCharLiteral, "", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCharLiteral, "", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"multi-byte-char": {
 			str: `'😃'`,
 			expected: []lexer.Token{
-				{lexer.TokenCharLiteral, "😃", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCharLiteral, "😃", false, pos(1)},
+
+				// Note that 4 for the character position counts characters, not
+				// bytes.
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"unterminated-char": {
 			str: `'a`,
-			err: errors.New("unterminated literal, did not find closing '"),
+			err: errors.New("a.ok:1:1 unterminated literal, did not find closing '"),
 		},
 		"ascii-data": {
 			str: "`a`",
 			expected: []lexer.Token{
-				{lexer.TokenDataLiteral, "a", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDataLiteral, "a", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"zero-length-data": {
 			str: "``",
 			expected: []lexer.Token{
-				{lexer.TokenDataLiteral, "", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDataLiteral, "", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"multi-byte-data": {
 			str: "`😃`",
 			expected: []lexer.Token{
-				{lexer.TokenDataLiteral, "😃", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDataLiteral, "😃", false, pos(1)},
+
+				// Note that 4 for the character position counts characters, not
+				// bytes. Even though we are dealing with a data literal here.
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"unterminated-data": {
 			str: "`a",
-			err: errors.New("unterminated literal, did not find closing `"),
+			err: errors.New("a.ok:1:1 unterminated literal, did not find closing `"),
 		},
 		"number-open": {
 			str: `0(`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "0", false},
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "0", false, pos(1)},
+				{lexer.TokenParenOpen, "(", false, pos(2)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"plus": {
 			str: `+`,
 			expected: []lexer.Token{
-				{lexer.TokenPlus, "+", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenPlus, "+", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"minus": {
 			str: `-`,
 			expected: []lexer.Token{
-				{lexer.TokenMinus, "-", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenMinus, "-", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"times": {
 			str: `*`,
 			expected: []lexer.Token{
-				{lexer.TokenTimes, "*", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenTimes, "*", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"divide": {
 			str: `/`,
 			expected: []lexer.Token{
-				{lexer.TokenDivide, "/", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDivide, "/", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"remainder": {
 			str: `%`,
 			expected: []lexer.Token{
-				{lexer.TokenRemainder, "%", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenRemainder, "%", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"number-negative-integer": {
 			str: `-3`,
 			expected: []lexer.Token{
-				{lexer.TokenMinus, "-", false},
-				{lexer.TokenNumberLiteral, "3", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenMinus, "-", false, pos(1)},
+				{lexer.TokenNumberLiteral, "3", false, pos(2)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"number-negative-decimal": {
 			str: `-3.20`,
 			expected: []lexer.Token{
-				{lexer.TokenMinus, "-", false},
-				{lexer.TokenNumberLiteral, "3.20", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenMinus, "-", false, pos(1)},
+				{lexer.TokenNumberLiteral, "3.20", false, pos(2)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 		},
 		"and": {
 			str: `and`,
 			expected: []lexer.Token{
-				{lexer.TokenAnd, "and", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenAnd, "and", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"or": {
 			str: `or`,
 			expected: []lexer.Token{
-				{lexer.TokenOr, "or", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenOr, "or", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"not": {
 			str: `not`,
 			expected: []lexer.Token{
-				{lexer.TokenNot, "not", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNot, "not", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"==": {
 			str: `==`,
 			expected: []lexer.Token{
-				{lexer.TokenEqual, "==", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEqual, "==", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"!=": {
 			str: `!=`,
 			expected: []lexer.Token{
-				{lexer.TokenNotEqual, "!=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNotEqual, "!=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		">": {
 			str: `>`,
 			expected: []lexer.Token{
-				{lexer.TokenGreaterThan, ">", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenGreaterThan, ">", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"<": {
 			str: `<`,
 			expected: []lexer.Token{
-				{lexer.TokenLessThan, "<", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenLessThan, "<", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		">=": {
 			str: `>=`,
 			expected: []lexer.Token{
-				{lexer.TokenGreaterThanEqual, ">=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenGreaterThanEqual, ">=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"<=": {
 			str: `<=`,
 			expected: []lexer.Token{
-				{lexer.TokenLessThanEqual, "<=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenLessThanEqual, "<=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
+			},
+		},
+		"bool=bool": {
+			str: `true=false`,
+			expected: []lexer.Token{
+				{lexer.TokenBoolLiteral, "true", false, pos(1)},
+				{lexer.TokenAssign, "=", false, pos(5)},
+				{lexer.TokenBoolLiteral, "false", false, pos(6)},
+				{lexer.TokenEOF, "", false, pos(11)},
 			},
 		},
 		"bool==bool": {
 			str: `true==false`,
 			expected: []lexer.Token{
-				{lexer.TokenBoolLiteral, "true", false},
-				{lexer.TokenEqual, "==", false},
-				{lexer.TokenBoolLiteral, "false", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenBoolLiteral, "true", false, pos(1)},
+				{lexer.TokenEqual, "==", false, pos(5)},
+				{lexer.TokenBoolLiteral, "false", false, pos(7)},
+				{lexer.TokenEOF, "", false, pos(12)},
 			},
 		},
 		"comma": {
 			str: `,`,
 			expected: []lexer.Token{
-				{lexer.TokenComma, ",", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenComma, ",", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"assign": {
 			str: `=`,
 			expected: []lexer.Token{
-				{lexer.TokenAssign, "=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenAssign, "=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"identifier-with-underscore": {
 			str: `foo_bar`,
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "foo_bar", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "foo_bar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(8)},
 			},
 		},
 		"identifier-with-digits": {
 			str: `foo123bar`,
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "foo123bar", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "foo123bar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
 			},
 		},
 		"identifier-cannot-start-with-number": {
 			str: `1foo`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "1", false},
-				{lexer.TokenIdentifier, "foo", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "1", false, pos(1)},
+				{lexer.TokenIdentifier, "foo", false, pos(2)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"carriage-return": {
 			str: "\r",
 			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEOF, "", false, pos2(2, 1)},
 			},
 		},
 		"tab": {
 			str: "\t",
 			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"is-end-of-line-1": {
 			str: "a = 1\nprint(",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "a", false},
-				{lexer.TokenAssign, "=", false},
-				{lexer.TokenNumberLiteral, "1", true},
-				{lexer.TokenIdentifier, "print", false},
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "a", false, pos(1)},
+				{lexer.TokenAssign, "=", false, pos(3)},
+				{lexer.TokenNumberLiteral, "1", true, pos(5)},
+				{lexer.TokenIdentifier, "print", false, pos2(2, 1)},
+				{lexer.TokenParenOpen, "(", false, pos2(2, 6)},
+				{lexer.TokenEOF, "", false, pos2(2, 7)},
 			},
 		},
 		"is-end-of-line-2": {
 			str: "a = 1 \n print(",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "a", false},
-				{lexer.TokenAssign, "=", false},
-				{lexer.TokenNumberLiteral, "1", true},
-				{lexer.TokenIdentifier, "print", false},
-				{lexer.TokenParenOpen, "(", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "a", false, pos(1)},
+				{lexer.TokenAssign, "=", false, pos(3)},
+				{lexer.TokenNumberLiteral, "1", true, pos(5)},
+				{lexer.TokenIdentifier, "print", false, pos2(2, 2)},
+				{lexer.TokenParenOpen, "(", false, pos2(2, 7)},
+				{lexer.TokenEOF, "", false, pos2(2, 8)},
 			},
 		},
 		"is-end-of-line-3": {
 			str: "a = true\n",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "a", false},
-				{lexer.TokenAssign, "=", false},
-				{lexer.TokenBoolLiteral, "true", true},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "a", false, pos(1)},
+				{lexer.TokenAssign, "=", false, pos(3)},
+				{lexer.TokenBoolLiteral, "true", true, pos(5)},
+				{lexer.TokenEOF, "", false, pos2(2, 1)},
 			},
 		},
 		"for": {
 			str: `for`,
 			expected: []lexer.Token{
-				{lexer.TokenFor, "for", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenFor, "for", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"continue": {
 			str: `continue`,
 			expected: []lexer.Token{
-				{lexer.TokenContinue, "continue", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenContinue, "continue", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(9)},
 			},
 		},
 		"break": {
 			str: `break`,
 			expected: []lexer.Token{
-				{lexer.TokenBreak, "break", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenBreak, "break", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(6)},
 			},
 		},
 		"++": {
 			str: `++`,
 			expected: []lexer.Token{
-				{lexer.TokenIncrement, "++", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIncrement, "++", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"--": {
 			str: `--`,
 			expected: []lexer.Token{
-				{lexer.TokenDecrement, "--", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDecrement, "--", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"+=": {
 			str: `+=`,
 			expected: []lexer.Token{
-				{lexer.TokenPlusAssign, "+=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenPlusAssign, "+=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"-=": {
 			str: `-=`,
 			expected: []lexer.Token{
-				{lexer.TokenMinusAssign, "-=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenMinusAssign, "-=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"*=": {
 			str: `*=`,
 			expected: []lexer.Token{
-				{lexer.TokenTimesAssign, "*=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenTimesAssign, "*=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"/=": {
 			str: `/=`,
 			expected: []lexer.Token{
-				{lexer.TokenDivideAssign, "/=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDivideAssign, "/=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"%=": {
 			str: `%=`,
 			expected: []lexer.Token{
-				{lexer.TokenRemainderAssign, "%=", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenRemainderAssign, "%=", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"2/3": {
 			str: `2/3`,
 			expected: []lexer.Token{
-				{lexer.TokenNumberLiteral, "2", false},
-				{lexer.TokenDivide, "/", false},
-				{lexer.TokenNumberLiteral, "3", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumberLiteral, "2", false, pos(1)},
+				{lexer.TokenDivide, "/", false, pos(2)},
+				{lexer.TokenNumberLiteral, "3", false, pos(3)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"if": {
 			str: `if`,
 			expected: []lexer.Token{
-				{lexer.TokenIf, "if", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIf, "if", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"else": {
 			str: `else`,
 			expected: []lexer.Token{
-				{lexer.TokenElse, "else", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenElse, "else", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		";": {
 			str: `;`,
 			expected: []lexer.Token{
-				{lexer.TokenSemiColon, ";", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenSemiColon, ";", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"switch": {
 			str: `switch`,
 			expected: []lexer.Token{
-				{lexer.TokenSwitch, "switch", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenSwitch, "switch", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		"case": {
 			str: `case`,
 			expected: []lexer.Token{
-				{lexer.TokenCase, "case", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenCase, "case", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"[": {
 			str: `[`,
 			expected: []lexer.Token{
-				{lexer.TokenSquareOpen, "[", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenSquareOpen, "[", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"]": {
 			str: `]`,
 			expected: []lexer.Token{
-				{lexer.TokenSquareClose, "]", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenSquareClose, "]", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"any": {
 			str: `any`,
 			expected: []lexer.Token{
-				{lexer.TokenAny, "any", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenAny, "any", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 		"bool": {
 			str: `bool`,
 			expected: []lexer.Token{
-				{lexer.TokenBool, "bool", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenBool, "bool", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"char": {
 			str: `char`,
 			expected: []lexer.Token{
-				{lexer.TokenChar, "char", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenChar, "char", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"data": {
 			str: `data`,
 			expected: []lexer.Token{
-				{lexer.TokenData, "data", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenData, "data", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"number": {
 			str: `number`,
 			expected: []lexer.Token{
-				{lexer.TokenNumber, "number", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenNumber, "number", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		"string": {
 			str: `string`,
 			expected: []lexer.Token{
-				{lexer.TokenString, "string", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenString, "string", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		":": {
 			str: `:`,
 			expected: []lexer.Token{
-				{lexer.TokenColon, ":", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenColon, ":", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"in": {
 			str: `in`,
 			expected: []lexer.Token{
-				{lexer.TokenIn, "in", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIn, "in", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
 		"return": {
 			str: `return`,
 			expected: []lexer.Token{
-				{lexer.TokenReturn, "return", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenReturn, "return", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		"test": {
 			str: `test`,
 			expected: []lexer.Token{
-				{lexer.TokenTest, "test", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenTest, "test", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
 		"assert": {
 			str: `assert`,
 			expected: []lexer.Token{
-				{lexer.TokenAssert, "assert", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenAssert, "assert", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		"import": {
 			str: `import`,
 			expected: []lexer.Token{
-				{lexer.TokenImport, "import", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenImport, "import", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(7)},
 			},
 		},
 		".": {
 			str: `.`,
 			expected: []lexer.Token{
-				{lexer.TokenDot, ".", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenDot, ".", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
 		"string-literal-newline": {
 			str: "\"math\"\n",
 			expected: []lexer.Token{
-				{lexer.TokenStringLiteral, "math", true},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenStringLiteral, "math", true, pos(1)},
+				{lexer.TokenEOF, "", false, pos2(2, 1)},
 			},
 		},
 		"string-literal-newline-func": {
 			str: "\"math\"\nfunc",
 			expected: []lexer.Token{
-				{lexer.TokenStringLiteral, "math", true},
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenStringLiteral, "math", true, pos(1)},
+				{lexer.TokenFunc, "func", false, pos2(2, 1)},
+				{lexer.TokenEOF, "", false, pos2(2, 5)},
 			},
 		},
 		"import-func": {
 			str: "import \"math\"\nfunc foo",
 			expected: []lexer.Token{
-				{lexer.TokenImport, "import", false},
-				{lexer.TokenStringLiteral, "math", true},
-				{lexer.TokenFunc, "func", false},
-				{lexer.TokenIdentifier, "foo", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenImport, "import", false, pos(1)},
+				{lexer.TokenStringLiteral, "math", true, pos(8)},
+				{lexer.TokenFunc, "func", false, pos2(2, 1)},
+				{lexer.TokenIdentifier, "foo", false, pos2(2, 6)},
+				{lexer.TokenEOF, "", false, pos2(2, 9)},
 			},
 		},
 		"Abs": {
 			str: "Abs",
 			expected: []lexer.Token{
-				{lexer.TokenIdentifier, "Abs", false},
-				{lexer.TokenEOF, "", false},
+				{lexer.TokenIdentifier, "Abs", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
 			},
 		},
 	} {
@@ -990,7 +1015,7 @@ func TestTokenizeString(t *testing.T) {
 				options = *test.options
 			}
 
-			actual, comments, err := lexer.TokenizeString(test.str, options)
+			actual, comments, err := lexer.TokenizeString(test.str, options, "a.ok")
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

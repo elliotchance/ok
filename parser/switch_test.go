@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
 	"github.com/stretchr/testify/assert"
@@ -29,10 +30,10 @@ func TestSwitch(t *testing.T) {
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
 							},
 						},
@@ -47,19 +48,19 @@ func TestSwitch(t *testing.T) {
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
 							},
 						},
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenGreaterThan,
-									ast.NewLiteralNumber("2"),
+									asttest.NewLiteralNumber("2"),
 								),
 							},
 						},
@@ -74,10 +75,10 @@ func TestSwitch(t *testing.T) {
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
 							},
 							Statements: []ast.Node{
@@ -116,15 +117,15 @@ func TestSwitch(t *testing.T) {
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenLessThan,
-									ast.NewLiteralNumber("10"),
+									asttest.NewLiteralNumber("10"),
 								),
 							},
 						},
@@ -148,9 +149,9 @@ func TestSwitch(t *testing.T) {
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewLiteralNumber("1"),
-								ast.NewLiteralNumber("2"),
-								ast.NewLiteralNumber("3"),
+								asttest.NewLiteralNumber("1"),
+								asttest.NewLiteralNumber("2"),
+								asttest.NewLiteralNumber("3"),
 							},
 						},
 					},
@@ -159,10 +160,10 @@ func TestSwitch(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str)
+			p := parser.ParseString(test.str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": test.expected,
 			}, p.File.Funcs)
 			assert.Equal(t, test.comments, p.File.Comments)

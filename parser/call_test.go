@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
 
 	"github.com/stretchr/testify/assert"
@@ -26,7 +27,7 @@ func TestCall(t *testing.T) {
 			expected: &ast.Call{
 				FunctionName: "bar",
 				Arguments: []ast.Node{
-					ast.NewLiteralString("baz"),
+					asttest.NewLiteralString("baz"),
 				},
 			},
 		},
@@ -35,17 +36,17 @@ func TestCall(t *testing.T) {
 			expected: &ast.Call{
 				FunctionName: "math.abs",
 				Arguments: []ast.Node{
-					ast.NewLiteralNumber("123"),
+					asttest.NewLiteralNumber("123"),
 				},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assert.Nil(t, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assert.Nil(t, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 			assert.Nil(t, p.File.Comments)

@@ -9,7 +9,9 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 	originalOffset := offset
 
 	var err error
-	node := &ast.Map{}
+	node := &ast.Map{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	var ty string
 	ty, offset, err = consumeType(parser, offset)

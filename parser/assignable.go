@@ -33,6 +33,7 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 		return &ast.Key{
 			Expr: identifier,
 			Key:  key,
+			Pos:  parser.File.Pos(originalOffset),
 		}, offset, nil
 	}
 

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
@@ -25,13 +26,13 @@ func TestReturn(t *testing.T) {
 		"return-number": {
 			node: &ast.Return{
 				Exprs: []ast.Node{
-					ast.NewLiteralNumber("123"),
+					asttest.NewLiteralNumber("123"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.Return{
 					Results: []string{"1"},
@@ -41,18 +42,18 @@ func TestReturn(t *testing.T) {
 		"return-multiple-values": {
 			node: &ast.Return{
 				Exprs: []ast.Node{
-					ast.NewLiteralNumber("123"),
-					ast.NewLiteralString("foo"),
+					asttest.NewLiteralNumber("123"),
+					asttest.NewLiteralString("foo"),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Return{
 					Results: []string{"1", "2"},

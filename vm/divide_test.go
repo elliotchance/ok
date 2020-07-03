@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 	"github.com/elliotchance/ok/vm"
 
@@ -22,8 +23,8 @@ func TestDivide_Execute(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			registers := map[string]*ast.Literal{
-				"0": ast.NewLiteralNumber(test.left),
-				"1": ast.NewLiteralNumber(test.right),
+				"0": asttest.NewLiteralNumber(test.left),
+				"1": asttest.NewLiteralNumber(test.right),
 			}
 			ins := &vm.Divide{Left: "0", Right: "1", Result: "2"}
 			assert.Equal(t, test.err, ins.Execute(registers, nil, nil))

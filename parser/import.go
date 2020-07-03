@@ -17,5 +17,6 @@ func consumeImport(parser *Parser, offset int) (*ast.Import, int, error) {
 
 	return &ast.Import{
 		PackageName: parser.File.Tokens[offset-1].Value,
+		Pos:         parser.File.Pos(originalOffset),
 	}, offset, nil
 }

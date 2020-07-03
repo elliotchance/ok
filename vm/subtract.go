@@ -2,6 +2,7 @@ package vm
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -12,7 +13,7 @@ type Subtract struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Subtract) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = ast.NewLiteralNumber(
+	registers[ins.Result] = asttest.NewLiteralNumber(
 		number.Subtract(
 			number.NewNumber(registers[ins.Left].Value),
 			number.NewNumber(registers[ins.Right].Value),

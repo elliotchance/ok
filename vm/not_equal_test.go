@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
@@ -15,31 +16,31 @@ func TestNotEqual_Execute(t *testing.T) {
 		expected    string
 	}{
 		"false-false": {
-			ast.NewLiteralBool(false), ast.NewLiteralBool(false),
+			asttest.NewLiteralBool(false), asttest.NewLiteralBool(false),
 			"false"},
 		"false-true": {
-			ast.NewLiteralBool(false), ast.NewLiteralBool(true),
+			asttest.NewLiteralBool(false), asttest.NewLiteralBool(true),
 			"true",
 		},
 		"a-a": {
-			ast.NewLiteralChar('a'), ast.NewLiteralChar('a'),
+			asttest.NewLiteralChar('a'), asttest.NewLiteralChar('a'),
 			"false"},
 		"b-B": {
-			ast.NewLiteralChar('b'), ast.NewLiteralChar('B'),
+			asttest.NewLiteralChar('b'), asttest.NewLiteralChar('B'),
 			"true",
 		},
 		"d1-d1": {
-			ast.NewLiteralData([]byte("d1")), ast.NewLiteralData([]byte("d1")),
+			asttest.NewLiteralData([]byte("d1")), asttest.NewLiteralData([]byte("d1")),
 			"false"},
 		"d1-d2": {
-			ast.NewLiteralData([]byte("d1")), ast.NewLiteralData([]byte("d2")),
+			asttest.NewLiteralData([]byte("d1")), asttest.NewLiteralData([]byte("d2")),
 			"true",
 		},
 		"foo-foo": {
-			ast.NewLiteralString("foo"), ast.NewLiteralString("foo"),
+			asttest.NewLiteralString("foo"), asttest.NewLiteralString("foo"),
 			"false"},
 		"foo-bar": {
-			ast.NewLiteralString("foo"), ast.NewLiteralString("bar"),
+			asttest.NewLiteralString("foo"), asttest.NewLiteralString("bar"),
 			"true",
 		},
 	} {
@@ -61,10 +62,10 @@ func TestNotEqualNumber_Execute(t *testing.T) {
 		expected    string
 	}{
 		"1-1.0": {
-			ast.NewLiteralNumber("1"), ast.NewLiteralNumber("1.0"),
+			asttest.NewLiteralNumber("1"), asttest.NewLiteralNumber("1.0"),
 			"false"},
 		"1-1.1": {
-			ast.NewLiteralNumber("1"), ast.NewLiteralNumber("1.1"),
+			asttest.NewLiteralNumber("1"), asttest.NewLiteralNumber("1.1"),
 			"true",
 		},
 	} {

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
@@ -98,7 +99,7 @@ func TestCompileFile(t *testing.T) {
 							&ast.Call{
 								FunctionName: "add",
 								Arguments: []ast.Node{
-									ast.NewLiteralNumber("123"),
+									asttest.NewLiteralNumber("123"),
 								},
 							},
 						},
@@ -113,7 +114,7 @@ func TestCompileFile(t *testing.T) {
 						Instructions: []vm.Instruction{
 							&vm.Assign{
 								VariableName: "1",
-								Value:        ast.NewLiteralNumber("123"),
+								Value:        asttest.NewLiteralNumber("123"),
 							},
 							&vm.Call{
 								FunctionName: "add",
@@ -152,10 +153,10 @@ func TestCompileFile(t *testing.T) {
 						Name: "test foo",
 						Statements: []ast.Node{
 							&ast.Assert{
-								Expr: ast.NewBinary(
-									ast.NewLiteralNumber("1"),
+								Expr: asttest.NewBinary(
+									asttest.NewLiteralNumber("1"),
 									lexer.TokenLessThan,
-									ast.NewLiteralNumber("2"),
+									asttest.NewLiteralNumber("2"),
 								),
 							},
 						},
@@ -177,11 +178,11 @@ func TestCompileFile(t *testing.T) {
 							Instructions: []vm.Instruction{
 								&vm.Assign{
 									VariableName: "1",
-									Value:        ast.NewLiteralNumber("1"),
+									Value:        asttest.NewLiteralNumber("1"),
 								},
 								&vm.Assign{
 									VariableName: "2",
-									Value:        ast.NewLiteralNumber("2"),
+									Value:        asttest.NewLiteralNumber("2"),
 								},
 								&vm.LessThanNumber{
 									Left:   "1",

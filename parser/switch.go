@@ -7,13 +7,16 @@ import (
 
 func consumeCase(parser *Parser, offset int) (*ast.Case, int, error) {
 	var err error
+	originalOffset := offset
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenCase})
 	if err != nil {
 		return nil, offset, err
 	}
 
-	node := &ast.Case{}
+	node := &ast.Case{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	node.Conditions, offset, err = consumeExprs(parser, offset)
 	if err != nil {
@@ -30,13 +33,16 @@ func consumeCase(parser *Parser, offset int) (*ast.Case, int, error) {
 
 func consumeSwitch(parser *Parser, offset int) (*ast.Switch, int, error) {
 	var err error
+	originalOffset := offset
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenSwitch})
 	if err != nil {
 		return nil, offset, err
 	}
 
-	node := &ast.Switch{}
+	node := &ast.Switch{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	// An expression is optional.
 	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {

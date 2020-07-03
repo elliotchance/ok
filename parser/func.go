@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
-func consumeFunc(parser *Parser, offset int) (*ast.Func, int, error) {
+func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, finalErr error) {
 	originalOffset := offset
 	var err error
 
@@ -19,6 +19,7 @@ func consumeFunc(parser *Parser, offset int) (*ast.Func, int, error) {
 
 	fn := &ast.Func{
 		Name: parser.File.Tokens[offset-2].Value,
+		Pos:  parser.File.Pos(originalOffset),
 	}
 
 	var args []*ast.Argument

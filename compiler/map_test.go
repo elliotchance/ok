@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
@@ -24,7 +25,7 @@ func TestMap(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -36,16 +37,16 @@ func TestMap(t *testing.T) {
 			node: &ast.Map{
 				Elements: []*ast.KeyValue{
 					{
-						Key:   ast.NewLiteralString("a"),
-						Value: ast.NewLiteralNumber("2"),
+						Key:   asttest.NewLiteralString("a"),
+						Value: asttest.NewLiteralNumber("2"),
 					},
 					{
-						Key:   ast.NewLiteralString("b"),
-						Value: ast.NewLiteralNumber("5"),
+						Key:   asttest.NewLiteralString("b"),
+						Value: asttest.NewLiteralNumber("5"),
 					},
 					{
-						Key:   ast.NewLiteralString("c"),
-						Value: ast.NewLiteralNumber("13"),
+						Key:   asttest.NewLiteralString("c"),
+						Value: asttest.NewLiteralNumber("13"),
 					},
 				},
 			},
@@ -53,7 +54,7 @@ func TestMap(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -63,11 +64,11 @@ func TestMap(t *testing.T) {
 				// "a": 2
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralString("a"),
+					Value:        asttest.NewLiteralString("a"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -78,11 +79,11 @@ func TestMap(t *testing.T) {
 				// "b": 5
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralString("b"),
+					Value:        asttest.NewLiteralString("b"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("5"),
+					Value:        asttest.NewLiteralNumber("5"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -93,11 +94,11 @@ func TestMap(t *testing.T) {
 				// "c": 13
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralString("c"),
+					Value:        asttest.NewLiteralString("c"),
 				},
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralNumber("13"),
+					Value:        asttest.NewLiteralNumber("13"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -115,8 +116,8 @@ func TestMap(t *testing.T) {
 					&ast.Map{
 						Elements: []*ast.KeyValue{
 							{
-								Key:   ast.NewLiteralString("b"),
-								Value: ast.NewLiteralNumber("123"),
+								Key:   asttest.NewLiteralString("b"),
+								Value: asttest.NewLiteralNumber("123"),
 							},
 						},
 					},
@@ -126,7 +127,7 @@ func TestMap(t *testing.T) {
 				// alloc
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -136,11 +137,11 @@ func TestMap(t *testing.T) {
 				// "b": 123
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralString("b"),
+					Value:        asttest.NewLiteralString("b"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("123"),
+					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.MapSet{
 					Map:   "2",

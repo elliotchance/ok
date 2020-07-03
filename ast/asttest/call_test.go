@@ -1,21 +1,22 @@
-package ast_test
+package asttest_test
 
 import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestNewCall(t *testing.T) {
-	call := ast.NewCall(
+	call := asttest.NewCall(
 		"foo",
-		ast.NewLiteralString("bar"),
-		ast.NewLiteralString("baz"),
+		asttest.NewLiteralString("bar"),
+		asttest.NewLiteralString("baz"),
 	)
 	assert.Equal(t, "foo", call.FunctionName)
 	assert.Equal(t, []ast.Node{
-		ast.NewLiteralString("bar"),
-		ast.NewLiteralString("baz"),
+		asttest.NewLiteralString("bar"),
+		asttest.NewLiteralString("baz"),
 	}, call.Arguments)
 }

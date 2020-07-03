@@ -11,6 +11,7 @@ func CompileTest(fn *ast.Test, fns map[string]*ast.Func) (*vm.CompiledTest, erro
 	// CompiledTest.
 	compiledFunc, err := CompileFunc(&ast.Func{
 		Statements: fn.Statements,
+		Pos:        fn.Pos,
 	}, fns)
 	if err != nil {
 		return nil, err

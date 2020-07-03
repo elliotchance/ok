@@ -9,6 +9,8 @@ import (
 )
 
 func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {
+	originalOffset := offset
+
 	types := []string{
 		lexer.TokenBoolLiteral,
 		lexer.TokenCharLiteral,
@@ -22,6 +24,7 @@ func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {
 			literal := &ast.Literal{
 				Kind:  strings.Split(ty, " ")[0],
 				Value: t.Value,
+				Pos:   f.Pos(originalOffset),
 			}
 
 			return literal, offset + 1, nil

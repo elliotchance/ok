@@ -20,10 +20,10 @@ func check(err error) {
 }
 
 func main() {
-	pkg, err := compiler.CompilePackage("lib/math", false)
-	check(err)
+	pkg, errs := compiler.CompilePackage("lib/math", false)
+	util.CheckErrorsWithExit(errs)
 
-	f, err = os.Create("vm/lib.go")
+	f, err := os.Create("vm/lib.go")
 	check(err)
 
 	funcs := map[string]*vm.InternalDefinition{}

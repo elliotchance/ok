@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/vm"
@@ -24,7 +25,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewArrayNumbers([]string{"1.5", "2.3"}),
+						asttest.NewArrayNumbers([]string{"1.5", "2.3"}),
 					},
 				},
 				&ast.For{
@@ -38,7 +39,7 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -48,11 +49,11 @@ func TestFor(t *testing.T) {
 				// set 2 elements
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -61,11 +62,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("2.3"),
+					Value:        asttest.NewLiteralNumber("2.3"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -82,7 +83,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.NextArray{
 					Array:       "foo",
@@ -107,7 +108,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewArrayNumbers([]string{"1.5", "2.3"}),
+						asttest.NewArrayNumbers([]string{"1.5", "2.3"}),
 					},
 				},
 				&ast.For{
@@ -122,7 +123,7 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -132,11 +133,11 @@ func TestFor(t *testing.T) {
 				// set 2 elements
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -145,11 +146,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("2.3"),
+					Value:        asttest.NewLiteralNumber("2.3"),
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -166,7 +167,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.NextArray{
 					Array:       "foo",
@@ -191,7 +192,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
+						asttest.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
 					},
 				},
 				&ast.For{
@@ -205,7 +206,7 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -215,11 +216,11 @@ func TestFor(t *testing.T) {
 				// set 2 elements
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralString("bar"),
+					Value:        asttest.NewLiteralString("bar"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("2.3"),
+					Value:        asttest.NewLiteralNumber("2.3"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -228,11 +229,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -249,7 +250,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.NextMap{
 					Map:         "foo",
@@ -274,7 +275,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
+						asttest.NewMapNumbers(map[string]string{"foo": "1.5", "bar": "2.3"}),
 					},
 				},
 				&ast.For{
@@ -289,7 +290,7 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAllocNumber{
 					Size:   "1",
@@ -299,11 +300,11 @@ func TestFor(t *testing.T) {
 				// set 2 elements
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralString("bar"),
+					Value:        asttest.NewLiteralString("bar"),
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("2.3"),
+					Value:        asttest.NewLiteralNumber("2.3"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -312,11 +313,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralString("foo"),
+					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Assign{
 					VariableName: "6",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -333,7 +334,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.NextMap{
 					Map:         "foo",
@@ -359,13 +360,13 @@ func TestFor(t *testing.T) {
 							&ast.Identifier{Name: "a"},
 						},
 						Rights: []ast.Node{
-							ast.NewLiteralNumber("0"),
+							asttest.NewLiteralNumber("0"),
 						},
 					},
 					Condition: &ast.Binary{
 						Left:  &ast.Identifier{Name: "a"},
 						Op:    lexer.TokenLessThan,
-						Right: ast.NewLiteralNumber("10"),
+						Right: asttest.NewLiteralNumber("10"),
 					},
 					Next: &ast.Unary{
 						Op:   lexer.TokenIncrement,
@@ -385,7 +386,7 @@ func TestFor(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -395,7 +396,7 @@ func TestFor(t *testing.T) {
 				// a < 10
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("10"),
+					Value:        asttest.NewLiteralNumber("10"),
 				},
 				&vm.LessThanNumber{
 					Left:   "a",
@@ -415,7 +416,7 @@ func TestFor(t *testing.T) {
 				// ++a
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Add{
 					Left:   "a",
@@ -435,13 +436,13 @@ func TestFor(t *testing.T) {
 							&ast.Identifier{Name: "a"},
 						},
 						Rights: []ast.Node{
-							ast.NewLiteralNumber("0"),
+							asttest.NewLiteralNumber("0"),
 						},
 					},
 					Condition: &ast.Binary{
 						Left:  &ast.Identifier{Name: "a"},
 						Op:    lexer.TokenLessThan,
-						Right: ast.NewLiteralNumber("10"),
+						Right: asttest.NewLiteralNumber("10"),
 					},
 					Next: &ast.Unary{
 						Op:   lexer.TokenIncrement,
@@ -456,7 +457,7 @@ func TestFor(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -466,7 +467,7 @@ func TestFor(t *testing.T) {
 				// a < 10
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("10"),
+					Value:        asttest.NewLiteralNumber("10"),
 				},
 				&vm.LessThanNumber{
 					Left:   "a",
@@ -486,7 +487,7 @@ func TestFor(t *testing.T) {
 				// ++a
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Add{
 					Left:   "a",
@@ -505,7 +506,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.JumpUnless{
 					Condition: "1",
@@ -523,7 +524,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1"),
+						asttest.NewLiteralNumber("1"),
 					},
 				},
 				&ast.For{
@@ -533,7 +534,7 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "bar"},
 							},
 							Rights: []ast.Node{
-								ast.NewLiteralNumber("2"),
+								asttest.NewLiteralNumber("2"),
 							},
 						},
 						&ast.Assign{
@@ -541,7 +542,7 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "baz"},
 							},
 							Rights: []ast.Node{
-								ast.NewLiteralNumber("3"),
+								asttest.NewLiteralNumber("3"),
 							},
 						},
 					},
@@ -551,14 +552,14 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "qux"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("4"),
+						asttest.NewLiteralNumber("4"),
 					},
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "foo",
@@ -566,7 +567,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.JumpUnless{
 					Condition: "2",
@@ -574,7 +575,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Assign{
 					VariableName: "bar",
@@ -582,7 +583,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Assign{
 					VariableName: "baz",
@@ -593,7 +594,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("4"),
+					Value:        asttest.NewLiteralNumber("4"),
 				},
 				&vm.Assign{
 					VariableName: "qux",
@@ -608,14 +609,14 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.For{
-					Condition: ast.NewBinary(
+					Condition: asttest.NewBinary(
 						&ast.Identifier{Name: "i"},
 						lexer.TokenLessThan,
-						ast.NewLiteralNumber("10"),
+						asttest.NewLiteralNumber("10"),
 					),
 					Statements: []ast.Node{
 						&ast.Assign{
@@ -623,10 +624,10 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "i"},
 							},
 							Rights: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "i"},
 									lexer.TokenPlus,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
 							},
 						},
@@ -636,7 +637,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -644,7 +645,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("10"),
+					Value:        asttest.NewLiteralNumber("10"),
 				},
 				&vm.LessThanNumber{
 					Left:   "i",
@@ -657,7 +658,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Add{
 					Left:   "i",
@@ -680,7 +681,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.For{
@@ -690,7 +691,7 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "i"},
 							},
 							Rights: []ast.Node{
-								ast.NewLiteralNumber("1"),
+								asttest.NewLiteralNumber("1"),
 							},
 						},
 						&ast.Break{},
@@ -699,7 +700,7 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "i"},
 							},
 							Rights: []ast.Node{
-								ast.NewLiteralNumber("2"),
+								asttest.NewLiteralNumber("2"),
 							},
 						},
 					},
@@ -709,14 +710,14 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("3"),
+						asttest.NewLiteralNumber("3"),
 					},
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -724,7 +725,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.JumpUnless{
 					Condition: "2",
@@ -732,7 +733,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -743,7 +744,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -754,7 +755,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -769,7 +770,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.For{
@@ -779,7 +780,7 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "i"},
 							},
 							Rights: []ast.Node{
-								ast.NewLiteralNumber("1"),
+								asttest.NewLiteralNumber("1"),
 							},
 						},
 						&ast.Continue{},
@@ -788,7 +789,7 @@ func TestFor(t *testing.T) {
 								&ast.Identifier{Name: "i"},
 							},
 							Rights: []ast.Node{
-								ast.NewLiteralNumber("2"),
+								asttest.NewLiteralNumber("2"),
 							},
 						},
 					},
@@ -798,14 +799,14 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("3"),
+						asttest.NewLiteralNumber("3"),
 					},
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -813,7 +814,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.JumpUnless{
 					Condition: "2",
@@ -821,7 +822,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "3",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -832,7 +833,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -843,7 +844,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.Assign{
 					VariableName: "i",

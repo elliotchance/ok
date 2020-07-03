@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -22,7 +23,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 	switch cond := n.Condition.(type) {
 	case nil:
 		// Error here should not be possible.
-		conditionResults, _, _ = compileExpr(compiledFunc, ast.NewLiteralBool(true), fns)
+		conditionResults, _, _ = compileExpr(compiledFunc, asttest.NewLiteralBool(true), fns)
 
 	case *ast.In:
 		// TODO(elliot): Check arrayOrMapResult is actually an array or map.
@@ -42,7 +43,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		cursorRegister := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{
 			VariableName: cursorRegister,
-			Value:        ast.NewLiteralNumber("0"),
+			Value:        asttest.NewLiteralNumber("0"),
 		})
 
 		conditionResults = []string{compiledFunc.NextRegister()}

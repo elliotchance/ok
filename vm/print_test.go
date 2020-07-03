@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
@@ -53,9 +54,9 @@ func TestPrint_Execute(t *testing.T) {
 				{
 					Kind: "[]number",
 					Array: []*ast.Literal{
-						ast.NewLiteralNumber("123"),
-						ast.NewLiteralNumber("456"),
-						ast.NewLiteralNumber("789"),
+						asttest.NewLiteralNumber("123"),
+						asttest.NewLiteralNumber("456"),
+						asttest.NewLiteralNumber("789"),
 					},
 				},
 			},
@@ -66,11 +67,11 @@ func TestPrint_Execute(t *testing.T) {
 				{
 					Kind: "[]any",
 					Array: []*ast.Literal{
-						ast.NewLiteralBool(true),
-						ast.NewLiteralChar('a'),
-						ast.NewLiteralData([]byte("data")),
-						ast.NewLiteralNumber("123"),
-						ast.NewLiteralString("789"),
+						asttest.NewLiteralBool(true),
+						asttest.NewLiteralChar('a'),
+						asttest.NewLiteralData([]byte("data")),
+						asttest.NewLiteralNumber("123"),
+						asttest.NewLiteralString("789"),
 					},
 				},
 			},
@@ -81,9 +82,9 @@ func TestPrint_Execute(t *testing.T) {
 				{
 					Kind: "{}number",
 					Map: map[string]*ast.Literal{
-						"a": ast.NewLiteralNumber("123"),
-						"b": ast.NewLiteralNumber("456"),
-						"c": ast.NewLiteralNumber("789"),
+						"a": asttest.NewLiteralNumber("123"),
+						"b": asttest.NewLiteralNumber("456"),
+						"c": asttest.NewLiteralNumber("789"),
 					},
 				},
 			},
@@ -94,11 +95,11 @@ func TestPrint_Execute(t *testing.T) {
 				{
 					Kind: "{}any",
 					Map: map[string]*ast.Literal{
-						"a": ast.NewLiteralBool(true),
-						"b": ast.NewLiteralChar('a'),
-						"c": ast.NewLiteralData([]byte("data")),
-						"d": ast.NewLiteralNumber("123"),
-						"e": ast.NewLiteralString("789"),
+						"a": asttest.NewLiteralBool(true),
+						"b": asttest.NewLiteralChar('a'),
+						"c": asttest.NewLiteralData([]byte("data")),
+						"d": asttest.NewLiteralNumber("123"),
+						"e": asttest.NewLiteralString("789"),
 					},
 				},
 			},

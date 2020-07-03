@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 )
 
 // Len is used to determine the size of an array or map.
@@ -22,7 +23,7 @@ func (ins *Len) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error 
 		result = len(r.Map)
 	}
 
-	registers[ins.Result] = ast.NewLiteralNumber(fmt.Sprintf("%d", result))
+	registers[ins.Result] = asttest.NewLiteralNumber(fmt.Sprintf("%d", result))
 
 	return nil
 }

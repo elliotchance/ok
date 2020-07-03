@@ -17,6 +17,7 @@ func consumeTest(parser *Parser, offset int) (*ast.Test, int, error) {
 
 	t := &ast.Test{
 		Name: parser.File.Tokens[offset-1].Value,
+		Pos:  parser.File.Pos(originalOffset),
 	}
 
 	t.Statements, offset, err = consumeBlock(parser, offset)

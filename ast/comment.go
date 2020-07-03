@@ -11,6 +11,8 @@ type Comment struct {
 	// Func will be the name of the function this comment is attached to;
 	// otherwise it will be empty.
 	Func string
+
+	Pos string
 }
 
 // String returns the cleaner presentation version of the comment.
@@ -22,4 +24,9 @@ func (c *Comment) String() string {
 	}
 
 	return strings.Join(newLines, "\n")
+}
+
+// Position returns the position.
+func (c *Comment) Position() string {
+	return c.Pos
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
@@ -40,7 +41,7 @@ func TestFunc(t *testing.T) {
 					&ast.Call{
 						FunctionName: "print",
 						Arguments: []ast.Node{
-							ast.NewLiteralString("hello"),
+							asttest.NewLiteralString("hello"),
 						},
 					},
 				},
@@ -49,7 +50,7 @@ func TestFunc(t *testing.T) {
 				&vm.Print{},
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralString("hello"),
+					Value:        asttest.NewLiteralString("hello"),
 				},
 				&vm.Print{
 					Arguments: []string{"1"},

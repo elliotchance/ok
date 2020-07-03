@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -27,7 +28,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		zeroAt := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{
 			VariableName: zeroAt,
-			Value:        ast.NewLiteralNumber("0"),
+			Value:        asttest.NewLiteralNumber("0"),
 		})
 
 		returns2 := compiledFunc.NextRegister()
@@ -44,7 +45,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		oneAt := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{
 			VariableName: oneAt,
-			Value:        ast.NewLiteralNumber("1"),
+			Value:        asttest.NewLiteralNumber("1"),
 		})
 
 		ins = &vm.Add{
@@ -60,7 +61,7 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		oneAt := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{
 			VariableName: oneAt,
-			Value:        ast.NewLiteralNumber("1"),
+			Value:        asttest.NewLiteralNumber("1"),
 		})
 
 		ins = &vm.Subtract{

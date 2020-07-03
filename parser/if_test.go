@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
 	"github.com/stretchr/testify/assert"
@@ -22,7 +23,7 @@ func TestIf(t *testing.T) {
 				Condition: &ast.Binary{
 					Left:  &ast.Identifier{Name: "a"},
 					Op:    lexer.TokenEqual,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 			},
 		},
@@ -32,7 +33,7 @@ func TestIf(t *testing.T) {
 				Condition: &ast.Binary{
 					Left:  &ast.Identifier{Name: "a"},
 					Op:    lexer.TokenEqual,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 				True: []ast.Node{
 					&ast.Assign{
@@ -40,7 +41,7 @@ func TestIf(t *testing.T) {
 							&ast.Identifier{Name: "a"},
 						},
 						Rights: []ast.Node{
-							ast.NewLiteralNumber("1"),
+							asttest.NewLiteralNumber("1"),
 						},
 					},
 					&ast.Unary{
@@ -56,7 +57,7 @@ func TestIf(t *testing.T) {
 				Condition: &ast.Binary{
 					Left:  &ast.Identifier{Name: "a"},
 					Op:    lexer.TokenEqual,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 				True: []ast.Node{
 					&ast.Assign{
@@ -64,7 +65,7 @@ func TestIf(t *testing.T) {
 							&ast.Identifier{Name: "a"},
 						},
 						Rights: []ast.Node{
-							ast.NewLiteralNumber("1"),
+							asttest.NewLiteralNumber("1"),
 						},
 					},
 				},
@@ -76,7 +77,7 @@ func TestIf(t *testing.T) {
 				Condition: &ast.Binary{
 					Left:  &ast.Identifier{Name: "a"},
 					Op:    lexer.TokenEqual,
-					Right: ast.NewLiteralNumber("3"),
+					Right: asttest.NewLiteralNumber("3"),
 				},
 				True: []ast.Node{
 					&ast.Assign{
@@ -84,7 +85,7 @@ func TestIf(t *testing.T) {
 							&ast.Identifier{Name: "a"},
 						},
 						Rights: []ast.Node{
-							ast.NewLiteralNumber("1"),
+							asttest.NewLiteralNumber("1"),
 						},
 					},
 				},
@@ -99,13 +100,13 @@ func TestIf(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
+			assertEqualErrors(t, test.errs, p.Errors())
 			if test.expected == nil {
-				assert.Equal(t, map[string]*ast.Func{}, p.File.Funcs)
+				asttest.AssertEqual(t, map[string]*ast.Func{}, p.File.Funcs)
 			} else {
-				assert.Equal(t, map[string]*ast.Func{
+				asttest.AssertEqual(t, map[string]*ast.Func{
 					"main": {
 						Name:       "main",
 						Statements: []ast.Node{test.expected},

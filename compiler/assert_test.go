@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/vm"
@@ -20,30 +21,30 @@ func TestAssert(t *testing.T) {
 	}{
 		"not-a-bool": {
 			node: &ast.Assert{
-				Expr: ast.NewBinary(
-					ast.NewLiteralNumber("1"),
+				Expr: asttest.NewBinary(
+					asttest.NewLiteralNumber("1"),
 					lexer.TokenPlus,
-					ast.NewLiteralNumber("2"),
+					asttest.NewLiteralNumber("2"),
 				),
 			},
 			err: errors.New("assert condition must be a bool but is number"),
 		},
 		"success": {
 			node: &ast.Assert{
-				Expr: ast.NewBinary(
-					ast.NewLiteralNumber("1"),
+				Expr: asttest.NewBinary(
+					asttest.NewLiteralNumber("1"),
 					lexer.TokenEqual,
-					ast.NewLiteralNumber("2"),
+					asttest.NewLiteralNumber("2"),
 				),
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.EqualNumber{
 					Left:   "1",

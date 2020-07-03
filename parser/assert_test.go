@@ -6,9 +6,9 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestAssert(t *testing.T) {
@@ -20,10 +20,10 @@ func TestAssert(t *testing.T) {
 		"equals": {
 			str: "assert(123 == 456)",
 			expected: &ast.Assert{
-				Expr: ast.NewBinary(
-					ast.NewLiteralNumber("123"),
+				Expr: asttest.NewBinary(
+					asttest.NewLiteralNumber("123"),
 					lexer.TokenEqual,
-					ast.NewLiteralNumber("456"),
+					asttest.NewLiteralNumber("456"),
 				),
 			},
 		},
@@ -31,16 +31,16 @@ func TestAssert(t *testing.T) {
 			str:      "assert(false)",
 			expected: &ast.Assert{},
 			errs: []error{
-				errors.New("only binary expressions are permitted in assertions"),
+				errors.New("a.ok:1:15 only binary expressions are permitted in assertions"),
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 		})

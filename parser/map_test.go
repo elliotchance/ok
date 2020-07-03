@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestMap(t *testing.T) {
@@ -27,8 +27,8 @@ func TestMap(t *testing.T) {
 			expected: &ast.Map{
 				Elements: []*ast.KeyValue{
 					{
-						Key:   ast.NewLiteralString("foo"),
-						Value: ast.NewLiteralNumber("123"),
+						Key:   asttest.NewLiteralString("foo"),
+						Value: asttest.NewLiteralNumber("123"),
 					},
 				},
 			},
@@ -38,20 +38,20 @@ func TestMap(t *testing.T) {
 			expected: &ast.Map{
 				Elements: []*ast.KeyValue{
 					{
-						Key:   ast.NewLiteralString("foo"),
-						Value: ast.NewLiteralNumber("1"),
+						Key:   asttest.NewLiteralString("foo"),
+						Value: asttest.NewLiteralNumber("1"),
 					},
 					{
 						Key:   &ast.Identifier{Name: "bar"},
-						Value: ast.NewLiteralString("2"),
+						Value: asttest.NewLiteralString("2"),
 					},
 					{
-						Key: ast.NewBinary(
-							ast.NewLiteralString("b"),
+						Key: asttest.NewBinary(
+							asttest.NewLiteralString("b"),
 							lexer.TokenPlus,
-							ast.NewLiteralString("az"),
+							asttest.NewLiteralString("az"),
 						),
-						Value: ast.NewLiteralBool(true),
+						Value: asttest.NewLiteralBool(true),
 					},
 				},
 			},
@@ -61,24 +61,24 @@ func TestMap(t *testing.T) {
 			expected: &ast.Map{
 				Elements: []*ast.KeyValue{
 					{
-						Key: ast.NewLiteralString("a"),
-						Value: ast.NewBinary(
-							ast.NewLiteralNumber("1"),
+						Key: asttest.NewLiteralString("a"),
+						Value: asttest.NewBinary(
+							asttest.NewLiteralNumber("1"),
 							lexer.TokenPlus,
-							ast.NewLiteralNumber("2"),
+							asttest.NewLiteralNumber("2"),
 						),
 					},
 					{
-						Key: ast.NewLiteralString("b"),
-						Value: ast.NewBinary(
+						Key: asttest.NewLiteralString("b"),
+						Value: asttest.NewBinary(
 							&ast.Call{
 								FunctionName: "foo",
 								Arguments: []ast.Node{
-									ast.NewLiteralString("bar"),
+									asttest.NewLiteralString("bar"),
 								},
 							},
 							lexer.TokenPlus,
-							ast.NewLiteralNumber("3"),
+							asttest.NewLiteralNumber("3"),
 						),
 					},
 				},
@@ -90,16 +90,16 @@ func TestMap(t *testing.T) {
 				Kind: "{}number",
 				Elements: []*ast.KeyValue{
 					{
-						Key:   ast.NewLiteralString("a"),
-						Value: ast.NewLiteralNumber("1"),
+						Key:   asttest.NewLiteralString("a"),
+						Value: asttest.NewLiteralNumber("1"),
 					},
 					{
-						Key:   ast.NewLiteralString("b"),
-						Value: ast.NewLiteralNumber("2"),
+						Key:   asttest.NewLiteralString("b"),
+						Value: asttest.NewLiteralNumber("2"),
 					},
 					{
-						Key:   ast.NewLiteralString("c"),
-						Value: ast.NewLiteralNumber("3"),
+						Key:   asttest.NewLiteralString("c"),
+						Value: asttest.NewLiteralNumber("3"),
 					},
 				},
 			},
@@ -108,7 +108,7 @@ func TestMap(t *testing.T) {
 			str: `foo["bar"]`,
 			expected: &ast.Key{
 				Expr: &ast.Identifier{Name: "foo"},
-				Key:  ast.NewLiteralString("bar"),
+				Key:  asttest.NewLiteralString("bar"),
 			},
 		},
 		"set-index": {
@@ -121,17 +121,17 @@ func TestMap(t *testing.T) {
 					},
 				},
 				Rights: []ast.Node{
-					ast.NewLiteralNumber("2"),
+					asttest.NewLiteralNumber("2"),
 				},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 		})

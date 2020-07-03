@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/vm"
@@ -30,41 +31,41 @@ func TestSwitch(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Switch{
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("ONE"),
+										asttest.NewLiteralString("ONE"),
 									},
 								},
 							},
 						},
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("2"),
+									asttest.NewLiteralNumber("2"),
 								),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("TWO"),
+										asttest.NewLiteralString("TWO"),
 									},
 								},
 							},
@@ -76,7 +77,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -86,7 +87,7 @@ func TestSwitch(t *testing.T) {
 				// a == 1
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -101,7 +102,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE")
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralString("ONE"),
+					Value:        asttest.NewLiteralString("ONE"),
 				},
 				&vm.Print{
 					Arguments: []string{"4"},
@@ -113,7 +114,7 @@ func TestSwitch(t *testing.T) {
 				// a == 2
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -128,7 +129,7 @@ func TestSwitch(t *testing.T) {
 				// print("TWO")
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralString("TWO"),
+					Value:        asttest.NewLiteralString("TWO"),
 				},
 				&vm.Print{
 					Arguments: []string{"7"},
@@ -145,41 +146,41 @@ func TestSwitch(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Switch{
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("ONE"),
+										asttest.NewLiteralString("ONE"),
 									},
 								},
 							},
 						},
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("2"),
+									asttest.NewLiteralNumber("2"),
 								),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("TWO"),
+										asttest.NewLiteralString("TWO"),
 									},
 								},
 							},
@@ -189,7 +190,7 @@ func TestSwitch(t *testing.T) {
 						&ast.Call{
 							FunctionName: "print",
 							Arguments: []ast.Node{
-								ast.NewLiteralString("NO MATCH"),
+								asttest.NewLiteralString("NO MATCH"),
 							},
 						},
 					},
@@ -199,7 +200,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -209,7 +210,7 @@ func TestSwitch(t *testing.T) {
 				// a == 1
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -224,7 +225,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE")
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralString("ONE"),
+					Value:        asttest.NewLiteralString("ONE"),
 				},
 				&vm.Print{
 					Arguments: []string{"4"},
@@ -236,7 +237,7 @@ func TestSwitch(t *testing.T) {
 				// a == 2
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -251,7 +252,7 @@ func TestSwitch(t *testing.T) {
 				// print("TWO")
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralString("TWO"),
+					Value:        asttest.NewLiteralString("TWO"),
 				},
 				&vm.Print{
 					Arguments: []string{"7"},
@@ -263,7 +264,7 @@ func TestSwitch(t *testing.T) {
 				// print("NO MATCH")
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralString("NO MATCH"),
+					Value:        asttest.NewLiteralString("NO MATCH"),
 				},
 				&vm.Print{
 					Arguments: []string{"8"},
@@ -277,46 +278,46 @@ func TestSwitch(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Switch{
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("1"),
+									asttest.NewLiteralNumber("1"),
 								),
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("2"),
+									asttest.NewLiteralNumber("2"),
 								),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("ONE OR TWO"),
+										asttest.NewLiteralString("ONE OR TWO"),
 									},
 								},
 							},
 						},
 						{
 							Conditions: []ast.Node{
-								ast.NewBinary(
+								asttest.NewBinary(
 									&ast.Identifier{Name: "a"},
 									lexer.TokenEqual,
-									ast.NewLiteralNumber("3"),
+									asttest.NewLiteralNumber("3"),
 								),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("THREE"),
+										asttest.NewLiteralString("THREE"),
 									},
 								},
 							},
@@ -328,7 +329,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -338,7 +339,7 @@ func TestSwitch(t *testing.T) {
 				// a == 1
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -353,7 +354,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralString("ONE OR TWO"),
+					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
 					Arguments: []string{"4"},
@@ -365,7 +366,7 @@ func TestSwitch(t *testing.T) {
 				// a == 2
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -380,7 +381,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralString("ONE OR TWO"),
+					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
 					Arguments: []string{"7"},
@@ -392,7 +393,7 @@ func TestSwitch(t *testing.T) {
 				// a == 3
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -407,7 +408,7 @@ func TestSwitch(t *testing.T) {
 				// print("THREE")
 				&vm.Assign{
 					VariableName: "10",
-					Value:        ast.NewLiteralString("THREE"),
+					Value:        asttest.NewLiteralString("THREE"),
 				},
 				&vm.Print{
 					Arguments: []string{"10"},
@@ -424,7 +425,7 @@ func TestSwitch(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Switch{
@@ -435,7 +436,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -450,7 +451,7 @@ func TestSwitch(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Switch{
@@ -458,27 +459,27 @@ func TestSwitch(t *testing.T) {
 					Cases: []*ast.Case{
 						{
 							Conditions: []ast.Node{
-								ast.NewLiteralNumber("1"),
-								ast.NewLiteralNumber("2"),
+								asttest.NewLiteralNumber("1"),
+								asttest.NewLiteralNumber("2"),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("ONE OR TWO"),
+										asttest.NewLiteralString("ONE OR TWO"),
 									},
 								},
 							},
 						},
 						{
 							Conditions: []ast.Node{
-								ast.NewLiteralNumber("3"),
+								asttest.NewLiteralNumber("3"),
 							},
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
 									Arguments: []ast.Node{
-										ast.NewLiteralString("THREE"),
+										asttest.NewLiteralString("THREE"),
 									},
 								},
 							},
@@ -490,7 +491,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "a",
@@ -500,7 +501,7 @@ func TestSwitch(t *testing.T) {
 				// case 1
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -515,7 +516,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralString("ONE OR TWO"),
+					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
 					Arguments: []string{"4"},
@@ -527,7 +528,7 @@ func TestSwitch(t *testing.T) {
 				// case 2
 				&vm.Assign{
 					VariableName: "5",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -542,7 +543,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.Assign{
 					VariableName: "7",
-					Value:        ast.NewLiteralString("ONE OR TWO"),
+					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
 					Arguments: []string{"7"},
@@ -554,7 +555,7 @@ func TestSwitch(t *testing.T) {
 				// case 3
 				&vm.Assign{
 					VariableName: "8",
-					Value:        ast.NewLiteralNumber("3"),
+					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -569,7 +570,7 @@ func TestSwitch(t *testing.T) {
 				// print("THREE")
 				&vm.Assign{
 					VariableName: "10",
-					Value:        ast.NewLiteralString("THREE"),
+					Value:        asttest.NewLiteralString("THREE"),
 				},
 				&vm.Print{
 					Arguments: []string{"10"},
