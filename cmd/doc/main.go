@@ -45,7 +45,7 @@ func (*Command) Run(args []string) {
 		data, err := ioutil.ReadFile(fileName)
 		check(err)
 
-		p := parser.ParseString(string(data))
+		p := parser.ParseString(string(data), fileName)
 
 		for _, fn := range p.File.Funcs {
 			funcs = append(funcs, fn)

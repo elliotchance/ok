@@ -8,12 +8,11 @@ type Call struct {
 	// Arguments contains zero or more elements that represent each of the
 	// arguments respectively.
 	Arguments []Node
+
+	Pos string
 }
 
-// NewCall produces a new call to functionName with any number of arguments.
-func NewCall(functionName string, arguments ...Node) *Call {
-	return &Call{
-		FunctionName: functionName,
-		Arguments:    arguments,
-	}
+// Position returns the position.
+func (node *Call) Position() string {
+	return node.Pos
 }

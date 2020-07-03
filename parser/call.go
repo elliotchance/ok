@@ -11,7 +11,9 @@ func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 	originalOffset := offset
 	var err error
 
-	call := &ast.Call{}
+	call := &ast.Call{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	offset, err = consume(parser.File, offset, []string{
 		lexer.TokenIdentifier,

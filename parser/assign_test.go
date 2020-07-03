@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
 
 	"github.com/stretchr/testify/assert"
@@ -22,7 +23,7 @@ func TestAssign(t *testing.T) {
 					&ast.Identifier{Name: "a"},
 				},
 				Rights: []ast.Node{
-					ast.NewLiteralNumber("123"),
+					asttest.NewLiteralNumber("123"),
 				},
 			},
 		},
@@ -34,8 +35,8 @@ func TestAssign(t *testing.T) {
 					&ast.Identifier{Name: "b"},
 				},
 				Rights: []ast.Node{
-					ast.NewLiteralNumber("123"),
-					ast.NewLiteralString("foo"),
+					asttest.NewLiteralNumber("123"),
+					asttest.NewLiteralString("foo"),
 				},
 			},
 		},
@@ -53,10 +54,10 @@ func TestAssign(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assert.Nil(t, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assert.Nil(t, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 			assert.Nil(t, p.File.Comments)

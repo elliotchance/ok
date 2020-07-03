@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -14,7 +15,7 @@ func compileMap(compiledFunc *vm.CompiledFunc, n *ast.Map, fns map[string]*ast.F
 	sizeRegister := compiledFunc.NextRegister()
 	compiledFunc.Append(&vm.Assign{
 		VariableName: sizeRegister,
-		Value:        ast.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
+		Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
 	})
 
 	mapRegister := compiledFunc.NextRegister()

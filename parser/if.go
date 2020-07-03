@@ -7,13 +7,16 @@ import (
 
 func consumeIf(parser *Parser, offset int) (*ast.If, int, error) {
 	var err error
+	originalOffset := offset
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenIf})
 	if err != nil {
 		return nil, offset, err
 	}
 
-	node := &ast.If{}
+	node := &ast.If{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	node.Condition, offset, err = consumeExpr(parser, offset)
 	if err != nil {

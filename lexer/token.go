@@ -94,15 +94,19 @@ type Token struct {
 	// previous lines and/or if they might be attached to functions are
 	// documentation.
 	IsEndOfLine bool
+
+	// Pos is the location of the token.
+	Pos Pos
 }
 
 // NewToken initializes a token with a kind and value and other
 // defaults.
-func NewToken(kind, value string) Token {
+func NewToken(kind, value string, pos Pos) Token {
 	return Token{
 		Kind:        kind,
 		Value:       value,
 		IsEndOfLine: false,
+		Pos:         pos,
 	}
 }
 

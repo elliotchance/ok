@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/util"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -27,10 +28,10 @@ func (*Command) Run(args []string) {
 		args = []string{"."}
 	}
 
-	pkg, err := compiler.CompilePackage(args[0], false)
-	check(err)
+	pkg, errs := compiler.CompilePackage(args[0], false)
+	util.CheckErrorsWithExit(errs)
 
 	m := vm.NewVM(pkg.Funcs, pkg.Tests, args[0])
-	err = m.Run()
+	err := m.Run()
 	check(err)
 }

@@ -1,14 +1,12 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
 
 // ParseString parses source code and returns the AST for the file.
-func ParseString(s string) *Parser {
+func ParseString(s string, fileName string) *Parser {
 	parser := &Parser{
 		File: &File{},
 	}
@@ -16,17 +14,18 @@ func ParseString(s string) *Parser {
 	parser.File.Imports = map[string]string{}
 
 	var err error
-	parser.File.Tokens, parser.File.Comments, err = lexer.TokenizeString(s, lexer.Options{
+	options := lexer.Options{
 		IncludeComments: false,
-	})
+	}
+	parser.File.Tokens, parser.File.Comments, err = lexer.TokenizeString(s,
+		options, fileName)
 	if err != nil {
 		at := "at the start"
 		if len(parser.File.Tokens) > 0 {
 			at = "after " + parser.File.Tokens[len(parser.File.Tokens)-1].String()
 		}
 
-		parser.Errors = append(parser.Errors,
-			fmt.Errorf("unterminated string found %s", at))
+		parser.AppendErrorf(nil, "unterminated string found %s", at)
 
 		return parser
 	}
@@ -39,7 +38,7 @@ func ParseString(s string) *Parser {
 			var fn *ast.Func
 			fn, offset, err = consumeFunc(parser, offset)
 			if err != nil {
-				parser.Errors = append(parser.Errors, err)
+				parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
 
 				goto done
 			}
@@ -49,7 +48,7 @@ func ParseString(s string) *Parser {
 			var t *ast.Test
 			t, offset, err = consumeTest(parser, offset)
 			if err != nil {
-				parser.Errors = append(parser.Errors, err)
+				parser.AppendError(t, err.Error())
 
 				goto done
 			}
@@ -59,7 +58,7 @@ func ParseString(s string) *Parser {
 			var imp *ast.Import
 			imp, offset, err = consumeImport(parser, offset)
 			if err != nil {
-				parser.Errors = append(parser.Errors, err)
+				parser.AppendError(imp, err.Error())
 
 				goto done
 			}
@@ -69,9 +68,9 @@ func ParseString(s string) *Parser {
 			goto done
 
 		default:
-			parser.Errors = append(parser.Errors,
-				fmt.Errorf("found extra %s at the end of the file",
-					parser.File.Tokens[offset]))
+			parser.AppendErrorf(nil,
+				"found extra %s at the end of the file",
+				parser.File.Tokens[offset])
 
 			return parser
 		}

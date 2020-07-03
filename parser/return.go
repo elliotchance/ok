@@ -8,7 +8,9 @@ import (
 func consumeReturn(parser *Parser, offset int) (*ast.Return, int, error) {
 	originalOffset := offset
 	var err error
-	node := &ast.Return{}
+	node := &ast.Return{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenReturn})
 	if err != nil {

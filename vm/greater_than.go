@@ -2,6 +2,7 @@ package vm
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -12,7 +13,7 @@ type GreaterThanNumber struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *GreaterThanNumber) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = ast.NewLiteralBool(number.Cmp(
+	registers[ins.Result] = asttest.NewLiteralBool(number.Cmp(
 		number.NewNumber(registers[ins.Left].Value),
 		number.NewNumber(registers[ins.Right].Value),
 	) > 0)
@@ -27,7 +28,7 @@ type GreaterThanString struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *GreaterThanString) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = ast.NewLiteralBool(
+	registers[ins.Result] = asttest.NewLiteralBool(
 		registers[ins.Left].Value > registers[ins.Right].Value,
 	)
 

@@ -1,4 +1,6 @@
 package ast
 
 // Node is the interface for all ast structures.
-type Node interface{}
+type Node interface {
+	Position() string
+}

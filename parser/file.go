@@ -13,3 +13,8 @@ type File struct {
 	Comments []*ast.Comment
 	Tokens   []lexer.Token
 }
+
+// Pos returns the rendered position of a token.
+func (file *File) Pos(offset int) string {
+	return file.Tokens[offset].Pos.String()
+}

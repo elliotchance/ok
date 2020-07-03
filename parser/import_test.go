@@ -20,9 +20,9 @@ func TestImport(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str)
+			p := parser.ParseString(test.str, "a.ok")
 
-			assert.Nil(t, p.Errors)
+			assert.Nil(t, p.Errors())
 			assert.Equal(t, test.expected, p.File.Imports)
 		})
 	}

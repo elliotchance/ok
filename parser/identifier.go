@@ -16,5 +16,6 @@ func consumeIdentifier(parser *Parser, offset int) (*ast.Identifier, int, error)
 
 	return &ast.Identifier{
 		Name: parser.File.Tokens[originalOffset].Value,
+		Pos:  parser.File.Pos(originalOffset),
 	}, offset, nil
 }

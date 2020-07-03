@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
@@ -23,14 +24,14 @@ func TestAssign(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1.5"),
+						asttest.NewLiteralNumber("1.5"),
 					},
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.Assign{
 					VariableName: "foo",
@@ -46,19 +47,19 @@ func TestAssign(t *testing.T) {
 						&ast.Identifier{Name: "bar"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1.5"),
-						ast.NewLiteralNumber("3.0"),
+						asttest.NewLiteralNumber("1.5"),
+						asttest.NewLiteralNumber("3.0"),
 					},
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("3.0"),
+					Value:        asttest.NewLiteralNumber("3.0"),
 				},
 				&vm.Assign{
 					VariableName: "foo",

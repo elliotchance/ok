@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
 
 	"github.com/stretchr/testify/assert"
@@ -108,10 +109,10 @@ func TestFunc(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str)
+			p := parser.ParseString(test.str, "a.ok")
 
-			assert.Nil(t, p.Errors)
-			assert.Equal(t, test.expected, p.File.Funcs)
+			assert.Nil(t, p.Errors())
+			asttest.AssertEqual(t, test.expected, p.File.Funcs)
 			assert.Nil(t, p.File.Comments)
 		})
 	}

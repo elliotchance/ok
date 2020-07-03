@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestArray(t *testing.T) {
@@ -30,7 +30,7 @@ func TestArray(t *testing.T) {
 			str: "[123]",
 			expected: &ast.Array{
 				Elements: []ast.Node{
-					ast.NewLiteralNumber("123"),
+					asttest.NewLiteralNumber("123"),
 				},
 			},
 		},
@@ -38,9 +38,9 @@ func TestArray(t *testing.T) {
 			str: `[1, "2", true]`,
 			expected: &ast.Array{
 				Elements: []ast.Node{
-					ast.NewLiteralNumber("1"),
-					ast.NewLiteralString("2"),
-					ast.NewLiteralBool(true),
+					asttest.NewLiteralNumber("1"),
+					asttest.NewLiteralString("2"),
+					asttest.NewLiteralBool(true),
 				},
 			},
 		},
@@ -48,15 +48,15 @@ func TestArray(t *testing.T) {
 			str: `[1 + 2, foo("bar")]`,
 			expected: &ast.Array{
 				Elements: []ast.Node{
-					ast.NewBinary(
-						ast.NewLiteralNumber("1"),
+					asttest.NewBinary(
+						asttest.NewLiteralNumber("1"),
 						lexer.TokenPlus,
-						ast.NewLiteralNumber("2"),
+						asttest.NewLiteralNumber("2"),
 					),
 					&ast.Call{
 						FunctionName: "foo",
 						Arguments: []ast.Node{
-							ast.NewLiteralString("bar"),
+							asttest.NewLiteralString("bar"),
 						},
 					},
 				},
@@ -67,9 +67,9 @@ func TestArray(t *testing.T) {
 			expected: &ast.Array{
 				Kind: "[]number",
 				Elements: []ast.Node{
-					ast.NewLiteralNumber("1"),
-					ast.NewLiteralNumber("2"),
-					ast.NewLiteralNumber("3"),
+					asttest.NewLiteralNumber("1"),
+					asttest.NewLiteralNumber("2"),
+					asttest.NewLiteralNumber("3"),
 				},
 			},
 		},
@@ -77,7 +77,7 @@ func TestArray(t *testing.T) {
 			str: `foo[0]`,
 			expected: &ast.Key{
 				Expr: &ast.Identifier{Name: "foo"},
-				Key:  ast.NewLiteralNumber("0"),
+				Key:  asttest.NewLiteralNumber("0"),
 			},
 		},
 		"set-index": {
@@ -86,21 +86,21 @@ func TestArray(t *testing.T) {
 				Lefts: []ast.Node{
 					&ast.Key{
 						Expr: &ast.Identifier{Name: "foo"},
-						Key:  ast.NewLiteralNumber("1"),
+						Key:  asttest.NewLiteralNumber("1"),
 					},
 				},
 				Rights: []ast.Node{
-					ast.NewLiteralNumber("2"),
+					asttest.NewLiteralNumber("2"),
 				},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 		})

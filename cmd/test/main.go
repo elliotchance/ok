@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/util"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -30,12 +31,12 @@ func (*Command) Run(args []string) {
 		args = []string{"."}
 	}
 
-	pkg, err := compiler.CompilePackage(args[0], true)
-	check(err)
+	pkg, errs := compiler.CompilePackage(args[0], true)
+	util.CheckErrorsWithExit(errs)
 
 	m := vm.NewVM(pkg.Funcs, pkg.Tests, args[0])
 	startTime := time.Now()
-	err = m.RunTests()
+	err := m.RunTests()
 	elapsed := time.Since(startTime)
 	check(err)
 

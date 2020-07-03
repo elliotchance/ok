@@ -7,18 +7,22 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
-func consumeStatement(parser *Parser, offset int) (ast.Node, int, error) {
+func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, finalErr error) {
 	originalOffset := offset
 	var err error
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenBreak})
 	if err == nil {
-		return &ast.Break{}, offset, nil
+		return &ast.Break{
+			Pos: parser.File.Pos(originalOffset),
+		}, offset, nil
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenContinue})
 	if err == nil {
-		return &ast.Continue{}, offset, nil
+		return &ast.Continue{
+			Pos: parser.File.Pos(originalOffset),
+		}, offset, nil
 	}
 
 	var assert *ast.Assert

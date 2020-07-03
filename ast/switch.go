@@ -7,6 +7,13 @@ type Case struct {
 
 	// Statements may be nil.
 	Statements []Node
+
+	Pos string
+}
+
+// Position returns the position.
+func (node *Case) Position() string {
+	return node.Pos
 }
 
 // Switch represents a switch statement.
@@ -19,4 +26,11 @@ type Switch struct {
 
 	// Else may be nil.
 	Else []Node
+
+	Pos string
+}
+
+// Position returns the position.
+func (node *Switch) Position() string {
+	return node.Pos
 }

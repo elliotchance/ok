@@ -30,5 +30,6 @@ func consumeUnary(parser *Parser, offset int) (*ast.Unary, int, error) {
 	return &ast.Unary{
 		Op:   t.Kind,
 		Expr: expr,
+		Pos:  parser.File.Pos(originalOffset),
 	}, offset, nil
 }

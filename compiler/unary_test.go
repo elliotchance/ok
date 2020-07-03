@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/vm"
@@ -24,7 +25,7 @@ func TestUnary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Unary{
@@ -35,7 +36,7 @@ func TestUnary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -43,7 +44,7 @@ func TestUnary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Add{
 					Left:   "i",
@@ -59,7 +60,7 @@ func TestUnary(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				&ast.Unary{
@@ -70,7 +71,7 @@ func TestUnary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -78,7 +79,7 @@ func TestUnary(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("1"),
+					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.Subtract{
 					Left:   "i",
@@ -91,13 +92,13 @@ func TestUnary(t *testing.T) {
 			nodes: []ast.Node{
 				&ast.Unary{
 					Op:   lexer.TokenNot,
-					Expr: ast.NewLiteralBool(true),
+					Expr: asttest.NewLiteralBool(true),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(true),
+					Value:        asttest.NewLiteralBool(true),
 				},
 				&vm.Not{
 					Left:   "1",
@@ -109,13 +110,13 @@ func TestUnary(t *testing.T) {
 			nodes: []ast.Node{
 				&ast.Unary{
 					Op:   lexer.TokenNot,
-					Expr: ast.NewLiteralBool(false),
+					Expr: asttest.NewLiteralBool(false),
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralBool(false),
+					Value:        asttest.NewLiteralBool(false),
 				},
 				&vm.Not{
 					Left:   "1",

@@ -4,4 +4,10 @@ package ast
 type Key struct {
 	Expr Node
 	Key  Node
+	Pos  string
+}
+
+// Position returns the position.
+func (node *Key) Position() string {
+	return node.Pos
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -22,9 +23,9 @@ func (ins *NextArray) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) 
 	pos := number.Int(number.NewNumber(registers[ins.Cursor].Value))
 
 	hasMore := pos < len(array)
-	registers[ins.Result] = ast.NewLiteralBool(hasMore)
+	registers[ins.Result] = asttest.NewLiteralBool(hasMore)
 	if hasMore {
-		registers[ins.KeyResult] = ast.NewLiteralNumber(fmt.Sprintf("%d", pos))
+		registers[ins.KeyResult] = asttest.NewLiteralNumber(fmt.Sprintf("%d", pos))
 		registers[ins.ValueResult] = array[pos]
 		registers[ins.Cursor].Value = fmt.Sprintf("%d", pos+1)
 	}

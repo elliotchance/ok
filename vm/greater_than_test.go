@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
@@ -15,10 +16,10 @@ func TestGreaterThanString_Execute(t *testing.T) {
 		expected    string
 	}{
 		"foo-foo": {
-			ast.NewLiteralString("foo"), ast.NewLiteralString("foo"),
+			asttest.NewLiteralString("foo"), asttest.NewLiteralString("foo"),
 			"false"},
 		"foo-bar": {
-			ast.NewLiteralString("foo"), ast.NewLiteralString("bar"),
+			asttest.NewLiteralString("foo"), asttest.NewLiteralString("bar"),
 			"true",
 		},
 	} {
@@ -40,10 +41,10 @@ func TestGreaterThanNumber_Execute(t *testing.T) {
 		expected    string
 	}{
 		"1-1.0": {
-			ast.NewLiteralNumber("1"), ast.NewLiteralNumber("1.0"),
+			asttest.NewLiteralNumber("1"), asttest.NewLiteralNumber("1.0"),
 			"false"},
 		"1-1.1": {
-			ast.NewLiteralNumber("1"), ast.NewLiteralNumber("1.1"),
+			asttest.NewLiteralNumber("1"), asttest.NewLiteralNumber("1.1"),
 			"false",
 		},
 	} {

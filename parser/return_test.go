@@ -5,9 +5,8 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestReturn(t *testing.T) {
@@ -24,7 +23,7 @@ func TestReturn(t *testing.T) {
 			str: "return 123\n",
 			expected: &ast.Return{
 				Exprs: []ast.Node{
-					ast.NewLiteralNumber("123"),
+					asttest.NewLiteralNumber("123"),
 				},
 			},
 		},
@@ -32,18 +31,18 @@ func TestReturn(t *testing.T) {
 			str: "return 123, 'a'\n",
 			expected: &ast.Return{
 				Exprs: []ast.Node{
-					ast.NewLiteralNumber("123"),
-					ast.NewLiteralChar('a'),
+					asttest.NewLiteralNumber("123"),
+					asttest.NewLiteralChar('a'),
 				},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 		})

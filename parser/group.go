@@ -28,5 +28,6 @@ func consumeGroup(parser *Parser, offset int) (*ast.Group, int, error) {
 
 	return &ast.Group{
 		Expr: expr,
+		Pos:  parser.File.Pos(originalOffset),
 	}, offset, nil
 }

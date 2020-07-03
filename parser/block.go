@@ -7,6 +7,7 @@ import (
 
 func consumeBlock(parser *Parser, offset int) ([]ast.Node, int, error) {
 	var err error
+	originalOffset := offset
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyOpen})
 	if err != nil {
@@ -15,10 +16,16 @@ func consumeBlock(parser *Parser, offset int) ([]ast.Node, int, error) {
 
 	var statements []ast.Node
 	for {
+		if parser.File.Tokens[offset].Kind == lexer.TokenCurlyClose {
+			break
+		}
+
 		var statement ast.Node
 		statement, offset, err = consumeStatement(parser, offset)
 		if err != nil {
-			break
+			parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
+
+			return nil, originalOffset, err
 		}
 
 		statements = append(statements, statement)

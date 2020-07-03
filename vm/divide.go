@@ -2,6 +2,7 @@ package vm
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -18,10 +19,10 @@ func (ins *Divide) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) err
 	)
 	if err != nil {
 		// TODO(elliot): This needs to be the same precision of zero.
-		registers[ins.Result] = ast.NewLiteralNumber("0")
+		registers[ins.Result] = asttest.NewLiteralNumber("0")
 		return err
 	}
 
-	registers[ins.Result] = ast.NewLiteralNumber(divide.String())
+	registers[ins.Result] = asttest.NewLiteralNumber(divide.String())
 	return nil
 }

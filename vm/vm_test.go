@@ -25,8 +25,8 @@ func main() {
 func add(a, b number) number {
     return a + b
 }
-`)
-		require.Nil(t, p.Errors)
+`, "a.ok")
+		require.Nil(t, p.Errors())
 		f, err := compiler.CompileFile(p.File)
 		require.NoError(t, err)
 

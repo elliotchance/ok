@@ -24,6 +24,8 @@ type Func struct {
 	// Statements can have zero or more elements for each of the ordered
 	// discreet statements in the function.
 	Statements []Node
+
+	Pos string
 }
 
 // Signature returns the signature, like `Foo(x number, y number)`.
@@ -39,4 +41,9 @@ func (f *Func) Signature() string {
 // String returns the signature, like `func Foo(x number, y number)`.
 func (f *Func) String() string {
 	return "func " + f.Signature()
+}
+
+// Position returns the position.
+func (f *Func) Position() string {
+	return f.Pos
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
@@ -19,8 +20,8 @@ func TestConcat_Execute(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			registers := map[string]*ast.Literal{
-				"0": ast.NewLiteralString(test.left),
-				"1": ast.NewLiteralString(test.right),
+				"0": asttest.NewLiteralString(test.left),
+				"1": asttest.NewLiteralString(test.right),
 			}
 			ins := &vm.Concat{Left: "0", Right: "1", Result: "2"}
 			assert.NoError(t, ins.Execute(registers, nil, nil))

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/vm"
@@ -32,14 +33,14 @@ func TestCall(t *testing.T) {
 				&ast.Call{
 					FunctionName: "len",
 					Arguments: []ast.Node{
-						ast.NewArrayNumbers(nil),
+						asttest.NewArrayNumbers(nil),
 					},
 				},
 			},
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("0"),
+					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.ArrayAllocNumber{
 					Size:   "1",
@@ -58,7 +59,7 @@ func TestCall(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1.5"),
+						asttest.NewLiteralNumber("1.5"),
 					},
 				},
 				&ast.Call{
@@ -71,7 +72,7 @@ func TestCall(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.Assign{
 					VariableName: "foo",
@@ -89,7 +90,7 @@ func TestCall(t *testing.T) {
 						&ast.Identifier{Name: "foo"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1.5"),
+						asttest.NewLiteralNumber("1.5"),
 					},
 				},
 				&ast.Call{
@@ -98,10 +99,10 @@ func TestCall(t *testing.T) {
 						&ast.Binary{
 							Left:  &ast.Identifier{Name: "foo"},
 							Op:    lexer.TokenPlus,
-							Right: ast.NewLiteralNumber("2"),
+							Right: asttest.NewLiteralNumber("2"),
 						},
 						&ast.Binary{
-							Left:  ast.NewLiteralNumber("10"),
+							Left:  asttest.NewLiteralNumber("10"),
 							Op:    lexer.TokenTimes,
 							Right: &ast.Identifier{Name: "foo"},
 						},
@@ -111,7 +112,7 @@ func TestCall(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.Assign{
 					VariableName: "1",
-					Value:        ast.NewLiteralNumber("1.5"),
+					Value:        asttest.NewLiteralNumber("1.5"),
 				},
 				&vm.Assign{
 					VariableName: "foo",
@@ -119,7 +120,7 @@ func TestCall(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "2",
-					Value:        ast.NewLiteralNumber("2"),
+					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.Add{
 					Left:   "foo",
@@ -128,7 +129,7 @@ func TestCall(t *testing.T) {
 				},
 				&vm.Assign{
 					VariableName: "4",
-					Value:        ast.NewLiteralNumber("10"),
+					Value:        asttest.NewLiteralNumber("10"),
 				},
 				&vm.Multiply{
 					Left:   "4",

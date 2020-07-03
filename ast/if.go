@@ -6,4 +6,11 @@ type If struct {
 
 	// Either or both is allowed to be nil.
 	True, False []Node
+
+	Pos string
+}
+
+// Position returns the position.
+func (node *If) Position() string {
+	return node.Pos
 }

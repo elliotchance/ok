@@ -1,8 +1,6 @@
 package parser
 
 import (
-	"errors"
-
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
@@ -28,13 +26,14 @@ func consumeAssert(parser *Parser, offset int) (*ast.Assert, int, error) {
 		return nil, originalOffset, err
 	}
 
-	assert := &ast.Assert{}
+	assert := &ast.Assert{
+		Pos: parser.File.Pos(originalOffset),
+	}
 	if e, ok := expr.(*ast.Binary); ok {
 		assert.Expr = e
 	} else {
-		err = errors.New(
+		parser.AppendError(assert,
 			"only binary expressions are permitted in assertions")
-		parser.Errors = append(parser.Errors, err)
 	}
 
 	return assert, offset, nil

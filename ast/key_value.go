@@ -4,3 +4,8 @@ package ast
 type KeyValue struct {
 	Key, Value Node
 }
+
+// Position returns the position.
+func (node *KeyValue) Position() string {
+	return node.Key.Position()
+}

@@ -10,11 +10,11 @@ import (
 	"github.com/elliotchance/ok/util"
 )
 
-func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
+func CompilePackage(dir string, includeTests bool) (*Compiled, []error) {
 	// Step 1: Find all the files that need to be compiled.
 	fileNames, err := util.GetAllOKFilesInPath(dir, includeTests)
 	if err != nil {
-		return nil, err
+		return nil, []error{err}
 	}
 
 	dir = path.Clean(dir)
@@ -28,11 +28,11 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 		fileName := fileNames[0]
 		data, err := ioutil.ReadFile(fileName)
 		if err != nil {
-			return nil, err
+			return nil, []error{err}
 		}
 
-		p := parser.ParseString(string(data))
-		errs = append(errs, p.Errors...)
+		p := parser.ParseString(string(data), fileName)
+		errs = append(errs, p.Errors()...)
 
 		for name, fn := range p.File.Funcs {
 			// TODO(elliot): Check for already defined function.
@@ -59,7 +59,7 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 
 			newFileNames, err := util.GetAllOKFilesInPath(path.Join(dir, pkg), false)
 			if err != nil {
-				return nil, err
+				return nil, []error{err}
 			}
 
 			fileNames = append(fileNames, newFileNames...)
@@ -68,6 +68,15 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, error) {
 		fileNames = fileNames[1:]
 	}
 
+	if len(errs) > 0 {
+		return nil, errs
+	}
+
 	// Step 3: Compile everything all at once.
-	return compile(funcs, tests)
+	compiled, err := compile(funcs, tests)
+	if err != nil {
+		return nil, []error{err}
+	}
+
+	return compiled, nil
 }

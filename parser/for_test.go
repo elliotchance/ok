@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
 	"github.com/stretchr/testify/assert"
@@ -20,13 +21,13 @@ func TestFor(t *testing.T) {
 		"for-empty-body": {
 			str: "for true {}",
 			expected: &ast.For{
-				Condition: ast.NewLiteralBool(true),
+				Condition: asttest.NewLiteralBool(true),
 			},
 		},
 		"for-1": {
 			str: "for true { print(a)\nprint(b) }",
 			expected: &ast.For{
-				Condition: ast.NewLiteralBool(true),
+				Condition: asttest.NewLiteralBool(true),
 				Statements: []ast.Node{
 					&ast.Call{
 						FunctionName: "print",
@@ -102,13 +103,13 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				Condition: &ast.Binary{
 					Left:  &ast.Identifier{Name: "a"},
 					Op:    lexer.TokenLessThan,
-					Right: ast.NewLiteralNumber("10"),
+					Right: asttest.NewLiteralNumber("10"),
 				},
 				Next: &ast.Unary{
 					Op:   lexer.TokenIncrement,
@@ -151,7 +152,7 @@ func TestFor(t *testing.T) {
 						&ast.Identifier{Name: "i"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("0"),
+						asttest.NewLiteralNumber("0"),
 					},
 				},
 				Condition: &ast.In{
@@ -168,10 +169,10 @@ func TestFor(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str)
+			p := parser.ParseString(str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
-			assert.Equal(t, map[string]*ast.Func{
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)
 			assert.Equal(t, test.comments, p.File.Comments)

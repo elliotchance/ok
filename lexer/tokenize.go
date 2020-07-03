@@ -8,16 +8,28 @@ import (
 )
 
 // TokenizeString returns a slice of tokens from the provided str.
-func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error) {
+func TokenizeString(str string, options Options, fileName string) ([]Token, []*ast.Comment, error) {
 	var tokens []Token
 	var comments []*ast.Comment
 	var word string
 
 	runes := []rune(str)
 	runesLen := len(runes)
-	endOfLineForNextToken := false
+
+	// endOfLineForNextToken will increment for every sequential new line. The
+	// number of new lines needs to be tracked to correct the pos line number
+	// after the token has been resolved.
+	endOfLineForNextToken := 0
+
 	var lastComment *ast.Comment
+	pos := Pos{
+		FileName:        fileName,
+		LineNumber:      1,
+		CharacterNumber: 0,
+	}
+
 	for i := 0; i < runesLen; i++ {
+		pos.CharacterNumber++
 		c := runes[i]
 		var token Token
 		found := false
@@ -28,12 +40,14 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			// would be part of the identifier.
 			if word == "" {
 				token.Kind = TokenNumberLiteral
+				token.Pos = pos
 				for ; i < runesLen && isDecimalCharacter(runes[i]); i++ {
 					token.Value += string(runes[i])
 				}
 
 				i--
-				tokens = appendToken(tokens, token, &endOfLineForNextToken)
+				tokens = appendToken(tokens, token, &endOfLineForNextToken, &pos)
+				pos.CharacterNumber += len(token.Value) - 1
 				continue
 			}
 
@@ -41,7 +55,12 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			if i+1 < runesLen && runes[i+1] == '/' {
 				token.Kind = TokenComment
 				i += 2
-				for ; i < runesLen && runes[i] != '\n'; i++ {
+				hasNewLine := false
+				for ; i < runesLen; i++ {
+					if runes[i] == '\n' {
+						hasNewLine = true
+						break
+					}
 					token.Value += string(runes[i])
 				}
 
@@ -60,11 +79,19 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 				} else {
 					comments = append(comments, &ast.Comment{
 						Comment: token.Value,
+						Pos:     pos.String(),
 					})
 					if options.IncludeComments {
-						tokens = appendToken(tokens, token, &endOfLineForNextToken)
+						token.Pos = pos
+						tokens = appendToken(tokens, token, &endOfLineForNextToken, &pos)
 					}
 					lastComment = comments[len(comments)-1]
+				}
+
+				if hasNewLine {
+					pos.nextLine()
+				} else {
+					pos.CharacterNumber += 1 + len(token.Value)
 				}
 
 				continue
@@ -75,13 +102,14 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 
 				found = true
 				token.Kind = token.Value
+				token.Pos = pos
 			} else {
 				found = true
-				token = NewToken(string(c), string(c))
+				token = NewToken(string(c), string(c), pos)
 			}
 
 		case '\'', '"', '`':
-			value, newI, err := readQuotedLiteral(runes, i, c)
+			value, newI, err := readQuotedLiteral(runes, i, c, pos)
 			if err != nil {
 				// It's important that we return the tokens up until now so that
 				// the parser has to the context to say where the error
@@ -90,9 +118,13 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 
 			i = newI
-			newToken := NewToken(tokenKindForQuote(c), value)
-			tokens = appendToken(tokens, newToken, &endOfLineForNextToken)
+			newToken := NewToken(tokenKindForQuote(c), value, pos)
+			tokens = appendToken(tokens, newToken, &endOfLineForNextToken, &pos)
 			found = true
+
+			// Since we support multibyte characters we have to be careful we
+			// move forward the number of characters (not bytes).
+			pos.CharacterNumber += len([]rune(value)) + 1
 
 		case ' ':
 			found = true
@@ -101,16 +133,20 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			// Only set the end of line if we are not in the middle of consuming
 			// a token, since we need the newline to be after the most recent
 			// finished token.
-			if word == "" && len(tokens) > 0 {
-				tokens[len(tokens)-1].IsEndOfLine = true
+			if word == "" {
+				if len(tokens) > 0 {
+					tokens[len(tokens)-1].IsEndOfLine = true
+				}
+				pos.nextLine()
 			} else {
-				endOfLineForNextToken = true
+				endOfLineForNextToken++
 			}
 			found = true
 			lastComment = nil
 
 		case '+', '-':
 			token.Value = string(c)
+			token.Pos = pos
 			if i < runesLen-1 && (runes[i+1] == c || runes[i+1] == '=') {
 				token.Value += string(runes[i+1])
 				i++
@@ -128,6 +164,7 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 			}
 			found = true
 			token.Kind = token.Value
+			token.Pos = pos
 
 			// This is to stop comments on either side of an operator from being
 			// considered a continuous comment block. However, be careful that
@@ -148,12 +185,12 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 				comments[len(comments)-1].Func = word
 			}
 
-			tokens = appendToken(tokens, tokenWord(word), &endOfLineForNextToken)
+			tokens = appendToken(tokens, tokenWord(word, pos), &endOfLineForNextToken, &pos)
 			word = ""
 		}
 
 		if token.Kind != "" {
-			tokens = appendToken(tokens, token, &endOfLineForNextToken)
+			tokens = appendToken(tokens, token, &endOfLineForNextToken, &pos)
 		}
 
 		if !found {
@@ -161,17 +198,23 @@ func TokenizeString(str string, options Options) ([]Token, []*ast.Comment, error
 		}
 	}
 
-	token := tokenWord(word)
+	pos.CharacterNumber++
+
+	token := tokenWord(word, pos)
 	if token.Kind != TokenEOF {
 		tokens = append(tokens, token)
 	}
 
-	tokens = append(tokens, NewToken(TokenEOF, ""))
+	if endOfLineForNextToken > 0 {
+		pos.LineNumber += endOfLineForNextToken
+		pos.CharacterNumber = 1
+	}
+	tokens = append(tokens, NewToken(TokenEOF, "", pos))
 
 	return tokens, comments, nil
 }
 
-func readQuotedLiteral(str []rune, i int, quote rune) (string, int, error) {
+func readQuotedLiteral(str []rune, i int, quote rune, pos Pos) (string, int, error) {
 	i++
 	terminated := false
 	value := ""
@@ -186,29 +229,30 @@ func readQuotedLiteral(str []rune, i int, quote rune) (string, int, error) {
 
 	if !terminated {
 		return "", i, fmt.Errorf(
-			"unterminated literal, did not find closing %c", quote)
+			"%s unterminated literal, did not find closing %c",
+			pos.String(), quote)
 	}
 
 	return value, i, nil
 }
 
-func tokenWord(word string) Token {
+func tokenWord(word string, pos Pos) Token {
 	word = strings.TrimSpace(word)
 
 	switch word {
 	case "":
-		return NewToken(TokenEOF, "")
+		return NewToken(TokenEOF, "", pos)
 
 	case "true", "false":
-		return NewToken(TokenBoolLiteral, word)
+		return NewToken(TokenBoolLiteral, word, pos.add(-len(word)))
 
 	case "and", "break", "case", "continue", "else", "if", "for", "func", "not",
 		"or", "switch", "any", "bool", "char", "data", "number", "string", "in",
 		"return", "test", "assert", "import":
-		return NewToken(word, word)
+		return NewToken(word, word, pos.add(-len(word)))
 	}
 
-	return NewToken(TokenIdentifier, word)
+	return NewToken(TokenIdentifier, word, pos.add(-len(word)))
 }
 
 func isDecimalCharacter(c rune) bool {
@@ -230,10 +274,21 @@ func tokenKindForQuote(quote rune) (kind string) {
 	return
 }
 
-func appendToken(tokens []Token, token Token, endOfLine *bool) []Token {
-	if *endOfLine {
-		*endOfLine = false
+func appendToken(tokens []Token, token Token, endOfLine *int, pos *Pos) []Token {
+	if *endOfLine > 0 {
+		pos.LineNumber += *endOfLine
+		pos.CharacterNumber = 0
+
 		token.IsEndOfLine = true
+		*endOfLine = 0
+	}
+
+	// Operators are ingested as a single unit (like a literal would look
+	// ahead). However, we cannot move the position forward at that time because
+	// it would affect any non-appended token. So we have to adjust it here.
+	if len(token.Value) > 1 &&
+		(token.Value[1] == '=' || token.Value[1] == '+' || token.Value[1] == '-') {
+		pos.CharacterNumber++
 	}
 
 	return append(tokens, token)

@@ -8,7 +8,9 @@ import (
 func consumeArray(parser *Parser, offset int) (*ast.Array, int, error) {
 	originalOffset := offset
 	var err error
-	node := &ast.Array{}
+	node := &ast.Array{
+		Pos: parser.File.Pos(offset),
+	}
 
 	var ty string
 	ty, offset, err = consumeType(parser, offset)

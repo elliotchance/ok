@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
 	"github.com/stretchr/testify/assert"
 )
@@ -23,37 +24,38 @@ func TestParseString(t *testing.T) {
 		"func-paren-close": {
 			str: "func)",
 			errs: []error{
-				errors.New("expecting identifier after func, but found )"),
+				errors.New("a.ok:1:1 expecting identifier after func, but found )"),
 			},
 		},
 		"func-curly-open": {
 			str: "func {",
 			errs: []error{
-				errors.New("expecting identifier after func, but found {"),
+				errors.New("a.ok:1:1 expecting identifier after func, but found {"),
 			},
 		},
 		"func-name-paren-close": {
 			str: "func main)",
 			errs: []error{
-				errors.New(`expecting ( after identifier, but found )`),
+				errors.New(`a.ok:1:1 expecting ( after identifier, but found )`),
 			},
 		},
 		"func-name-paren-open": {
 			str: "func main (",
 			errs: []error{
-				errors.New("expecting identifier after (, but found end of file"),
+				errors.New("a.ok:1:1 expecting identifier after (, but found end of file"),
 			},
 		},
 		"func-name-paren-open-close": {
 			str: "func main ()",
 			errs: []error{
-				errors.New("no token found"),
+				errors.New("a.ok:1:1 no token found"),
 			},
 		},
 		"func-name-paren-open-close-open": {
 			str: "func main () {",
 			errs: []error{
-				errors.New("expecting } after {, but found end of file"),
+				errors.New("a.ok:1:15 expecting statement"),
+				errors.New("a.ok:1:1 expecting statement"),
 			},
 		},
 		"func-empty": {
@@ -78,7 +80,7 @@ func TestParseString(t *testing.T) {
 		},
 		"hello-world": {
 			str:      `func main() {print("hello world")}`,
-			expected: newFuncPrint(ast.NewLiteralString("hello world")),
+			expected: newFuncPrint(asttest.NewLiteralString("hello world")),
 		},
 		"hello-world-2": {
 			str: `func main() {print("hello") print("world")}`,
@@ -88,13 +90,13 @@ func TestParseString(t *testing.T) {
 					&ast.Call{
 						FunctionName: "print",
 						Arguments: []ast.Node{
-							ast.NewLiteralString("hello"),
+							asttest.NewLiteralString("hello"),
 						},
 					},
 					&ast.Call{
 						FunctionName: "print",
 						Arguments: []ast.Node{
-							ast.NewLiteralString("world"),
+							asttest.NewLiteralString("world"),
 						},
 					},
 				},
@@ -110,42 +112,46 @@ func TestParseString(t *testing.T) {
 		"only-comment": {
 			str: "// nothing to see here",
 			comments: []*ast.Comment{
-				{Comment: " nothing to see here"},
+				{Comment: " nothing to see here", Pos: "a.ok:1:1"},
 			},
 		},
 		"comments-everywhere": {
 			str:      "// foo\n //bar\nfunc main() {\n// baz\nprint(\"hello\") // qux\n// quux\n}//corge\n//grault",
-			expected: newFuncPrint(ast.NewLiteralString("hello")),
+			expected: newFuncPrint(asttest.NewLiteralString("hello")),
 			comments: []*ast.Comment{
-				{Comment: " foo\nbar", Func: "main"},
-				{Comment: " baz"},
-				{Comment: " qux\n quux"},
-				{Comment: "corge\ngrault"},
+				{Comment: " foo\nbar", Func: "main", Pos: "a.ok:1:1"},
+				{Comment: " baz", Pos: "a.ok:4:1"},
+				{Comment: " qux\n quux", Pos: "a.ok:5:16"},
+				{Comment: "corge\ngrault", Pos: "a.ok:7:2"},
 			},
 		},
 		"call-identifier-close": {
 			str: `func main() { print) }`,
 			errs: []error{
-				errors.New("expecting } after identifier, but found )"),
+				// TODO(elliot): Prevent duplicate errors from bubbling up?
+				errors.New("a.ok:1:20 expecting statement"),
+				errors.New("a.ok:1:1 expecting statement"),
 			},
 		},
 		"call-identifier-without-literal": {
 			str: `func main() { print( }`,
 			errs: []error{
-				errors.New("expecting } after identifier, but found ("),
+				errors.New("a.ok:1:20 expecting statement"),
+				errors.New("a.ok:1:1 expecting statement"),
 			},
 		},
 		"call-identifier-missing-close": {
 			str: `func main() { print("hello" }`,
 			errs: []error{
-				errors.New("expecting } after identifier, but found ("),
+				errors.New("a.ok:1:20 expecting statement"),
+				errors.New("a.ok:1:1 expecting statement"),
 			},
 		},
 		"print-2": {
 			str: `func main() { print(true, false) }`,
 			expected: newFuncPrint(
-				ast.NewLiteralBool(true),
-				ast.NewLiteralBool(false),
+				asttest.NewLiteralBool(true),
+				asttest.NewLiteralBool(false),
 			),
 		},
 		"end-of-line-1": {
@@ -156,7 +162,7 @@ func TestParseString(t *testing.T) {
 						&ast.Identifier{Name: "a"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1"),
+						asttest.NewLiteralNumber("1"),
 					},
 				},
 				&ast.Call{
@@ -175,7 +181,7 @@ func TestParseString(t *testing.T) {
 						&ast.Identifier{Name: "b"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralBool(true),
+						asttest.NewLiteralBool(true),
 					},
 				},
 				&ast.Call{
@@ -189,7 +195,7 @@ func TestParseString(t *testing.T) {
 						&ast.Identifier{Name: "c"},
 					},
 					Rights: []ast.Node{
-						ast.NewLiteralNumber("1.23"),
+						asttest.NewLiteralNumber("1.23"),
 					},
 				},
 			),
@@ -203,13 +209,13 @@ func TestParseString(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str)
+			p := parser.ParseString(test.str, "a.ok")
 
-			assertEqualErrors(t, test.errs, p.Errors)
+			assertEqualErrors(t, test.errs, p.Errors())
 			if test.expected == nil {
-				assert.Equal(t, map[string]*ast.Func{}, p.File.Funcs)
+				asttest.AssertEqual(t, map[string]*ast.Func{}, p.File.Funcs)
 			} else {
-				assert.Equal(t, map[string]*ast.Func{
+				asttest.AssertEqual(t, map[string]*ast.Func{
 					"main": test.expected,
 				}, p.File.Funcs)
 			}
@@ -248,5 +254,6 @@ func newFunc(statements ...ast.Node) *ast.Func {
 	return &ast.Func{
 		Name:       "main",
 		Statements: statements,
+		Pos:        "a.ok:1:1",
 	}
 }

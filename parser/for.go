@@ -7,13 +7,16 @@ import (
 
 func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 	var err error
+	originalOffset := offset
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenFor})
 	if err != nil {
 		return nil, offset, err
 	}
 
-	node := &ast.For{}
+	node := &ast.For{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	// Condition is optional.
 	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
@@ -79,7 +82,9 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 func consumeIn(parser *Parser, offset int) (*ast.In, int, error) {
 	originalOffset := offset
 	var err error
-	node := &ast.In{}
+	node := &ast.In{
+		Pos: parser.File.Pos(originalOffset),
+	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
 	if err != nil {

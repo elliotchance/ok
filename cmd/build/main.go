@@ -31,8 +31,8 @@ func (*Command) Run(args []string) {
 		args = []string{"."}
 	}
 
-	pkg, err := compiler.CompilePackage(args[0], false)
-	check(err)
+	pkg, errs := compiler.CompilePackage(args[0], false)
+	util.CheckErrorsWithExit(errs)
 
 	goFile := path.Join(args[0], "main.go")
 	f, err := os.Create(goFile)

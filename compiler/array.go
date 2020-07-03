@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -16,7 +17,7 @@ func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*a
 	sizeRegister := compiledFunc.NextRegister()
 	compiledFunc.Append(&vm.Assign{
 		VariableName: sizeRegister,
-		Value:        ast.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
+		Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
 	})
 
 	arrayRegister := compiledFunc.NextRegister()
@@ -29,7 +30,7 @@ func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*a
 		indexRegister := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{
 			VariableName: indexRegister,
-			Value:        ast.NewLiteralNumber(fmt.Sprintf("%d", index)),
+			Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", index)),
 		})
 
 		valueRegisters, _, _ := compileExpr(compiledFunc, value, fns)
