@@ -18,6 +18,8 @@ itself.
       * [Precompiled Binaries](#precompiled-binaries)
       * [go get](#go-get)
       * [From Source](#from-source)
+   * [IDE Support](#ide-support)
+      * [Visual Studio Code](#visual-studio-code)
    * [Command Line Interface](#command-line-interface)
       * [build](#build)
       * [doc](#doc)
@@ -148,6 +150,17 @@ From Source
 -----------
 
 You will need to have Go 1.14+ installed to build from source.
+
+
+IDE Support
+===========
+
+Visual Studio Code
+------------------
+
+You can install the
+[ok](https://marketplace.visualstudio.com/items?itemName=elliotchance.ok)
+extension inside of VSCode.
 
 
 Command Line Interface
