@@ -3,10 +3,11 @@ package vm
 import "fmt"
 
 type CompiledFunc struct {
-	Arguments    []string
-	Instructions []Instruction
-	Registers    int
-	Variables    map[string]string
+	Arguments      []string
+	Instructions   []Instruction
+	Registers      int
+	Variables      map[string]string
+	ObjectRegister string
 }
 
 func (c *CompiledFunc) NextRegister() string {

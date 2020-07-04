@@ -1,0 +1,24 @@
+// When a function has a single return type that is also the same name
+// as the function, this is called a constructor. Constructors are used
+// to create stateful functions. Sometimes called objects, records or
+// structures in other languages.
+func person(name string) person {
+    // When you set variables here, they will be accessible outside.
+    Name = name
+    Age = 42
+
+    // A constructor does not need to have a return statement. It will
+    // always return itself.
+}
+
+func main() {
+    // Create an instance by calling the constructor.
+    p = person("Bob")
+
+    // You can read and write properties using the dot notation.
+    p.Name = "John"
+    print(p.Age)
+
+    // Objects are always printed as JSON objects.
+    print(p)
+}

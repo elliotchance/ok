@@ -105,6 +105,17 @@ func TestPrint_Execute(t *testing.T) {
 			},
 			"{\"a\": true, \"b\": \"a\", \"c\": \"data\", \"d\": 123, \"e\": \"789\"}\n",
 		},
+		"Person": {
+			[]*ast.Literal{
+				{
+					Kind: "Person",
+					Map: map[string]*ast.Literal{
+						"foo": asttest.NewLiteralNumber("123"),
+					},
+				},
+			},
+			"{\"foo\": 123}\n",
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			registers := map[string]*ast.Literal{}

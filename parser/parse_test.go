@@ -48,7 +48,7 @@ func TestParseString(t *testing.T) {
 		"func-name-paren-open-close": {
 			str: "func main ()",
 			errs: []error{
-				errors.New("a.ok:1:1 no token found"),
+				errors.New("a.ok:1:1 expecting identifier after ), but found end of file"),
 			},
 		},
 		"func-name-paren-open-close-open": {

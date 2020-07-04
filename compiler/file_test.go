@@ -10,6 +10,7 @@ import (
 	"github.com/elliotchance/ok/parser"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestCompileFile(t *testing.T) {
@@ -204,10 +205,75 @@ func TestCompileFile(t *testing.T) {
 				},
 			},
 		},
+		"call-constructor-zero-args": {
+			&parser.File{
+				Funcs: map[string]*ast.Func{
+					"Person": {
+						Name:    "Person",
+						Returns: []string{"Person"},
+					},
+					"main": {
+						Statements: []ast.Node{
+							&ast.Assign{
+								Lefts: []ast.Node{
+									&ast.Identifier{Name: "p"},
+								},
+								Rights: []ast.Node{
+									&ast.Call{
+										FunctionName: "Person",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+			&compiler.Compiled{
+				Funcs: map[string]*vm.CompiledFunc{
+					"main": {
+						Instructions: []vm.Instruction{
+							&vm.Call{
+								FunctionName: "Person",
+								Results:      []string{"1"},
+							},
+							&vm.Assign{
+								VariableName: "p",
+								Register:     "1",
+							},
+						},
+						Variables: map[string]string{
+							"p": "Person",
+						},
+						Registers: 1,
+					},
+					"Person": {
+						Variables:      map[string]string{},
+						ObjectRegister: "2",
+						Registers:      2,
+						Instructions: []vm.Instruction{
+							// alloc instance
+							&vm.Assign{
+								VariableName: "1",
+								Value:        asttest.NewLiteralNumber("0"),
+							},
+							&vm.MapAllocNumber{
+								Size:   "1",
+								Result: "2",
+							},
+
+							// return instance
+							&vm.Return{
+								Results: []string{"2"},
+							},
+						},
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFile, err := compiler.CompileFile(test.f)
-			assert.NoError(t, err)
+			require.NoError(t, err)
 
 			// It is not worth testing these because the Statements make it very
 			// verbose.

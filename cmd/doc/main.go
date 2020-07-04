@@ -86,7 +86,7 @@ func (*Command) Run(args []string) {
 		fmt.Println()
 
 		fmt.Println("```")
-		fmt.Println(fn.Signature())
+		fmt.Println(fn.String())
 		fmt.Println("```")
 		fmt.Println()
 
