@@ -3,6 +3,7 @@ package parser
 import (
 	"strings"
 
+	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
 
@@ -39,7 +40,14 @@ done:
 		lexer.TokenString,
 	})
 	if err != nil {
-		return "", originalOffset, err
+		// Any identifier is also valid.
+		var ident *ast.Identifier
+		ident, offset, err = consumeIdentifier(parser, offset)
+		if err != nil {
+			return "", originalOffset, err
+		}
+
+		t.Kind = ident.Name
 	}
 
 	ty += strings.Split(t.Kind, " ")[0]

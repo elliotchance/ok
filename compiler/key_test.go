@@ -181,6 +181,93 @@ func TestKey(t *testing.T) {
 				},
 			},
 		},
+		"object-property": {
+			nodes: []ast.Node{
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						// We can use a map here because constructors actually
+						// return a map.
+						&ast.Map{
+							Elements: []*ast.KeyValue{
+								{
+									Key:   asttest.NewLiteralString("a"),
+									Value: asttest.NewLiteralNumber("123"),
+								},
+								{
+									Key:   asttest.NewLiteralString("b"),
+									Value: asttest.NewLiteralNumber("456"),
+								},
+							},
+						},
+					},
+				},
+				&ast.Key{
+					Expr: &ast.Identifier{Name: "foo"},
+					Key:  asttest.NewLiteralString("b"),
+				},
+			},
+			expected: []vm.Instruction{
+				// alloc
+				&vm.Assign{
+					VariableName: "1",
+					Value:        asttest.NewLiteralNumber("2"),
+				},
+				&vm.MapAllocNumber{
+					Size:   "1",
+					Result: "2",
+				},
+
+				// "a": 123
+				&vm.Assign{
+					VariableName: "3",
+					Value:        asttest.NewLiteralString("a"),
+				},
+				&vm.Assign{
+					VariableName: "4",
+					Value:        asttest.NewLiteralNumber("123"),
+				},
+				&vm.MapSet{
+					Map:   "2",
+					Key:   "3",
+					Value: "4",
+				},
+
+				// "b": 456
+				&vm.Assign{
+					VariableName: "5",
+					Value:        asttest.NewLiteralString("b"),
+				},
+				&vm.Assign{
+					VariableName: "6",
+					Value:        asttest.NewLiteralNumber("456"),
+				},
+				&vm.MapSet{
+					Map:   "2",
+					Key:   "5",
+					Value: "6",
+				},
+
+				// assign foo
+				&vm.Assign{
+					VariableName: "foo",
+					Register:     "2",
+				},
+
+				// get "b"
+				&vm.Assign{
+					VariableName: "7",
+					Value:        asttest.NewLiteralString("b"),
+				},
+				&vm.MapGet{
+					Map:    "foo",
+					Key:    "7",
+					Result: "8",
+				},
+			},
+		},
 		"assign-array-number": {
 			nodes: []ast.Node{
 				&ast.Assign{

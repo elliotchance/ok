@@ -14,7 +14,7 @@
 ## Abs
 
 ```
-Abs(x number)
+func Abs(x number) number
 ```
 
 Abs returns the absolute (positive number).
@@ -22,7 +22,7 @@ Abs returns the absolute (positive number).
 ## Cbrt
 
 ```
-Cbrt(x number)
+func Cbrt(x number) number
 ```
 
 Cbrt returns the cube root of x.
@@ -30,7 +30,7 @@ Cbrt returns the cube root of x.
 ## Ceil
 
 ```
-Ceil(x number)
+func Ceil(x number) number
 ```
 
 Ceil will round x up to the nearest integer.
@@ -38,7 +38,7 @@ Ceil will round x up to the nearest integer.
 ## Exp
 
 ```
-Exp(x number)
+func Exp(x number) number
 ```
 
 Exp returns e to the power of x.
@@ -46,7 +46,7 @@ Exp returns e to the power of x.
 ## Floor
 
 ```
-Floor(x number)
+func Floor(x number) number
 ```
 
 Floor will round x down to the nearest integer.
@@ -54,7 +54,7 @@ Floor will round x down to the nearest integer.
 ## Log10
 
 ```
-Log10(x number)
+func Log10(x number) number
 ```
 
 Log10 is a logarithm with base 10.
@@ -62,7 +62,7 @@ Log10 is a logarithm with base 10.
 ## LogE
 
 ```
-LogE(x number)
+func LogE(x number) number
 ```
 
 LogE is the natural logarithm (base e).
@@ -70,7 +70,7 @@ LogE is the natural logarithm (base e).
 ## Pow
 
 ```
-Pow(base number, power number)
+func Pow(base number, power number) number
 ```
 
 Pow returns base to power.
@@ -78,7 +78,7 @@ Pow returns base to power.
 ## Round
 
 ```
-Round(x number, prec number)
+func Round(x number, prec number) number
 ```
 
 Round will return a new number rounded to prec number of digits after the
@@ -87,7 +87,7 @@ decimal point. Prec must be at least 0.
 ## Sqrt
 
 ```
-Sqrt(x number)
+func Sqrt(x number) number
 ```
 
 Sqrt returns the square root of x.

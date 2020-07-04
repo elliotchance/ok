@@ -1,6 +1,9 @@
 package parser
 
 import (
+	"errors"
+	"strings"
+
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
@@ -17,6 +20,11 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 	ty, offset, err = consumeType(parser, offset)
 	if err == nil {
 		node.Kind = ty
+	}
+
+	// The type must be a map or the explicit "any" type. See Array for details.
+	if ty != "" && ty != "any" && !strings.HasPrefix(ty, "{}") {
+		return nil, originalOffset, errors.New("invalid type for map")
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyOpen})

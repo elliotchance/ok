@@ -28,19 +28,22 @@ type Func struct {
 	Pos string
 }
 
-// Signature returns the signature, like `Foo(x number, y number)`.
-func (f *Func) Signature() string {
+// String returns the signature, like `Foo(x number, y number) (string, string)`.
+func (f *Func) String() string {
 	var args []string
 	for _, arg := range f.Arguments {
 		args = append(args, arg.Name+" "+arg.Type)
 	}
 
-	return f.Name + "(" + strings.Join(args, ", ") + ")"
-}
+	returnSignature := ""
+	if len(f.Returns) == 1 {
+		returnSignature = " " + f.Returns[0]
+	}
+	if len(f.Returns) > 1 {
+		returnSignature = " (" + strings.Join(f.Returns, ", ") + ")"
+	}
 
-// String returns the signature, like `func Foo(x number, y number)`.
-func (f *Func) String() string {
-	return "func " + f.Signature()
+	return "func " + f.Name + "(" + strings.Join(args, ", ") + ")" + returnSignature
 }
 
 // Position returns the position.

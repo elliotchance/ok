@@ -27,6 +27,7 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.F
 			Result: resultRegister,
 		})
 	} else {
+		// This applies for both maps and objects.
 		compiledFunc.Append(&vm.MapGet{
 			Map:    arrayOrMapRegisters[0],
 			Key:    keyRegisters[0],

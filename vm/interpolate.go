@@ -2,6 +2,8 @@ package vm
 
 import (
 	"fmt"
+	"sort"
+	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
@@ -27,17 +29,62 @@ func (ins *Interpolate) Execute(registers map[string]*ast.Literal, _ *int, _ *VM
 	return nil
 }
 
-func renderLiteral(literal *ast.Literal, asJSON bool) string {
-	switch literal.Kind {
+func renderLiteral(v *ast.Literal, asJSON bool) string {
+	// Arrays
+	if strings.HasPrefix(v.Kind, "[]") {
+		s := "["
+		for j, element := range v.Array {
+			if j > 0 {
+				s += ", "
+			}
+
+			s += renderLiteral(element, true)
+		}
+
+		return s + "]"
+	}
+
+	// Literals.
+	switch v.Kind {
 	case "char", "string", "data":
 		if asJSON {
 			// TODO(elliot): This is not escaped correctly.
-			return fmt.Sprintf(`"%s"`, literal.Value)
+			return fmt.Sprintf(`"%s"`, v.Value)
 		}
 
+		return v.Value
+
 	case "number":
-		return number.Format(number.NewNumber(literal.Value), -1)
+		return number.Format(number.NewNumber(v.Value), -1)
+
+	case "bool":
+		return v.Value
 	}
 
-	return literal.Value
+	// Maps or objects are handled the same way. We can recognise maps with:
+	//
+	//   strings.HasPrefix(v.Kind, "{}")
+	//
+	// However, it's not trivial to identify objects. Doesn't matter, if none of
+	// the above matched then it must be a map or object.
+
+	// Keys are always sorted.
+	var keys []string
+	for key := range v.Map {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	s := "{"
+	for j, key := range keys {
+		element := v.Map[key]
+		if j > 0 {
+			s += ", "
+		}
+
+		s += fmt.Sprintf(`"%s": `, key)
+		s += renderLiteral(element, true)
+	}
+
+	return s + "}"
 }

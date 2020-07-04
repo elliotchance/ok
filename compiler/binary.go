@@ -115,7 +115,8 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 
 		// TODO(elliot): Check +=, etc.
 		if key, ok := node.Left.(*ast.Key); ok {
-			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, key.Expr, fns)
+			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
+				key.Expr, fns)
 			if err != nil {
 				return "", "", err
 			}

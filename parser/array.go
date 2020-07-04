@@ -1,6 +1,9 @@
 package parser
 
 import (
+	"errors"
+	"strings"
+
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
@@ -16,6 +19,13 @@ func consumeArray(parser *Parser, offset int) (*ast.Array, int, error) {
 	ty, offset, err = consumeType(parser, offset)
 	if err == nil {
 		node.Kind = ty
+	}
+
+	// The type must be an array or the explicit "any" type. Otherwise "foo[0]"
+	// would be interpreted as an array of type foo with one element instead of
+	// an element accessor.
+	if ty != "" && ty != "any" && !strings.HasPrefix(ty, "[]") {
+		return nil, originalOffset, errors.New("invalid type for array")
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenSquareOpen})
