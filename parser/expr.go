@@ -42,6 +42,14 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 			continue
 		}
 
+		// Interpolate
+		var interpolate *ast.Interpolate
+		interpolate, offset, err = consumeInterpolate(parser, offset)
+		if err == nil {
+			parts = append(parts, interpolate)
+			continue
+		}
+
 		// Array
 		var array *ast.Array
 		array, offset, err = consumeArray(parser, offset)

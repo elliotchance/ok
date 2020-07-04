@@ -84,6 +84,14 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 		}
 
 		return []string{result}, []string{ty}, nil
+
+	case *ast.Interpolate:
+		result, err := compileInterpolate(compiledFunc, e, fns)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		return []string{result}, []string{"string"}, nil
 	}
 
 	panic(expr)

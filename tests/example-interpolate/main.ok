@@ -1,0 +1,16 @@
+import "math"
+
+func main() {
+    // Variables can be placed in {}. This is called interpolation.
+    name = "Bob"
+    print("Hello, {name}. How are you?")
+
+    // Interpolation can be used with any expression. The result doesn't
+    // even have to be a string.
+    print("3 + 5 = {3+5}")
+
+    // The spaces added between {} are not required, but might be easier
+    // to read.
+    total = 3.557
+    print("The total is ${ math.Round(total, 2) }")
+}
