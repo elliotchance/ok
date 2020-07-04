@@ -118,8 +118,19 @@ func TokenizeString(str string, options Options, fileName string) ([]Token, []*a
 			}
 
 			i = newI
-			newToken := NewToken(tokenKindForQuote(c), value, pos)
-			tokens = appendToken(tokens, newToken, &endOfLineForNextToken, &pos)
+
+			// Only strings can be interpolated.
+			if c == '"' && containsInterpolation(value) {
+				interpolatedTokens, err := interpolate(value, pos, fileName)
+				if err != nil {
+					return tokens, comments, err
+				}
+
+				tokens = append(tokens, interpolatedTokens...)
+			} else {
+				newToken := NewToken(tokenKindForQuote(c), value, pos)
+				tokens = appendToken(tokens, newToken, &endOfLineForNextToken, &pos)
+			}
 			found = true
 
 			// Since we support multibyte characters we have to be careful we
@@ -212,6 +223,66 @@ func TokenizeString(str string, options Options, fileName string) ([]Token, []*a
 	tokens = append(tokens, NewToken(TokenEOF, "", pos))
 
 	return tokens, comments, nil
+}
+
+func interpolate(s string, pos Pos, fileName string) ([]Token, error) {
+	pos.CharacterNumber++
+	tokens := []Token{
+		NewToken(TokenInterpolateStart, "", pos),
+	}
+
+	stringLiteral := ""
+	for i := 0; i < len(s); i++ {
+		if s[i] == '{' {
+			if stringLiteral != "" {
+				tokens = append(tokens, NewToken(TokenStringLiteral, stringLiteral, pos))
+				pos.CharacterNumber += len(stringLiteral)
+				stringLiteral = ""
+			}
+
+			// Read everything until the closing curly. We do not allow curly
+			// brackets in expressions so it doesn't need to be anymore
+			// complicated than this.
+			exprLen := strings.Index(s[i:], "}")
+
+			// TODO(elliot): Handle exprLen == -1
+			tokens = append(tokens, NewToken(TokenParenOpen, "(", pos))
+			exprTokens, _, err := TokenizeString(s[i+1:exprLen+i], Options{}, fileName)
+			if err != nil {
+				return nil, err
+			}
+
+			// Fix all of the offsets for the subparse.
+			for i := range exprTokens {
+				exprTokens[i].Pos.CharacterNumber += pos.CharacterNumber
+			}
+
+			// Remove the EOF.
+			// TODO(elliot): Should this be done with an Option instead?
+			exprTokens = exprTokens[:len(exprTokens)-1]
+
+			tokens = append(tokens, exprTokens...)
+			tokens = append(tokens, NewToken(TokenParenClose, ")", pos.add(exprLen)))
+
+			pos.CharacterNumber += exprLen + 1
+			i += exprLen
+		} else {
+			stringLiteral += string(s[i])
+		}
+	}
+
+	if stringLiteral != "" {
+		tokens = append(tokens, NewToken(TokenStringLiteral, stringLiteral, pos))
+		pos.CharacterNumber += len(stringLiteral)
+	}
+
+	tokens = append(tokens, NewToken(TokenInterpolateEnd, "", pos))
+
+	return tokens, nil
+}
+
+func containsInterpolation(s string) bool {
+	return strings.Contains(s, "{")
 }
 
 func readQuotedLiteral(str []rune, i int, quote rune, pos Pos) (string, int, error) {

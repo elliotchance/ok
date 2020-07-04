@@ -36,6 +36,7 @@ itself.
       * [Iteration](#iteration)
       * [Functions](#functions)
       * [Multiple Return Values](#multiple-return-values)
+      * [Interpolation](#interpolation)
 
 
 <!--te-->
@@ -647,4 +648,33 @@ $ ok run multiple-return-values
 3
 7
 7
+```
+
+Interpolation
+-------------
+
+```
+import "math"
+
+func main() {
+    // Variables can be placed in {}. This is called interpolation.
+    name = "Bob"
+    print("Hello, {name}. How are you?")
+
+    // Interpolation can be used with any expression. The result doesn't
+    // even have to be a string.
+    print("3 + 5 = {3+5}")
+
+    // The spaces added between {} are not required, but might be easier
+    // to read.
+    total = 3.557
+    print("The total is ${ math.Round(total, 2) }")
+}
+```
+
+```
+$ ok run interpolation
+Hello, Bob. How are you?
+3 + 5 = 8
+The total is $3.56
 ```

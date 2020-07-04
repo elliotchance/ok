@@ -71,6 +71,12 @@ const (
 	TokenSquareOpen       = "["
 	TokenTimes            = "*"
 	TokenTimesAssign      = "*="
+
+	// Interpolation tokens works like brackets (using TokenComma to separate
+	// each part) around literals and expressions that becomes one interpolation
+	// expression.
+	TokenInterpolateStart = "interpolate start"
+	TokenInterpolateEnd   = "interpolate end"
 )
 
 // Token represents a single token.

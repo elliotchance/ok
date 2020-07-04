@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"io"
 	"sort"
 	"strings"
 
@@ -30,7 +29,7 @@ func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) err
 					fmt.Fprint(vm.Stdout, ", ")
 				}
 
-				printLiteral(vm.Stdout, element, true)
+				fmt.Fprint(vm.Stdout, renderLiteral(element, true))
 			}
 			fmt.Fprint(vm.Stdout, "]")
 
@@ -50,30 +49,16 @@ func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) err
 				}
 
 				fmt.Fprintf(vm.Stdout, `"%s": `, key)
-				printLiteral(vm.Stdout, element, true)
+				fmt.Fprint(vm.Stdout, renderLiteral(element, true))
 			}
 			fmt.Fprint(vm.Stdout, "}")
 
 		default:
-			printLiteral(vm.Stdout, r, false)
+			fmt.Fprint(vm.Stdout, renderLiteral(r, false))
 		}
 	}
 
 	fmt.Fprint(vm.Stdout, "\n")
 
 	return nil
-}
-
-func printLiteral(out io.Writer, literal *ast.Literal, asJSON bool) {
-	switch literal.Kind {
-	case "char", "string", "data":
-		if asJSON {
-			// TODO(elliot): This is not escaped correctly.
-			fmt.Fprintf(out, `"%s"`, literal.Value)
-
-			return
-		}
-	}
-
-	fmt.Fprint(out, literal.Value)
 }
