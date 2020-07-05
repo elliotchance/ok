@@ -1,0 +1,6 @@
+test "Split" {
+    assert(Split("foo", "") == ["f", "o", "o"])
+    assert(Split("foo-bar-baz", "-") == ["foo", "bar", "baz"])
+    assert(Split("-bar-", "-") == ["", "bar", ""])
+    assert(Split("foo!@bar!@baz", "!@") == ["foo", "bar", "baz"])
+}

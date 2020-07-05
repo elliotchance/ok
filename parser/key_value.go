@@ -32,7 +32,7 @@ func consumeKeyValue(parser *Parser, offset int) (*ast.KeyValue, int, error) {
 	var err error
 	node := &ast.KeyValue{}
 
-	node.Key, offset, err = consumeExpr(parser, offset)
+	node.Key, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, offset, err
 	}
@@ -42,7 +42,7 @@ func consumeKeyValue(parser *Parser, offset int) (*ast.KeyValue, int, error) {
 		return nil, offset, err
 	}
 
-	node.Value, offset, err = consumeExpr(parser, offset)
+	node.Value, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, offset, err
 	}

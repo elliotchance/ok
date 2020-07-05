@@ -2,10 +2,10 @@ package compiler
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -26,18 +26,27 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		conditionResults, _, _ = compileExpr(compiledFunc, asttest.NewLiteralBool(true), fns)
 
 	case *ast.In:
-		// TODO(elliot): Check arrayOrMapResult is actually an array or map.
 		arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr, fns)
 		if err != nil {
 			return err
 		}
 
-		// TODO(elliot): Not always a number.
-		compiledFunc.NewVariable(cond.Key, "number")
+		switch {
+		case kind.IsArray(arrayOrMapKind[0]):
+			compiledFunc.NewVariable(cond.Key, "number")
+
+		case kind.IsMap(arrayOrMapKind[0]):
+			compiledFunc.NewVariable(cond.Key, "string")
+
+		case arrayOrMapKind[0] == "string":
+			compiledFunc.NewVariable(cond.Key, "char")
+
+		default:
+			return fmt.Errorf("%s is not iterable", arrayOrMapKind[0])
+		}
 
 		if cond.Value != "" {
-			// TODO(elliot): Not always a number.
-			compiledFunc.NewVariable(cond.Value, "number")
+			compiledFunc.NewVariable(cond.Value, kind.ElementType(arrayOrMapKind[0]))
 		}
 
 		cursorRegister := compiledFunc.NextRegister()
@@ -47,7 +56,8 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		})
 
 		conditionResults = []string{compiledFunc.NextRegister()}
-		if strings.HasPrefix(arrayOrMapKind[0], "[]") {
+		switch {
+		case kind.IsArray(arrayOrMapKind[0]):
 			compiledFunc.Append(&vm.NextArray{
 				Array:       arrayOrMapResults[0],
 				Cursor:      cursorRegister,
@@ -55,9 +65,19 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 				ValueResult: cond.Value,
 				Result:      conditionResults[0],
 			})
-		} else {
+
+		case kind.IsMap(arrayOrMapKind[0]):
 			compiledFunc.Append(&vm.NextMap{
 				Map:         arrayOrMapResults[0],
+				Cursor:      cursorRegister,
+				KeyResult:   cond.Key,
+				ValueResult: cond.Value,
+				Result:      conditionResults[0],
+			})
+
+		case arrayOrMapKind[0] == "string":
+			compiledFunc.Append(&vm.NextString{
+				String:      arrayOrMapResults[0],
 				Cursor:      cursorRegister,
 				KeyResult:   cond.Key,
 				ValueResult: cond.Value,

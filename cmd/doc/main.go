@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"path"
 	"sort"
 
 	"github.com/elliotchance/ok/ast"
@@ -27,74 +26,75 @@ func (*Command) Description() string {
 
 // Run is the entry point for the "ok test" command.
 func (*Command) Run(args []string) {
-	// TODO: Multiple packages provided.
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
-	fileNames, err := util.GetAllOKFilesInPath(args[0], false)
-	check(err)
+	for _, arg := range args {
+		packageName := util.PackageNameFromPath("", arg)
 
-	args[0] = path.Clean(args[0])
-
-	// Step 2: Parse all files.
-	docs := map[string]string{}
-	var funcs []*ast.Func
-
-	for _, fileName := range fileNames {
-		data, err := ioutil.ReadFile(fileName)
+		fileNames, err := util.GetAllOKFilesInPath(arg, false)
 		check(err)
 
-		p := parser.ParseString(string(data), fileName)
+		// Step 2: Parse all files.
+		docs := map[string]string{}
+		var funcs []*ast.Func
 
-		for _, fn := range p.File.Funcs {
-			funcs = append(funcs, fn)
+		for _, fileName := range fileNames {
+			data, err := ioutil.ReadFile(fileName)
+			check(err)
+
+			p := parser.ParseString(string(data), fileName)
+
+			for _, fn := range p.File.Funcs {
+				funcs = append(funcs, fn)
+			}
+
+			for _, comment := range p.File.Comments {
+				if comment.Func == "" {
+					continue
+				}
+
+				docs[comment.Func] = comment.String()
+			}
 		}
 
-		for _, comment := range p.File.Comments {
-			if comment.Func == "" {
+		// Sort by function name and output docs.
+		sort.Slice(funcs, func(i, j int) bool {
+			return funcs[i].Name < funcs[j].Name
+		})
+
+		fmt.Println("#", packageName)
+		fmt.Println()
+
+		for _, fn := range funcs {
+			if !util.IsPublic(fn.Name) {
 				continue
 			}
 
-			docs[comment.Func] = comment.String()
-		}
-	}
-
-	// Sort by function name and output docs.
-	sort.Slice(funcs, func(i, j int) bool {
-		return funcs[i].Name < funcs[j].Name
-	})
-
-	fmt.Println("#", args[0])
-	fmt.Println()
-
-	for _, fn := range funcs {
-		if !util.IsPublic(fn.Name) {
-			continue
-		}
-
-		fmt.Printf("- [%s](#%s)\n", fn.Name, fn.Name)
-	}
-	fmt.Println()
-
-	for _, fn := range funcs {
-		if !util.IsPublic(fn.Name) {
-			continue
-		}
-
-		fmt.Println("##", fn.Name)
-		fmt.Println()
-
-		fmt.Println("```")
-		fmt.Println(fn.String())
-		fmt.Println("```")
-		fmt.Println()
-
-		if doc, ok := docs[fn.Name]; ok {
-			fmt.Println(doc)
-		} else {
-			fmt.Println("No documentation.")
+			fmt.Printf("- [%s](#%s)\n", fn.Name, fn.Name)
 		}
 		fmt.Println()
+
+		for _, fn := range funcs {
+			if !util.IsPublic(fn.Name) {
+				continue
+			}
+
+			fmt.Println("##", fn.Name)
+			fmt.Println()
+
+			fmt.Println("```")
+			fmt.Println(fn.String())
+			fmt.Println("```")
+			fmt.Println()
+
+			if doc, ok := docs[fn.Name]; ok {
+				fmt.Println(doc)
+			} else {
+				fmt.Println("No documentation.")
+			}
+			fmt.Println()
+		}
 	}
 }

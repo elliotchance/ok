@@ -5,14 +5,19 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
-func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
+// unlimitedTokens is just some very large amount to be used when you do not
+// need a limit for consumeExpr.
+const unlimitedTokens = 1000000
+
+// maxTokens can be unlimitedTokens.
+func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 	originalOffset := offset
 
 	// Consume as many subexpressions and operators as possible.
 	var parts []interface{}
 	var err error
 	didJustConsumeLiteral := false
-	for offset < len(parser.File.Tokens) {
+	for consumed := 0; offset < len(parser.File.Tokens) && consumed < maxTokens; consumed++ {
 		tok := parser.File.Tokens[offset]
 
 		// Bail out if we reach the end of the line. However, be careful that we
@@ -29,14 +34,8 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 
 		// Try to consume a literal.
 		var literal *ast.Literal
-		literal, offset, err = consumeLiteral(parser.File, offset)
+		literal, offset, err = consumeLiteral(parser, offset)
 		if err == nil {
-			err = validateLiteral(literal)
-			if err != nil {
-				// This kind of error should not stop the parsing.
-				parser.AppendError(literal, err.Error())
-			}
-
 			parts = append(parts, literal)
 			didJustConsumeLiteral = true
 			continue
@@ -73,7 +72,7 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		call, offset, err = consumeCall(parser, offset)
 		if err == nil {
 			parts = append(parts, call)
-			didJustConsumeLiteral = false
+			didJustConsumeLiteral = true
 			continue
 		}
 
@@ -91,7 +90,20 @@ func consumeExpr(parser *Parser, offset int) (ast.Node, int, error) {
 			var unary *ast.Unary
 			unary, offset, err = consumeUnary(parser, offset)
 			if err == nil {
-				parts = append(parts, unary)
+				// A unary can be a "-" number, this can be reduced now into a
+				// number. This saves on some processing buts it's also required
+				// for assertions that only work with simple binary operations.
+				if lit, ok := unary.Expr.(*ast.Literal); ok && lit.Kind == "number" && unary.Op == lexer.TokenMinus {
+					newLit := &ast.Literal{
+						Kind:  "number",
+						Value: "-" + lit.Value,
+						Pos:   unary.Pos,
+					}
+					parts = append(parts, newLit)
+				} else {
+					parts = append(parts, unary)
+				}
+
 				didJustConsumeLiteral = false
 				continue
 			}
@@ -149,7 +161,7 @@ func consumeExprs(parser *Parser, offset int) ([]ast.Node, int, error) {
 	// There must always be one expression.
 	var expr ast.Node
 	var err error
-	expr, offset, err = consumeExpr(parser, offset)
+	expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, offset, err
 	}
@@ -163,7 +175,7 @@ func consumeExprs(parser *Parser, offset int) ([]ast.Node, int, error) {
 		}
 
 		offset++ // skip comma
-		expr, offset, err = consumeExpr(parser, offset)
+		expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 		if err != nil {
 			return nil, offset, err
 		}
@@ -214,19 +226,21 @@ func reduceExpr(parts []interface{}) ast.Node {
 		}
 	}
 
-	leftPrecedence := operatorPrecedence[parts[1].(lexer.Token).Kind]
-	rightPrecedence := operatorPrecedence[parts[len(parts)-2].(lexer.Token).Kind]
-	if leftPrecedence > rightPrecedence {
-		return &ast.Binary{
-			Left:  reduceExpr(parts[:len(parts)-2]),
-			Op:    parts[len(parts)-2].(lexer.Token).Kind,
-			Right: parts[len(parts)-1].(*ast.Literal),
+	// We have to find the lowest precedence token to split on.
+	winner := 0
+	winnerPrecedence := 10
+	for i := 1; i < len(parts); i += 2 {
+		// Will always be true the first time.
+		p := operatorPrecedence[parts[i].(lexer.Token).Kind]
+		if p < winnerPrecedence {
+			winner = i
+			winnerPrecedence = p
 		}
 	}
 
 	return &ast.Binary{
-		Left:  parts[0].(ast.Node),
-		Op:    parts[1].(lexer.Token).Kind,
-		Right: reduceExpr(parts[2:]),
+		Left:  reduceExpr(parts[:winner]),
+		Op:    parts[winner].(lexer.Token).Kind,
+		Right: reduceExpr(parts[winner+1:]),
 	}
 }

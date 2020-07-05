@@ -1,0 +1,11 @@
+test "Repeat" {
+    assert(Repeat("", -2) == "")
+    assert(Repeat("", 0) == "")
+    assert(Repeat("", 10) == "")
+
+    assert(Repeat("foo", -1) == "")
+    assert(Repeat("foo", 0) == "")
+    assert(Repeat("foo", 1) == "foo")
+    assert(Repeat("foo", 2) == "foofoo")
+    assert(Repeat("foo", 3) == "foofoofoo")
+}

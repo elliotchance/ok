@@ -29,7 +29,7 @@ func consumeInterpolate(parser *Parser, offset int) (*ast.Interpolate, int, erro
 		// TODO(elliot): This is a bit lazy, because we can only find a string
 		//  literal here.
 		var literal *ast.Literal
-		literal, offset, err = consumeLiteral(parser.File, offset)
+		literal, offset, err = consumeLiteral(parser, offset)
 		if err == nil {
 			interpolate.Parts = append(interpolate.Parts, literal)
 			continue

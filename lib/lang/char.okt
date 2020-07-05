@@ -1,0 +1,4 @@
+test "casting a number to a character" {
+    assert(char 97 == 'a')
+    assert(char 128515 == '😃')
+}

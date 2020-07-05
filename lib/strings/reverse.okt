@@ -1,0 +1,4 @@
+test "Reverse" {
+    assert(Reverse("") == "")
+    assert(Reverse("foobar") == "raboof")
+}

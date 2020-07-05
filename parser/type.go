@@ -7,6 +7,15 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
+var types = []string{
+	lexer.TokenAny,
+	lexer.TokenBool,
+	lexer.TokenChar,
+	lexer.TokenData,
+	lexer.TokenNumber,
+	lexer.TokenString,
+}
+
 func consumeType(parser *Parser, offset int) (string, int, error) {
 	originalOffset := offset
 	ty := ""
@@ -31,14 +40,7 @@ done:
 
 	var err error
 	var t lexer.Token
-	t, offset, err = consumeOneOf(parser.File, offset, []string{
-		lexer.TokenAny,
-		lexer.TokenBool,
-		lexer.TokenChar,
-		lexer.TokenData,
-		lexer.TokenNumber,
-		lexer.TokenString,
-	})
+	t, offset, err = consumeOneOf(parser.File, offset, types)
 	if err != nil {
 		// Any identifier is also valid.
 		var ident *ast.Identifier

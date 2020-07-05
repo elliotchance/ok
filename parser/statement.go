@@ -43,12 +43,6 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, finalErr e
 		return assign, offset, nil
 	}
 
-	var call *ast.Call
-	call, offset, err = consumeCall(parser, offset)
-	if err == nil {
-		return call, offset, nil
-	}
-
 	var forStmt *ast.For
 	forStmt, offset, err = consumeFor(parser, offset)
 	if err == nil {
@@ -67,14 +61,8 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, finalErr e
 		return switchStmt, offset, nil
 	}
 
-	var unary *ast.Unary
-	unary, offset, err = consumeUnary(parser, offset)
-	if err == nil {
-		return unary, offset, nil
-	}
-
 	var expr ast.Node
-	expr, offset, err = consumeExpr(parser, offset)
+	expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err == nil {
 		return expr, offset, nil
 	}

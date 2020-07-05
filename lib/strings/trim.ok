@@ -1,0 +1,60 @@
+// TrimLeft returns string with any of the cutset characters removed from the
+// left (start).
+func TrimLeft(s, cutset string) string {
+    for offset = 0; offset < len(s); ++offset {
+        if Index(cutset, string s[offset]) == -1 {
+            return substrFrom(s, offset)
+        }
+    }
+
+    return s
+}
+
+// TrimRight returns string with any of the cutset characters removed from the
+// right (end).
+func TrimRight(s, cutset string) string {
+    return Reverse(TrimLeft(Reverse(s), cutset))
+}
+
+// Trim returns string with any of the cutset characters removed from the left
+// (start) and right (end).
+func Trim(s, cutset string) string {
+    return TrimRight(TrimLeft(s, cutset), cutset)
+}
+
+// TrimPrefix will trim the prefix if it exists at the start of the string, or
+// return the original string.
+//
+// If prefix appears more then once at the start of the string only the first
+// prefix will be removed.
+//
+// If prefix is equal to s then an empty result will be returned.
+func TrimPrefix(s, prefix string) string {
+    if HasPrefix(s, prefix) {
+        return substrFrom(s, len(prefix))
+    }
+
+    return s
+}
+
+// TrimSuffix will trim the suffix if it exists at the end of the string, or
+// return the original string.
+//
+// If suffix appears more then once at the end of the string only the last
+// suffix will be removed.
+//
+// If suffix is equal to s then an empty result will be returned.
+func TrimSuffix(s, suffix string) string {
+    return Reverse(TrimPrefix(Reverse(s), Reverse(suffix)))
+}
+
+// TODO(elliot): This can be removed when we support array ranges.
+func substrFrom(s string, index number) string {
+    result = ""
+    for index < len(s) {
+        result += string s[index]
+        ++index
+    }
+
+    return result
+}

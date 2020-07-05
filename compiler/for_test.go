@@ -41,9 +41,10 @@ func TestFor(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("2"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 
 				// set 2 elements
@@ -125,9 +126,10 @@ func TestFor(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("2"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 
 				// set 2 elements

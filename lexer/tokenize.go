@@ -64,6 +64,14 @@ func TokenizeString(str string, options Options, fileName string) ([]Token, []*a
 					token.Value += string(runes[i])
 				}
 
+				// If we are not collecting comments as tokens we should always
+				// treat the most recent token as the end of the line. This is
+				// important for expression parsing that needs to know the last
+				// token on the line.
+				if !options.IncludeComments && len(tokens) > 0 {
+					tokens[len(tokens)-1].IsEndOfLine = true
+				}
+
 				// If the previous token was a comment we append to it. However,
 				// if there is a new line just before this comment then it
 				// cannot be joined to the previous one.

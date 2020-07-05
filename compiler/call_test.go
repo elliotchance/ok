@@ -42,9 +42,10 @@ func TestCall(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("0"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 				&vm.Len{
 					Argument: "2",

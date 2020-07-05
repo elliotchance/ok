@@ -20,7 +20,7 @@ func TestArray(t *testing.T) {
 	}{
 		"unknown-array-empty": {
 			node: &ast.Array{},
-			err:  errors.New("empty array needs to specify a type"),
+			err:  errors.New(" empty array needs to specify a type"),
 		},
 		"number-empty": {
 			node: &ast.Array{
@@ -32,9 +32,10 @@ func TestArray(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("0"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 			},
 		},
@@ -52,9 +53,10 @@ func TestArray(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("3"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 
 				// set 0
@@ -122,9 +124,10 @@ func TestArray(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("1"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 
 				// set 0

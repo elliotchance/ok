@@ -22,6 +22,7 @@ func compileAssert(compiledFunc *vm.CompiledFunc, n *ast.Assert, fns map[string]
 		Op:    n.Expr.Op,
 		Right: right,
 		Final: returns,
+		Pos:   n.Position(),
 	})
 
 	return nil

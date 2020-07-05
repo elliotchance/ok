@@ -1,7 +1,6 @@
 package compiler
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
@@ -9,9 +8,12 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (string, error) {
+func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (string, string, error) {
 	if len(n.Elements) == 0 && n.Kind == "" {
-		return "", errors.New("empty array needs to specify a type")
+		err := fmt.Errorf("%s empty array needs to specify a type",
+			n.Position())
+
+		return "", "", err
 	}
 
 	sizeRegister := compiledFunc.NextRegister()
@@ -21,10 +23,12 @@ func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*a
 	})
 
 	arrayRegister := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.ArrayAllocNumber{
+	arrayAlloc := &vm.ArrayAlloc{
 		Size:   sizeRegister,
 		Result: arrayRegister,
-	})
+		Kind:   n.Kind,
+	}
+	compiledFunc.Append(arrayAlloc)
 
 	for index, value := range n.Elements {
 		indexRegister := compiledFunc.NextRegister()
@@ -33,7 +37,11 @@ func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*a
 			Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", index)),
 		})
 
-		valueRegisters, _, _ := compileExpr(compiledFunc, value, fns)
+		// TODO(elliot): Check all elements are the same kind.
+		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, fns)
+		if arrayAlloc.Kind == "" {
+			arrayAlloc.Kind = "[]" + valueKind[0]
+		}
 
 		compiledFunc.Append(&vm.ArraySet{
 			Array: arrayRegister,
@@ -42,5 +50,5 @@ func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*a
 		})
 	}
 
-	return arrayRegister, nil
+	return arrayRegister, arrayAlloc.Kind, nil
 }

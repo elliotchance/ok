@@ -16,7 +16,7 @@ func consumeGroup(parser *Parser, offset int) (*ast.Group, int, error) {
 	}
 
 	var expr ast.Node
-	expr, offset, err = consumeExpr(parser, offset)
+	expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, originalOffset, err
 	}

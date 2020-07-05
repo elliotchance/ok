@@ -94,6 +94,17 @@ func TestArray(t *testing.T) {
 				},
 			},
 		},
+		"get-index-expr": {
+			str: `foo[i-1]`,
+			expected: &ast.Key{
+				Expr: &ast.Identifier{Name: "foo"},
+				Key: asttest.NewBinary(
+					&ast.Identifier{Name: "i"},
+					lexer.TokenMinus,
+					asttest.NewLiteralNumber("1"),
+				),
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

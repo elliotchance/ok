@@ -24,7 +24,7 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 		node.Condition, offset, err = consumeIn(parser, offset)
 		if err != nil {
 			// So it must be an expression.
-			node.Condition, offset, err = consumeExpr(parser, offset)
+			node.Condition, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 			if err != nil {
 				return nil, offset, err
 			}
@@ -54,7 +54,7 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 		node.Condition, offset, err = consumeIn(parser, offset)
 		if err != nil {
 			// So it must be an expression.
-			node.Condition, offset, err = consumeExpr(parser, offset)
+			node.Condition, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 			if err != nil {
 				return nil, offset, err
 			}
@@ -65,7 +65,9 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 			return nil, offset, err
 		}
 
-		node.Next, offset, err = consumeExpr(parser, offset)
+		// We allow any kind of statement in the next, this would include
+		// assignment and expressions.
+		node.Next, offset, err = consumeStatement(parser, offset)
 		if err != nil {
 			return nil, offset, err
 		}
@@ -104,7 +106,7 @@ func consumeIn(parser *Parser, offset int) (*ast.In, int, error) {
 		return nil, originalOffset, err
 	}
 
-	node.Expr, offset, err = consumeExpr(parser, offset)
+	node.Expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, originalOffset, err
 	}

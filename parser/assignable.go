@@ -23,7 +23,7 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 		offset++ // skip "["
 
 		var key ast.Node
-		key, offset, err = consumeExpr(parser, offset)
+		key, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 		if err != nil {
 			return nil, originalOffset, err
 		}

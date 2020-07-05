@@ -1,0 +1,87 @@
+// Index returns the index of the first occurance of substr; or -1 if not found.
+func Index(s, substr string) number {
+    return IndexAfter(s, substr, -1)
+}
+
+// IndexAfter returns the index of the first occurance of substr at or after
+// offset; or -1 if not found. If the offset is zero or negative then this
+// function will perform as Index.
+//
+// Example: Iterating through all matches
+//
+//     substr = "foo"
+//     for i = Index(s, substr); i != -1; i = IndexAfter(s, substr, i) {
+//         print(i)
+//     }
+//
+func IndexAfter(s, substr string, offset number) number {
+    offset = max(offset, -1)
+
+    for i = offset + 1; i <= len(s) - len(substr); ++i {
+        found = true
+
+        for j = 0; j < len(substr); ++j {
+            if s[i + j] != substr[j] {
+                found = false
+                break
+            }
+        }
+
+        if found {
+            return i
+        }
+    }
+
+    return -1
+}
+
+// TODO(elliot): This can be moved into the math library.
+func min(a, b number) number {
+    if a < b {
+        return a
+    }
+
+    return b
+}
+
+// TODO(elliot): This can be moved into the math library.
+func max(a, b number) number {
+    if a > b {
+        return a
+    }
+
+    return b
+}
+
+// LastIndex returns the start of the last occurence of substr in s.
+func LastIndex(s, substr string) number {
+    index = Index(Reverse(s), Reverse(substr))
+    if index == -1 {
+        return -1
+    }
+
+    return len(s) - index + len(substr)
+}
+
+// LastIndexBefore returns the start of the last occurence of substr that starts
+// before offset.
+//
+// Example: Iterating through all matches
+//
+//     substr = "foo"
+//     for i = LastIndex(s, substr); i != -1; i = LastIndexBefore(s, substr, i) {
+//         print(i)
+//     }
+//
+func LastIndexBefore(s, substr string, offset number) number {
+    // Since we are reversing the string we need to make sure an offset larger
+    // than the string does not eat into the prefix.
+    offset = len(s) - min(offset, len(s)) + 1
+
+    index = IndexAfter(Reverse(s), Reverse(substr), offset)
+    if index == -1 {
+        return -1
+    }
+
+    return len(s) - index + len(substr)
+}

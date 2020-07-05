@@ -1,0 +1,5 @@
+test "append element" {
+    a = ["a"]
+    a += ["b"]
+    assert(a == ["a", "b"])
+}

@@ -16,7 +16,7 @@ func consumeAssert(parser *Parser, offset int) (*ast.Assert, int, error) {
 		return nil, originalOffset, err
 	}
 
-	expr, offset, err = consumeExpr(parser, offset)
+	expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, originalOffset, err
 	}

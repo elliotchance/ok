@@ -5,6 +5,7 @@
 /README.md.bak2
 /vm/lib.go
 /lib-gen
+/cmd/version/main.go.bak
 
 # Releases
 /bin

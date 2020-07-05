@@ -6,6 +6,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
 
 	"github.com/stretchr/testify/assert"
@@ -48,6 +49,26 @@ func TestAssign(t *testing.T) {
 				},
 				Rights: []ast.Node{
 					&ast.Identifier{Name: "bar"},
+				},
+			},
+		},
+		"variable-expr": {
+			str: `foo = len(bar) - 1`,
+			expected: &ast.Assign{
+				Lefts: []ast.Node{
+					&ast.Identifier{Name: "foo"},
+				},
+				Rights: []ast.Node{
+					asttest.NewBinary(
+						&ast.Call{
+							FunctionName: "len",
+							Arguments: []ast.Node{
+								&ast.Identifier{Name: "bar"},
+							},
+						},
+						lexer.TokenMinus,
+						asttest.NewLiteralNumber("1"),
+					),
 				},
 			},
 		},

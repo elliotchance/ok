@@ -1,0 +1,13 @@
+test "ReplaceAll" {
+    assert(ReplaceAll("", "", "") == "")
+    assert(ReplaceAll("foo bar", "", "") == "foo bar")
+    assert(ReplaceAll("foo bar", "", "!") == "f!o!o! !b!a!r")
+
+    assert(ReplaceAll("foo bar foo bar", "o", "M") == "fMM bar fMM bar")
+    assert(ReplaceAll("foo bar foo bar", "oo", "A") == "fA bar fA bar")
+
+    assert(ReplaceAll("foo bar foo bar", "f", "F") == "Foo bar Foo bar")
+    assert(ReplaceAll("foo bar foo bar", "r", "R") == "foo baR foo baR")
+
+    assert(ReplaceAll("foo bar foo bar", "rab", "!") == "foo bar foo bar")
+}

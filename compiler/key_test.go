@@ -43,9 +43,10 @@ func TestKey(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("2"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 
 				// set 0
@@ -301,9 +302,10 @@ func TestKey(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("2"),
 				},
-				&vm.ArrayAllocNumber{
+				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
+					Kind:   "[]number",
 				},
 
 				// set 0
@@ -451,6 +453,43 @@ func TestKey(t *testing.T) {
 					Map:   "foo",
 					Key:   "8",
 					Value: "7",
+				},
+			},
+		},
+		"string-number-index": {
+			nodes: []ast.Node{
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						asttest.NewLiteralString("bar"),
+					},
+				},
+				&ast.Key{
+					Expr: &ast.Identifier{Name: "foo"},
+					Key:  asttest.NewLiteralNumber("1"),
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.Assign{
+					VariableName: "1",
+					Value:        asttest.NewLiteralString("bar"),
+				},
+				&vm.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+
+				// foo[1]
+				&vm.Assign{
+					VariableName: "2",
+					Value:        asttest.NewLiteralNumber("1"),
+				},
+				&vm.StringIndex{
+					String: "foo",
+					Index:  "2",
+					Result: "3",
 				},
 			},
 		},

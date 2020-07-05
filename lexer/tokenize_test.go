@@ -196,6 +196,19 @@ func TestTokenizeString(t *testing.T) {
 				{Comment: "hello", Pos: "a.ok:1:6"},
 			},
 		},
+		"comment-after-code-2": {
+			str: `word //hello`,
+			expected: []lexer.Token{
+				{lexer.TokenIdentifier, "word", true, pos(1)},
+				{lexer.TokenEOF, "", false, pos(13)},
+			},
+			comments: []*ast.Comment{
+				{Comment: "hello", Pos: "a.ok:1:6"},
+			},
+			options: &lexer.Options{
+				IncludeComments: false,
+			},
+		},
 		"code-after-comment": {
 			str: "// hello\nworld",
 			expected: []lexer.Token{
@@ -350,7 +363,7 @@ func TestTokenizeString(t *testing.T) {
 		"operator-between-comments-2": {
 			str: "// hello\n}// world",
 			expected: []lexer.Token{
-				{lexer.TokenCurlyClose, "}", false, pos2(2, 1)},
+				{lexer.TokenCurlyClose, "}", true, pos2(2, 1)},
 				{lexer.TokenEOF, "", false, pos2(2, 10)},
 			},
 			comments: []*ast.Comment{

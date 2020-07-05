@@ -23,15 +23,18 @@ func (*Command) Description() string {
 
 // Run is the entry point for the "ok run" command.
 func (*Command) Run(args []string) {
-	// TODO: Multiple packages provided.
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
-	pkg, errs := compiler.CompilePackage(args[0], false)
-	util.CheckErrorsWithExit(errs)
+	for _, arg := range args {
+		packageName := util.PackageNameFromPath("", arg)
 
-	m := vm.NewVM(pkg.Funcs, pkg.Tests, args[0])
-	err := m.Run()
-	check(err)
+		pkg, errs := compiler.CompilePackage(arg, false)
+		util.CheckErrorsWithExit(errs)
+
+		m := vm.NewVM(pkg.Funcs, pkg.Tests, packageName)
+		err := m.Run()
+		check(err)
+	}
 }

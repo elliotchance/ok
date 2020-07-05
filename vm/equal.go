@@ -3,6 +3,7 @@ package vm
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -13,12 +14,19 @@ type EqualNumber struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *EqualNumber) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(number.Cmp(
-		number.NewNumber(registers[ins.Left].Value),
-		number.NewNumber(registers[ins.Right].Value),
-	) == 0)
+	registers[ins.Result] = asttest.NewLiteralBool(numbersAreEqual(
+		registers[ins.Left],
+		registers[ins.Right],
+	))
 
 	return nil
+}
+
+func numbersAreEqual(a, b *ast.Literal) bool {
+	return number.Cmp(
+		number.NewNumber(a.Value),
+		number.NewNumber(b.Value),
+	) == 0
 }
 
 // Equal will compare two non-numbers for equality. This works for every other
@@ -30,9 +38,31 @@ type Equal struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Equal) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(
-		registers[ins.Left].Value == registers[ins.Right].Value,
-	)
+	registers[ins.Result] = asttest.NewLiteralBool(compareValue(
+		registers[ins.Left], registers[ins.Right]))
 
 	return nil
+}
+
+func compareValue(a, b *ast.Literal) bool {
+	switch {
+	case kind.IsArray(a.Kind):
+		if len(a.Array) == len(b.Array) {
+			for i, v := range a.Array {
+				if !compareValue(v, b.Array[i]) {
+					return false
+				}
+			}
+
+			return true
+		}
+
+		return false
+
+	case a.Kind == "number":
+		return numbersAreEqual(a, b)
+
+	default:
+		return a.Value == b.Value
+	}
 }

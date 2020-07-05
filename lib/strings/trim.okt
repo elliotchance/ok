@@ -1,0 +1,69 @@
+test "TrimLeft" {
+    assert(TrimLeft("foobar", "") == "foobar")
+    assert(TrimLeft("foobar", "f") == "oobar")
+    assert(TrimLeft("foobar", "fo") == "bar")
+    assert(TrimLeft("foobar", "of") == "bar")
+    assert(TrimLeft("foobar", "foof") == "bar")
+    assert(TrimLeft("foobar", "o") == "foobar")
+    assert(TrimLeft("foobar", "F") == "foobar")
+    assert(TrimLeft("foobar", "Ff") == "oobar")
+}
+
+test "TrimRight" {
+    assert(TrimRight("foobar", "") == "foobar")
+    assert(TrimRight("foobar", "r") == "fooba")
+    assert(TrimRight("foobar", "ar") == "foob")
+    assert(TrimRight("foobar", "ra") == "foob")
+    assert(TrimRight("foobar", "raar") == "foob")
+    assert(TrimRight("foobar", "a") == "foobar")
+    assert(TrimRight("foobar", "R") == "foobar")
+    assert(TrimRight("foobar", "Rr") == "fooba")
+}
+
+test "Trim" {
+    // From TrimLeft.
+    assert(Trim("foobar", "") == "foobar")
+    assert(Trim("foobar", "f") == "oobar")
+    assert(Trim("foobar", "fo") == "bar")
+    assert(Trim("foobar", "of") == "bar")
+    assert(Trim("foobar", "foof") == "bar")
+    assert(Trim("foobar", "o") == "foobar")
+    assert(Trim("foobar", "F") == "foobar")
+    assert(Trim("foobar", "Ff") == "oobar")
+
+    // From TrimRight
+    assert(Trim("foobar", "") == "foobar")
+    assert(Trim("foobar", "r") == "fooba")
+    assert(Trim("foobar", "ar") == "foob")
+    assert(Trim("foobar", "ra") == "foob")
+    assert(Trim("foobar", "raar") == "foob")
+    assert(Trim("foobar", "a") == "foobar")
+    assert(Trim("foobar", "R") == "foobar")
+    assert(Trim("foobar", "Rr") == "fooba")
+
+    // Trim from both sides.
+    assert(Trim("foobar", "fr") == "ooba")
+    assert(Trim("foobar", "rf") == "ooba")
+}
+
+test "TrimPrefix" {
+    assert(TrimPrefix("foobar", "") == "foobar")
+    assert(TrimPrefix("foobar", "f") == "oobar")
+    assert(TrimPrefix("foobar", "fo") == "obar")
+    assert(TrimPrefix("foobar", "foo") == "bar")
+    assert(TrimPrefix("foobar", "o") == "foobar")
+    assert(TrimPrefix("foobar", "r") == "foobar")
+    assert(TrimPrefix("foobar", "foobar") == "")
+    assert(TrimPrefix("foobar", "foobard") == "foobar")
+}
+
+test "TrimSuffix" {
+    assert(TrimSuffix("foobar", "") == "foobar")
+    assert(TrimSuffix("foobar", "r") == "fooba")
+    assert(TrimSuffix("foobar", "ar") == "foob")
+    assert(TrimSuffix("foobar", "bar") == "foo")
+    assert(TrimSuffix("foobar", "a") == "foobar")
+    assert(TrimSuffix("foobar", "f") == "foobar")
+    assert(TrimSuffix("foobar", "foobar") == "")
+    assert(TrimSuffix("foobar", "afoobar") == "foobar")
+}

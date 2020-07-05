@@ -1,0 +1,24 @@
+test "Contains" {
+    assert(Contains("foobar", "foo") == true)
+    assert(Contains("foobar", "o") == true)
+    assert(Contains("foobar", "b") == true)
+    assert(Contains("foobar", "B") == false)
+    assert(Contains("foobar", "bar") == true)
+    assert(Contains("foobar", "bard") == false)
+}
+
+test "HasPrefix" {
+    assert(HasPrefix("foobar", "foo") == true)
+    assert(HasPrefix("foobar", "Foo") == false)
+    assert(HasPrefix("foo", "foob") == false)
+    assert(HasPrefix("foobar", "") == true)
+    assert(HasPrefix("", "") == true)
+}
+
+test "HasSuffix" {
+    assert(HasSuffix("foobar", "bar") == true)
+    assert(HasSuffix("foobar", "Bar") == false)
+    assert(HasSuffix("foo", "foob") == false)
+    assert(HasSuffix("foobar", "") == true)
+    assert(HasSuffix("", "") == true)
+}

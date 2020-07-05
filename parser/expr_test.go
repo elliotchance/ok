@@ -57,10 +57,15 @@ func TestExpr(t *testing.T) {
 			},
 		},
 		"literal-number-negative": {
-			str: `-3.20`,
-			expected: &ast.Unary{
-				Op:   lexer.TokenMinus,
-				Expr: asttest.NewLiteralNumber("3.20"),
+			str:      `-3.20`,
+			expected: asttest.NewLiteralNumber("-3.20"),
+		},
+		"compare-negative-numbers": {
+			str: `-3 == -4`,
+			expected: &ast.Binary{
+				Left:  asttest.NewLiteralNumber("-3"),
+				Op:    lexer.TokenEqual,
+				Right: asttest.NewLiteralNumber("-4"),
 			},
 		},
 		"numbers-plus": {
@@ -178,16 +183,6 @@ func TestExpr(t *testing.T) {
 			expected: &ast.Unary{
 				Op:   lexer.TokenNot,
 				Expr: asttest.NewLiteralBool(true),
-			},
-		},
-		"not-not-bool": {
-			str: `not not false`,
-			expected: &ast.Unary{
-				Op: lexer.TokenNot,
-				Expr: &ast.Unary{
-					Op:   lexer.TokenNot,
-					Expr: asttest.NewLiteralBool(false),
-				},
 			},
 		},
 		"bool-equal-bool": {
@@ -315,6 +310,143 @@ func TestExpr(t *testing.T) {
 					Right: &ast.Identifier{Name: "y"},
 				},
 			},
+		},
+		"reduce-right-binary": {
+			str: "i < a - b",
+			expected: asttest.NewBinary(
+				&ast.Identifier{Name: "i"},
+				lexer.TokenLessThan,
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenMinus,
+					Right: &ast.Identifier{Name: "b"},
+				},
+			),
+		},
+		"reduce-right-binary-2": {
+			str: "i < len(a) - len(b)",
+			expected: asttest.NewBinary(
+				&ast.Identifier{Name: "i"},
+				lexer.TokenLessThan,
+				&ast.Binary{
+					Left: &ast.Call{
+						FunctionName: "len",
+						Arguments: []ast.Node{
+							&ast.Identifier{Name: "a"},
+						},
+					},
+					Op: lexer.TokenMinus,
+					Right: &ast.Call{
+						FunctionName: "len",
+						Arguments: []ast.Node{
+							&ast.Identifier{Name: "b"},
+						},
+					},
+				},
+			),
+		},
+		"reduce-right-binary-3": {
+			str: "len(a) - len(b) < i",
+			expected: asttest.NewBinary(
+				&ast.Binary{
+					Left: &ast.Call{
+						FunctionName: "len",
+						Arguments: []ast.Node{
+							&ast.Identifier{Name: "a"},
+						},
+					},
+					Op: lexer.TokenMinus,
+					Right: &ast.Call{
+						FunctionName: "len",
+						Arguments: []ast.Node{
+							&ast.Identifier{Name: "b"},
+						},
+					},
+				},
+				lexer.TokenLessThan,
+				&ast.Identifier{Name: "i"},
+			),
+		},
+		"and-1": {
+			str: "n >= a and n <= b",
+			expected: asttest.NewBinary(
+				asttest.NewBinary(
+					&ast.Identifier{Name: "n"},
+					lexer.TokenGreaterThanEqual,
+					&ast.Identifier{Name: "a"},
+				),
+				lexer.TokenAnd,
+				asttest.NewBinary(
+					&ast.Identifier{Name: "n"},
+					lexer.TokenLessThanEqual,
+					&ast.Identifier{Name: "b"},
+				),
+			),
+		},
+		"and-2": {
+			str: "n >= foo('A') and n <= bar('Z')",
+			expected: asttest.NewBinary(
+				asttest.NewBinary(
+					&ast.Identifier{Name: "n"},
+					lexer.TokenGreaterThanEqual,
+					&ast.Call{
+						FunctionName: "foo",
+						Arguments: []ast.Node{
+							asttest.NewLiteralChar('A'),
+						},
+					},
+				),
+				lexer.TokenAnd,
+				asttest.NewBinary(
+					&ast.Identifier{Name: "n"},
+					lexer.TokenLessThanEqual,
+					&ast.Call{
+						FunctionName: "bar",
+						Arguments: []ast.Node{
+							asttest.NewLiteralChar('Z'),
+						},
+					},
+				),
+			),
+		},
+		"and-3": {
+			str: "n >= number 'A' and n <= number 'Z'",
+			expected: asttest.NewBinary(
+				asttest.NewBinary(
+					&ast.Identifier{Name: "n"},
+					lexer.TokenGreaterThanEqual,
+					&ast.Call{
+						FunctionName: "number",
+						Arguments: []ast.Node{
+							asttest.NewLiteralChar('A'),
+						},
+					},
+				),
+				lexer.TokenAnd,
+				asttest.NewBinary(
+					&ast.Identifier{Name: "n"},
+					lexer.TokenLessThanEqual,
+					&ast.Call{
+						FunctionName: "number",
+						Arguments: []ast.Node{
+							asttest.NewLiteralChar('Z'),
+						},
+					},
+				),
+			),
+		},
+		"call-1": {
+			str: "n >= number 'A'",
+			expected: asttest.NewBinary(
+				&ast.Identifier{Name: "n"},
+				lexer.TokenGreaterThanEqual,
+				&ast.Call{
+					FunctionName: "number",
+					Arguments: []ast.Node{
+						asttest.NewLiteralChar('A'),
+					},
+				},
+			),
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
