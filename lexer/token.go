@@ -35,11 +35,14 @@ const (
 	TokenIn       = "in"
 	TokenNot      = "not"
 	TokenNumber   = "number"
+	TokenOn       = "on"
 	TokenOr       = "or"
+	TokenRaise    = "raise"
 	TokenReturn   = "return"
 	TokenString   = "string"
 	TokenSwitch   = "switch"
 	TokenTest     = "test"
+	TokenTry      = "try"
 
 	// Operators
 	TokenAssign           = "="

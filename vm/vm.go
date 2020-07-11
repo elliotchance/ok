@@ -38,6 +38,10 @@ type VM struct {
 	TotalAssertions        int
 	CurrentTestName        string
 	CurrentTestPassed      bool
+
+	// Err will be non-empty once an error is raised. It contains the type to
+	// match for a handler.
+	Err string
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
@@ -99,6 +103,35 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 	totalInstructions := len(fn.Instructions)
 	for i := 0; i < totalInstructions; i++ {
 		ins := fn.Instructions[i]
+
+		// If we are in an error state, we keep moving forward until we find an
+		// appropriate error handler.
+		//
+		// TODO(elliot): This can not differentiate a handler in a lower scope
+		//  that should be ignored. It would be best for raise to provide a jump
+		//  to the first (or each) of the handlers, ideally.
+		if vm.Err != "" {
+			if on, ok := ins.(*On); ok {
+				switch on.Type {
+				case vm.Err:
+					// We found the handler. Remove the error state and continue
+					// as normal. There is a jump at the end of the handler that
+					// will launch us out when it's done.
+					vm.Err = ""
+
+				case "":
+					// An empty type signals the end of the error handlers.
+					// Making it to here means none of the error handlers worked
+					// for us. We need to return now and let the parent scope
+					// try to handle it.
+					return nil, nil
+				}
+
+			}
+
+			continue
+		}
+
 		err := ins.Execute(registers, &i, vm)
 		if err != nil {
 			return nil, err

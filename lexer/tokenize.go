@@ -325,9 +325,24 @@ func tokenWord(word string, pos Pos) Token {
 	case "true", "false":
 		return NewToken(TokenBoolLiteral, word, pos.add(-len(word)))
 
-	case "and", "break", "case", "continue", "else", "if", "for", "func", "not",
-		"or", "switch", "any", "bool", "char", "data", "number", "string", "in",
-		"return", "test", "assert", "import":
+	case
+		// Logical
+		"and", "not", "or",
+
+		// Control flow
+		"break", "case", "continue", "else", "if", "for", "switch", "in",
+
+		// Testing
+		"test", "assert",
+
+		// Types
+		"any", "bool", "char", "data", "number", "string",
+
+		// Statements
+		"func", "return", "import",
+
+		// Errors
+		"try", "raise", "on":
 		return NewToken(word, word, pos.add(-len(word)))
 	}
 

@@ -37,10 +37,22 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, finalErr e
 		return rtn, offset, nil
 	}
 
+	var raise *ast.Raise
+	raise, offset, err = consumeRaise(parser, offset)
+	if err == nil {
+		return raise, offset, nil
+	}
+
 	var assign *ast.Assign
 	assign, offset, err = consumeAssign(parser, offset)
 	if err == nil {
 		return assign, offset, nil
+	}
+
+	var errorScope *ast.ErrorScope
+	errorScope, offset, err = consumeErrorScope(parser, offset)
+	if err == nil {
+		return errorScope, offset, nil
 	}
 
 	var forStmt *ast.For

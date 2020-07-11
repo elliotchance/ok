@@ -1,0 +1,69 @@
+func MyError(msg string) MyError {
+    Message = msg
+}
+
+func MyOtherError(msg string) MyOtherError {
+    Message = msg
+    Secret = 1
+}
+
+func foo(raiseError bool) string {
+    if raiseError {
+        raise MyOtherError("okie dokes")
+        print("you should not see this")
+    }
+
+    return "all good!"
+}
+
+func main() {
+    print("0a")
+
+    try {
+        print("0b")
+    } on MyError {
+        print("0c")
+    }
+
+    print("0d")
+
+    print("1a")
+
+    try {
+        print("1b")
+        raise MyError("oh noes!")
+        print("1c")
+    } on MyOtherError {
+        print("1d")
+    } on MyError {
+        print("1e")
+    }
+
+    print("1f")
+
+    print("2a")
+
+    try {
+        print(foo(false))
+        print("2b")
+    } on MyOtherError {
+        print("2c")
+    } on MyError {
+        print("2d")
+    }
+
+    print("2e")
+
+    print("3a")
+
+    try {
+        print(foo(true))
+        print("3b")
+    } on MyOtherError {
+        print("3c")
+    } on MyError {
+        print("3d")
+    }
+
+    print("3e")
+}
