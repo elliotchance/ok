@@ -1,0 +1,22 @@
+test "len" {
+    assert(len("") == 0)
+    assert(len("hello") == 5)
+    assert(len("😃") == 1)
+
+    assert(len(``) == 0)
+    assert(len(`hello`) == 5)
+    assert(len(`😃`) == 4)
+
+    assert(len([]bool []) == 0)
+    assert(len([true]) == 1)
+    assert(len([true, false]) == 2)
+
+    assert(len([]string []) == 0)
+    assert(len(["foo"]) == 1)
+    assert(len(["foo", "bar"]) == 2)
+
+    a = []char []
+    b = [1, 2, 3]
+    assert(len(a) == 0)
+    assert(len(b) == 3)
+}

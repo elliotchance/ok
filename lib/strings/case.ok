@@ -1,0 +1,33 @@
+// ToLower returns a lower case version of s.
+//
+// TODO(elliot): This only works for ASCII characters.
+func ToLower(s string) string {
+    result = ""
+    for _, c in s {
+        n = number c
+        if n >= number 'A' and n <= number 'Z' {
+            result += string char (n + 32)
+        } else {
+            result += string c
+        }
+    }
+
+    return result
+}
+
+// ToUpper returns a upper case version of s.
+//
+// TODO(elliot): This only works for ASCII characters.
+func ToUpper(s string) string {
+    result = ""
+    for _, c in s {
+        n = number c
+        if n >= number 'a' and n <= number 'z' {
+            result += string char (n - 32)
+        } else {
+            result += string c
+        }
+    }
+
+    return result
+}

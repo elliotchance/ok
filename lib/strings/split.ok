@@ -1,0 +1,33 @@
+// Split will always returns one or more elements. If the glue is empty the
+// string will be split into characters.
+//
+// TODO(elliot): This is a horribly inefficient algorithm. This was very early
+//  on in the language when there we're barely any features, please clean this
+//  up if you see it.
+func Split(s, delimiter string) []string {
+    elements = []string []
+    
+    if delimiter == "" {
+        // TODO(elliot): In the future this should be possible by casting s to
+        // []char.
+        for i = 0; i < len(s); ++i {
+            elements += [string s[i]]
+        }
+    } else {
+        element = ""
+        for i = 0; i < len(s); ++i {
+            if IndexAfter(s, delimiter, i - 1) - i == 0 {
+                elements += [element]
+                element = ""
+                i += len(delimiter) - 1
+            } else {
+                // TODO(elliot): We shouldn't need to have this extra cast here.
+                element += string s[i]
+            }
+        }
+
+        elements += [element]
+    }
+
+    return elements
+}

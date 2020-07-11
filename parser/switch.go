@@ -46,7 +46,7 @@ func consumeSwitch(parser *Parser, offset int) (*ast.Switch, int, error) {
 
 	// An expression is optional.
 	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
-		node.Expr, offset, err = consumeExpr(parser, offset)
+		node.Expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 		if err != nil {
 			return nil, offset, err
 		}

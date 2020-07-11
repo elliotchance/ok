@@ -1,0 +1,16 @@
+test "string()" {
+    s1 = string 'a'
+    assert(s1 == "a")
+
+    s2 = string 1.2300
+    assert(s2 == "1.23")
+
+    s3 = string `1.2300`
+    assert(s3 == "1.2300")
+
+    s4 = string true
+    assert(s4 == "true")
+
+    s5 = string false
+    assert(s5 == "false")
+}

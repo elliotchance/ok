@@ -1,6 +1,6 @@
 .PHONY: clean test run-tests tests/* release version readme ok lib-gen
 
-ok: vm/lib.go
+ok: version vm/lib.go
 	go build
 
 clean:
@@ -61,7 +61,7 @@ release: ok-macos.zip ok-linux.zip ok-windows.zip
 version: TRAVIS_TAG ?= $(shell git describe --tags --abbrev=0)
 version: DATE := $(shell date +'%F')
 version:
-	sed -i "s/ok version unknown/ok version $(TRAVIS_TAG) $(DATE)/" cmd/version/main.go
+	sed -i.bak "s/ok version unknown/ok version $(TRAVIS_TAG) $(DATE)/" cmd/version/main.go
 
 readme:
 	./gh-md-toc --insert README.md
@@ -81,13 +81,29 @@ vm/lib.go: lib-gen
 	./lib-gen
 
 run-lib-tests:
-	./ok test lib/math
+	for d in $(shell ls -d lib/*/); do \
+        ./ok test $$d ; \
+    done
 
 check-doc:
-	cp -f lib/math/README.md lib/math/README.md.bak2
+	for d in $(shell ls -d lib/*/); do \
+    	cp -f $$d/README.md $$d/README.md.bak2 ; \
+    done
+
 	make doc
-	diff lib/math/README.md lib/math/README.md.bak2
-	rm -f lib/math/README.md.bak lib/math/README.md.bak2
+
+	for d in $(shell ls -d lib/*/); do \
+    	diff $$d/README.md $$d/README.md.bak2 ; \
+    	rm -f $$d/README.md.bak $$d/README.md.bak2 ; \
+    done
 
 doc: ok
-	./ok doc lib/math > lib/math/README.md
+	for d in $(shell ls -d lib/*/); do \
+		cd $$d && ../../ok doc > README.md && cd - ; \
+    done
+
+install: ok
+	cp ok /usr/local/bin
+
+	# Restore the original main.go so that git does not track the changes.
+	mv -f cmd/version/main.go.bak cmd/version/main.go

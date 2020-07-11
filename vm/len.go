@@ -17,10 +17,18 @@ type Len struct {
 func (ins *Len) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
 	r := registers[ins.Argument]
 	var result int
-	if strings.HasPrefix(r.Kind, "[]") {
+	switch {
+	case strings.HasPrefix(r.Kind, "[]"):
 		result = len(r.Array)
-	} else {
+
+	case strings.HasPrefix(r.Kind, "{}"):
 		result = len(r.Map)
+
+	case r.Kind == "string":
+		result = len([]rune(r.Value))
+
+	default:
+		result = len(r.Value)
 	}
 
 	registers[ins.Result] = asttest.NewLiteralNumber(fmt.Sprintf("%d", result))

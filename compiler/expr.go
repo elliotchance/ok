@@ -25,13 +25,12 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 		return []string{returns}, []string{e.Kind}, nil
 
 	case *ast.Array:
-		returns, err := compileArray(compiledFunc, e, fns)
+		returns, kind, err := compileArray(compiledFunc, e, fns)
 		if err != nil {
 			return nil, nil, err
 		}
 
-		// TODO(elliot): Doesn't return type.
-		return []string{returns}, []string{"[]"}, nil
+		return []string{returns}, []string{kind}, nil
 
 	case *ast.Map:
 		returns, err := compileMap(compiledFunc, e, fns)

@@ -8,7 +8,7 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
-func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {
+func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 	originalOffset := offset
 
 	types := []string{
@@ -20,11 +20,17 @@ func consumeLiteral(f *File, offset int) (*ast.Literal, int, error) {
 	}
 
 	for _, ty := range types {
-		if t := f.Tokens[offset]; t.Kind == ty {
+		if t := parser.File.Tokens[offset]; t.Kind == ty {
 			literal := &ast.Literal{
 				Kind:  strings.Split(ty, " ")[0],
 				Value: t.Value,
-				Pos:   f.Pos(originalOffset),
+				Pos:   parser.File.Pos(originalOffset),
+			}
+
+			err := validateLiteral(literal)
+			if err != nil {
+				// This kind of error should not stop the parsing.
+				parser.AppendError(literal, err.Error())
 			}
 
 			return literal, offset + 1, nil

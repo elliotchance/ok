@@ -18,7 +18,7 @@ func consumeIf(parser *Parser, offset int) (*ast.If, int, error) {
 		Pos: parser.File.Pos(originalOffset),
 	}
 
-	node.Condition, offset, err = consumeExpr(parser, offset)
+	node.Condition, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, offset, err
 	}

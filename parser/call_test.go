@@ -40,6 +40,15 @@ func TestCall(t *testing.T) {
 				},
 			},
 		},
+		"cast-string": {
+			str: `string 'a'`,
+			expected: &ast.Call{
+				FunctionName: "string",
+				Arguments: []ast.Node{
+					asttest.NewLiteralChar('a'),
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

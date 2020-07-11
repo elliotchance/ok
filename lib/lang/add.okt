@@ -1,0 +1,23 @@
+test "+" {
+    number1 = 12.3 + 4.56
+    assert(number1 == 16.86)
+    number2 = 12.3 + -4.56
+    assert(number2 == 7.74)
+
+    bools1 = [true, false] + [true]
+    assert(bools1 == [true, false, true])
+    bools2 = []bool [] + []bool []
+    assert(bools2 == []bool [])
+
+    chars1 = ['a', 'b'] + ['c']
+    assert(chars1 == ['a', 'b', 'c'])
+
+    datas1 = [`a`, `b`] + [`c`]
+    assert(datas1 == [`a`, `b`, `c`])
+
+    numbers1 = [1, 2] + [3]
+    assert(numbers1 == [1, 2, 3])
+
+    strings1 = ["foo", "bar"] + ["baz"]
+    assert(strings1 == ["foo", "bar", "baz"])
+}

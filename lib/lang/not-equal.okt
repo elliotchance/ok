@@ -1,0 +1,42 @@
+test "!=" {
+    assert(true != false)
+    assert(false != true)
+
+    assert('a' != 'A')
+    assert('😃' != '😟')
+
+    assert(124 != 123)
+    assert(123 != 124.00)
+    assert(0 != 0.1)
+    assert(0.01 != 0.001)
+    assert(-4 != -5)
+    assert(-5.0 != -5.1)
+
+    assert("" != "a")
+    assert("foo" != "bar")
+    assert("😃foo" != "😃bar")
+    
+    assert(`` != `b`)
+    assert(`foo` != `bar`)
+    assert(`😃foo` != `😃bar`)
+
+    assert([]bool [] != []bool [true])
+    assert([]bool [true] != []bool [false])
+    assert([]bool [true, false] != []bool [true, true])
+
+    assert([]char [] != []char ['a'])
+    assert([]char ['a'] != []char ['b'])
+    assert([]char ['a', '😃'] != []char ['b', '😃'])
+
+    assert([]data [] != []data [`a`])
+    assert([]data [`a`] != []data [`b`])
+    assert([]data [`a`, `😃`] != []data [`b`, `😃`])
+
+    assert([]number [] != []number [1.23])
+    assert([]number [1.23] != []number [4.56])
+    assert([]number [1.23, 4.56] != []number [1.23, 7.56])
+
+    assert([]string [] != []string ["a"])
+    assert([]string ["a"] != []string ["b"])
+    assert([]string ["a", "😃foo"] != []string ["a", "😃bar"])
+}

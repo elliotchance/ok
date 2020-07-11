@@ -1,0 +1,7 @@
+// ReplaceAll return a string with each of find substituted with replace.
+//
+// If `find` is empty, then `replace` will be inserted between every character.
+// It will not be insert before the first character or after the last.
+func ReplaceAll(s, find, replace string) string {
+    return Join(Split(s, find), replace)
+}

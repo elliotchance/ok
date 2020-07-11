@@ -1,0 +1,15 @@
+// Join returns a string containing all elements joined with glue. The glue will
+// only appear between elements, even if those elements are empty strings
+// themselves. Glue is allowed to be empty.
+func Join(strings []string, glue string) string {
+    result = ""
+    for i, s in strings {
+        if i > 0 {
+            result += glue
+        }
+
+        result += s
+    }
+
+    return result
+}

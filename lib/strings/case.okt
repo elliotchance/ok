@@ -1,0 +1,9 @@
+test "ToLower" {
+    assert(ToLower("foo") == "foo")
+    assert(ToLower("Foo Bar") == "foo bar")
+}
+
+test "ToUpper" {
+    assert(ToUpper("foo") == "FOO")
+    assert(ToUpper("Foo Bar") == "FOO BAR")
+}

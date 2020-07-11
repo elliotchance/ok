@@ -130,10 +130,10 @@ func (vm *VM) runTest(testName string, instructions []Instruction) error {
 	return nil
 }
 
-func (vm *VM) assert(pass bool, left, op, right string) {
+func (vm *VM) assert(pass bool, left, op, right, pos string) {
 	if !pass {
-		fmt.Printf("%s: %s: assert(%s %s %s) failed\n",
-			vm.pkg, vm.CurrentTestName, left, op, right)
+		fmt.Printf("%s: %s: %s: assert(%s %s %s) failed\n",
+			vm.pkg, pos, vm.CurrentTestName, left, op, right)
 		vm.CurrentTestPassed = false
 	}
 	vm.TotalAssertions++

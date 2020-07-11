@@ -20,13 +20,24 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.F
 	}
 
 	resultRegister := compiledFunc.NextRegister()
-	if strings.HasPrefix(arrayOrMapKind[0], "[]") {
+	switch {
+	case strings.HasPrefix(arrayOrMapKind[0], "[]"):
 		compiledFunc.Append(&vm.ArrayGet{
 			Array:  arrayOrMapRegisters[0],
 			Index:  keyRegisters[0],
 			Result: resultRegister,
 		})
-	} else {
+
+	case arrayOrMapKind[0] == "string":
+		compiledFunc.Append(&vm.StringIndex{
+			String: arrayOrMapRegisters[0],
+			Index:  keyRegisters[0],
+			Result: resultRegister,
+		})
+
+		return resultRegister, "char", nil
+
+	default:
 		// This applies for both maps and objects.
 		compiledFunc.Append(&vm.MapGet{
 			Map:    arrayOrMapRegisters[0],

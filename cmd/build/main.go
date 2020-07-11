@@ -26,15 +26,20 @@ func (*Command) Description() string {
 
 // Run is the entry point for the "ok run" command.
 func (*Command) Run(args []string) {
-	// TODO: Multiple packages provided.
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
-	pkg, errs := compiler.CompilePackage(args[0], false)
+	for _, arg := range args {
+		runArg(arg)
+	}
+}
+
+func runArg(arg string) {
+	pkg, errs := compiler.CompilePackage(arg, false)
 	util.CheckErrorsWithExit(errs)
 
-	goFile := path.Join(args[0], "main.go")
+	goFile := path.Join(arg, "main.go")
 	f, err := os.Create(goFile)
 	check(err)
 
@@ -59,7 +64,7 @@ func (*Command) Run(args []string) {
 
 	goBuild := &exec.Cmd{
 		Path:   goExecutable,
-		Args:   []string{goExecutable, "build", "./" + args[0]},
+		Args:   []string{goExecutable, "build", "./" + arg},
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
 	}

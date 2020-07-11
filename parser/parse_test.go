@@ -83,7 +83,7 @@ func TestParseString(t *testing.T) {
 			expected: newFuncPrint(asttest.NewLiteralString("hello world")),
 		},
 		"hello-world-2": {
-			str: `func main() {print("hello") print("world")}`,
+			str: "func main() {print(\"hello\")\nprint(\"world\")}",
 			expected: &ast.Func{
 				Name: "main",
 				Statements: []ast.Node{

@@ -51,11 +51,7 @@ func TestBinary(t *testing.T) {
 				&vm.Combine{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -91,11 +87,7 @@ func TestBinary(t *testing.T) {
 				&vm.Concat{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -131,11 +123,7 @@ func TestBinary(t *testing.T) {
 				&vm.Add{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -171,11 +159,7 @@ func TestBinary(t *testing.T) {
 				&vm.Subtract{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -211,11 +195,7 @@ func TestBinary(t *testing.T) {
 				&vm.Multiply{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -251,11 +231,7 @@ func TestBinary(t *testing.T) {
 				&vm.Divide{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -291,11 +267,7 @@ func TestBinary(t *testing.T) {
 				&vm.Remainder{
 					Left:   "i",
 					Right:  "2",
-					Result: "3",
-				},
-				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result: "i",
 				},
 			},
 		},
@@ -318,7 +290,7 @@ func TestBinary(t *testing.T) {
 					},
 				},
 			},
-			err: errors.New("cannot perform string / number"),
+			err: errors.New(" cannot perform string / number"),
 		},
 		"data-plus-data": {
 			nodes: []ast.Node{
@@ -517,7 +489,7 @@ func TestBinary(t *testing.T) {
 					asttest.NewLiteralBool(true),
 				),
 			},
-			err: errors.New("cannot perform bool > bool"),
+			err: errors.New(" cannot perform bool > bool"),
 		},
 		"bool-equals-bool": {
 			nodes: []ast.Node{
@@ -1095,7 +1067,58 @@ func TestBinary(t *testing.T) {
 					},
 				},
 			},
-			err: errors.New("cannot perform bool + bool"),
+			err: errors.New(" cannot perform bool + bool"),
+		},
+		"plus-assign-array": {
+			nodes: []ast.Node{
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "i"},
+					},
+					Rights: []ast.Node{
+						asttest.NewArrayNumbers(nil),
+					},
+				},
+				&ast.Binary{
+					Left:  &ast.Identifier{Name: "i"},
+					Op:    lexer.TokenPlusAssign,
+					Right: asttest.NewArrayNumbers(nil),
+				},
+			},
+			expected: []vm.Instruction{
+				// first array
+				&vm.Assign{
+					VariableName: "1",
+					Value:        asttest.NewLiteralNumber("0"),
+				},
+				&vm.ArrayAlloc{
+					Size:   "1",
+					Result: "2",
+					Kind:   "[]number",
+				},
+				&vm.Assign{
+					VariableName: "i",
+					Register:     "2",
+				},
+
+				// second array
+				&vm.Assign{
+					VariableName: "3",
+					Value:        asttest.NewLiteralNumber("0"),
+				},
+				&vm.ArrayAlloc{
+					Size:   "3",
+					Result: "4",
+					Kind:   "[]number",
+				},
+
+				// +=
+				&vm.Append{
+					A:      "i",
+					B:      "4",
+					Result: "i",
+				},
+			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

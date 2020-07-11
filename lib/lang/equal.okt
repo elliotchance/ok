@@ -1,0 +1,42 @@
+test "==" {
+    assert(true == true)
+    assert(false == false)
+
+    assert('a' == 'a')
+    assert('😃' == '😃')
+
+    assert(123 == 123)
+    assert(123 == 123.00)
+    assert(0 == 0)
+    assert(0.00 == 0.000)
+    assert(-4 == -4)
+    assert(-4.0 == -4)
+
+    assert("" == "")
+    assert("foo" == "foo")
+    assert("😃foo" == "😃foo")
+    
+    assert(`` == ``)
+    assert(`foo` == `foo`)
+    assert(`😃foo` == `😃foo`)
+
+    assert([]bool [] == []bool [])
+    assert([]bool [true] == []bool [true])
+    assert([]bool [true, false] == []bool [true, false])
+
+    assert([]char [] == []char [])
+    assert([]char ['a'] == []char ['a'])
+    assert([]char ['a', '😃'] == []char ['a', '😃'])
+
+    assert([]data [] == []data [])
+    assert([]data [`a`] == []data [`a`])
+    assert([]data [`a`, `😃`] == []data [`a`, `😃`])
+
+    assert([]number [] == []number [])
+    assert([]number [1.23] == []number [1.23])
+    assert([]number [1.23, 4.56] == []number [1.23, 4.56])
+
+    assert([]string [] == []string [])
+    assert([]string ["a"] == []string ["a"])
+    assert([]string ["a", "😃foo"] == []string ["a", "😃foo"])
+}

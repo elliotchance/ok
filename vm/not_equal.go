@@ -3,7 +3,6 @@ package vm
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/number"
 )
 
 // NotEqualNumber will compare two numbers for equality.
@@ -13,10 +12,10 @@ type NotEqualNumber struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *NotEqualNumber) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(number.Cmp(
-		number.NewNumber(registers[ins.Left].Value),
-		number.NewNumber(registers[ins.Right].Value),
-	) != 0)
+	registers[ins.Result] = asttest.NewLiteralBool(!numbersAreEqual(
+		registers[ins.Left],
+		registers[ins.Right],
+	))
 
 	return nil
 }
@@ -31,9 +30,9 @@ type NotEqual struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *NotEqual) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(
-		registers[ins.Left].Value != registers[ins.Right].Value,
-	)
+	registers[ins.Result] = asttest.NewLiteralBool(!compareValue(
+		registers[ins.Left], registers[ins.Right],
+	))
 
 	return nil
 }

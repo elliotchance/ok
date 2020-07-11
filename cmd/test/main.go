@@ -26,33 +26,38 @@ func (*Command) Description() string {
 
 // Run is the entry point for the "ok test" command.
 func (*Command) Run(args []string) {
-	// TODO: Multiple packages provided.
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
-	pkg, errs := compiler.CompilePackage(args[0], true)
-	util.CheckErrorsWithExit(errs)
+	for _, arg := range args {
+		packageName := util.PackageNameFromPath("", arg)
 
-	m := vm.NewVM(pkg.Funcs, pkg.Tests, args[0])
-	startTime := time.Now()
-	err := m.RunTests()
-	elapsed := time.Since(startTime)
-	check(err)
+		// Use the relative arg here. This will be used to produce error
+		// messages during the compilation.
+		pkg, errs := compiler.CompilePackage(arg, true)
+		util.CheckErrorsWithExit(errs)
 
-	assertWord := pluralise("assert", m.TotalAssertions)
-	if m.TestsFailed > 0 {
-		fmt.Printf("%s: %d failed %d passed %d %s (%s)\n",
-			args[0], m.TestsFailed, m.TestsPass,
-			m.TotalAssertions, assertWord, elapsed)
-	} else {
-		fmt.Printf("%s: %d passed %d %s (%s)\n",
-			args[0], m.TestsPass,
-			m.TotalAssertions, assertWord, elapsed)
-	}
+		m := vm.NewVM(pkg.Funcs, pkg.Tests, packageName)
+		startTime := time.Now()
+		err := m.RunTests()
+		elapsed := time.Since(startTime).Milliseconds()
+		check(err)
 
-	if m.TestsFailed > 0 {
-		os.Exit(1)
+		assertWord := pluralise("assert", m.TotalAssertions)
+		if m.TestsFailed > 0 {
+			fmt.Printf("%s: %d failed %d passed %d %s (%d ms)\n",
+				packageName, m.TestsFailed, m.TestsPass,
+				m.TotalAssertions, assertWord, elapsed)
+		} else {
+			fmt.Printf("%s: %d passed %d %s (%d ms)\n",
+				packageName, m.TestsPass,
+				m.TotalAssertions, assertWord, elapsed)
+		}
+
+		if m.TestsFailed > 0 {
+			os.Exit(1)
+		}
 	}
 }
 

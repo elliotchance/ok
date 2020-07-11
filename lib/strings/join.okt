@@ -1,0 +1,9 @@
+test "Join" {
+    empty = []string []
+    assert(Join(empty, "-") == "")
+
+    assert(Join(["hi"], "-") == "hi")
+    assert(Join(["hi", "there"], "-") == "hi-there")
+    assert(Join(["hi", "", "there"], "-") == "hi--there")
+    assert(Join(["hi", "there"], "") == "hithere")
+}

@@ -125,6 +125,44 @@ func TestFor(t *testing.T) {
 				},
 			},
 		},
+		"for-4-assign": {
+			str: "for a = 0; a < 10; a = a + 1 { print(a) }",
+			expected: &ast.For{
+				Init: &ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						asttest.NewLiteralNumber("0"),
+					},
+				},
+				Condition: &ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenLessThan,
+					Right: asttest.NewLiteralNumber("10"),
+				},
+				Next: &ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						&ast.Binary{
+							Left:  &ast.Identifier{Name: "a"},
+							Op:    lexer.TokenPlus,
+							Right: asttest.NewLiteralNumber("1"),
+						},
+					},
+				},
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+						Arguments: []ast.Node{
+							&ast.Identifier{Name: "a"},
+						},
+					},
+				},
+			},
+		},
 		"for-in-1": {
 			str: "for k in something { }",
 			expected: &ast.For{
