@@ -29,6 +29,12 @@ func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIn
 
 	case *ast.Switch:
 		return compileSwitch(compiledFunc, n, breakIns, continueIns, fns)
+
+	case *ast.ErrorScope:
+		return compileErrorScope(compiledFunc, n, fns)
+
+	case *ast.Raise:
+		return compileRaise(compiledFunc, n, fns)
 	}
 
 	_, _, err := compileExpr(compiledFunc, statement, fns)

@@ -1,0 +1,83 @@
+package parser_test
+
+import (
+	"fmt"
+	"testing"
+
+	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/parser"
+	"github.com/stretchr/testify/assert"
+)
+
+func TestErrorScope(t *testing.T) {
+	for testName, test := range map[string]struct {
+		str      string
+		expected *ast.ErrorScope
+		errs     []error
+	}{
+		"only-empty-try": {
+			str:      "try {}",
+			expected: &ast.ErrorScope{},
+		},
+		"only-try": {
+			str: "try { print() }",
+			expected: &ast.ErrorScope{
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+					},
+				},
+			},
+		},
+		"try-on-1": {
+			str: "try { print() } on SomeError {}",
+			expected: &ast.ErrorScope{
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+					},
+				},
+				On: []*ast.On{
+					{
+						Type: "SomeError",
+					},
+				},
+			},
+		},
+		"try-on-2": {
+			str: "try { print() } on SomeError {} on SomethingElse { foo() }",
+			expected: &ast.ErrorScope{
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+					},
+				},
+				On: []*ast.On{
+					{
+						Type: "SomeError",
+					},
+					{
+						Type: "SomethingElse",
+						Statements: []ast.Node{
+							&ast.Call{
+								FunctionName: "foo",
+							},
+						},
+					},
+				},
+			},
+		},
+	} {
+		t.Run(testName, func(t *testing.T) {
+			str := fmt.Sprintf("func main() { %s }", test.str)
+			p := parser.ParseString(str, "a.ok")
+
+			assertEqualErrors(t, test.errs, p.Errors())
+			asttest.AssertEqual(t, map[string]*ast.Func{
+				"main": newFunc(test.expected),
+			}, p.File.Funcs)
+			assert.Nil(t, p.File.Comments)
+		})
+	}
+}

@@ -3,6 +3,9 @@
 ok: version vm/lib.go
 	go build
 
+	# Restore the original main.go so that git does not track the changes.
+	mv -f cmd/version/main.go.bak cmd/version/main.go
+
 clean:
 	rm -rf bin ok-macos.zip
 	rm -f ok-linux.zip ok-windows.zip
@@ -104,6 +107,3 @@ doc: ok
 
 install: ok
 	cp ok /usr/local/bin
-
-	# Restore the original main.go so that git does not track the changes.
-	mv -f cmd/version/main.go.bak cmd/version/main.go
