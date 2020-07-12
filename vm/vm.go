@@ -15,8 +15,9 @@ type InternalDefinition struct {
 	FuncDef      *ast.Func
 }
 
-// Lib is populated with the generated lib.go file. See Makefile.
+// These are populated with the generated lib.go file. See Makefile.
 var Lib map[string]*InternalDefinition
+var Packages map[string]bool
 
 // CompiledTest is a runnable test.
 type CompiledTest struct {
@@ -39,9 +40,10 @@ type VM struct {
 	CurrentTestName        string
 	CurrentTestPassed      bool
 
-	// Err will be non-empty once an error is raised. It contains the type to
-	// match for a handler.
-	Err string
+	// ErrType will be non-empty once an error is raised. It contains the type
+	// to match for a handler. ErrValue contains the actual error.
+	ErrType  string
+	ErrValue *ast.Literal
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
@@ -110,14 +112,19 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 		// TODO(elliot): This can not differentiate a handler in a lower scope
 		//  that should be ignored. It would be best for raise to provide a jump
 		//  to the first (or each) of the handlers, ideally.
-		if vm.Err != "" {
+		if vm.ErrType != "" {
 			if on, ok := ins.(*On); ok {
 				switch on.Type {
-				case vm.Err:
+				case vm.ErrType,
+					// TODO(elliot): This is a stupid hack for now. This was
+					//  created before interfaces could determine this properly.
+					"Error":
+					registers["err"] = vm.ErrValue
+
 					// We found the handler. Remove the error state and continue
 					// as normal. There is a jump at the end of the handler that
 					// will launch us out when it's done.
-					vm.Err = ""
+					vm.ErrType = ""
 
 				case "":
 					// An empty type signals the end of the error handlers.

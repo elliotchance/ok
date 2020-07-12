@@ -8,6 +8,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/parser"
 	"github.com/elliotchance/ok/util"
+	"github.com/elliotchance/ok/vm"
 )
 
 func CompilePackage(dir string, includeTests bool) (*Compiled, []error) {
@@ -51,9 +52,7 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, []error) {
 
 			// Ignore builtin libraries as they are already provided to the VM
 			// through vm/lib.go. See Makefile.
-			//
-			// TODO(elliot): This needs to be smarter.
-			if pkg == "math" {
+			if vm.Packages[pkg] {
 				continue
 			}
 

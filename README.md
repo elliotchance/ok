@@ -40,6 +40,7 @@ itself.
       * [Multiple Return Values](#multiple-return-values)
       * [Interpolation](#interpolation)
       * [Stateful Functions (Objects)](#stateful-functions-objects)
+      * [Errors](#errors)
 
 
 <!--te-->
@@ -727,4 +728,113 @@ func main() {
 $ ok run objects
 42
 {"Age": 42, "Name": "John"}
+```
+
+Errors
+------
+
+```
+// Errors in ok work very similar to exceptions in some other languages. If you
+// are not familar with exceptions, read on.
+
+// Any function can raise an error. Raising an error prevents any more code from
+// running, the code will jump to an error handler. If there is no error handler
+// in this function it will be raised to the caller, and so on until it's
+// handled, as we will see.
+func f1(arg number) number {
+    if arg == 42 {
+        // Error is a build in type that takes a message. Since we do not handle
+        // the error here, it will be passed up to the caller.
+        raise Error("can't work with 42")
+    }
+
+    return arg + 3
+}
+
+// Sometimes just a message is not enough. We can create our own custom error
+// type by implementing the Error interface. That is, any type that has the
+// property Error of type string.
+func argError(arg number, prob string) argError {
+    // Save these properties for later.
+    Arg = arg
+    Prob = prob
+
+    // This satisfies the Error interface.
+    Error = "{arg} - {prob}"
+}
+
+// f2 performs the same logic as f1, but we raise our custom error instead.
+func f2(arg number) number {
+    if arg == 42 {
+        // Our custom error will act like an Error, but we can also inspect it.
+        raise argError(arg, "can't work with it")
+    }
+
+    return arg + 3
+}
+
+func main() {
+    for _, i in [7, 42] {
+        try {
+            r = f1(i)
+
+            // If f1 raised an error this will not run because the code will
+            // jump immediately to the error handler below.
+            print("f1 worked:", r)
+        } on Error {
+            // When an error is caught, a special "err" variable is provided.
+            // Since the Error type must include an Error string property, we
+            // can print it out now.
+            print("f1 failed:", err.Error)
+        }
+    }
+
+    // Let's try the same thing with f2, which has the same logic, but raises a
+    // custom error type.
+    for _, i in [7, 42] {
+        try {
+            r = f2(i)
+            print("f2 worked:", r)
+        } on Error {
+            // The type of "err" is still an Error, so we cannot access Arg and
+            // Prob. We can rely on the Error message through.
+            print("f2 failed:", err.Error)
+        }
+    }
+
+    try {
+        f2(42)
+    } on argError {
+        // The "err" is now a type of argError, so we can inpect those extra
+        // properties. Be careful, if the error raised was not of type argError,
+        // then it will not be handled here. Instead it would be passed up to
+        // the caller to handle.
+        print(err.Arg)
+        print(err.Prob)
+    }
+
+    // You can have multiple handlers. Only the first match will be executed.
+    // This let's you provide more generic handlers if specific cases are not
+    // raised.
+    try {
+        f1(42)
+    } on argError {
+        // f1 raises an Error, so it will not be caught here.
+        print("This should not happen!")
+    } on Error {
+        // This will handle the error.
+        print("f1 failed, all we have is the message:", err.Error)
+    }
+}
+```
+
+```
+$ ok run errors
+f1 worked: 10
+f1 failed: can't work with 42
+f2 worked: 10
+f2 failed: 42 - can't work with it
+42
+can't work with it
+f1 failed, all we have is the message: can't work with 42
 ```

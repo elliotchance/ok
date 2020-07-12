@@ -15,7 +15,8 @@ type Raise struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Raise) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) error {
-	vm.Err = ins.Type
+	vm.ErrType = ins.Type
+	vm.ErrValue = registers[ins.Err]
 
 	return nil
 }
