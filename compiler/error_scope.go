@@ -28,6 +28,10 @@ func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, fns map
 			Type: on.Type,
 		})
 
+		// Provide the err variable. The runtime value will be provided by the
+		// On instruction above.
+		compiledFunc.NewVariable("err", on.Type)
+
 		err := compileBlock(compiledFunc, on.Statements, nil, nil, fns)
 		if err != nil {
 			return err
