@@ -18,7 +18,7 @@ func (node *For) Position() string {
 
 // In represents an "in" expression in for loops.
 type In struct {
-	Key, Value string
+	Value, Key string
 	Expr       Node
 	Pos        string
 }

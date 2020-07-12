@@ -38,7 +38,7 @@ func f2(arg number) number {
 }
 
 func main() {
-    for _, i in [7, 42] {
+    for i in [7, 42] {
         try {
             r = f1(i)
 
@@ -55,7 +55,7 @@ func main() {
 
     // Let's try the same thing with f2, which has the same logic, but raises a
     // custom error type.
-    for _, i in [7, 42] {
+    for i in [7, 42] {
         try {
             r = f2(i)
             print("f2 worked:", r)

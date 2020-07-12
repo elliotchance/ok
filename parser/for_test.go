@@ -164,26 +164,26 @@ func TestFor(t *testing.T) {
 			},
 		},
 		"for-in-1": {
-			str: "for k in something { }",
+			str: "for v in something { }",
 			expected: &ast.For{
 				Condition: &ast.In{
-					Key:  "k",
-					Expr: &ast.Identifier{Name: "something"},
-				},
-			},
-		},
-		"for-in-2": {
-			str: "for k, v in something { }",
-			expected: &ast.For{
-				Condition: &ast.In{
-					Key:   "k",
 					Value: "v",
 					Expr:  &ast.Identifier{Name: "something"},
 				},
 			},
 		},
+		"for-in-2": {
+			str: "for v, k in something { }",
+			expected: &ast.For{
+				Condition: &ast.In{
+					Value: "v",
+					Key:   "k",
+					Expr:  &ast.Identifier{Name: "something"},
+				},
+			},
+		},
 		"for-in-3": {
-			str: "for i = 0; k, v in something; ++i { }",
+			str: "for i = 0; v, k in something; ++i { }",
 			expected: &ast.For{
 				Init: &ast.Assign{
 					Lefts: []ast.Node{
@@ -194,8 +194,8 @@ func TestFor(t *testing.T) {
 					},
 				},
 				Condition: &ast.In{
-					Key:   "k",
 					Value: "v",
+					Key:   "k",
 					Expr:  &ast.Identifier{Name: "something"},
 				},
 				Next: &ast.Unary{

@@ -92,13 +92,13 @@ func consumeIn(parser *Parser, offset int) (*ast.In, int, error) {
 	if err != nil {
 		return nil, originalOffset, err
 	}
-	node.Key = parser.File.Tokens[originalOffset].Value
+	node.Value = parser.File.Tokens[originalOffset].Value
 
-	// Value is optional.
+	// Key is optional.
 	offset, err = consume(parser.File, offset, []string{
 		lexer.TokenComma, lexer.TokenIdentifier})
 	if err == nil {
-		node.Value = parser.File.Tokens[offset-1].Value
+		node.Key = parser.File.Tokens[offset-1].Value
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenIn})
