@@ -3,7 +3,7 @@
 // themselves. Glue is allowed to be empty.
 func Join(strings []string, glue string) string {
     result = ""
-    for i, s in strings {
+    for s, i in strings {
         if i > 0 {
             result += glue
         }

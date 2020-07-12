@@ -32,21 +32,28 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		}
 
 		switch {
-		case kind.IsArray(arrayOrMapKind[0]):
-			compiledFunc.NewVariable(cond.Key, "number")
-
-		case kind.IsMap(arrayOrMapKind[0]):
-			compiledFunc.NewVariable(cond.Key, "string")
-
-		case arrayOrMapKind[0] == "string":
-			compiledFunc.NewVariable(cond.Key, "char")
+		case kind.IsArray(arrayOrMapKind[0]),
+			kind.IsMap(arrayOrMapKind[0]),
+			arrayOrMapKind[0] == "string":
+			// Allowed
 
 		default:
 			return fmt.Errorf("%s is not iterable", arrayOrMapKind[0])
 		}
 
-		if cond.Value != "" {
-			compiledFunc.NewVariable(cond.Value, kind.ElementType(arrayOrMapKind[0]))
+		compiledFunc.NewVariable(cond.Value, kind.ElementType(arrayOrMapKind[0]))
+
+		if cond.Key != "" {
+			switch {
+			case kind.IsArray(arrayOrMapKind[0]):
+				compiledFunc.NewVariable(cond.Key, "number")
+
+			case kind.IsMap(arrayOrMapKind[0]):
+				compiledFunc.NewVariable(cond.Key, "string")
+
+			case arrayOrMapKind[0] == "string":
+				compiledFunc.NewVariable(cond.Key, "char")
+			}
 		}
 
 		cursorRegister := compiledFunc.NextRegister()

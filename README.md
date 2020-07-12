@@ -545,31 +545,31 @@ func main() {
     myArray = [7, 11, 13]
 
     // When iterating an array the first and second variable are assigned the
-    // index and the value respectively.
-    for i, v in myArray {
+    // value and the index respectively.
+    for v, i in myArray {
         print(i, v)
     }
 
     myMap = {"foo": 1.23, "bar": 4.56}
 
-    // Maps work the same way but the first variable will be the key.
-    for key, value in myMap {
+    // Maps work the same way but the second variable will be the key.
+    for value, key in myMap {
         print(key, value)
     }
 
     // For both arrays and maps you may omit the second variable if you only
-    // need to iterate the index or keys.
-    for index in myArray {
-        print(index)
+    // need to iterate the values.
+    for value in myArray {
+        print(value)
     }
 
-    for key in myMap {
-        print("key is", key)
+    for value in myMap {
+        print("value is", value)
     }
 
     // If you also need to keep a numeric iterator while iterating a map you can
     // use another form of for.
-    for i = 0; key, value in myMap; ++i {
+    for i = 0; value, key in myMap; ++i {
         print(i, key, value)
     }
 }
@@ -582,11 +582,11 @@ $ ok run iteration
 2 13
 foo 1.23
 bar 4.56
-0
-1
-2
-key is foo
-key is bar
+7
+11
+13
+value is 1.23
+value is 4.56
 0 foo 1.23
 1 bar 4.56
 ```
@@ -774,7 +774,7 @@ func f2(arg number) number {
 }
 
 func main() {
-    for _, i in [7, 42] {
+    for i in [7, 42] {
         try {
             r = f1(i)
 
@@ -791,7 +791,7 @@ func main() {
 
     // Let's try the same thing with f2, which has the same logic, but raises a
     // custom error type.
-    for _, i in [7, 42] {
+    for i in [7, 42] {
         try {
             r = f2(i)
             print("f2 worked:", r)
