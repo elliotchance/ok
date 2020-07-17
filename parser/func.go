@@ -41,6 +41,11 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, finalErr error
 		}
 	}
 
+	parser.functionNames = append(parser.functionNames, fn.Name)
+	defer func() {
+		parser.functionNames = parser.functionNames[:len(parser.functionNames)-1]
+	}()
+
 	fn.Statements, offset, err = consumeBlock(parser, offset)
 	if err != nil {
 		return nil, originalOffset, err

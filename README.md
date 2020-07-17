@@ -41,6 +41,7 @@ itself.
       * [Interpolation](#interpolation)
       * [Stateful Functions (Objects)](#stateful-functions-objects)
       * [Errors](#errors)
+      * [Finally](#finally)
 
 
 <!--te-->
@@ -837,4 +838,63 @@ f2 failed: 42 - can't work with it
 42
 can't work with it
 f1 failed, all we have is the message: can't work with 42
+```
+
+Finally
+-------
+
+```
+func f1(arg number) number {
+    if arg == 42 {
+        raise Error("can't work with 42")
+    }
+
+    return arg + 3
+}
+
+func main() {
+    for i in [7, 42] {
+        try {
+            r = f1(i)
+            print("f1 worked:", r)
+        } on Error {
+            print("f1 failed:", err.Error)
+        } finally {
+            // Finally will always run after the try block or the error
+            // handler.
+            print("finally f1")
+        }
+    }
+
+    for i in [7, 42] {
+        try {
+            r = f2(i)
+            print("f2 worked:", r)
+        } on Error {
+            print("f2 failed:", err.Error)
+        }
+    }
+}
+
+func f2(arg number) number {
+    try {
+        return f1(arg)
+    } finally {
+        // Finally will always run before the return, even if there is
+        // an error.
+        print("f2 done")
+    }
+}
+```
+
+```
+$ ok run finally
+f1 worked: 10
+finally f1
+f1 failed: can't work with 42
+finally f1
+f2 done
+f2 worked: 10
+f2 done
+f2 failed: can't work with 42
 ```

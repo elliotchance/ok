@@ -34,6 +34,16 @@ func consumeErrorScope(parser *Parser, offset int) (*ast.ErrorScope, int, error)
 		node.On = append(node.On, on)
 	}
 
+	// The finally clause is optional
+	if parser.File.Tokens[offset].Kind == lexer.TokenFinally {
+		node.Finally, offset, err = consumeFinally(parser, offset)
+		if err != nil {
+			return nil, originalOffset, err
+		}
+
+		parser.AppendFinally(node.Finally)
+	}
+
 	return node, offset, nil
 }
 
@@ -55,6 +65,27 @@ func consumeOn(parser *Parser, offset int) (*ast.On, int, error) {
 	node := &ast.On{
 		Type: ident.Name,
 		Pos:  parser.File.Pos(originalOffset),
+	}
+
+	node.Statements, offset, err = consumeBlock(parser, offset)
+	if err != nil {
+		return nil, offset, err
+	}
+
+	return node, offset, nil
+}
+
+func consumeFinally(parser *Parser, offset int) (*ast.Finally, int, error) {
+	var err error
+	originalOffset := offset
+
+	offset, err = consume(parser.File, offset, []string{lexer.TokenFinally})
+	if err != nil {
+		return nil, originalOffset, err
+	}
+
+	node := &ast.Finally{
+		Pos: parser.File.Pos(originalOffset),
 	}
 
 	node.Statements, offset, err = consumeBlock(parser, offset)

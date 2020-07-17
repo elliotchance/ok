@@ -342,7 +342,7 @@ func tokenWord(word string, pos Pos) Token {
 		"func", "return", "import",
 
 		// Errors
-		"try", "raise", "on":
+		"try", "raise", "on", "finally":
 		return NewToken(word, word, pos.add(-len(word)))
 	}
 

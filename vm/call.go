@@ -12,7 +12,7 @@ type Call struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Call) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) error {
+func (ins *Call) Execute(registers map[string]*ast.Literal, i *int, vm *VM) error {
 	results, err := vm.call(ins.FunctionName, ins.Arguments)
 	if err != nil {
 		return err
@@ -23,6 +23,12 @@ func (ins *Call) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) erro
 	}
 
 	vm.stack = vm.stack[:len(vm.stack)-1]
+
+	// We cannot rollback the FinallyBlocks stack here because we may need to
+	// run some of them as part of the return. They will be removed in the
+	// parent caller when it's finished with them
+
 	vm.Return = nil
+
 	return nil
 }

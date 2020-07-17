@@ -44,6 +44,9 @@ type VM struct {
 	// to match for a handler. ErrValue contains the actual error.
 	ErrType  string
 	ErrValue *ast.Literal
+
+	// FinallyBlocks are stacked with stack.
+	FinallyBlocks [][]*FinallyBlock
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
@@ -97,14 +100,47 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 		fn = Lib[name].CompiledFunc
 	}
 
+	// Setup the finally blocks. Copy so they all start disabled.
+	var finallyBlocks []*FinallyBlock
+	for _, ins := range fn.Finally {
+		finallyBlocks = append(finallyBlocks, &FinallyBlock{
+			Run:          false,
+			Instructions: ins,
+		})
+	}
+	vm.FinallyBlocks = append(vm.FinallyBlocks, finallyBlocks)
+
 	for i, arg := range arguments {
 		registers[fn.Arguments[i]] = vm.stack[len(vm.stack)-1][arg]
 	}
 	vm.stack = append(vm.stack, registers)
 
-	totalInstructions := len(fn.Instructions)
+	returns, err := vm.runInstructions(fn.Instructions, registers, false)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, fb := range finallyBlocks {
+		if fb.Run {
+			// Ignore returns here.
+			// TODO(elliot): The compiler must disallow return
+			//  statements within a finally block.
+			_, err := vm.runInstructions(fb.Instructions, registers, true)
+			if err != nil {
+				return nil, err
+			}
+		}
+	}
+
+	vm.FinallyBlocks = vm.FinallyBlocks[:len(vm.FinallyBlocks)-1]
+
+	return returns, nil
+}
+
+func (vm *VM) runInstructions(ins []Instruction, registers map[string]*ast.Literal, inFinally bool) ([]string, error) {
+	totalInstructions := len(ins)
 	for i := 0; i < totalInstructions; i++ {
-		ins := fn.Instructions[i]
+		ins := ins[i]
 
 		// If we are in an error state, we keep moving forward until we find an
 		// appropriate error handler.
@@ -112,7 +148,7 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 		// TODO(elliot): This can not differentiate a handler in a lower scope
 		//  that should be ignored. It would be best for raise to provide a jump
 		//  to the first (or each) of the handlers, ideally.
-		if vm.ErrType != "" {
+		if vm.ErrType != "" && !inFinally {
 			if on, ok := ins.(*On); ok {
 				switch on.Type {
 				case vm.ErrType,
@@ -144,7 +180,7 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 			return nil, err
 		}
 
-		if vm.Return != nil {
+		if vm.Return != nil && !inFinally {
 			return vm.Return, nil
 		}
 	}

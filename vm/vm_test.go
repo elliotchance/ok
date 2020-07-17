@@ -33,4 +33,26 @@ func add(a, b number) number {
 		m := vm.NewVM(f.Funcs, f.Tests, "pkg")
 		assert.NoError(t, m.Run())
 	})
+
+	t.Run("finally-is-called-before-return", func(t *testing.T) {
+		p := parser.ParseString(`
+func f2(arg number) number {
+    try {
+        return arg + 10
+    } finally {
+        print("f2 done")
+    }
+}
+
+func main() {
+    print(f2(123))
+}
+`, "a.ok")
+		require.Nil(t, p.Errors())
+		f, err := compiler.CompileFile(p.File)
+		require.NoError(t, err)
+
+		m := vm.NewVM(f.Funcs, f.Tests, "pkg")
+		assert.NoError(t, m.Run())
+	})
 }

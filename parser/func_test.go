@@ -6,7 +6,6 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
-
 	"github.com/stretchr/testify/assert"
 )
 
@@ -104,6 +103,99 @@ func TestFunc(t *testing.T) {
 			expected: map[string]*ast.Func{
 				"Abs": {
 					Name: "Abs",
+				},
+			},
+		},
+		"try-finally-2": {
+			str: "func main() {" +
+				"try { print() } finally { foo() } " +
+				"try { print() } finally { bar() }" +
+				"}",
+			expected: map[string]*ast.Func{
+				"main": {
+					Name: "main",
+					Statements: []ast.Node{
+						&ast.ErrorScope{
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+								},
+							},
+							Finally: &ast.Finally{
+								Index: 0,
+								Statements: []ast.Node{
+									&ast.Call{
+										FunctionName: "foo",
+									},
+								},
+							},
+						},
+						&ast.ErrorScope{
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+								},
+							},
+							Finally: &ast.Finally{
+								Index: 1,
+								Statements: []ast.Node{
+									&ast.Call{
+										FunctionName: "bar",
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+		"try-finally-3": {
+			str: "func main() {" +
+				"try { print() } finally { foo() } " +
+				"}" +
+				"func main2() {" +
+				"try { print() } finally { bar() }" +
+				"}",
+			expected: map[string]*ast.Func{
+				"main": {
+					Name: "main",
+					Statements: []ast.Node{
+						&ast.ErrorScope{
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+								},
+							},
+							Finally: &ast.Finally{
+								Index: 0,
+								Statements: []ast.Node{
+									&ast.Call{
+										FunctionName: "foo",
+									},
+								},
+							},
+						},
+					},
+				},
+				"main2": {
+					Name: "main2",
+					Statements: []ast.Node{
+						&ast.ErrorScope{
+							Statements: []ast.Node{
+								&ast.Call{
+									FunctionName: "print",
+								},
+							},
+							Finally: &ast.Finally{
+								Index: 0,
+								Statements: []ast.Node{
+									&ast.Call{
+										FunctionName: "bar",
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},

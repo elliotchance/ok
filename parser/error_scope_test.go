@@ -68,6 +68,52 @@ func TestErrorScope(t *testing.T) {
 				},
 			},
 		},
+		"try-on-finally": {
+			str: "try { print() } on SomethingElse { foo() } finally { bar() }",
+			expected: &ast.ErrorScope{
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+					},
+				},
+				On: []*ast.On{
+					{
+						Type: "SomethingElse",
+						Statements: []ast.Node{
+							&ast.Call{
+								FunctionName: "foo",
+							},
+						},
+					},
+				},
+				Finally: &ast.Finally{
+					Index: 0,
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "bar",
+						},
+					},
+				},
+			},
+		},
+		"try-finally": {
+			str: "try { print() } finally { foo() }",
+			expected: &ast.ErrorScope{
+				Statements: []ast.Node{
+					&ast.Call{
+						FunctionName: "print",
+					},
+				},
+				Finally: &ast.Finally{
+					Index: 0,
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "foo",
+						},
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
