@@ -28,6 +28,7 @@ const (
 	TokenContinue = "continue"
 	TokenData     = "data"
 	TokenElse     = "else"
+	TokenFinally  = "finally"
 	TokenFor      = "for"
 	TokenFunc     = "func"
 	TokenIf       = "if"

@@ -8,7 +8,8 @@ import (
 // ParseString parses source code and returns the AST for the file.
 func ParseString(s string, fileName string) *Parser {
 	parser := &Parser{
-		File: &File{},
+		File:       &File{},
+		finalizers: map[string][]*ast.Finally{},
 	}
 	parser.File.Funcs = map[string]*ast.Func{}
 	parser.File.Imports = map[string]string{}

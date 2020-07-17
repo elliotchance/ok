@@ -133,6 +133,48 @@ func TestErrorScope(t *testing.T) {
 				},
 			},
 		},
+		"try-finally": {
+			nodes: []ast.Node{
+				&ast.ErrorScope{
+					Statements: []ast.Node{
+						&ast.Call{
+							FunctionName: "print",
+						},
+					},
+					Finally: &ast.Finally{
+						Statements: []ast.Node{
+							&ast.Call{
+								FunctionName: "print",
+							},
+						},
+					},
+				},
+			},
+			expected: []vm.Instruction{
+				// The moment we enter the try, we enable the finally block.
+				&vm.Finally{
+					Index: 0,
+					Run:   true,
+				},
+
+				&vm.Print{},
+				&vm.Jump{
+					To: 3,
+				},
+
+				&vm.On{
+					Type: "",
+				},
+
+				// If we enter the finally block we need to disable it, this
+				// prevents it from running again when we return.
+				&vm.Finally{
+					Index: 0,
+					Run:   false,
+				},
+				&vm.Print{},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...), nil)

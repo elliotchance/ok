@@ -8,6 +8,12 @@ type CompiledFunc struct {
 	Registers      int
 	Variables      map[string]string
 	ObjectRegister string
+	Finally        [][]Instruction
+}
+
+type FinallyBlock struct {
+	Run          bool
+	Instructions []Instruction
 }
 
 func (c *CompiledFunc) NextRegister() string {

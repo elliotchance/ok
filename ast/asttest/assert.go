@@ -23,6 +23,7 @@ func cmpOptions() cmp.Options {
 		cmpopts.IgnoreFields(ast.Comment{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Continue{}, "Pos"),
 		cmpopts.IgnoreFields(ast.ErrorScope{}, "Pos"),
+		cmpopts.IgnoreFields(ast.Finally{}, "Pos"),
 		cmpopts.IgnoreFields(ast.For{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Func{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Group{}, "Pos"),

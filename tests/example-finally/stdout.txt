@@ -1,0 +1,8 @@
+f1 worked: 10
+finally f1
+f1 failed: can't work with 42
+finally f1
+f2 done
+f2 worked: 10
+f2 done
+f2 failed: can't work with 42

@@ -1129,6 +1129,13 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
+		"finally": {
+			str: `finally`,
+			expected: []lexer.Token{
+				{lexer.TokenFinally, "finally", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(8)},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

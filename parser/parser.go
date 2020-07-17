@@ -9,8 +9,10 @@ import (
 )
 
 type Parser struct {
-	errors []error
-	File   *File
+	errors        []error
+	File          *File
+	finalizers    map[string][]*ast.Finally
+	functionNames []string
 }
 
 // AppendError adds an error to the stack.
@@ -41,4 +43,12 @@ func (p *Parser) AppendErrorf(node ast.Node, format string, args ...interface{})
 // Errors returns all errors.
 func (p *Parser) Errors() []error {
 	return p.errors
+}
+
+// AppendFinally will track finalizers until the function is finished, then it
+// will be reset.
+func (p *Parser) AppendFinally(finally *ast.Finally) {
+	funcName := p.functionNames[len(p.functionNames)-1]
+	finally.Index = len(p.finalizers[funcName])
+	p.finalizers[funcName] = append(p.finalizers[funcName], finally)
 }
