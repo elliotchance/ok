@@ -10,7 +10,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func getBinaryInstruction(op string, left, right, result string) (vm.Instruction, string) {
+func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instruction, string) {
 	switch op {
 	// TODO(elliot): These below is not documented in the language spec.
 	case "[]bool + []bool",
@@ -122,7 +122,7 @@ func getBinaryInstruction(op string, left, right, result string) (vm.Instruction
 	return nil, ""
 }
 
-func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (string, string, error) {
+func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (vm.Register, string, error) {
 	// TokenAssign is not possible here because that is handled by an Assign
 	// operation.
 	if node.Op == lexer.TokenPlusAssign ||
@@ -188,63 +188,63 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 			switch {
 			case kind.IsArray(rightKind[0]):
 				compiledFunc.Append(&vm.Append{
-					A:      variable.Name,
+					A:      vm.Register(variable.Name),
 					B:      right[0],
-					Result: variable.Name,
+					Result: vm.Register(variable.Name),
 				})
 
 			case rightKind[0] == "data":
 				compiledFunc.Append(&vm.Combine{
-					Left:   variable.Name,
+					Left:   vm.Register(variable.Name),
 					Right:  right[0],
-					Result: variable.Name,
+					Result: vm.Register(variable.Name),
 				})
 
 			case rightKind[0] == "number":
 				compiledFunc.Append(&vm.Add{
-					Left:   variable.Name,
-					Right:  right[0],
-					Result: variable.Name,
+					Left:   vm.Register(variable.Name),
+					Right:  vm.Register(right[0]),
+					Result: vm.Register(variable.Name),
 				})
 
 			case rightKind[0] == "string":
 				compiledFunc.Append(&vm.Concat{
-					Left:   variable.Name,
+					Left:   vm.Register(variable.Name),
 					Right:  right[0],
-					Result: variable.Name,
+					Result: vm.Register(variable.Name),
 				})
 			}
 
 		case lexer.TokenMinusAssign:
 			compiledFunc.Append(&vm.Subtract{
-				Left:   variable.Name,
+				Left:   vm.Register(variable.Name),
 				Right:  right[0],
-				Result: variable.Name,
+				Result: vm.Register(variable.Name),
 			})
 
 		case lexer.TokenTimesAssign:
 			compiledFunc.Append(&vm.Multiply{
-				Left:   variable.Name,
+				Left:   vm.Register(variable.Name),
 				Right:  right[0],
-				Result: variable.Name,
+				Result: vm.Register(variable.Name),
 			})
 
 		case lexer.TokenDivideAssign:
 			compiledFunc.Append(&vm.Divide{
-				Left:   variable.Name,
+				Left:   vm.Register(variable.Name),
 				Right:  right[0],
-				Result: variable.Name,
+				Result: vm.Register(variable.Name),
 			})
 
 		case lexer.TokenRemainderAssign:
 			compiledFunc.Append(&vm.Remainder{
-				Left:   variable.Name,
+				Left:   vm.Register(variable.Name),
 				Right:  right[0],
-				Result: variable.Name,
+				Result: vm.Register(variable.Name),
 			})
 		}
 
-		return variable.Name, rightKind[0], nil
+		return vm.Register(variable.Name), rightKind[0], nil
 	}
 
 	_, _, returns, returnKind, err := compileComparison(compiledFunc, node, fns)
@@ -252,7 +252,11 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 	return returns, returnKind, err
 }
 
-func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (string, string, string, string, error) {
+func compileComparison(
+	compiledFunc *vm.CompiledFunc,
+	node *ast.Binary,
+	fns map[string]*ast.Func,
+) (vm.Register, vm.Register, vm.Register, string, error) {
 	left, leftKind, err := compileExpr(compiledFunc, node.Left, fns)
 	if err != nil {
 		return "", "", "", "", err

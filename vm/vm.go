@@ -28,8 +28,8 @@ type CompiledTest struct {
 // VM is an instance of a virtual machine to run ok instructions.
 type VM struct {
 	fns    map[string]*CompiledFunc
-	Return []string
-	stack  []map[string]*ast.Literal
+	Return []Register
+	stack  []map[Register]*ast.Literal
 	tests  []*CompiledTest
 	pkg    string
 	Stdout io.Writer
@@ -85,10 +85,10 @@ func (vm *VM) RunTests() error {
 	return nil
 }
 
-func (vm *VM) call(name string, arguments []string) ([]string, error) {
+func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	// TODO(elliot): Check function exists, especially main.
 
-	registers := map[string]*ast.Literal{}
+	registers := map[Register]*ast.Literal{}
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
@@ -111,7 +111,7 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 	vm.FinallyBlocks = append(vm.FinallyBlocks, finallyBlocks)
 
 	for i, arg := range arguments {
-		registers[fn.Arguments[i]] = vm.stack[len(vm.stack)-1][arg]
+		registers[Register(fn.Arguments[i])] = vm.stack[len(vm.stack)-1][arg]
 	}
 	vm.stack = append(vm.stack, registers)
 
@@ -137,7 +137,7 @@ func (vm *VM) call(name string, arguments []string) ([]string, error) {
 	return returns, nil
 }
 
-func (vm *VM) runInstructions(ins []Instruction, registers map[string]*ast.Literal, inFinally bool) ([]string, error) {
+func (vm *VM) runInstructions(ins []Instruction, registers map[Register]*ast.Literal, inFinally bool) ([]Register, error) {
 	totalInstructions := len(ins)
 	for i := 0; i < totalInstructions; i++ {
 		ins := ins[i]
@@ -191,7 +191,7 @@ func (vm *VM) runInstructions(ins []Instruction, registers map[string]*ast.Liter
 func (vm *VM) runTest(testName string, instructions []Instruction) error {
 	vm.CurrentTestName = testName
 
-	registers := map[string]*ast.Literal{}
+	registers := map[Register]*ast.Literal{}
 	vm.stack = append(vm.stack, registers)
 
 	totalInstructions := len(instructions)

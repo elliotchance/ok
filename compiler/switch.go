@@ -7,7 +7,14 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
+func compileCase(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.Case,
+	valueRegister vm.Register,
+	expectedConditionKind string,
+	afterMatch, breakIns, continueIns vm.Instruction,
+	fns map[string]*ast.Func,
+) error {
 	// TODO(elliot): This is a poor solution. It simply expands the conditions
 	//  out as if they were individual case statements. This duplicates
 	//  statements and uses more memory.
@@ -32,7 +39,7 @@ func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister, expe
 			bop, _ := getBinaryInstruction(op, valueRegister, conditionResults[0], result)
 			compiledFunc.Append(bop)
 
-			conditionResults = []string{result}
+			conditionResults = []vm.Register{result}
 		}
 
 		ins := &vm.JumpUnless{
@@ -64,7 +71,7 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 	// Condition must be a bool if no value has been provided, otherwise all
 	// conditions must be the same type as the value.
 	expectedConditionKinds := []string{"bool"}
-	valueRegisters := []string{""}
+	valueRegisters := []vm.Register{""}
 	if n.Expr != nil {
 		var err error
 		valueRegisters, expectedConditionKinds, err = compileExpr(compiledFunc, n.Expr, fns)

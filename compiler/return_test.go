@@ -35,7 +35,7 @@ func TestReturn(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.Return{
-					Results: []string{"1"},
+					Results: []vm.Register{"1"},
 				},
 			},
 		},
@@ -56,7 +56,7 @@ func TestReturn(t *testing.T) {
 					Value:        asttest.NewLiteralString("foo"),
 				},
 				&vm.Return{
-					Results: []string{"1", "2"},
+					Results: []vm.Register{"1", "2"},
 				},
 			},
 		},

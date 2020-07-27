@@ -45,7 +45,7 @@ func TestEqual_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": test.left,
 				"1": test.right,
 			}
@@ -70,7 +70,7 @@ func TestEqualNumber_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": test.left,
 				"1": test.right,
 			}
@@ -79,4 +79,14 @@ func TestEqualNumber_Execute(t *testing.T) {
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
+}
+
+func TestEqual_String(t *testing.T) {
+	ins := &vm.Equal{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = $1 == $2", ins.String())
+}
+
+func TestEqualNumber_String(t *testing.T) {
+	ins := &vm.EqualNumber{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = $1 == $2", ins.String())
 }

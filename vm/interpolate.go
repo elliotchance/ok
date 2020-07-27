@@ -12,12 +12,12 @@ import (
 
 // Interpolate combines strings and expressions into one string result.
 type Interpolate struct {
-	Result string
-	Args   []string
+	Result Register
+	Args   Registers
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Interpolate) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
+func (ins *Interpolate) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
 	s := ""
 
 	for _, arg := range ins.Args {
@@ -27,6 +27,11 @@ func (ins *Interpolate) Execute(registers map[string]*ast.Literal, _ *int, _ *VM
 	registers[ins.Result] = asttest.NewLiteralString(s)
 
 	return nil
+}
+
+// String is the human-readable description of the instruction.
+func (ins *Interpolate) String() string {
+	return fmt.Sprintf("%s = interpolate %s", ins.Result, ins.Args)
 }
 
 func renderLiteral(v *ast.Literal, asJSON bool) string {

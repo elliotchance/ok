@@ -119,7 +119,7 @@ func TestCompileFile(t *testing.T) {
 							},
 							&vm.Call{
 								FunctionName: "add",
-								Arguments:    []string{"1"},
+								Arguments:    []vm.Register{"1"},
 							},
 						},
 					},
@@ -131,7 +131,7 @@ func TestCompileFile(t *testing.T) {
 						Registers: 1,
 						Instructions: []vm.Instruction{
 							&vm.Print{
-								Arguments: []string{"x"},
+								Arguments: []vm.Register{"x"},
 							},
 						},
 					},
@@ -234,7 +234,7 @@ func TestCompileFile(t *testing.T) {
 						Instructions: []vm.Instruction{
 							&vm.Call{
 								FunctionName: "Person",
-								Results:      []string{"1"},
+								Results:      []vm.Register{"1"},
 							},
 							&vm.Assign{
 								VariableName: "p",
@@ -263,7 +263,7 @@ func TestCompileFile(t *testing.T) {
 
 							// return instance
 							&vm.Return{
-								Results: []string{"2"},
+								Results: []vm.Register{"2"},
 							},
 						},
 					},

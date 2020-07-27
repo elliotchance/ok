@@ -1,6 +1,8 @@
 package vm
 
 import (
+	"fmt"
+
 	"github.com/elliotchance/ok/ast"
 )
 
@@ -14,8 +16,13 @@ type On struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *On) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
+func (ins *On) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
 	// Nothing happens here because On is just a pragma for the VM to look
 	// forward to find the error handler.
 	return nil
+}
+
+// String is the human-readable description of the instruction.
+func (ins *On) String() string {
+	return fmt.Sprintf("on %s", ins.Type)
 }

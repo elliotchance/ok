@@ -19,7 +19,7 @@ func TestNot_Execute(t *testing.T) {
 		"true":  {true, "false"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": asttest.NewLiteralBool(test.left),
 			}
 			ins := &vm.Not{Left: "0", Result: "1"}

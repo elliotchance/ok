@@ -19,7 +19,7 @@ func TestConcat_Execute(t *testing.T) {
 		"both-non-empty": {"foo", "bar", "foobar"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": asttest.NewLiteralString(test.left),
 				"1": asttest.NewLiteralString(test.right),
 			}
@@ -28,4 +28,9 @@ func TestConcat_Execute(t *testing.T) {
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
+}
+
+func TestConcat_String(t *testing.T) {
+	ins := &vm.Concat{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = concat($1, $2)", ins.String())
 }

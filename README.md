@@ -21,6 +21,7 @@ itself.
    * [IDE Support](#ide-support)
       * [Visual Studio Code](#visual-studio-code)
    * [Command Line Interface](#command-line-interface)
+      * [asm](#asm)
       * [build](#build)
       * [doc](#doc)
       * [run](#run)
@@ -167,6 +168,32 @@ extension inside of VSCode.
 
 Command Line Interface
 ======================
+
+asm
+---
+
+The `asm` tool is useful for debugging. It will print out human-readable
+descriptions of each of the compiled instructions for one or more
+functions. Usage:
+
+```bash
+ok asm package-name function1 function2 ...
+```
+
+Without providing any arguments it will use the current package and
+output the `main` function, this is equivalent to running:
+
+```bash
+ok asm . main
+```
+
+Here is the output from the `hello-world` example:
+
+```
+func main():
+    1 Assign                 # $1 = "Hello, World!"
+    2 Print                  # print($1)
+```
 
 build
 -----

@@ -8,7 +8,11 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileMap(compiledFunc *vm.CompiledFunc, n *ast.Map, fns map[string]*ast.Func) (string, error) {
+func compileMap(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.Map,
+	fns map[string]*ast.Func,
+) (vm.Register, error) {
 	// TODO(elliot): Check type is valid for the map.
 	// TODO(elliot): Maps with duplicate keys should be an error.
 

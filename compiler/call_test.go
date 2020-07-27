@@ -80,7 +80,7 @@ func TestCall(t *testing.T) {
 					Register:     "1",
 				},
 				&vm.Print{
-					Arguments: []string{"foo"},
+					Arguments: []vm.Register{"foo"},
 				},
 			},
 		},
@@ -138,7 +138,7 @@ func TestCall(t *testing.T) {
 					Result: "5",
 				},
 				&vm.Print{
-					Arguments: []string{"3", "5"},
+					Arguments: []vm.Register{"3", "5"},
 				},
 			},
 		},

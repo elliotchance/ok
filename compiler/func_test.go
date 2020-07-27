@@ -53,7 +53,7 @@ func TestFunc(t *testing.T) {
 					Value:        asttest.NewLiteralString("hello"),
 				},
 				&vm.Print{
-					Arguments: []string{"1"},
+					Arguments: []vm.Register{"1"},
 				},
 			},
 		},

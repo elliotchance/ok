@@ -19,7 +19,7 @@ func TestCombine_Execute(t *testing.T) {
 		"both-non-empty": {[]byte("foo"), []byte("bar"), "foobar"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": asttest.NewLiteralData(test.left),
 				"1": asttest.NewLiteralData(test.right),
 			}
@@ -28,4 +28,9 @@ func TestCombine_Execute(t *testing.T) {
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
+}
+
+func TestCombine_String(t *testing.T) {
+	ins := &vm.Combine{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = combine($1, $2)", ins.String())
 }

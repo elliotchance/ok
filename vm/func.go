@@ -6,8 +6,8 @@ type CompiledFunc struct {
 	Arguments      []string
 	Instructions   []Instruction
 	Registers      int
-	Variables      map[string]string
-	ObjectRegister string
+	Variables      map[string]string // name: type
+	ObjectRegister Register
 	Finally        [][]Instruction
 }
 
@@ -16,9 +16,10 @@ type FinallyBlock struct {
 	Instructions []Instruction
 }
 
-func (c *CompiledFunc) NextRegister() string {
+func (c *CompiledFunc) NextRegister() Register {
 	c.Registers++
-	return fmt.Sprintf("%d", c.Registers)
+
+	return Register(fmt.Sprintf("%d", c.Registers))
 }
 
 func (c *CompiledFunc) Append(instruction Instruction) {

@@ -7,7 +7,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.Func) (string, string, error) {
+func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.Func) (vm.Register, string, error) {
 	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, fns)
 	if err != nil {
 		return "", "", err
@@ -30,7 +30,7 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.F
 
 	case arrayOrMapKind[0] == "string":
 		compiledFunc.Append(&vm.StringIndex{
-			String: arrayOrMapRegisters[0],
+			Str:    arrayOrMapRegisters[0],
 			Index:  keyRegisters[0],
 			Result: resultRegister,
 		})

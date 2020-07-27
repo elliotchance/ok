@@ -22,7 +22,7 @@ func TestDivide_Execute(t *testing.T) {
 		"divide-zero": {"1.2200", "0", "0", errors.New("division by zero")},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": asttest.NewLiteralNumber(test.left),
 				"1": asttest.NewLiteralNumber(test.right),
 			}
@@ -32,4 +32,9 @@ func TestDivide_Execute(t *testing.T) {
 			assert.Equal(t, test.expected, number.Format(actual, -1))
 		})
 	}
+}
+
+func TestDivide_String(t *testing.T) {
+	ins := &vm.Divide{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = $1 / $2", ins.String())
 }

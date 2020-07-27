@@ -10,16 +10,16 @@ import (
 
 // NextString is used to tick a string iterator forward.
 type NextString struct {
-	String      string // Register In (string): Containing the iterating string.
-	Cursor      string // Register In (number): Containing the current position.
-	KeyResult   string // Register Out (any): Load the key into this register.
-	ValueResult string // Register Out (any): Load the value into this register.
-	Result      string // Register Out (bool): Still more items?
+	Str         Register // In (string): Containing the iterating string.
+	Cursor      Register // In (number): Containing the current position.
+	KeyResult   Register // Out (any): Load the key into this register.
+	ValueResult Register // Out (any): Load the value into this register.
+	Result      Register // Out (bool): Still more items?
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NextString) Execute(registers map[string]*ast.Literal, _ *int, _ *VM) error {
-	str := []rune(registers[ins.String].Value)
+func (ins *NextString) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
+	str := []rune(registers[ins.Str].Value)
 	pos := number.Int(number.NewNumber(registers[ins.Cursor].Value))
 	hasMore := pos < len(str)
 	registers[ins.Result] = asttest.NewLiteralBool(hasMore)
@@ -30,4 +30,10 @@ func (ins *NextString) Execute(registers map[string]*ast.Literal, _ *int, _ *VM)
 	}
 
 	return nil
+}
+
+// String is the human-readable description of the instruction.
+func (ins *NextString) String() string {
+	return fmt.Sprintf("%s, %s = next from %s; increment %s; has more %s",
+		ins.ValueResult, ins.KeyResult, ins.Str, ins.Cursor, ins.Result)
 }

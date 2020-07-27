@@ -487,7 +487,7 @@ func TestKey(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.StringIndex{
-					String: "foo",
+					Str:    "foo",
 					Index:  "2",
 					Result: "3",
 				},

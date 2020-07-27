@@ -53,7 +53,7 @@ func CompileFunc(fn *ast.Func, fns map[string]*ast.Func) (*vm.CompiledFunc, erro
 	// If this is an object, always returns its state.
 	if isObject {
 		compiled.Append(&vm.Return{
-			Results: []string{compiled.ObjectRegister},
+			Results: []vm.Register{compiled.ObjectRegister},
 		})
 	}
 

@@ -412,7 +412,7 @@ func TestFor(t *testing.T) {
 
 				// print(a)
 				&vm.Print{
-					Arguments: []string{"a"},
+					Arguments: []vm.Register{"a"},
 				},
 
 				// ++a

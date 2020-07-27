@@ -8,11 +8,11 @@ import (
 
 // Print will output a string to stdout.
 type Print struct {
-	Arguments []string
+	Arguments Registers
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) error {
+func (ins *Print) Execute(registers map[Register]*ast.Literal, _ *int, vm *VM) error {
 	for i, register := range ins.Arguments {
 		if i > 0 {
 			fmt.Fprint(vm.Stdout, " ")
@@ -24,4 +24,9 @@ func (ins *Print) Execute(registers map[string]*ast.Literal, _ *int, vm *VM) err
 	fmt.Fprint(vm.Stdout, "\n")
 
 	return nil
+}
+
+// String is the human-readable description of the instruction.
+func (ins *Print) String() string {
+	return fmt.Sprintf("print%s", ins.Arguments)
 }

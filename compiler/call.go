@@ -7,7 +7,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-type builtinFn func(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error)
+type builtinFn func(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error)
 
 // TODO(elliot): These needs to check function signatures.
 var builtinFunctions = map[string]builtinFn{
@@ -20,8 +20,12 @@ var builtinFunctions = map[string]builtinFn{
 	"char":   funcChar,
 }
 
-func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*ast.Func) ([]string, []string, error) {
-	var argResults []string
+func compileCall(
+	compiledFunc *vm.CompiledFunc,
+	call *ast.Call,
+	fns map[string]*ast.Func,
+) ([]vm.Register, []string, error) {
+	var argResults []vm.Register
 	for _, arg := range call.Arguments {
 		argResult, _, err := compileExpr(compiledFunc, arg, fns)
 		if err != nil {
@@ -39,7 +43,7 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 
 		compiledFunc.Append(ins)
 
-		return []string{result}, []string{returnType}, nil
+		return []vm.Register{result}, []string{returnType}, nil
 	}
 
 	toCall := fns[call.FunctionName]
@@ -58,7 +62,7 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 	}
 
 	// Prepare enough return registers.
-	var returnRegisters []string
+	var returnRegisters []vm.Register
 	for range toCall.Returns {
 		returnRegisters = append(returnRegisters, compiledFunc.NextRegister())
 	}
@@ -74,7 +78,7 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, fns map[string]*
 	return returnRegisters, toCall.Returns, nil
 }
 
-func funcNumber(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastNumber{
 		X:      args[0],
@@ -84,7 +88,7 @@ func funcNumber(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, s
 	return ins, result, "number", nil
 }
 
-func funcString(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcString(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastString{
 		X:      args[0],
@@ -94,7 +98,7 @@ func funcString(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, s
 	return ins, result, "string", nil
 }
 
-func funcChar(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcChar(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastChar{
 		X:      args[0],
@@ -104,7 +108,7 @@ func funcChar(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, str
 	return ins, result, "char", nil
 }
 
-func funcLog(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcLog(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Log{
 		X:      args[0],
@@ -114,7 +118,7 @@ func funcLog(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, stri
 	return ins, result, "number", nil
 }
 
-func funcPow(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Power{
 		Base:   args[0],
@@ -125,7 +129,7 @@ func funcPow(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, stri
 	return ins, result, "number", nil
 }
 
-func funcLen(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcLen(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Len{
 		Argument: args[0],
@@ -135,7 +139,7 @@ func funcLen(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, stri
 	return ins, result, "number", nil
 }
 
-func funcPrint(compiledFunc *vm.CompiledFunc, args []string) (vm.Instruction, string, string, error) {
+func funcPrint(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
 	ins := &vm.Print{
 		Arguments: args,
 	}

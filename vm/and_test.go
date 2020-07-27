@@ -21,7 +21,7 @@ func TestAnd_Execute(t *testing.T) {
 		"true-true":   {true, true, "true"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": asttest.NewLiteralBool(test.left),
 				"1": asttest.NewLiteralBool(test.right),
 			}
@@ -30,4 +30,9 @@ func TestAnd_Execute(t *testing.T) {
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
+}
+
+func TestAnd_String(t *testing.T) {
+	ins := &vm.And{Left: "0", Right: "1", Result: "2"}
+	assert.Equal(t, "$2 = $0 and $1", ins.String())
 }
