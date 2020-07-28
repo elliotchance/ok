@@ -19,7 +19,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		}
 	}
 
-	var conditionResults []string
+	var conditionResults []vm.Register
 	switch cond := n.Condition.(type) {
 	case nil:
 		// Error here should not be possible.
@@ -62,14 +62,14 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 			Value:        asttest.NewLiteralNumber("0"),
 		})
 
-		conditionResults = []string{compiledFunc.NextRegister()}
+		conditionResults = []vm.Register{compiledFunc.NextRegister()}
 		switch {
 		case kind.IsArray(arrayOrMapKind[0]):
 			compiledFunc.Append(&vm.NextArray{
 				Array:       arrayOrMapResults[0],
 				Cursor:      cursorRegister,
-				KeyResult:   cond.Key,
-				ValueResult: cond.Value,
+				KeyResult:   vm.Register(cond.Key),
+				ValueResult: vm.Register(cond.Value),
 				Result:      conditionResults[0],
 			})
 
@@ -77,17 +77,17 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 			compiledFunc.Append(&vm.NextMap{
 				Map:         arrayOrMapResults[0],
 				Cursor:      cursorRegister,
-				KeyResult:   cond.Key,
-				ValueResult: cond.Value,
+				KeyResult:   vm.Register(cond.Key),
+				ValueResult: vm.Register(cond.Value),
 				Result:      conditionResults[0],
 			})
 
 		case arrayOrMapKind[0] == "string":
 			compiledFunc.Append(&vm.NextString{
-				String:      arrayOrMapResults[0],
+				Str:         arrayOrMapResults[0],
 				Cursor:      cursorRegister,
-				KeyResult:   cond.Key,
-				ValueResult: cond.Value,
+				KeyResult:   vm.Register(cond.Key),
+				ValueResult: vm.Register(cond.Value),
 				Result:      conditionResults[0],
 			})
 		}

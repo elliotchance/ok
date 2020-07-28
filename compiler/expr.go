@@ -8,7 +8,11 @@ import (
 )
 
 // compileExpr return the (result register, result type, error)
-func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*ast.Func) ([]string, []string, error) {
+func compileExpr(
+	compiledFunc *vm.CompiledFunc,
+	expr ast.Node,
+	fns map[string]*ast.Func,
+) ([]vm.Register, []string, error) {
 	switch e := expr.(type) {
 	case *ast.Assign:
 		err := compileAssign(compiledFunc, e, fns)
@@ -22,7 +26,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 			Value:        e,
 		})
 
-		return []string{returns}, []string{e.Kind}, nil
+		return []vm.Register{returns}, []string{e.Kind}, nil
 
 	case *ast.Array:
 		returns, kind, err := compileArray(compiledFunc, e, fns)
@@ -30,7 +34,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 			return nil, nil, err
 		}
 
-		return []string{returns}, []string{kind}, nil
+		return []vm.Register{returns}, []string{kind}, nil
 
 	case *ast.Map:
 		returns, err := compileMap(compiledFunc, e, fns)
@@ -39,7 +43,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 		}
 
 		// TODO(elliot): Doesn't return type.
-		return []string{returns}, []string{"{}"}, nil
+		return []vm.Register{returns}, []string{"{}"}, nil
 
 	case *ast.Call:
 		results, resultKinds, err := compileCall(compiledFunc, e, fns)
@@ -52,7 +56,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 
 	case *ast.Identifier:
 		if v, ok := compiledFunc.Variables[e.Name]; ok {
-			return []string{e.Name}, []string{v}, nil
+			return []vm.Register{vm.Register(e.Name)}, []string{v}, nil
 		}
 
 		return nil, nil, fmt.Errorf("undefined variable: %s", e.Name)
@@ -63,7 +67,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 			return nil, nil, err
 		}
 
-		return []string{result}, []string{ty}, nil
+		return []vm.Register{result}, []string{ty}, nil
 
 	case *ast.Group:
 		return compileExpr(compiledFunc, e.Expr, fns)
@@ -74,7 +78,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 			return nil, nil, err
 		}
 
-		return []string{result}, []string{ty}, nil
+		return []vm.Register{result}, []string{ty}, nil
 
 	case *ast.Key:
 		result, ty, err := compileKey(compiledFunc, e, fns)
@@ -82,7 +86,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 			return nil, nil, err
 		}
 
-		return []string{result}, []string{ty}, nil
+		return []vm.Register{result}, []string{ty}, nil
 
 	case *ast.Interpolate:
 		result, err := compileInterpolate(compiledFunc, e, fns)
@@ -90,7 +94,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, fns map[string]*a
 			return nil, nil, err
 		}
 
-		return []string{result}, []string{"string"}, nil
+		return []vm.Register{result}, []string{"string"}, nil
 	}
 
 	panic(expr)

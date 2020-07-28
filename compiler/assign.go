@@ -10,7 +10,8 @@ import (
 )
 
 type resultKindPair struct {
-	result, kind string
+	result vm.Register
+	kind   string
 }
 
 func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[string]*ast.Func) error {
@@ -64,7 +65,7 @@ func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[stri
 				})
 			} else {
 				ins := &vm.Assign{
-					VariableName: variableName,
+					VariableName: vm.Register(variableName),
 					Register:     rr.result,
 				}
 				compiledFunc.Append(ins)

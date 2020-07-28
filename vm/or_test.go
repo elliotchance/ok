@@ -21,7 +21,7 @@ func TestOr_Execute(t *testing.T) {
 		"true-true":   {true, true, "true"},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": asttest.NewLiteralBool(test.left),
 				"1": asttest.NewLiteralBool(test.right),
 			}

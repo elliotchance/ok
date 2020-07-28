@@ -7,7 +7,11 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileAssert(compiledFunc *vm.CompiledFunc, n *ast.Assert, fns map[string]*ast.Func) error {
+func compileAssert(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.Assert,
+	fns map[string]*ast.Func,
+) error {
 	left, right, returns, returnKind, err := compileComparison(compiledFunc, n.Expr, fns)
 	if err != nil {
 		return err

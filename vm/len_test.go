@@ -22,7 +22,7 @@ func TestLen_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": test.x,
 			}
 			ins := &vm.Len{Argument: "0", Result: "1"}

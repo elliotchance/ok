@@ -105,7 +105,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("ONE"),
 				},
 				&vm.Print{
-					Arguments: []string{"4"},
+					Arguments: []vm.Register{"4"},
 				},
 				&vm.Jump{
 					To: 13,
@@ -132,7 +132,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("TWO"),
 				},
 				&vm.Print{
-					Arguments: []string{"7"},
+					Arguments: []vm.Register{"7"},
 				},
 				&vm.Jump{
 					To: 13,
@@ -228,7 +228,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("ONE"),
 				},
 				&vm.Print{
-					Arguments: []string{"4"},
+					Arguments: []vm.Register{"4"},
 				},
 				&vm.Jump{
 					To: 15,
@@ -255,7 +255,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("TWO"),
 				},
 				&vm.Print{
-					Arguments: []string{"7"},
+					Arguments: []vm.Register{"7"},
 				},
 				&vm.Jump{
 					To: 15,
@@ -267,7 +267,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("NO MATCH"),
 				},
 				&vm.Print{
-					Arguments: []string{"8"},
+					Arguments: []vm.Register{"8"},
 				},
 			},
 		},
@@ -357,7 +357,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Arguments: []string{"4"},
+					Arguments: []vm.Register{"4"},
 				},
 				&vm.Jump{
 					To: 19,
@@ -384,7 +384,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Arguments: []string{"7"},
+					Arguments: []vm.Register{"7"},
 				},
 				&vm.Jump{
 					To: 19,
@@ -411,7 +411,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("THREE"),
 				},
 				&vm.Print{
-					Arguments: []string{"10"},
+					Arguments: []vm.Register{"10"},
 				},
 				&vm.Jump{
 					To: 19,
@@ -519,7 +519,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Arguments: []string{"4"},
+					Arguments: []vm.Register{"4"},
 				},
 				&vm.Jump{
 					To: 19,
@@ -546,7 +546,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("ONE OR TWO"),
 				},
 				&vm.Print{
-					Arguments: []string{"7"},
+					Arguments: []vm.Register{"7"},
 				},
 				&vm.Jump{
 					To: 19,
@@ -573,7 +573,7 @@ func TestSwitch(t *testing.T) {
 					Value:        asttest.NewLiteralString("THREE"),
 				},
 				&vm.Print{
-					Arguments: []string{"10"},
+					Arguments: []vm.Register{"10"},
 				},
 				&vm.Jump{
 					To: 19,

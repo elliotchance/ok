@@ -6,7 +6,7 @@ import (
 )
 
 func compileReturn(compiledFunc *vm.CompiledFunc, n *ast.Return, fns map[string]*ast.Func) error {
-	var results []string
+	var results []vm.Register
 	for _, expr := range n.Exprs {
 		// TODO(elliot): Check return types are valid.
 		result, _, err := compileExpr(compiledFunc, expr, fns)

@@ -24,7 +24,7 @@ func TestLessThanString_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": test.left,
 				"1": test.right,
 			}
@@ -49,7 +49,7 @@ func TestLessThanNumber_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{
+			registers := map[vm.Register]*ast.Literal{
 				"0": test.left,
 				"1": test.right,
 			}
@@ -58,4 +58,14 @@ func TestLessThanNumber_Execute(t *testing.T) {
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
+}
+
+func TestLessThanString_String(t *testing.T) {
+	ins := &vm.LessThanString{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = $1 < $2", ins.String())
+}
+
+func TestLessThanNumber_String(t *testing.T) {
+	ins := &vm.LessThanNumber{Left: "1", Right: "2", Result: "3"}
+	assert.Equal(t, "$3 = $1 < $2", ins.String())
 }

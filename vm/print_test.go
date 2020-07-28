@@ -118,10 +118,10 @@ func TestPrint_Execute(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			registers := map[string]*ast.Literal{}
-			var arguments []string
+			registers := map[vm.Register]*ast.Literal{}
+			var arguments []vm.Register
 			for i, value := range test.values {
-				register := fmt.Sprintf("%d", i)
+				register := vm.Register(fmt.Sprintf("%d", i))
 				registers[register] = value
 				arguments = append(arguments, register)
 			}

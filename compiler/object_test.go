@@ -35,7 +35,7 @@ func TestObject(t *testing.T) {
 
 				// return instance
 				&vm.Return{
-					Results: []string{"2"},
+					Results: []vm.Register{"2"},
 				},
 			},
 		},
@@ -82,7 +82,7 @@ func TestObject(t *testing.T) {
 
 				// return instance
 				&vm.Return{
-					Results: []string{"2"},
+					Results: []vm.Register{"2"},
 				},
 			},
 		},

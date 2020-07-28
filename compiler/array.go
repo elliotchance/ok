@@ -8,7 +8,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (string, string, error) {
+func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (vm.Register, string, error) {
 	if len(n.Elements) == 0 && n.Kind == "" {
 		err := fmt.Errorf("%s empty array needs to specify a type",
 			n.Position())

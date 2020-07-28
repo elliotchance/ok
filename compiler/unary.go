@@ -6,7 +6,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*ast.Func) (string, string, error) {
+func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*ast.Func) (vm.Register, string, error) {
 	returns1, kinds, err := compileExpr(compiledFunc, e.Expr, fns)
 	if err != nil {
 		return "", "", err
@@ -49,9 +49,9 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, fns map[string]*a
 		})
 
 		ins = &vm.Add{
-			Left:   returns1[0],
-			Right:  oneAt,
-			Result: returns1[0],
+			Left:   vm.Register(returns1[0]),
+			Right:  vm.Register(oneAt),
+			Result: vm.Register(returns1[0]),
 		}
 		compiledFunc.Append(ins)
 

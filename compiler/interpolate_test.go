@@ -55,7 +55,7 @@ func TestInterpolate(t *testing.T) {
 				},
 				&vm.Interpolate{
 					Result: "1",
-					Args:   []string{"2", "5", "6"},
+					Args:   []vm.Register{"2", "5", "6"},
 				},
 			},
 		},
