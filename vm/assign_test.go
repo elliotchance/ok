@@ -14,7 +14,10 @@ func TestAssign_Execute(t *testing.T) {
 	t.Run("literal", func(t *testing.T) {
 		registers := map[vm.Register]*ast.Literal{}
 		ins := &vm.Assign{VariableName: "1", Value: asttest.NewLiteralNumber("1.5")}
-		assert.NoError(t, ins.Execute(registers, nil, nil))
+		vm := &vm.VM{
+			Stack: []map[vm.Register]*ast.Literal{registers},
+		}
+		assert.NoError(t, ins.Execute(nil, vm))
 		assert.Equal(t, "1.5", registers["1"].Value)
 	})
 
@@ -23,7 +26,10 @@ func TestAssign_Execute(t *testing.T) {
 			"0": asttest.NewLiteralNumber("1.5"),
 		}
 		ins := &vm.Assign{VariableName: "1", Register: "0"}
-		assert.NoError(t, ins.Execute(registers, nil, nil))
+		vm := &vm.VM{
+			Stack: []map[vm.Register]*ast.Literal{registers},
+		}
+		assert.NoError(t, ins.Execute(nil, vm))
 		assert.Equal(t, "1.5", registers["1"].Value)
 	})
 }

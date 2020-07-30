@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // MapGet gets a value from the map by its key.
@@ -12,9 +10,9 @@ type MapGet struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *MapGet) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	key := registers[ins.Key].Value
-	registers[ins.Result] = registers[ins.Map].Map[key]
+func (ins *MapGet) Execute(_ *int, vm *VM) error {
+	key := vm.Get(ins.Key).Value
+	vm.Set(ins.Result, vm.Get(ins.Map).Map[key])
 
 	return nil
 }

@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 )
 
@@ -13,10 +12,10 @@ type Not struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Not) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(
-		!(registers[ins.Left].Value == "true"),
-	)
+func (ins *Not) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(
+		!(vm.Get(ins.Left).Value == "true"),
+	))
 
 	return nil
 }

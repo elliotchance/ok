@@ -130,7 +130,11 @@ func TestPrint_Execute(t *testing.T) {
 			ins := &vm.Print{
 				Arguments: arguments,
 			}
-			assert.NoError(t, ins.Execute(registers, nil, &vm.VM{Stdout: buf}))
+			vm := &vm.VM{
+				Stack:  []map[vm.Register]*ast.Literal{registers},
+				Stdout: buf,
+			}
+			assert.NoError(t, ins.Execute(nil, vm))
 			assert.Equal(t, test.expectedStdout, buf.String())
 		})
 	}

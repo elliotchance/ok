@@ -13,11 +13,11 @@ type CastString struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *CastString) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = &ast.Literal{
+func (ins *CastString) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, &ast.Literal{
 		Kind:  "string",
-		Value: renderLiteral(registers[ins.X], false),
-	}
+		Value: renderLiteral(vm.Get(ins.X), false),
+	})
 
 	return nil
 }
@@ -33,11 +33,11 @@ type CastNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *CastNumber) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = &ast.Literal{
+func (ins *CastNumber) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, &ast.Literal{
 		Kind:  "number",
-		Value: fmt.Sprintf("%d", int([]rune(registers[ins.X].Value)[0])),
-	}
+		Value: fmt.Sprintf("%d", int([]rune(vm.Get(ins.X).Value)[0])),
+	})
 
 	return nil
 }
@@ -53,11 +53,11 @@ type CastChar struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *CastChar) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = &ast.Literal{
+func (ins *CastChar) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, &ast.Literal{
 		Kind:  "char",
-		Value: fmt.Sprintf("%c", number.Int(number.NewNumber(registers[ins.X].Value))),
-	}
+		Value: fmt.Sprintf("%c", number.Int(number.NewNumber(vm.Get(ins.X).Value))),
+	})
 
 	return nil
 }

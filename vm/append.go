@@ -12,11 +12,11 @@ type Append struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Append) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = &ast.Literal{
-		Kind:  registers[ins.A].Kind,
-		Array: append(registers[ins.A].Array, registers[ins.B].Array...),
-	}
+func (ins *Append) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, &ast.Literal{
+		Kind:  vm.Get(ins.A).Kind,
+		Array: append(vm.Get(ins.A).Array, vm.Get(ins.B).Array...),
+	})
 
 	return nil
 }

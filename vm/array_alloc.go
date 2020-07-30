@@ -14,13 +14,13 @@ type ArrayAlloc struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *ArrayAlloc) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	size := number.Int64(number.NewNumber(registers[ins.Size].Value))
+func (ins *ArrayAlloc) Execute(_ *int, vm *VM) error {
+	size := number.Int64(number.NewNumber(vm.Get(ins.Size).Value))
 
-	registers[ins.Result] = &ast.Literal{
+	vm.Set(ins.Result, &ast.Literal{
 		Kind:  ins.Kind,
 		Array: make([]*ast.Literal, size),
-	}
+	})
 
 	return nil
 }

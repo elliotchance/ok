@@ -17,14 +17,14 @@ type Interpolate struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Interpolate) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
+func (ins *Interpolate) Execute(_ *int, vm *VM) error {
 	s := ""
 
 	for _, arg := range ins.Args {
-		s += renderLiteral(registers[arg], false)
+		s += renderLiteral(vm.Get(arg), false)
 	}
 
-	registers[ins.Result] = asttest.NewLiteralString(s)
+	vm.Set(ins.Result, asttest.NewLiteralString(s))
 
 	return nil
 }

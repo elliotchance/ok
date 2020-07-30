@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
@@ -14,11 +13,11 @@ type GreaterThanNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *GreaterThanNumber) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(number.Cmp(
-		number.NewNumber(registers[ins.Left].Value),
-		number.NewNumber(registers[ins.Right].Value),
-	) > 0)
+func (ins *GreaterThanNumber) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(number.Cmp(
+		number.NewNumber(vm.Get(ins.Left).Value),
+		number.NewNumber(vm.Get(ins.Right).Value),
+	) > 0))
 
 	return nil
 }
@@ -34,10 +33,10 @@ type GreaterThanString struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *GreaterThanString) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(
-		registers[ins.Left].Value > registers[ins.Right].Value,
-	)
+func (ins *GreaterThanString) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(
+		vm.Get(ins.Left).Value > vm.Get(ins.Right).Value,
+	))
 
 	return nil
 }

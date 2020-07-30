@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
@@ -18,15 +17,15 @@ type NextString struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NextString) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	str := []rune(registers[ins.Str].Value)
-	pos := number.Int(number.NewNumber(registers[ins.Cursor].Value))
+func (ins *NextString) Execute(_ *int, vm *VM) error {
+	str := []rune(vm.Get(ins.Str).Value)
+	pos := number.Int(number.NewNumber(vm.Get(ins.Cursor).Value))
 	hasMore := pos < len(str)
-	registers[ins.Result] = asttest.NewLiteralBool(hasMore)
+	vm.Set(ins.Result, asttest.NewLiteralBool(hasMore))
 	if hasMore {
-		registers[ins.KeyResult] = asttest.NewLiteralNumber(fmt.Sprintf("%d", pos))
-		registers[ins.ValueResult] = asttest.NewLiteralChar(str[pos])
-		registers[ins.Cursor] = asttest.NewLiteralNumber(fmt.Sprintf("%d", pos+1))
+		vm.Set(ins.KeyResult, asttest.NewLiteralNumber(fmt.Sprintf("%d", pos)))
+		vm.Set(ins.ValueResult, asttest.NewLiteralChar(str[pos]))
+		vm.Set(ins.Cursor, asttest.NewLiteralNumber(fmt.Sprintf("%d", pos+1)))
 	}
 
 	return nil

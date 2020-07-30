@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
@@ -15,18 +14,19 @@ type Remainder struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Remainder) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
+func (ins *Remainder) Execute(_ *int, vm *VM) error {
 	divide, err := number.Remainder(
-		number.NewNumber(registers[ins.Left].Value),
-		number.NewNumber(registers[ins.Right].Value),
+		number.NewNumber(vm.Get(ins.Left).Value),
+		number.NewNumber(vm.Get(ins.Right).Value),
 	)
 	if err != nil {
 		// TODO(elliot): This needs to be the same precision of zero.
-		registers[ins.Result] = asttest.NewLiteralNumber("0")
+		vm.Set(ins.Result, asttest.NewLiteralNumber("0"))
 		return err
 	}
 
-	registers[ins.Result] = asttest.NewLiteralNumber(divide.String())
+	vm.Set(ins.Result, asttest.NewLiteralNumber(divide.String()))
+
 	return nil
 }
 

@@ -14,11 +14,11 @@ type Assign struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Assign) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
+func (ins *Assign) Execute(_ *int, vm *VM) error {
 	if ins.Value != nil {
-		registers[ins.VariableName] = ins.Value
+		vm.Set(ins.VariableName, ins.Value)
 	} else {
-		registers[ins.VariableName] = registers[ins.Register]
+		vm.Set(ins.VariableName, vm.Get(ins.Register))
 	}
 
 	return nil

@@ -15,11 +15,11 @@ type EqualNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *EqualNumber) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(numbersAreEqual(
-		registers[ins.Left],
-		registers[ins.Right],
-	))
+func (ins *EqualNumber) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(numbersAreEqual(
+		vm.Get(ins.Left),
+		vm.Get(ins.Right),
+	)))
 
 	return nil
 }
@@ -44,9 +44,9 @@ type Equal struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Equal) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(compareValue(
-		registers[ins.Left], registers[ins.Right]))
+func (ins *Equal) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(compareValue(
+		vm.Get(ins.Left), vm.Get(ins.Right))))
 
 	return nil
 }

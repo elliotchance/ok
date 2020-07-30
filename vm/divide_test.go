@@ -27,7 +27,10 @@ func TestDivide_Execute(t *testing.T) {
 				"1": asttest.NewLiteralNumber(test.right),
 			}
 			ins := &vm.Divide{Left: "0", Right: "1", Result: "2"}
-			assert.Equal(t, test.err, ins.Execute(registers, nil, nil))
+			vm := &vm.VM{
+				Stack: []map[vm.Register]*ast.Literal{registers},
+			}
+			assert.Equal(t, test.err, ins.Execute(nil, vm))
 			actual := number.NewNumber(registers[ins.Result].Value)
 			assert.Equal(t, test.expected, number.Format(actual, -1))
 		})
