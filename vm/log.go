@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
@@ -14,12 +13,12 @@ type Log struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Log) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralNumber(
+func (ins *Log) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralNumber(
 		number.Log(
-			number.NewNumber(registers[ins.X].Value),
+			number.NewNumber(vm.Get(ins.X).Value),
 		).String(),
-	)
+	))
 
 	return nil
 }

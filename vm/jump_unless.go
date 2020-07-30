@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // JumpUnless will jump to the instruction if the expression is false.
@@ -13,8 +11,8 @@ type JumpUnless struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *JumpUnless) Execute(registers map[Register]*ast.Literal, i *int, _ *VM) error {
-	if registers[ins.Condition].Value != "true" {
+func (ins *JumpUnless) Execute(i *int, vm *VM) error {
+	if vm.Get(ins.Condition).Value != "true" {
 		*i = ins.To
 	}
 

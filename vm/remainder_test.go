@@ -26,7 +26,10 @@ func TestRemainder_Execute(t *testing.T) {
 				"1": asttest.NewLiteralNumber(test.right),
 			}
 			ins := &vm.Remainder{Left: "0", Right: "1", Result: "2"}
-			assert.Equal(t, test.err, ins.Execute(registers, nil, nil))
+			vm := &vm.VM{
+				Stack: []map[vm.Register]*ast.Literal{registers},
+			}
+			assert.Equal(t, test.err, ins.Execute(nil, vm))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}

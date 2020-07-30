@@ -29,7 +29,7 @@ type CompiledTest struct {
 type VM struct {
 	fns    map[string]*CompiledFunc
 	Return []Register
-	stack  []map[Register]*ast.Literal
+	Stack  []map[Register]*ast.Literal
 	tests  []*CompiledTest
 	pkg    string
 	Stdout io.Writer
@@ -111,9 +111,9 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	vm.FinallyBlocks = append(vm.FinallyBlocks, finallyBlocks)
 
 	for i, arg := range arguments {
-		registers[Register(fn.Arguments[i])] = vm.stack[len(vm.stack)-1][arg]
+		registers[Register(fn.Arguments[i])] = vm.Stack[len(vm.Stack)-1][arg]
 	}
-	vm.stack = append(vm.stack, registers)
+	vm.Stack = append(vm.Stack, registers)
 
 	returns, err := vm.runInstructions(fn.Instructions, registers, false)
 	if err != nil {
@@ -175,7 +175,7 @@ func (vm *VM) runInstructions(ins []Instruction, registers map[Register]*ast.Lit
 			continue
 		}
 
-		err := ins.Execute(registers, &i, vm)
+		err := ins.Execute(&i, vm)
 		if err != nil {
 			return nil, err
 		}
@@ -192,12 +192,12 @@ func (vm *VM) runTest(testName string, instructions []Instruction) error {
 	vm.CurrentTestName = testName
 
 	registers := map[Register]*ast.Literal{}
-	vm.stack = append(vm.stack, registers)
+	vm.Stack = append(vm.Stack, registers)
 
 	totalInstructions := len(instructions)
 	for i := 0; i < totalInstructions; i++ {
 		ins := instructions[i]
-		err := ins.Execute(registers, &i, vm)
+		err := ins.Execute(&i, vm)
 		if err != nil {
 			return err
 		}
@@ -213,4 +213,14 @@ func (vm *VM) assert(pass bool, left, op, right, pos string) {
 		vm.CurrentTestPassed = false
 	}
 	vm.TotalAssertions++
+}
+
+// Set will set a register.
+func (vm *VM) Set(register Register, val *ast.Literal) {
+	vm.Stack[len(vm.Stack)-1][register] = val
+}
+
+// Get will get a register.
+func (vm *VM) Get(register Register) *ast.Literal {
+	return vm.Stack[len(vm.Stack)-1][register]
 }

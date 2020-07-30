@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // Raise put the VM into an error mode. The VM will look for an error handler.
@@ -16,9 +14,9 @@ type Raise struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Raise) Execute(registers map[Register]*ast.Literal, _ *int, vm *VM) error {
+func (ins *Raise) Execute(_ *int, vm *VM) error {
 	vm.ErrType = ins.Type
-	vm.ErrValue = registers[ins.Err]
+	vm.ErrValue = vm.Get(ins.Err)
 
 	return nil
 }

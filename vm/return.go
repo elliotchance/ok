@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // Return tells the VM to jump out of this function.
@@ -12,7 +10,7 @@ type Return struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Return) Execute(registers map[Register]*ast.Literal, _ *int, vm *VM) error {
+func (ins *Return) Execute(_ *int, vm *VM) error {
 	vm.Return = ins.Results
 
 	return nil

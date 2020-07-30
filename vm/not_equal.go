@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 )
 
@@ -13,11 +12,11 @@ type NotEqualNumber struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NotEqualNumber) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(!numbersAreEqual(
-		registers[ins.Left],
-		registers[ins.Right],
-	))
+func (ins *NotEqualNumber) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(!numbersAreEqual(
+		vm.Get(ins.Left),
+		vm.Get(ins.Right),
+	)))
 
 	return nil
 }
@@ -36,10 +35,10 @@ type NotEqual struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *NotEqual) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralBool(!compareValue(
-		registers[ins.Left], registers[ins.Right],
-	))
+func (ins *NotEqual) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralBool(!compareValue(
+		vm.Get(ins.Left), vm.Get(ins.Right),
+	)))
 
 	return nil
 }

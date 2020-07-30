@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // MapSet sets a number value to an index.
@@ -12,10 +10,10 @@ type MapSet struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *MapSet) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	key := registers[ins.Key].Value
-	registers[ins.Map].Map[key] = registers[ins.Value]
-	registers[ins.Map].Array = append(registers[ins.Map].Array, registers[ins.Key])
+func (ins *MapSet) Execute(_ *int, vm *VM) error {
+	key := vm.Get(ins.Key).Value
+	vm.Get(ins.Map).Map[key] = vm.Get(ins.Value)
+	vm.Get(ins.Map).Array = append(vm.Get(ins.Map).Array, vm.Get(ins.Key))
 
 	return nil
 }

@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
 )
 
@@ -13,9 +12,9 @@ type ArraySet struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *ArraySet) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	index := number.Int64(number.NewNumber(registers[ins.Index].Value))
-	registers[ins.Array].Array[index] = registers[ins.Value]
+func (ins *ArraySet) Execute(_ *int, vm *VM) error {
+	index := number.Int64(number.NewNumber(vm.Get(ins.Index).Value))
+	vm.Get(ins.Array).Array[index] = vm.Get(ins.Value)
 
 	return nil
 }

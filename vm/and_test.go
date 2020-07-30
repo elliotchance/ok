@@ -26,7 +26,10 @@ func TestAnd_Execute(t *testing.T) {
 				"1": asttest.NewLiteralBool(test.right),
 			}
 			ins := &vm.And{Left: "0", Right: "1", Result: "2"}
-			assert.NoError(t, ins.Execute(registers, nil, nil))
+			vm := &vm.VM{
+				Stack: []map[vm.Register]*ast.Literal{registers},
+			}
+			assert.NoError(t, ins.Execute(nil, vm))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}

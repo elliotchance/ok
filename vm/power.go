@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
@@ -14,13 +13,13 @@ type Power struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Power) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	registers[ins.Result] = asttest.NewLiteralNumber(
+func (ins *Power) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, asttest.NewLiteralNumber(
 		number.Pow(
-			number.NewNumber(registers[ins.Base].Value),
-			number.NewNumber(registers[ins.Power].Value),
+			number.NewNumber(vm.Get(ins.Base).Value),
+			number.NewNumber(vm.Get(ins.Power).Value),
 		).String(),
-	)
+	))
 
 	return nil
 }

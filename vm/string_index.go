@@ -3,7 +3,6 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/number"
 )
@@ -14,11 +13,11 @@ type StringIndex struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *StringIndex) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	index := number.Int64(number.NewNumber(registers[ins.Index].Value))
+func (ins *StringIndex) Execute(_ *int, vm *VM) error {
+	index := number.Int64(number.NewNumber(vm.Get(ins.Index).Value))
 
 	// TODO(elliot): This won't work with multibyte characters.
-	registers[ins.Result] = asttest.NewLiteralChar([]rune(registers[ins.Str].Value)[index])
+	vm.Set(ins.Result, asttest.NewLiteralChar([]rune(vm.Get(ins.Str).Value)[index]))
 
 	return nil
 }

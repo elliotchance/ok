@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // Jump will jump to the instruction.
@@ -12,7 +10,7 @@ type Jump struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Jump) Execute(registers map[Register]*ast.Literal, i *int, _ *VM) error {
+func (ins *Jump) Execute(i *int, vm *VM) error {
 	*i = ins.To
 
 	return nil

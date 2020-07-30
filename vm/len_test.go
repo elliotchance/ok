@@ -26,7 +26,10 @@ func TestLen_Execute(t *testing.T) {
 				"0": test.x,
 			}
 			ins := &vm.Len{Argument: "0", Result: "1"}
-			assert.NoError(t, ins.Execute(registers, nil, nil))
+			vm := &vm.VM{
+				Stack: []map[vm.Register]*ast.Literal{registers},
+			}
+			assert.NoError(t, ins.Execute(nil, vm))
 			assert.Equal(t, test.expected, registers[ins.Result])
 		})
 	}

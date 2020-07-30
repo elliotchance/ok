@@ -2,8 +2,6 @@ package vm
 
 import (
 	"fmt"
-
-	"github.com/elliotchance/ok/ast"
 )
 
 // On is a pragma for the vm to handle errors. It can also be used to indicate
@@ -16,7 +14,7 @@ type On struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *On) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
+func (ins *On) Execute(_ *int, vm *VM) error {
 	// Nothing happens here because On is just a pragma for the VM to look
 	// forward to find the error handler.
 	return nil

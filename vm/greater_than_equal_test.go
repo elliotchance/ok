@@ -29,7 +29,10 @@ func TestGreaterThanEqualString_Execute(t *testing.T) {
 				"1": test.right,
 			}
 			ins := &vm.GreaterThanEqualString{Left: "0", Right: "1", Result: "2"}
-			assert.NoError(t, ins.Execute(registers, nil, nil))
+			vm := &vm.VM{
+				Stack: []map[vm.Register]*ast.Literal{registers},
+			}
+			assert.NoError(t, ins.Execute(nil, vm))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}
@@ -54,7 +57,10 @@ func TestGreaterThanEqualNumber_Execute(t *testing.T) {
 				"1": test.right,
 			}
 			ins := &vm.GreaterThanEqualNumber{Left: "0", Right: "1", Result: "2"}
-			assert.NoError(t, ins.Execute(registers, nil, nil))
+			vm := &vm.VM{
+				Stack: []map[vm.Register]*ast.Literal{registers},
+			}
+			assert.NoError(t, ins.Execute(nil, vm))
 			assert.Equal(t, test.expected, registers[ins.Result].Value)
 		})
 	}

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 )
 
@@ -14,8 +13,8 @@ type Len struct {
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *Len) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) error {
-	r := registers[ins.Argument]
+func (ins *Len) Execute(_ *int, vm *VM) error {
+	r := vm.Get(ins.Argument)
 	var result int
 	switch {
 	case strings.HasPrefix(r.Kind, "[]"):
@@ -31,7 +30,7 @@ func (ins *Len) Execute(registers map[Register]*ast.Literal, _ *int, _ *VM) erro
 		result = len(r.Value)
 	}
 
-	registers[ins.Result] = asttest.NewLiteralNumber(fmt.Sprintf("%d", result))
+	vm.Set(ins.Result, asttest.NewLiteralNumber(fmt.Sprintf("%d", result)))
 
 	return nil
 }
