@@ -5,10 +5,10 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileRaise(compiledFunc *vm.CompiledFunc, n *ast.Raise, fns map[string]*ast.Func) error {
+func compileRaise(compiledFunc *vm.CompiledFunc, n *ast.Raise, file *Compiled) error {
 	// TODO(elliot): Check this call returns a type that satisfies an error
 	//  interface.
-	result, resultKind, err := compileCall(compiledFunc, n.Err, fns)
+	result, resultKind, err := compileCall(compiledFunc, n.Err, file)
 	if err != nil {
 		return err
 	}

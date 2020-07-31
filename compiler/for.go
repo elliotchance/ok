@@ -9,11 +9,11 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.Func) error {
+func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *Compiled) error {
 	// There's nothing special about Init here. It just executes once before the
 	// loop.
 	if n.Init != nil {
-		_, _, err := compileExpr(compiledFunc, n.Init, fns)
+		_, _, err := compileExpr(compiledFunc, n.Init, file)
 		if err != nil {
 			return err
 		}
@@ -23,10 +23,10 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 	switch cond := n.Condition.(type) {
 	case nil:
 		// Error here should not be possible.
-		conditionResults, _, _ = compileExpr(compiledFunc, asttest.NewLiteralBool(true), fns)
+		conditionResults, _, _ = compileExpr(compiledFunc, asttest.NewLiteralBool(true), file)
 
 	case *ast.In:
-		arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr, fns)
+		arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr, file)
 		if err != nil {
 			return err
 		}
@@ -95,7 +95,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 	default:
 		var conditionKinds []string
 		var err error
-		conditionResults, conditionKinds, err = compileExpr(compiledFunc, n.Condition, fns)
+		conditionResults, conditionKinds, err = compileExpr(compiledFunc, n.Condition, file)
 		if err != nil {
 			return err
 		}
@@ -123,7 +123,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 	continueIns := &vm.Jump{
 		To: 0, // This is corrected later on.
 	}
-	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns, fns)
+	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns, file)
 	if err != nil {
 		return err
 	}
@@ -136,7 +136,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, fns map[string]*ast.F
 		// next iteration.
 		continueIns.To = len(compiledFunc.Instructions) - 1
 
-		_, _, err := compileExpr(compiledFunc, n.Next, fns)
+		_, _, err := compileExpr(compiledFunc, n.Next, file)
 		if err != nil {
 			return err
 		}

@@ -10,9 +10,9 @@ import (
 func compileAssert(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Assert,
-	fns map[string]*ast.Func,
+	file *Compiled,
 ) error {
-	left, right, returns, returnKind, err := compileComparison(compiledFunc, n.Expr, fns)
+	left, right, returns, returnKind, err := compileComparison(compiledFunc, n.Expr, file)
 	if err != nil {
 		return err
 	}

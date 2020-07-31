@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, fns map[string]*ast.Func) error {
+func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, file *Compiled) error {
 	// Only activate the finally clause if there is one.
 	if n.Finally != nil {
 		compiledFunc.Append(&vm.Finally{
@@ -15,7 +15,7 @@ func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, fns map
 	}
 
 	// Try section.
-	err := compileBlock(compiledFunc, n.Statements, nil, nil, fns)
+	err := compileBlock(compiledFunc, n.Statements, nil, nil, file)
 	if err != nil {
 		return err
 	}
@@ -40,7 +40,7 @@ func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, fns map
 		// On instruction above.
 		compiledFunc.NewVariable("err", on.Type)
 
-		err := compileBlock(compiledFunc, on.Statements, nil, nil, fns)
+		err := compileBlock(compiledFunc, on.Statements, nil, nil, file)
 		if err != nil {
 			return err
 		}
@@ -69,7 +69,7 @@ func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, fns map
 		})
 
 		// Finally section.
-		err := compileBlock(compiledFunc, n.Finally.Statements, nil, nil, fns)
+		err := compileBlock(compiledFunc, n.Finally.Statements, nil, nil, file)
 		if err != nil {
 			return err
 		}

@@ -72,6 +72,17 @@ func TestAssign(t *testing.T) {
 				},
 			},
 		},
+		"assign-anon-func": {
+			str: `fn = func() {}`,
+			expected: &ast.Assign{
+				Lefts: []ast.Node{
+					&ast.Identifier{Name: "fn"},
+				},
+				Rights: []ast.Node{
+					&ast.Func{Name: "1"},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

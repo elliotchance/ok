@@ -7,20 +7,13 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileCase(
-	compiledFunc *vm.CompiledFunc,
-	n *ast.Case,
-	valueRegister vm.Register,
-	expectedConditionKind string,
-	afterMatch, breakIns, continueIns vm.Instruction,
-	fns map[string]*ast.Func,
-) error {
+func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister vm.Register, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, file *Compiled) error {
 	// TODO(elliot): This is a poor solution. It simply expands the conditions
 	//  out as if they were individual case statements. This duplicates
 	//  statements and uses more memory.
 
 	for _, condition := range n.Conditions {
-		conditionResults, conditionKinds, err := compileExpr(compiledFunc, condition, fns)
+		conditionResults, conditionKinds, err := compileExpr(compiledFunc, condition, file)
 		if err != nil {
 			return err
 		}
@@ -48,7 +41,7 @@ func compileCase(
 		}
 		compiledFunc.Append(ins)
 
-		err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns, fns)
+		err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns, file)
 		if err != nil {
 			return err
 		}
@@ -63,7 +56,7 @@ func compileCase(
 	return nil
 }
 
-func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
+func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, continueIns vm.Instruction, file *Compiled) error {
 	afterMatch := &vm.Jump{
 		To: -1, // Corrected later.
 	}
@@ -74,20 +67,20 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 	valueRegisters := []vm.Register{""}
 	if n.Expr != nil {
 		var err error
-		valueRegisters, expectedConditionKinds, err = compileExpr(compiledFunc, n.Expr, fns)
+		valueRegisters, expectedConditionKinds, err = compileExpr(compiledFunc, n.Expr, file)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, caseStmt := range n.Cases {
-		err := compileCase(compiledFunc, caseStmt, valueRegisters[0], expectedConditionKinds[0], afterMatch, breakIns, continueIns, fns)
+		err := compileCase(compiledFunc, caseStmt, valueRegisters[0], expectedConditionKinds[0], afterMatch, breakIns, continueIns, file)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := compileBlock(compiledFunc, n.Else, breakIns, continueIns, fns)
+	err := compileBlock(compiledFunc, n.Else, breakIns, continueIns, file)
 	if err != nil {
 		return err
 	}

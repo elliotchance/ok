@@ -9,17 +9,30 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, finalErr error
 	originalOffset := offset
 	var err error
 
-	offset, err = consume(parser.File, offset, []string{
-		lexer.TokenFunc, lexer.TokenIdentifier,
-		lexer.TokenParenOpen,
-	})
+	offset, err = consume(parser.File, offset, []string{lexer.TokenFunc})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	fn := &ast.Func{
-		Name: parser.File.Tokens[offset-2].Value,
-		Pos:  parser.File.Pos(originalOffset),
+		Pos: parser.File.Pos(originalOffset),
+	}
+
+	// The name of the function is optional. For anonymous functions we will
+	// generate an internal name so they can be referenced.
+	//
+	// TODO(elliot): Anonymous functions should not be allowed just anywhere.
+
+	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+	if err == nil {
+		fn.Name = parser.File.Tokens[offset-1].Value
+	} else {
+		fn.Name = parser.NextFunctionName()
+	}
+
+	offset, err = consume(parser.File, offset, []string{lexer.TokenParenOpen})
+	if err != nil {
+		return nil, originalOffset, err
 	}
 
 	var args []*ast.Argument

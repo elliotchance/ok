@@ -32,6 +32,15 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			break
 		}
 
+		// Try to consume a function literal.
+		var fn *ast.Func
+		fn, offset, err = consumeFunc(parser, offset)
+		if err == nil {
+			parts = append(parts, fn)
+			didJustConsumeLiteral = true
+			continue
+		}
+
 		// Try to consume a literal.
 		var literal *ast.Literal
 		literal, offset, err = consumeLiteral(parser, offset)

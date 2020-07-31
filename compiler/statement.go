@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
+func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIns, continueIns vm.Instruction, file *Compiled) error {
 	switch n := statement.(type) {
 	case *ast.Break:
 		compiledFunc.Append(breakIns)
@@ -16,28 +16,28 @@ func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIn
 		return nil
 
 	case *ast.Return:
-		return compileReturn(compiledFunc, n, fns)
+		return compileReturn(compiledFunc, n, file)
 
 	case *ast.Assert:
-		return compileAssert(compiledFunc, n, fns)
+		return compileAssert(compiledFunc, n, file)
 
 	case *ast.For:
-		return compileFor(compiledFunc, n, fns)
+		return compileFor(compiledFunc, n, file)
 
 	case *ast.If:
-		return compileIf(compiledFunc, n, breakIns, continueIns, fns)
+		return compileIf(compiledFunc, n, breakIns, continueIns, file)
 
 	case *ast.Switch:
-		return compileSwitch(compiledFunc, n, breakIns, continueIns, fns)
+		return compileSwitch(compiledFunc, n, breakIns, continueIns, file)
 
 	case *ast.ErrorScope:
-		return compileErrorScope(compiledFunc, n, fns)
+		return compileErrorScope(compiledFunc, n, file)
 
 	case *ast.Raise:
-		return compileRaise(compiledFunc, n, fns)
+		return compileRaise(compiledFunc, n, file)
 	}
 
-	_, _, err := compileExpr(compiledFunc, statement, fns)
+	_, _, err := compileExpr(compiledFunc, statement, file)
 
 	return err
 }

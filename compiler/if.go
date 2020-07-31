@@ -7,8 +7,8 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, fns map[string]*ast.Func) error {
-	conditionResults, conditionKinds, err := compileExpr(compiledFunc, n.Condition, fns)
+func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, file *Compiled) error {
+	conditionResults, conditionKinds, err := compileExpr(compiledFunc, n.Condition, file)
 	if err != nil {
 		return err
 	}
@@ -25,7 +25,7 @@ func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns v
 	}
 	compiledFunc.Append(ins)
 
-	err = compileBlock(compiledFunc, n.True, breakIns, continueIns, fns)
+	err = compileBlock(compiledFunc, n.True, breakIns, continueIns, file)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns v
 
 		ins.To = len(compiledFunc.Instructions) - 1
 
-		err = compileBlock(compiledFunc, n.False, breakIns, continueIns, fns)
+		err = compileBlock(compiledFunc, n.False, breakIns, continueIns, file)
 		if err != nil {
 			return err
 		}

@@ -8,14 +8,10 @@ import (
 )
 
 // compileExpr return the (result register, result type, error)
-func compileExpr(
-	compiledFunc *vm.CompiledFunc,
-	expr ast.Node,
-	fns map[string]*ast.Func,
-) ([]vm.Register, []string, error) {
+func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) ([]vm.Register, []string, error) {
 	switch e := expr.(type) {
 	case *ast.Assign:
-		err := compileAssign(compiledFunc, e, fns)
+		err := compileAssign(compiledFunc, e, file)
 
 		return nil, nil, err
 
@@ -28,8 +24,31 @@ func compileExpr(
 
 		return []vm.Register{returns}, []string{e.Kind}, nil
 
+	case *ast.Func:
+		cf, err := CompileFunc(e, file)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		file.FuncDefs[e.Name] = e
+		file.Funcs[e.Name] = cf
+
+		// TODO(elliot): Doesn't return true function type.
+		fnType := "func (number, number) number"
+
+		returns := compiledFunc.NextRegister()
+		compiledFunc.Append(&vm.Assign{
+			VariableName: returns,
+			Value: &ast.Literal{
+				Kind:  fnType,
+				Value: e.Name,
+			},
+		})
+
+		return []vm.Register{returns}, []string{fnType}, nil
+
 	case *ast.Array:
-		returns, kind, err := compileArray(compiledFunc, e, fns)
+		returns, kind, err := compileArray(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -37,7 +56,7 @@ func compileExpr(
 		return []vm.Register{returns}, []string{kind}, nil
 
 	case *ast.Map:
-		returns, err := compileMap(compiledFunc, e, fns)
+		returns, err := compileMap(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -46,7 +65,7 @@ func compileExpr(
 		return []vm.Register{returns}, []string{"{}"}, nil
 
 	case *ast.Call:
-		results, resultKinds, err := compileCall(compiledFunc, e, fns)
+		results, resultKinds, err := compileCall(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -62,7 +81,7 @@ func compileExpr(
 		return nil, nil, fmt.Errorf("undefined variable: %s", e.Name)
 
 	case *ast.Binary:
-		result, ty, err := compileBinary(compiledFunc, e, fns)
+		result, ty, err := compileBinary(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -70,10 +89,10 @@ func compileExpr(
 		return []vm.Register{result}, []string{ty}, nil
 
 	case *ast.Group:
-		return compileExpr(compiledFunc, e.Expr, fns)
+		return compileExpr(compiledFunc, e.Expr, file)
 
 	case *ast.Unary:
-		result, ty, err := compileUnary(compiledFunc, e, fns)
+		result, ty, err := compileUnary(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -81,7 +100,7 @@ func compileExpr(
 		return []vm.Register{result}, []string{ty}, nil
 
 	case *ast.Key:
-		result, ty, err := compileKey(compiledFunc, e, fns)
+		result, ty, err := compileKey(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -89,7 +108,7 @@ func compileExpr(
 		return []vm.Register{result}, []string{ty}, nil
 
 	case *ast.Interpolate:
-		result, err := compileInterpolate(compiledFunc, e, fns)
+		result, err := compileInterpolate(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
