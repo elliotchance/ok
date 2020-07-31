@@ -3,12 +3,11 @@ package vm
 import "fmt"
 
 type CompiledFunc struct {
-	Arguments      []string
-	Instructions   []Instruction
-	Registers      int
-	Variables      map[string]string // name: type
-	ObjectRegister Register
-	Finally        [][]Instruction
+	Arguments    []string
+	Instructions []Instruction
+	Registers    int
+	Variables    map[string]string // name: type
+	Finally      [][]Instruction
 }
 
 type FinallyBlock struct {

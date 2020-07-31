@@ -25,7 +25,12 @@ func (ins *NextMap) Execute(_ *int, vm *VM) error {
 	vm.Set(ins.Result, asttest.NewLiteralBool(hasMore))
 	if hasMore {
 		m := vm.Get(ins.Map).Map
-		vm.Set(ins.KeyResult, array[pos])
+
+		// Key may be optionally set.
+		if ins.KeyResult != "" {
+			vm.Set(ins.KeyResult, array[pos])
+		}
+
 		vm.Set(ins.ValueResult, m[array[pos].Value])
 		vm.Set(ins.Cursor, asttest.NewLiteralNumber(fmt.Sprintf("%d", pos+1)))
 	}
