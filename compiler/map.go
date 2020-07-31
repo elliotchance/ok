@@ -23,7 +23,10 @@ func compileMap(
 	})
 
 	mapRegister := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.MapAllocNumber{
+	compiledFunc.Append(&vm.MapAlloc{
+		// TODO(elliot): This needs to be derived from the actual type.
+		Kind: "{}any",
+
 		Size:   sizeRegister,
 		Result: mapRegister,
 	})
