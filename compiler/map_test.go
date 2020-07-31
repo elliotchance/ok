@@ -27,7 +27,8 @@ func TestMap(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("0"),
 				},
-				&vm.MapAllocNumber{
+				&vm.MapAlloc{
+					Kind:   "{}any",
 					Size:   "1",
 					Result: "2",
 				},
@@ -56,7 +57,8 @@ func TestMap(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("3"),
 				},
-				&vm.MapAllocNumber{
+				&vm.MapAlloc{
+					Kind:   "{}any",
 					Size:   "1",
 					Result: "2",
 				},
@@ -129,7 +131,8 @@ func TestMap(t *testing.T) {
 					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("1"),
 				},
-				&vm.MapAllocNumber{
+				&vm.MapAlloc{
+					Kind:   "{}any",
 					Size:   "1",
 					Result: "2",
 				},

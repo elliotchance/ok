@@ -1,0 +1,7 @@
+func main() {
+    map1 = {"a": 123, "b": 456}
+    print(map1)
+
+    map2 = {}any {}
+    print(map2)
+}

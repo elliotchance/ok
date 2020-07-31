@@ -31,7 +31,10 @@ func CompileFunc(fn *ast.Func, fns map[string]*ast.Func) (*vm.CompiledFunc, erro
 		// objectRegister will contain all the state, and also must be returned
 		// at the end.
 		compiled.ObjectRegister = compiled.NextRegister()
-		compiled.Append(&vm.MapAllocNumber{
+		compiled.Append(&vm.MapAlloc{
+			// TODO(elliot): This should probably be the actual type returned?
+			Kind: "{}any",
+
 			Size:   sizeRegister,
 			Result: compiled.ObjectRegister,
 		})

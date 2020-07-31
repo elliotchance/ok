@@ -7,17 +7,18 @@ import (
 	"github.com/elliotchance/ok/number"
 )
 
-// MapAllocNumber allocates a "{}number" of fixed size.
-type MapAllocNumber struct {
+// MapAlloc allocates a map of fixed size.
+type MapAlloc struct {
+	Kind         string
 	Size, Result Register
 }
 
 // Execute implements the Instruction interface for the VM.
-func (ins *MapAllocNumber) Execute(_ *int, vm *VM) error {
+func (ins *MapAlloc) Execute(_ *int, vm *VM) error {
 	size := number.Int64(number.NewNumber(vm.Get(ins.Size).Value))
 
 	vm.Set(ins.Result, &ast.Literal{
-		Kind: "{}number",
+		Kind: ins.Kind,
 
 		// Array must also be allocated because it will contain the keys for the
 		// map.
@@ -30,6 +31,6 @@ func (ins *MapAllocNumber) Execute(_ *int, vm *VM) error {
 }
 
 // String is the human-readable description of the instruction.
-func (ins *MapAllocNumber) String() string {
-	return fmt.Sprintf("%s = {}number with %s elements", ins.Result, ins.Size)
+func (ins *MapAlloc) String() string {
+	return fmt.Sprintf("%s = {}any with %s elements", ins.Result, ins.Size)
 }
