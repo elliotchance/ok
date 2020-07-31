@@ -23,7 +23,11 @@ func (ins *NextString) Execute(_ *int, vm *VM) error {
 	hasMore := pos < len(str)
 	vm.Set(ins.Result, asttest.NewLiteralBool(hasMore))
 	if hasMore {
-		vm.Set(ins.KeyResult, asttest.NewLiteralNumber(fmt.Sprintf("%d", pos)))
+		// Key may be optionally set.
+		if ins.KeyResult != "" {
+			vm.Set(ins.KeyResult, asttest.NewLiteralNumber(fmt.Sprintf("%d", pos)))
+		}
+
 		vm.Set(ins.ValueResult, asttest.NewLiteralChar(str[pos]))
 		vm.Set(ins.Cursor, asttest.NewLiteralNumber(fmt.Sprintf("%d", pos+1)))
 	}

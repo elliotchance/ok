@@ -4,9 +4,14 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"runtime/debug"
 
 	"github.com/elliotchance/ok/ast"
 )
+
+// StateRegister is a reserved register for holding the map of the state.
+// Effectively the instance or "this" context.
+const StateRegister = "0"
 
 // InternalDefinition is used by Lib to hold the definitions and compiled code
 // for internal functions.
@@ -89,6 +94,14 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	// TODO(elliot): Check function exists, especially main.
 
 	registers := map[Register]*ast.Literal{}
+	vm.Stack = append(vm.Stack, registers)
+
+	// Setup a new state, even we don't use it.
+	vm.Set(StateRegister, &ast.Literal{
+		// TODO(elliot): This should probably be the actual type returned.
+		Kind: "{}any",
+		Map:  make(map[string]*ast.Literal),
+	})
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
@@ -110,12 +123,12 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	}
 	vm.FinallyBlocks = append(vm.FinallyBlocks, finallyBlocks)
 
+	// Copy the arguments in.
 	for i, arg := range arguments {
-		registers[Register(fn.Arguments[i])] = vm.Stack[len(vm.Stack)-1][arg]
+		vm.Set(Register(fn.Arguments[i]), vm.get(arg, 2))
 	}
-	vm.Stack = append(vm.Stack, registers)
 
-	returns, err := vm.runInstructions(name, fn.Instructions, registers, false)
+	returns, err := vm.runInstructions(name, fn.Instructions, false)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +138,7 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 			// Ignore returns here.
 			// TODO(elliot): The compiler must disallow return
 			//  statements within a finally block.
-			_, err := vm.runInstructions(name, fb.Instructions, registers, true)
+			_, err := vm.runInstructions(name, fb.Instructions, true)
 			if err != nil {
 				return nil, err
 			}
@@ -137,15 +150,27 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	return returns, nil
 }
 
-func (vm *VM) dumpMemory(registers map[Register]*ast.Literal) {
+func (vm *VM) dumpMemory() {
+	// TODO(elliot): It would be nice to have both of these sorted.
+
 	fmt.Printf("Registers:\n")
 
-	for n, v := range registers {
+	for n, v := range vm.Stack[len(vm.Stack)-1] {
+		if n == StateRegister {
+			fmt.Printf("  %s: <State>\n", n)
+		} else {
+			fmt.Printf("  %s: %v\n", n, v)
+		}
+	}
+
+	fmt.Printf("\nState:\n")
+
+	for n, v := range vm.Stack[len(vm.Stack)-1][StateRegister].Map {
 		fmt.Printf("  %s: %v\n", n, v)
 	}
 }
 
-func (vm *VM) runInstructions(funcName string, ins []Instruction, registers map[Register]*ast.Literal, inFinally bool) ([]Register, error) {
+func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool) ([]Register, error) {
 	i := 0
 
 	defer func() {
@@ -153,10 +178,12 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, registers map[
 			// i+1 because the first instruction shown in "ok asm" is #1.
 			fmt.Printf("VM panicked in function %s at instruction #%d: %s\n\n",
 				funcName, i+1, ins[i].String())
-			vm.dumpMemory(registers)
+			vm.dumpMemory()
 
 			fmt.Println()
-			panic(r)
+			fmt.Println(r)
+			fmt.Println(string(debug.Stack()))
+			os.Exit(1)
 		}
 	}()
 
@@ -177,7 +204,10 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, registers map[
 					// TODO(elliot): This is a stupid hack for now. This was
 					//  created before interfaces could determine this properly.
 					"Error":
-					registers["err"] = vm.ErrValue
+
+					// TODO(elliot): The err register might be better as a
+					//  fixed position register rather than a variable?
+					vm.Set(Register("err"), vm.ErrValue)
 
 					// We found the handler. Remove the error state and continue
 					// as normal. There is a jump at the end of the handler that
@@ -213,6 +243,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, registers map[
 func (vm *VM) runTest(testName string, instructions []Instruction) error {
 	vm.CurrentTestName = testName
 
+	// TODO(elliot): The state register is not setup here. Does that matter?
 	registers := map[Register]*ast.Literal{}
 	vm.Stack = append(vm.Stack, registers)
 
@@ -237,12 +268,31 @@ func (vm *VM) assert(pass bool, left, op, right, pos string) {
 	vm.TotalAssertions++
 }
 
+func isRegister(register Register) bool {
+	r := register[0]
+
+	return r < 'A' || r > 'Z'
+}
+
 // Set will set a register.
 func (vm *VM) Set(register Register, val *ast.Literal) {
-	vm.Stack[len(vm.Stack)-1][register] = val
+	if isRegister(register) {
+		vm.Stack[len(vm.Stack)-1][register] = val
+	} else {
+		vm.Stack[len(vm.Stack)-1][StateRegister].Map[string(register)] = val
+	}
+}
+
+// Get will get a register.
+func (vm *VM) get(register Register, offset int) *ast.Literal {
+	if isRegister(register) {
+		return vm.Stack[len(vm.Stack)-offset][register]
+	}
+
+	return vm.Stack[len(vm.Stack)-offset][StateRegister].Map[string(register)]
 }
 
 // Get will get a register.
 func (vm *VM) Get(register Register) *ast.Literal {
-	return vm.Stack[len(vm.Stack)-1][register]
+	return vm.get(register, 1)
 }

@@ -23,20 +23,9 @@ func TestObject(t *testing.T) {
 				Returns: []string{"Foo"},
 			},
 			expected: []vm.Instruction{
-				// alloc instance
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
-				},
-				&vm.MapAlloc{
-					Kind:   "{}any",
-					Size:   "1",
-					Result: "2",
-				},
-
 				// return instance
 				&vm.Return{
-					Results: []vm.Register{"2"},
+					Results: []vm.Register{vm.StateRegister},
 				},
 			},
 		},
@@ -56,35 +45,19 @@ func TestObject(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				// alloc instance
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
-				},
-				&vm.MapAlloc{
-					Kind:   "{}any",
-					Size:   "1",
-					Result: "2",
-				},
-
 				// bar = 123
 				&vm.Assign{
-					VariableName: "3",
+					VariableName: "1",
 					Value:        asttest.NewLiteralNumber("123"),
 				},
 				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralString("bar"),
-				},
-				&vm.MapSet{
-					Map:   "2",
-					Key:   "4",
-					Value: "3",
+					VariableName: "bar",
+					Register:     "1",
 				},
 
 				// return instance
 				&vm.Return{
-					Results: []vm.Register{"2"},
+					Results: []vm.Register{vm.StateRegister},
 				},
 			},
 		},

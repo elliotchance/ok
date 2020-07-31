@@ -247,24 +247,11 @@ func TestCompileFile(t *testing.T) {
 						Registers: 1,
 					},
 					"Person": {
-						Variables:      map[string]string{},
-						ObjectRegister: "2",
-						Registers:      2,
+						Variables: map[string]string{},
 						Instructions: []vm.Instruction{
-							// alloc instance
-							&vm.Assign{
-								VariableName: "1",
-								Value:        asttest.NewLiteralNumber("0"),
-							},
-							&vm.MapAlloc{
-								Kind:   "{}any",
-								Size:   "1",
-								Result: "2",
-							},
-
 							// return instance
 							&vm.Return{
-								Results: []vm.Register{"2"},
+								Results: []vm.Register{vm.StateRegister},
 							},
 						},
 					},

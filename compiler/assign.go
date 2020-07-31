@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -49,27 +48,11 @@ func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[stri
 
 			compiledFunc.NewVariable(variableName, rr.kind)
 
-			// When in an object we need to change an assign into a MapSet for
-			// this instance variable.
-			if compiledFunc.ObjectRegister != "" {
-				keyRegister := compiledFunc.NextRegister()
-				compiledFunc.Append(&vm.Assign{
-					VariableName: keyRegister,
-					Value:        asttest.NewLiteralString(variableName),
-				})
-
-				compiledFunc.Append(&vm.MapSet{
-					Map:   compiledFunc.ObjectRegister,
-					Key:   keyRegister,
-					Value: rr.result,
-				})
-			} else {
-				ins := &vm.Assign{
-					VariableName: vm.Register(variableName),
-					Register:     rr.result,
-				}
-				compiledFunc.Append(ins)
+			ins := &vm.Assign{
+				VariableName: vm.Register(variableName),
+				Register:     rr.result,
 			}
+			compiledFunc.Append(ins)
 
 		case *ast.Key:
 			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
