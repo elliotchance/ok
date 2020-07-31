@@ -115,7 +115,7 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	}
 	vm.Stack = append(vm.Stack, registers)
 
-	returns, err := vm.runInstructions(fn.Instructions, registers, false)
+	returns, err := vm.runInstructions(name, fn.Instructions, registers, false)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +125,7 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 			// Ignore returns here.
 			// TODO(elliot): The compiler must disallow return
 			//  statements within a finally block.
-			_, err := vm.runInstructions(fb.Instructions, registers, true)
+			_, err := vm.runInstructions(name, fb.Instructions, registers, true)
 			if err != nil {
 				return nil, err
 			}
@@ -137,9 +137,31 @@ func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
 	return returns, nil
 }
 
-func (vm *VM) runInstructions(ins []Instruction, registers map[Register]*ast.Literal, inFinally bool) ([]Register, error) {
+func (vm *VM) dumpMemory(registers map[Register]*ast.Literal) {
+	fmt.Printf("Registers:\n")
+
+	for n, v := range registers {
+		fmt.Printf("  %s: %v\n", n, v)
+	}
+}
+
+func (vm *VM) runInstructions(funcName string, ins []Instruction, registers map[Register]*ast.Literal, inFinally bool) ([]Register, error) {
+	i := 0
+
+	defer func() {
+		if r := recover(); r != nil {
+			// i+1 because the first instruction shown in "ok asm" is #1.
+			fmt.Printf("VM panicked in function %s at instruction #%d: %s\n\n",
+				funcName, i+1, ins[i].String())
+			vm.dumpMemory(registers)
+
+			fmt.Println()
+			panic(r)
+		}
+	}()
+
 	totalInstructions := len(ins)
-	for i := 0; i < totalInstructions; i++ {
+	for ; i < totalInstructions; i++ {
 		ins := ins[i]
 
 		// If we are in an error state, we keep moving forward until we find an

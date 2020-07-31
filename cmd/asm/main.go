@@ -26,7 +26,12 @@ func (*Command) Run(args []string) {
 	pkg, errs := compiler.CompilePackage(args[0], false)
 	util.CheckErrorsWithExit(errs)
 
-	for _, fnName := range args[1:] {
+	for i, fnName := range args[1:] {
+		// Just for vanity, put an empty line between functions.
+		if i > 0 {
+			fmt.Println()
+		}
+
 		fn, exists := pkg.FuncDefs[fnName]
 		if !exists {
 			// TODO(elliot): This could be handled more gracefully.
