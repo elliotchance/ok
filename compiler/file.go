@@ -26,7 +26,7 @@ func compile(funcs map[string]*ast.Func, tests []*ast.Test) (*Compiled, error) {
 	}
 
 	for name, fn := range funcs {
-		compiledFn, err := CompileFunc(fn, funcs)
+		compiledFn, err := CompileFunc(fn, file)
 		if err != nil {
 			return nil, err
 		}
@@ -35,7 +35,7 @@ func compile(funcs map[string]*ast.Func, tests []*ast.Test) (*Compiled, error) {
 	}
 
 	for _, fn := range tests {
-		compiledFn, err := CompileTest(fn, funcs)
+		compiledFn, err := CompileTest(fn, file)
 		if err != nil {
 			return nil, err
 		}

@@ -2,8 +2,10 @@ package compiler
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/util"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -20,14 +22,10 @@ var builtinFunctions = map[string]builtinFn{
 	"char":   funcChar,
 }
 
-func compileCall(
-	compiledFunc *vm.CompiledFunc,
-	call *ast.Call,
-	fns map[string]*ast.Func,
-) ([]vm.Register, []string, error) {
+func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) ([]vm.Register, []string, error) {
 	var argResults []vm.Register
 	for _, arg := range call.Arguments {
-		argResult, _, err := compileExpr(compiledFunc, arg, fns)
+		argResult, _, err := compileExpr(compiledFunc, arg, file)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -46,18 +44,42 @@ func compileCall(
 		return []vm.Register{result}, []string{returnType}, nil
 	}
 
-	toCall := fns[call.FunctionName]
-	if toCall == nil {
-		// It might be a built in function.
-		//
-		// TODO(elliot): This needs to only allow this usage if its imported.
-		if internal := vm.Lib[call.FunctionName]; internal != nil {
-			toCall = internal.FuncDef
+	// Before we look for the function by name, we should first ensure that it's
+	// not a variable being called as a function.
+	//
+	// TODO(elliot): Don't let a variable shadow a function of the same name.
+	//
+	// TODO(elliot): Check variable is indeed a function and the arguments and
+	//  return values are legal.
+	var toCall *ast.Func
+	if ty, ok := compiledFunc.Variables[call.FunctionName]; ok {
+		toCall = &ast.Func{}
+
+		// TODO(elliot): This is a bad solution. Fix me.
+		parts := strings.Split(ty[6:], ")")
+		for _, a := range util.StringSliceMap(strings.Split(parts[0], ","), strings.TrimSpace) {
+			toCall.Arguments = append(toCall.Arguments, &ast.Argument{Name: "", Type: a})
 		}
 
+		toCall.Returns = util.StringSliceMap(strings.Split(parts[1], ","), strings.TrimSpace)
+
+		// TODO(elliot): This is a pretty nasty hack for now. This will tell the
+		//  VM at runtime to resolve this variable to the real function name.
+		call.FunctionName = "*" + call.FunctionName
+	} else {
+		toCall = file.FuncDefs[call.FunctionName]
 		if toCall == nil {
-			return nil, nil, fmt.Errorf("%s no such function: %s",
-				call.Position(), call.FunctionName)
+			// It might be a built in function.
+			//
+			// TODO(elliot): This needs to only allow this usage if its imported.
+			if internal := vm.Lib[call.FunctionName]; internal != nil {
+				toCall = internal.FuncDef
+			}
+
+			if toCall == nil {
+				return nil, nil, fmt.Errorf("%s no such function: %s",
+					call.Position(), call.FunctionName)
+			}
 		}
 	}
 

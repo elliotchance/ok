@@ -24,13 +24,13 @@ func TestParseString(t *testing.T) {
 		"func-paren-close": {
 			str: "func)",
 			errs: []error{
-				errors.New("a.ok:1:1 expecting identifier after func, but found )"),
+				errors.New("a.ok:1:1 expecting ( after func, but found )"),
 			},
 		},
 		"func-curly-open": {
 			str: "func {",
 			errs: []error{
-				errors.New("a.ok:1:1 expecting identifier after func, but found {"),
+				errors.New("a.ok:1:1 expecting ( after func, but found {"),
 			},
 		},
 		"func-name-paren-close": {

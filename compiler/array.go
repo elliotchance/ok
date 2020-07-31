@@ -8,7 +8,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*ast.Func) (vm.Register, string, error) {
+func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, file *Compiled) (vm.Register, string, error) {
 	if len(n.Elements) == 0 && n.Kind == "" {
 		err := fmt.Errorf("%s empty array needs to specify a type",
 			n.Position())
@@ -38,7 +38,7 @@ func compileArray(compiledFunc *vm.CompiledFunc, n *ast.Array, fns map[string]*a
 		})
 
 		// TODO(elliot): Check all elements are the same kind.
-		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, fns)
+		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, file)
 		if arrayAlloc.Kind == "" {
 			arrayAlloc.Kind = "[]" + valueKind[0]
 		}

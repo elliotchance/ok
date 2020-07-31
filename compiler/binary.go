@@ -122,7 +122,7 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 	return nil, ""
 }
 
-func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[string]*ast.Func) (vm.Register, string, error) {
+func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *Compiled) (vm.Register, string, error) {
 	// TokenAssign is not possible here because that is handled by an Assign
 	// operation.
 	if node.Op == lexer.TokenPlusAssign ||
@@ -131,7 +131,7 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 		node.Op == lexer.TokenDivideAssign ||
 		node.Op == lexer.TokenRemainderAssign {
 
-		right, rightKind, err := compileExpr(compiledFunc, node.Right, fns)
+		right, rightKind, err := compileExpr(compiledFunc, node.Right, file)
 		if err != nil {
 			return "", "", err
 		}
@@ -139,13 +139,13 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 		// TODO(elliot): Check +=, etc.
 		if key, ok := node.Left.(*ast.Key); ok {
 			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
-				key.Expr, fns)
+				key.Expr, file)
 			if err != nil {
 				return "", "", err
 			}
 
 			// TODO(elliot): Check this is a sane operation.
-			keyResults, _, err := compileExpr(compiledFunc, key.Key, fns)
+			keyResults, _, err := compileExpr(compiledFunc, key.Key, file)
 			if err != nil {
 				return "", "", err
 			}
@@ -247,22 +247,18 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, fns map[stri
 		return vm.Register(variable.Name), rightKind[0], nil
 	}
 
-	_, _, returns, returnKind, err := compileComparison(compiledFunc, node, fns)
+	_, _, returns, returnKind, err := compileComparison(compiledFunc, node, file)
 
 	return returns, returnKind, err
 }
 
-func compileComparison(
-	compiledFunc *vm.CompiledFunc,
-	node *ast.Binary,
-	fns map[string]*ast.Func,
-) (vm.Register, vm.Register, vm.Register, string, error) {
-	left, leftKind, err := compileExpr(compiledFunc, node.Left, fns)
+func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *Compiled) (vm.Register, vm.Register, vm.Register, string, error) {
+	left, leftKind, err := compileExpr(compiledFunc, node.Left, file)
 	if err != nil {
 		return "", "", "", "", err
 	}
 
-	right, rightKind, err := compileExpr(compiledFunc, node.Right, fns)
+	right, rightKind, err := compileExpr(compiledFunc, node.Right, file)
 	if err != nil {
 		return "", "", "", "", err
 	}

@@ -9,10 +9,11 @@ import (
 )
 
 type Parser struct {
-	errors        []error
-	File          *File
-	finalizers    map[string][]*ast.Finally
-	functionNames []string
+	errors           []error
+	File             *File
+	finalizers       map[string][]*ast.Finally
+	functionNames    []string
+	anonFunctionName int
 }
 
 // AppendError adds an error to the stack.
@@ -51,4 +52,12 @@ func (p *Parser) AppendFinally(finally *ast.Finally) {
 	funcName := p.functionNames[len(p.functionNames)-1]
 	finally.Index = len(p.finalizers[funcName])
 	p.finalizers[funcName] = append(p.finalizers[funcName], finally)
+}
+
+// NextFunctionName returns a unique name to be used internally for anonymous
+// functions.
+func (p *Parser) NextFunctionName() string {
+	p.anonFunctionName++
+
+	return fmt.Sprintf("%d", p.anonFunctionName)
 }

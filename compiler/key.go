@@ -7,14 +7,14 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, fns map[string]*ast.Func) (vm.Register, string, error) {
-	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, fns)
+func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.Register, string, error) {
+	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, file)
 	if err != nil {
 		return "", "", err
 	}
 
 	// TODO(elliot): Check key is the correct type.
-	keyRegisters, _, err := compileExpr(compiledFunc, n.Key, fns)
+	keyRegisters, _, err := compileExpr(compiledFunc, n.Key, file)
 	if err != nil {
 		return "", "", err
 	}

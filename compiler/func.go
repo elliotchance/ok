@@ -7,15 +7,17 @@ import (
 
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunc(fn *ast.Func, fns map[string]*ast.Func) (*vm.CompiledFunc, error) {
+func CompileFunc(fn *ast.Func, file *Compiled) (*vm.CompiledFunc, error) {
 	compiled := &vm.CompiledFunc{
 		Variables: map[string]string{},
 	}
 
-	// Objects are stored internally as maps right now. So the first thing we
-	// need to do is initialise the map.
+	// All variables in a function are stored internally as a map right now. So
+	// the first thing we need to do is initialise the map. Whether we return it
+	// at the end will depend on the return type.
 	//
-	// The parser has already corrected the missing return type.
+	// It is important that we always use a map (even if its not returns)
+	// because we may need it for a subscope (closure).
 	isObject := len(fn.Returns) == 1 && fn.Returns[0] == fn.Name
 
 	// Load the arguments from the registers.
@@ -26,7 +28,7 @@ func CompileFunc(fn *ast.Func, fns map[string]*ast.Func) (*vm.CompiledFunc, erro
 		compiled.Arguments = append(compiled.Arguments, arg.Name)
 	}
 
-	err := compileBlock(compiled, fn.Statements, nil, nil, fns)
+	err := compileBlock(compiled, fn.Statements, nil, nil, file)
 	if err != nil {
 		return nil, err
 	}

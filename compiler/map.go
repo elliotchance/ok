@@ -8,11 +8,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileMap(
-	compiledFunc *vm.CompiledFunc,
-	n *ast.Map,
-	fns map[string]*ast.Func,
-) (vm.Register, error) {
+func compileMap(compiledFunc *vm.CompiledFunc, n *ast.Map, file *Compiled) (vm.Register, error) {
 	// TODO(elliot): Check type is valid for the map.
 	// TODO(elliot): Maps with duplicate keys should be an error.
 
@@ -33,13 +29,13 @@ func compileMap(
 
 	for _, element := range n.Elements {
 		// TODO(elliot): Check keyKind is string.
-		keyRegisters, _, err := compileExpr(compiledFunc, element.Key, fns)
+		keyRegisters, _, err := compileExpr(compiledFunc, element.Key, file)
 		if err != nil {
 			return "", err
 		}
 
 		// TODO(elliot): Check value is the right type for map.
-		valueRegisters, _, _ := compileExpr(compiledFunc, element.Value, fns)
+		valueRegisters, _, _ := compileExpr(compiledFunc, element.Value, file)
 
 		compiledFunc.Append(&vm.MapSet{
 			Map:   mapRegister,

@@ -13,6 +13,11 @@ type Call struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Call) Execute(_ *int, vm *VM) error {
+	// TODO(elliot): This is a hack that matches up with compiler/call.go.
+	if ins.FunctionName[0] == '*' {
+		ins.FunctionName = vm.Get(Register(ins.FunctionName[1:])).Value
+	}
+
 	results, err := vm.call(ins.FunctionName, ins.Arguments)
 	if err != nil {
 		return err

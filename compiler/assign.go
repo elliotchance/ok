@@ -13,11 +13,11 @@ type resultKindPair struct {
 	kind   string
 }
 
-func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[string]*ast.Func) error {
+func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, file *Compiled) error {
 	// First evaluate all the right expressions.
 	var rightResults []resultKindPair
 	for _, r := range node.Rights {
-		right, rightKind, err := compileExpr(compiledFunc, r, fns)
+		right, rightKind, err := compileExpr(compiledFunc, r, file)
 		if err != nil {
 			return err
 		}
@@ -48,21 +48,20 @@ func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, fns map[stri
 
 			compiledFunc.NewVariable(variableName, rr.kind)
 
-			ins := &vm.Assign{
+			compiledFunc.Append(&vm.Assign{
 				VariableName: vm.Register(variableName),
 				Register:     rr.result,
-			}
-			compiledFunc.Append(ins)
+			})
 
 		case *ast.Key:
 			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
-				l.Expr, fns)
+				l.Expr, file)
 			if err != nil {
 				return err
 			}
 
 			// TODO(elliot): Check this is a sane operation.
-			keyResults, _, err := compileExpr(compiledFunc, l.Key, fns)
+			keyResults, _, err := compileExpr(compiledFunc, l.Key, file)
 			if err != nil {
 				return err
 			}
