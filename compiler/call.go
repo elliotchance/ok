@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/util"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -44,43 +43,9 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) 
 		return []vm.Register{result}, []string{returnType}, nil
 	}
 
-	// Before we look for the function by name, we should first ensure that it's
-	// not a variable being called as a function.
-	//
-	// TODO(elliot): Don't let a variable shadow a function of the same name.
-	//
-	// TODO(elliot): Check variable is indeed a function and the arguments and
-	//  return values are legal.
-	var toCall *ast.Func
-	if ty, ok := compiledFunc.Variables[call.FunctionName]; ok {
-		toCall = &ast.Func{}
-
-		// TODO(elliot): This is a bad solution. Fix me.
-		parts := strings.Split(ty[6:], ")")
-		for _, a := range util.StringSliceMap(strings.Split(parts[0], ","), strings.TrimSpace) {
-			toCall.Arguments = append(toCall.Arguments, &ast.Argument{Name: "", Type: a})
-		}
-
-		toCall.Returns = util.StringSliceMap(strings.Split(parts[1], ","), strings.TrimSpace)
-
-		// TODO(elliot): This is a pretty nasty hack for now. This will tell the
-		//  VM at runtime to resolve this variable to the real function name.
-		call.FunctionName = "*" + call.FunctionName
-	} else {
-		toCall = file.FuncDefs[call.FunctionName]
-		if toCall == nil {
-			// It might be a built in function.
-			//
-			// TODO(elliot): This needs to only allow this usage if its imported.
-			if internal := vm.Lib[call.FunctionName]; internal != nil {
-				toCall = internal.FuncDef
-			}
-
-			if toCall == nil {
-				return nil, nil, fmt.Errorf("%s no such function: %s",
-					call.Position(), call.FunctionName)
-			}
-		}
+	toCall, err := findFunc(compiledFunc, call, file)
+	if err != nil {
+		return nil, nil, err
 	}
 
 	// Prepare enough return registers.
@@ -98,6 +63,59 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) 
 	compiledFunc.Append(ins)
 
 	return returnRegisters, toCall.Returns, nil
+}
+
+func findFunc(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) (*ast.Func, error) {
+	// Before we look for the function by name, we should first ensure that it's
+	// not a variable being called as a function.
+	//
+	// TODO(elliot): Don't let a variable shadow a function of the same name.
+	//
+	// TODO(elliot): Check variable is indeed a function and the arguments and
+	//  return values are legal.
+	if ty, ok := compiledFunc.Variables[call.FunctionName]; ok {
+		toCall := ast.NewFuncFromPrototype(ty)
+
+		// TODO(elliot): This is a pretty nasty hack for now. This will tell the
+		//  VM at runtime to resolve this variable to the real function name.
+		call.FunctionName = "*" + call.FunctionName
+
+		return toCall, nil
+	}
+
+	toCall := file.FuncDefs[call.FunctionName]
+	if toCall != nil {
+		return toCall, nil
+	}
+
+	// It might be a built in function.
+	//
+	// TODO(elliot): This needs to only allow this usage if its imported.
+	if internal := vm.Lib[call.FunctionName]; internal != nil {
+		return internal.FuncDef, nil
+	}
+
+	// Is it a method being called on a variable?
+	parts := strings.Split(call.FunctionName, ".")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("%s no such function: %s",
+			call.Position(), call.FunctionName)
+	}
+
+	if _, ok := compiledFunc.Variables[parts[0]]; !ok {
+		return nil, fmt.Errorf("%s no such function: %s",
+			call.Position(), call.FunctionName)
+	}
+
+	if ty, ok := file.FuncDefs[parts[1]]; ok {
+		toCall = ast.NewFuncFromPrototype(ty.String())
+		call.FunctionName = parts[1]
+
+		return toCall, nil
+	}
+
+	return nil, fmt.Errorf("%s no such function: %s",
+		call.Position(), call.FunctionName)
 }
 
 func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {

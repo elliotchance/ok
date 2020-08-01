@@ -1,6 +1,10 @@
 package ast
 
-import "strings"
+import (
+	"strings"
+
+	"github.com/elliotchance/ok/util"
+)
 
 // Argument is used to define a name and type for a function argument.
 type Argument struct {
@@ -49,4 +53,25 @@ func (f *Func) String() string {
 // Position returns the position.
 func (f *Func) Position() string {
 	return f.Pos
+}
+
+// NewFuncFromPrototype is a hack for now. It should be derived directly from
+// the type itself.
+func NewFuncFromPrototype(ty string) *Func {
+	f := &Func{}
+
+	// TODO(elliot): This is a bad solution. Fix me.
+	parts := strings.Split(ty[6:], ")")
+
+	if strings.TrimSpace(parts[0]) != "" {
+		for _, a := range util.StringSliceMap(strings.Split(parts[0], ","), strings.TrimSpace) {
+			f.Arguments = append(f.Arguments, &Argument{Name: "", Type: a})
+		}
+	}
+
+	if strings.TrimSpace(parts[1]) != "" {
+		f.Returns = util.StringSliceMap(strings.Split(parts[1], ","), strings.TrimSpace)
+	}
+
+	return f
 }
