@@ -5,13 +5,13 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
-func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, finalErr error) {
+func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, finalErr error) {
 	originalOffset := offset
 	var err error
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenFunc})
 	if err != nil {
-		return nil, originalOffset, err
+		return nil, originalOffset, anon, err
 	}
 
 	fn := &ast.Func{
@@ -28,29 +28,30 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, finalErr error
 		fn.Name = parser.File.Tokens[offset-1].Value
 	} else {
 		fn.Name = parser.NextFunctionName()
+		anon = true
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenParenOpen})
 	if err != nil {
-		return nil, originalOffset, err
+		return nil, originalOffset, anon, err
 	}
 
 	var args []*ast.Argument
 	args, offset, err = consumeArguments(parser, offset)
 	if err != nil {
-		return nil, originalOffset, err
+		return nil, originalOffset, anon, err
 	}
 	fn.Arguments = args
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
 	if err != nil {
-		return nil, originalOffset, err
+		return nil, originalOffset, anon, err
 	}
 
 	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
 		fn.Returns, offset, err = consumeTypes(parser, offset)
 		if err != nil {
-			return nil, originalOffset, err
+			return nil, originalOffset, anon, err
 		}
 	}
 
@@ -61,10 +62,10 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, finalErr error
 
 	fn.Statements, offset, err = consumeBlock(parser, offset)
 	if err != nil {
-		return nil, originalOffset, err
+		return nil, originalOffset, anon, err
 	}
 
-	return fn, offset, nil
+	return fn, offset, anon, nil
 }
 
 func consumeArguments(parser *Parser, offset int) ([]*ast.Argument, int, error) {

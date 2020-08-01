@@ -36,8 +36,9 @@ func ParseString(s string, fileName string) *Parser {
 		switch parser.File.Tokens[offset].Kind {
 		case lexer.TokenFunc:
 			// TODO(elliot): Check for already declared functions.
+			// TODO(elliot): Function cannot be anonymous here.
 			var fn *ast.Func
-			fn, offset, err = consumeFunc(parser, offset)
+			fn, offset, _, err = consumeFunc(parser, offset)
 			if err != nil {
 				parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
 

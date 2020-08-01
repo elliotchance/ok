@@ -1,0 +1,13 @@
+func main() {
+    func foo(a number) number {
+        return a * 2
+    }
+
+    print(foo(7.3))
+
+    print(bar(3, 5))
+
+    func bar(a, b number) number {
+        return a * b
+    }
+}
