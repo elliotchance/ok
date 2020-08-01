@@ -67,7 +67,9 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 
 		// We allow any kind of statement in the next, this would include
 		// assignment and expressions.
-		node.Next, offset, err = consumeStatement(parser, offset)
+		//
+		// TODO(elliot): Do we care about the hoist return here?
+		node.Next, offset, _, err = consumeStatement(parser, offset)
 		if err != nil {
 			return nil, offset, err
 		}

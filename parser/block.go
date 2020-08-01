@@ -21,14 +21,19 @@ func consumeBlock(parser *Parser, offset int) ([]ast.Node, int, error) {
 		}
 
 		var statement ast.Node
-		statement, offset, err = consumeStatement(parser, offset)
+		var hoist bool
+		statement, offset, hoist, err = consumeStatement(parser, offset)
 		if err != nil {
 			parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
 
 			return nil, originalOffset, err
 		}
 
-		statements = append(statements, statement)
+		if hoist {
+			statements = append([]ast.Node{statement}, statements...)
+		} else {
+			statements = append(statements, statement)
+		}
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyClose})

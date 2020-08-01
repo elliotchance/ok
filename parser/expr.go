@@ -32,9 +32,12 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			break
 		}
 
-		// Try to consume a function literal.
+		// Try to consume a function literal. Named function would have already
+		// been consumed and translated into variable assignments at the
+		// statement level. However, this doesn't mean that function literals
+		// here are not allowed to have a name.
 		var fn *ast.Func
-		fn, offset, err = consumeFunc(parser, offset)
+		fn, offset, _, err = consumeFunc(parser, offset)
 		if err == nil {
 			parts = append(parts, fn)
 			didJustConsumeLiteral = true
