@@ -146,7 +146,7 @@ func TestExpr(t *testing.T) {
 			nodes: []ast.Node{
 				&ast.Identifier{Name: "foo"},
 			},
-			err: errors.New("undefined variable: foo"),
+			err: errors.New(" undefined variable: foo"),
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

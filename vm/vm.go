@@ -7,6 +7,7 @@ import (
 	"runtime/debug"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/compiler/kind"
 )
 
 // StateRegister is a reserved register for holding the map of the state.
@@ -282,6 +283,20 @@ func (vm *VM) Set(register Register, val *ast.Literal) {
 }
 
 func (vm *VM) set(register Register, val *ast.Literal, offset int) {
+	// TODO(elliot): We do not need to assign this always, its just simple for
+	//  now. The compiler should be able to tell when the type of the value
+	//  assign is a function literal.
+	if kind.IsFunc(val.Kind) {
+		// Duplicate the literal so we don't affect the scope of this literal
+		// that may be assigned somewhere else.
+		val = &ast.Literal{
+			Value: val.Value,
+			Kind:  val.Kind,
+			Pos:   val.Pos,
+			Map:   vm.Stack[len(vm.Stack)-1][StateRegister].Map,
+		}
+	}
+
 	if isRegister(register) {
 		vm.Stack[len(vm.Stack)-offset][register] = val
 	} else {
@@ -291,6 +306,10 @@ func (vm *VM) set(register Register, val *ast.Literal, offset int) {
 
 // Get will get a register.
 func (vm *VM) get(register Register, offset int) *ast.Literal {
+	if register[0] == '^' {
+		return vm.Stack[len(vm.Stack)-offset-1][StateRegister].Map[string(register[1:])]
+	}
+
 	if isRegister(register) {
 		return vm.Stack[len(vm.Stack)-offset][register]
 	}

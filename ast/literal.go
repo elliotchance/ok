@@ -15,6 +15,7 @@ type Literal struct {
 	// iteration.
 	Array []*Literal
 
+	// If the literal is a function Map will be the parent scope.
 	Map map[string]*Literal
 
 	Pos string
@@ -36,6 +37,9 @@ func (node *Literal) String() string {
 
 	case kind.IsMap(node.Kind):
 		x = node.Map
+
+	case kind.IsFunc(node.Kind):
+		return "func " + node.Value
 	}
 
 	// Ignore error, it shouldn't happen, and if it does there is nothing

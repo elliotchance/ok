@@ -74,11 +74,18 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 		return results, resultKinds, nil
 
 	case *ast.Identifier:
-		if v, ok := compiledFunc.Variables[e.Name]; ok {
+		// TODO(elliot): Doesn't check that the upper scope variable exists or
+		//  fetches the correct type.
+		if e.Name[0] == '^' {
+			return []vm.Register{vm.Register(e.Name)}, []string{"number"}, nil
+		}
+
+		if v, ok := compiledFunc.Variables[e.Name]; ok || e.Name[0] == '^' {
 			return []vm.Register{vm.Register(e.Name)}, []string{v}, nil
 		}
 
-		return nil, nil, fmt.Errorf("undefined variable: %s", e.Name)
+		return nil, nil, fmt.Errorf("%s undefined variable: %s",
+			e.Pos, e.Name)
 
 	case *ast.Binary:
 		result, ty, err := compileBinary(compiledFunc, e, file)
