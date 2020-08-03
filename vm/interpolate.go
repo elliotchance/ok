@@ -3,11 +3,12 @@ package vm
 import (
 	"fmt"
 	"sort"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/util"
 )
 
 // Interpolate combines strings and expressions into one string result.
@@ -35,8 +36,7 @@ func (ins *Interpolate) String() string {
 }
 
 func renderLiteral(v *ast.Literal, asJSON bool) string {
-	// Arrays
-	if strings.HasPrefix(v.Kind, "[]") {
+	if kind.IsArray(v.Kind) {
 		s := "["
 		for j, element := range v.Array {
 			if j > 0 {
@@ -81,7 +81,13 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 	sort.Strings(keys)
 
 	s := "{"
-	for j, key := range keys {
+	j := 0
+	for _, key := range keys {
+		// If it's an object we do not expose non-public entities.
+		if !kind.IsMap(v.Kind) && !util.IsPublic(key) {
+			continue
+		}
+
 		element := v.Map[key]
 		if j > 0 {
 			s += ", "
@@ -89,6 +95,7 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 
 		s += fmt.Sprintf(`"%s": `, key)
 		s += renderLiteral(element, true)
+		j++
 	}
 
 	return s + "}"

@@ -1,11 +1,11 @@
 func greeter() greeter {
-    func sayHello(name string) {
+    func SayHello(name string) {
         print("Hi", name)
     }
 }
 
 func main() {
     g = greeter()
-    g.sayHello("Jane")
-    g.sayHello("John")
+    g.SayHello("Jane")
+    g.SayHello("John")
 }

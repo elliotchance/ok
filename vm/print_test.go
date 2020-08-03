@@ -110,11 +110,12 @@ func TestPrint_Execute(t *testing.T) {
 				{
 					Kind: "Person",
 					Map: map[string]*ast.Literal{
-						"foo": asttest.NewLiteralNumber("123"),
+						"Foo": asttest.NewLiteralNumber("123"),
+						"bar": asttest.NewLiteralNumber("456"),
 					},
 				},
 			},
-			"{\"foo\": 123}\n",
+			"{\"Foo\": 123}\n",
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

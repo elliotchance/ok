@@ -24,7 +24,7 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 	}
 
 	for i, result := range results {
-		vm.Stack[len(vm.Stack)-2][ins.Results[i]] = vm.Stack[len(vm.Stack)-1][result]
+		vm.set(ins.Results[i], vm.Get(result), 2)
 	}
 
 	vm.Stack = vm.Stack[:len(vm.Stack)-1]
