@@ -90,18 +90,22 @@ func (vm *VM) RunTests() error {
 	return nil
 }
 
-func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
-	// TODO(elliot): Check function exists, especially main.
-
+func (vm *VM) appendStack() {
 	registers := map[Register]*ast.Literal{}
 	vm.Stack = append(vm.Stack, registers)
 
 	// Setup a new state, even we don't use it.
 	vm.Set(StateRegister, &ast.Literal{
 		// TODO(elliot): This should probably be the actual type returned.
-		Kind: "{}any",
+		Kind: "any",
 		Map:  make(map[string]*ast.Literal),
 	})
+}
+
+func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
+	// TODO(elliot): Check function exists, especially main.
+
+	vm.appendStack()
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
@@ -243,9 +247,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 func (vm *VM) runTest(testName string, instructions []Instruction) error {
 	vm.CurrentTestName = testName
 
-	// TODO(elliot): The state register is not setup here. Does that matter?
-	registers := map[Register]*ast.Literal{}
-	vm.Stack = append(vm.Stack, registers)
+	vm.appendStack()
 
 	totalInstructions := len(instructions)
 	for i := 0; i < totalInstructions; i++ {
@@ -271,15 +273,19 @@ func (vm *VM) assert(pass bool, left, op, right, pos string) {
 func isRegister(register Register) bool {
 	r := register[0]
 
-	return r < 'A' || r > 'Z'
+	return r >= '0' && r <= '9'
 }
 
 // Set will set a register.
 func (vm *VM) Set(register Register, val *ast.Literal) {
+	vm.set(register, val, 1)
+}
+
+func (vm *VM) set(register Register, val *ast.Literal, offset int) {
 	if isRegister(register) {
-		vm.Stack[len(vm.Stack)-1][register] = val
+		vm.Stack[len(vm.Stack)-offset][register] = val
 	} else {
-		vm.Stack[len(vm.Stack)-1][StateRegister].Map[string(register)] = val
+		vm.Stack[len(vm.Stack)-offset][StateRegister].Map[string(register)] = val
 	}
 }
 
