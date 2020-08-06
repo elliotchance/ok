@@ -42,7 +42,7 @@ func (p *Parser) AppendErrorf(node ast.Node, format string, args ...interface{})
 }
 
 // Errors returns all errors.
-func (p *Parser) Errors() []error {
+func (p *Parser) Errors() Errors {
 	return p.errors
 }
 

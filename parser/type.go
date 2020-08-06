@@ -38,7 +38,27 @@ func consumeType(parser *Parser, offset int) (string, int, error) {
 	}
 done:
 
+	// A function?
 	var err error
+	offset, err = consume(parser.File, offset, []string{lexer.TokenFunc})
+	if err == nil {
+		fn := &ast.Func{}
+		var tys []string
+		tys, offset, err = consumeTypes(parser, offset, true)
+		if err != nil {
+			return "", originalOffset, err
+		}
+
+		for _, ty := range tys {
+			fn.Arguments = append(fn.Arguments, &ast.Argument{Type: ty})
+		}
+
+		// Returns is optional, so don't error if it wasn't consumed.
+		fn.Returns, offset, _ = consumeTypes(parser, offset, false)
+
+		return ty + fn.String(), offset, nil
+	}
+
 	var t lexer.Token
 	t, offset, err = consumeOneOf(parser.File, offset, types)
 	if err != nil {
@@ -57,13 +77,18 @@ done:
 	return ty, offset, nil
 }
 
-func consumeTypes(parser *Parser, offset int) ([]string, int, error) {
+func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]string, int, error) {
 	originalOffset := offset
 	var types []string
 	var err error
 
 	if parser.File.Tokens[offset].Kind == lexer.TokenParenOpen {
 		offset++ // skip "("
+
+		if allowEmpty &&
+			parser.File.Tokens[offset].Kind == lexer.TokenParenClose {
+			goto close
+		}
 
 		for {
 			var ty string
@@ -81,6 +106,7 @@ func consumeTypes(parser *Parser, offset int) ([]string, int, error) {
 			}
 		}
 
+	close:
 		offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
 		if err != nil {
 			return nil, originalOffset, err

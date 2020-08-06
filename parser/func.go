@@ -49,7 +49,7 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 	}
 
 	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
-		fn.Returns, offset, err = consumeTypes(parser, offset)
+		fn.Returns, offset, err = consumeTypes(parser, offset, false)
 		if err != nil {
 			return nil, originalOffset, anon, err
 		}

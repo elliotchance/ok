@@ -36,7 +36,11 @@ type Func struct {
 func (f *Func) String() string {
 	var args []string
 	for _, arg := range f.Arguments {
-		args = append(args, arg.Name+" "+arg.Type)
+		if arg.Name == "" {
+			args = append(args, arg.Type)
+		} else {
+			args = append(args, arg.Name+" "+arg.Type)
+		}
 	}
 
 	returnSignature := ""
@@ -47,7 +51,12 @@ func (f *Func) String() string {
 		returnSignature = " (" + strings.Join(f.Returns, ", ") + ")"
 	}
 
-	return "func " + f.Name + "(" + strings.Join(args, ", ") + ")" + returnSignature
+	prefix := "func"
+	if f.Name != "" {
+		prefix += " " + f.Name
+	}
+
+	return prefix + "(" + strings.Join(args, ", ") + ")" + returnSignature
 }
 
 // Position returns the position.
@@ -61,7 +70,7 @@ func NewFuncFromPrototype(ty string) *Func {
 	f := &Func{}
 
 	// TODO(elliot): This is a bad solution. Fix me.
-	parts := strings.Split(ty[6:], ")")
+	parts := strings.Split(ty[5:], ")")
 
 	if strings.TrimSpace(parts[0]) != "" {
 		for _, a := range util.StringSliceMap(strings.Split(parts[0], ","), strings.TrimSpace) {

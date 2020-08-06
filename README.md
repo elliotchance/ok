@@ -40,6 +40,7 @@ itself.
       * [Functions](#functions)
       * [Multiple Return Values](#multiple-return-values)
       * [Interpolation](#interpolation)
+      * [Closures](#closures)
       * [Stateful Functions (Objects)](#stateful-functions-objects)
       * [Errors](#errors)
       * [Finally](#finally)
@@ -720,6 +721,58 @@ $ ok run interpolation
 Hello, Bob. How are you?
 3 + 5 = 8
 The total is $3.56
+```
+
+Closures
+--------
+
+```
+// ok supports anonymous functions, which can form closures. Anonymous functions
+// are useful when you want to define a function inline without having to name
+// it.
+
+// This function intSeq returns another function, which we define anonymously in
+// the body of intSeq. The returned function closes over the variable i to form
+// a closure.
+func intSeq() func() number {
+    i = 0
+
+    return func() number {
+        // To reference a variable outside of this function we need to prefix
+        // the name with '^'.
+        ++^i
+
+        // This "i" is local - unrelated to the "i" in the parent scope.
+        i = 0
+
+        return ^i
+    }
+}
+
+func main() {
+    // We call intSeq, assigning the result (a function) to nextInt. This
+    // function value captures its own i value, which will be updated each time
+    // we call nextInt.
+    nextInt = intSeq()
+
+    // See the effect of the closure by calling nextInt a few times.
+    print(nextInt())
+    print(nextInt())
+    print(nextInt())
+
+    // To confirm that the state is unique to that particular function, create
+    // and test a new one.
+    newInts = intSeq()
+    print(newInts())
+}
+```
+
+```
+$ ok run closures
+1
+2
+3
+1
 ```
 
 Stateful Functions (Objects)

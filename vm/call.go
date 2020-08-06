@@ -2,6 +2,8 @@ package vm
 
 import (
 	"fmt"
+
+	"github.com/elliotchance/ok/ast"
 )
 
 // Call tells the VM to jump to another function.
@@ -14,11 +16,14 @@ type Call struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *Call) Execute(_ *int, vm *VM) error {
 	// TODO(elliot): This is a hack that matches up with compiler/call.go.
+	parentScope := map[string]*ast.Literal{}
 	if ins.FunctionName[0] == '*' {
-		ins.FunctionName = vm.Get(Register(ins.FunctionName[1:])).Value
+		funcLit := vm.Get(Register(ins.FunctionName[1:]))
+		ins.FunctionName = funcLit.Value
+		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(ins.FunctionName, ins.Arguments)
+	results, err := vm.call(ins.FunctionName, ins.Arguments, parentScope)
 	if err != nil {
 		return err
 	}

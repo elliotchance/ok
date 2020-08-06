@@ -1,6 +1,8 @@
 package vm
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type CompiledFunc struct {
 	Arguments    []string

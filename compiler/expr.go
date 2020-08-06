@@ -45,6 +45,10 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 			},
 		})
 
+		compiledFunc.Append(&vm.ParentScope{
+			X: returns,
+		})
+
 		return []vm.Register{returns}, []string{fnType}, nil
 
 	case *ast.Array:
