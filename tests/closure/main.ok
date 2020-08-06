@@ -5,8 +5,11 @@ func main() {
 
     print(fn(7.3))
 
+    A = 12
+    b = 3.7
+
     fn = func (a, b number) number {
-        return a * b
+        return a * b + ^A + ^b
     }
 
     print(fn(3, 5))
