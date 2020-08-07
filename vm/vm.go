@@ -7,7 +7,6 @@ import (
 	"runtime/debug"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/compiler/kind"
 )
 
 // StateRegister is a reserved register for holding the map of the state.
@@ -67,7 +66,7 @@ func NewVM(fns map[string]*CompiledFunc, tests []*CompiledTest, pkg string) *VM 
 
 // Run will run the program.
 func (vm *VM) Run() error {
-	_, err := vm.call("main", nil)
+	_, err := vm.call("main", nil, map[string]*ast.Literal{})
 
 	return err
 }
@@ -76,7 +75,7 @@ func (vm *VM) Run() error {
 func (vm *VM) RunTests() error {
 	for _, t := range vm.tests {
 		vm.CurrentTestPassed = true
-		err := vm.runTest(t.TestName, t.Instructions)
+		err := vm.runTest(t.TestName, t.Instructions, map[string]*ast.Literal{})
 		if err != nil {
 			return err
 		}
@@ -91,7 +90,7 @@ func (vm *VM) RunTests() error {
 	return nil
 }
 
-func (vm *VM) appendStack() {
+func (vm *VM) appendStack(parentScope map[string]*ast.Literal) {
 	registers := map[Register]*ast.Literal{}
 	vm.Stack = append(vm.Stack, registers)
 
@@ -99,14 +98,19 @@ func (vm *VM) appendStack() {
 	vm.Set(StateRegister, &ast.Literal{
 		// TODO(elliot): This should probably be the actual type returned.
 		Kind: "any",
-		Map:  make(map[string]*ast.Literal),
+		Map: map[string]*ast.Literal{
+			StateRegister: {
+				Kind: "any",
+				Map:  parentScope,
+			},
+		},
 	})
 }
 
-func (vm *VM) call(name string, arguments []Register) ([]Register, error) {
+func (vm *VM) call(name string, arguments []Register, parentScope map[string]*ast.Literal) ([]Register, error) {
 	// TODO(elliot): Check function exists, especially main.
 
-	vm.appendStack()
+	vm.appendStack(parentScope)
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
@@ -245,10 +249,10 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 	return nil, nil
 }
 
-func (vm *VM) runTest(testName string, instructions []Instruction) error {
+func (vm *VM) runTest(testName string, instructions []Instruction, parentScope map[string]*ast.Literal) error {
 	vm.CurrentTestName = testName
 
-	vm.appendStack()
+	vm.appendStack(parentScope)
 
 	totalInstructions := len(instructions)
 	for i := 0; i < totalInstructions; i++ {
@@ -283,23 +287,10 @@ func (vm *VM) Set(register Register, val *ast.Literal) {
 }
 
 func (vm *VM) set(register Register, val *ast.Literal, offset int) {
-	// TODO(elliot): We do not need to assign this always, its just simple for
-	//  now. The compiler should be able to tell when the type of the value
-	//  assign is a function literal.
-	if kind.IsFunc(val.Kind) {
-		// Duplicate the literal so we don't affect the scope of this literal
-		// that may be assigned somewhere else.
-		val = &ast.Literal{
-			Value: val.Value,
-			Kind:  val.Kind,
-			Pos:   val.Pos,
-			Map:   vm.Stack[len(vm.Stack)-1][StateRegister].Map,
-		}
-	}
-
 	switch {
 	case register[0] == '^':
-		vm.Stack[len(vm.Stack)-offset-1][StateRegister].Map[string(register[1:])] = val
+		parentScope := vm.Stack[len(vm.Stack)-1][StateRegister].Map[StateRegister].Map
+		parentScope[string(register[1:])] = val
 
 	case isRegister(register):
 		vm.Stack[len(vm.Stack)-offset][register] = val
@@ -312,7 +303,8 @@ func (vm *VM) set(register Register, val *ast.Literal, offset int) {
 // Get will get a register.
 func (vm *VM) get(register Register, offset int) *ast.Literal {
 	if register[0] == '^' {
-		return vm.Stack[len(vm.Stack)-offset-1][StateRegister].Map[string(register[1:])]
+		parentScope := vm.Stack[len(vm.Stack)-1][StateRegister].Map[StateRegister].Map
+		return parentScope[string(register[1:])]
 	}
 
 	if isRegister(register) {
