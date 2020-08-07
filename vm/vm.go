@@ -297,9 +297,14 @@ func (vm *VM) set(register Register, val *ast.Literal, offset int) {
 		}
 	}
 
-	if isRegister(register) {
+	switch {
+	case register[0] == '^':
+		vm.Stack[len(vm.Stack)-offset-1][StateRegister].Map[string(register[1:])] = val
+
+	case isRegister(register):
 		vm.Stack[len(vm.Stack)-offset][register] = val
-	} else {
+
+	default:
 		vm.Stack[len(vm.Stack)-offset][StateRegister].Map[string(register)] = val
 	}
 }
