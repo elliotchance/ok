@@ -6,6 +6,7 @@
 /vm/lib.go
 /lib-gen
 /cmd/version/main.go.bak
+/gh-md-toc
 
 # Releases
 /bin

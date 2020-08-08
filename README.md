@@ -41,6 +41,7 @@ itself.
       * [Multiple Return Values](#multiple-return-values)
       * [Interpolation](#interpolation)
       * [Closures](#closures)
+      * [Recursion](#recursion)
       * [Stateful Functions (Objects)](#stateful-functions-objects)
       * [Errors](#errors)
       * [Finally](#finally)
@@ -268,7 +269,7 @@ func main() {
 To run the program, put the code in `hello-world/main.ok` and use `ok run`.
 
 ```bash
-$ ok run hello-world
+$ ok run tests/example-hello-world
 hello world
 ```
 
@@ -298,7 +299,7 @@ func main() {
 ```
 
 ```
-$ ok run values
+$ ok run tests/example-values
 hello
 1+1 = 2
 7.0/3.0 = 2.3333333333333333333
@@ -333,7 +334,7 @@ func main() {
 ```
 
 ```
-$ ok run variables
+$ ok run tests/example-variables
 initial
 true
 1.23
@@ -377,7 +378,7 @@ func main() {
 ```
 
 ```
-$ ok run for
+$ ok run tests/example-for
 1
 2
 3
@@ -423,7 +424,7 @@ func main() {
 ```
 
 ```
-$ ok run if-else
+$ ok run tests/example-if-else
 7 is odd
 8 is divisible by 4
 9 has 1 digit
@@ -479,7 +480,7 @@ func main() {
 ```
 
 ```
-$ ok run switch
+$ ok run tests/example-switch
 Write 2 as
 two
 It's the weekend
@@ -518,7 +519,7 @@ func main() {
 ```
 
 ```
-$ ok run arrays
+$ ok run tests/example-arrays
 [1, 2, 3]
 [123, "foo", true]
 1 foo
@@ -559,7 +560,7 @@ func main() {
 ```
 
 ```
-$ ok run maps
+$ ok run tests/example-maps
 {"a": 1, "b": 2, "c": 3}
 {"a": 123, "b": "foo", "c": true}
 2 foo
@@ -605,7 +606,7 @@ func main() {
 ```
 
 ```
-$ ok run iteration
+$ ok run tests/example-iteration
 0 7
 1 11
 2 13
@@ -653,7 +654,7 @@ func main() {
 ```
 
 ```
-$ ok run functions
+$ ok run tests/example-functions
 1+2 = 3
 1+2+3 = 6
 ```
@@ -688,7 +689,7 @@ func main() {
 ```
 
 ```
-$ ok run multiple-return-values
+$ ok run tests/example-multiple-return-values
 3
 7
 7
@@ -717,7 +718,7 @@ func main() {
 ```
 
 ```
-$ ok run interpolation
+$ ok run tests/example-interpolation
 Hello, Bob. How are you?
 3 + 5 = 8
 The total is $3.56
@@ -768,11 +769,35 @@ func main() {
 ```
 
 ```
-$ ok run closures
+$ ok run tests/example-closures
 1
 2
 3
 1
+```
+
+Recursion
+---------
+
+```
+// ok supports recursive functions. Here's a classic factorial example.
+func fact(n number) number {
+    if n == 0 {
+        return 1
+    }
+
+    // This fact function calls itself until it reaches the base case of fact(0).
+    return n * fact(n-1)
+}
+
+func main() {
+    print(fact(7))
+}
+```
+
+```
+$ ok run tests/example-recursion
+5040
 ```
 
 Stateful Functions (Objects)
@@ -806,7 +831,7 @@ func main() {
 ```
 
 ```
-$ ok run objects
+$ ok run tests/example-objects
 42
 {"Age": 42, "Name": "John"}
 ```
@@ -910,7 +935,7 @@ func main() {
 ```
 
 ```
-$ ok run errors
+$ ok run tests/example-errors
 f1 worked: 10
 f1 failed: can't work with 42
 f2 worked: 10
@@ -968,7 +993,7 @@ func f2(arg number) number {
 ```
 
 ```
-$ ok run finally
+$ ok run tests/example-finally
 f1 worked: 10
 finally f1
 f1 failed: can't work with 42
