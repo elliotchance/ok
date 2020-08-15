@@ -36,6 +36,10 @@ func (ins *Interpolate) String() string {
 }
 
 func renderLiteral(v *ast.Literal, asJSON bool) string {
+	if kind.IsFunc(v.Kind) {
+		return v.String()
+	}
+
 	if kind.IsArray(v.Kind) {
 		s := "["
 		for j, element := range v.Array {
@@ -85,6 +89,12 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 	for _, key := range keys {
 		// If it's an object we do not expose non-public entities.
 		if !kind.IsMap(v.Kind) && !util.IsPublic(key) {
+			continue
+		}
+
+		// We do not render function literals. These would almost never be
+		// useful in a JSON output.
+		if kind.IsFunc(v.Map[key].Kind) {
 			continue
 		}
 

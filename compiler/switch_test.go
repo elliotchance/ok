@@ -582,7 +582,8 @@ func TestSwitch(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			compiledFunc, err := compiler.CompileFunc(test.fn, nil)
+			compiledFunc, err := compiler.CompileFunc(test.fn,
+				&compiler.Compiled{})
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

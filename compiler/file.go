@@ -8,21 +8,27 @@ import (
 
 // CompiledFile contains all the compiled entities in a file.
 type Compiled struct {
-	Funcs    map[string]*vm.CompiledFunc
-	FuncDefs map[string]*ast.Func
-	Tests    []*vm.CompiledTest
+	Funcs      map[string]*vm.CompiledFunc
+	FuncDefs   map[string]*ast.Func
+	Tests      []*vm.CompiledTest
+	Interfaces map[string]map[string]string
 }
 
 // CompileFile translates a single file into a set of instructions. The number
 // of instructions returned may be zero.
-func CompileFile(f *parser.File) (*Compiled, error) {
-	return compile(f.Funcs, f.Tests)
+func CompileFile(f *parser.File, interfaces map[string]map[string]string) (*Compiled, error) {
+	return compile(f.Funcs, f.Tests, interfaces)
 }
 
-func compile(funcs map[string]*ast.Func, tests []*ast.Test) (*Compiled, error) {
+func compile(
+	funcs map[string]*ast.Func,
+	tests []*ast.Test,
+	interfaces map[string]map[string]string,
+) (*Compiled, error) {
 	file := &Compiled{
-		Funcs:    map[string]*vm.CompiledFunc{},
-		FuncDefs: funcs,
+		Funcs:      map[string]*vm.CompiledFunc{},
+		FuncDefs:   funcs,
+		Interfaces: interfaces,
 	}
 
 	for name, fn := range funcs {

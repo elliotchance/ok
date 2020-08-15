@@ -42,7 +42,8 @@ itself.
       * [Interpolation](#interpolation)
       * [Closures](#closures)
       * [Recursion](#recursion)
-      * [Stateful Functions (Objects)](#stateful-functions-objects)
+      * [Objects](#objects)
+      * [Methods](#methods)
       * [Errors](#errors)
       * [Finally](#finally)
 
@@ -800,17 +801,18 @@ $ ok run tests/example-recursion
 5040
 ```
 
-Stateful Functions (Objects)
-----------------------------
+Objects
+-------
 
 ```
 // When a function has a single return type that is also the same name
 // as the function, this is called a constructor. Constructors are used
 // to create stateful functions. Sometimes called objects, records or
 // structures in other languages.
-func person(name string) person {
-    // When you set variables here, they will be accessible outside.
-    Name = name
+func person(Name string) person {
+    // When you set variables here, they will be accessible outside if they
+    // start with a capital letter. Arguments that follow the same rules will be
+    // treated the same way.
     Age = 42
 
     // A constructor does not need to have a return statement. It will
@@ -836,12 +838,44 @@ $ ok run tests/example-objects
 {"Age": 42, "Name": "John"}
 ```
 
+Methods
+-------
+
+```
+func Rectangle(width, height number) Rectangle {
+    // Methods are nested functions. Like closures they can reference variables
+    // in their outer scope with "^".
+    func Area() number {
+        return ^width * ^height
+    }
+
+    // A nested function can be written as an assignment, this worked exactly
+    // the same way.
+    Perim = func() number {
+        return 2 * ^width + 2 * ^height
+    }
+}
+
+func main() {
+    r = Rectangle(10, 5)
+
+    print("area: { r.Area() }")
+    print("perim: { r.Perim() }")
+}
+```
+
+```
+$ ok run tests/example-methods
+area:  50
+perim: 30
+```
+
 Errors
 ------
 
 ```
 // Errors in ok work very similar to exceptions in some other languages. If you
-// are not familar with exceptions, read on.
+// are not familiar with exceptions, read on.
 
 // Any function can raise an error. Raising an error prevents any more code from
 // running, the code will jump to an error handler. If there is no error handler
@@ -860,13 +894,9 @@ func f1(arg number) number {
 // Sometimes just a message is not enough. We can create our own custom error
 // type by implementing the Error interface. That is, any type that has the
 // property Error of type string.
-func argError(arg number, prob string) argError {
-    // Save these properties for later.
-    Arg = arg
-    Prob = prob
-
+func argError(Arg number, Prob string) argError {
     // This satisfies the Error interface.
-    Error = "{arg} - {prob}"
+    Error = "{Arg} - {Prob}"
 }
 
 // f2 performs the same logic as f1, but we raise our custom error instead.

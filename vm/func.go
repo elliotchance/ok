@@ -10,6 +10,7 @@ type CompiledFunc struct {
 	Registers    int
 	Variables    map[string]string // name: type
 	Finally      [][]Instruction
+	Interfaces   map[string]map[string]string
 }
 
 type FinallyBlock struct {

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -102,20 +103,35 @@ func findFunc(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) (*a
 			call.Position(), call.FunctionName)
 	}
 
-	if _, ok := compiledFunc.Variables[parts[0]]; !ok {
-		return nil, fmt.Errorf("%s no such function: %s",
-			call.Position(), call.FunctionName)
+	ty, ok := compiledFunc.Variables[parts[0]]
+	if !ok {
+		return nil, fmt.Errorf("%s no such function %s on variable %s",
+			call.Position(), call.FunctionName, parts[0])
 	}
 
-	if ty, ok := file.FuncDefs[parts[1]]; ok {
-		toCall = ast.NewFuncFromPrototype(ty.String())
-		call.FunctionName = parts[1]
-
-		return toCall, nil
+	methodType, ok := file.Interfaces[ty][parts[1]]
+	if !ok {
+		return nil, fmt.Errorf("%s no such function %s on %s",
+			call.Position(), parts[1], ty)
 	}
 
-	return nil, fmt.Errorf("%s no such function: %s",
-		call.Position(), call.FunctionName)
+	keyRegister := compiledFunc.NextRegister()
+	compiledFunc.Append(&vm.Assign{
+		VariableName: keyRegister,
+		Value:        asttest.NewLiteralString(parts[1]),
+	})
+
+	callRegister := compiledFunc.NextRegister()
+	compiledFunc.Append(&vm.MapGet{
+		Map:    vm.Register(parts[0]),
+		Key:    keyRegister,
+		Result: callRegister,
+	})
+
+	toCall = ast.NewFuncFromPrototype(methodType)
+	call.FunctionName = "*" + string(callRegister)
+
+	return toCall, nil
 }
 
 func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {

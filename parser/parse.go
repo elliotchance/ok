@@ -13,6 +13,12 @@ func ParseString(s string, fileName string) *Parser {
 	}
 	parser.File.Funcs = map[string]*ast.Func{}
 	parser.File.Imports = map[string]string{}
+	defer func() {
+		err := parser.resolveInterfaces()
+		if err != nil {
+			parser.AppendErrorAt("", err.Error())
+		}
+	}()
 
 	var err error
 	options := lexer.Options{

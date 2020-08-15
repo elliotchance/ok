@@ -33,7 +33,8 @@ func TestTest(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			compiledFunc, err := compiler.CompileTest(test.fn, nil)
+			compiledFunc, err := compiler.CompileTest(test.fn,
+				&compiler.Compiled{})
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

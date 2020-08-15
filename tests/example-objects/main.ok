@@ -2,9 +2,10 @@
 // as the function, this is called a constructor. Constructors are used
 // to create stateful functions. Sometimes called objects, records or
 // structures in other languages.
-func person(name string) person {
-    // When you set variables here, they will be accessible outside.
-    Name = name
+func person(Name string) person {
+    // When you set variables here, they will be accessible outside if they
+    // start with a capital letter. Arguments that follow the same rules will be
+    // treated the same way.
     Age = 42
 
     // A constructor does not need to have a return statement. It will

@@ -1,0 +1,20 @@
+func Rectangle(width, height number) Rectangle {
+    // Methods are nested functions. Like closures they can reference variables
+    // in their outer scope with "^".
+    func Area() number {
+        return ^width * ^height
+    }
+
+    // A nested function can be written as an assignment, this worked exactly
+    // the same way.
+    Perim = func() number {
+        return 2 * ^width + 2 * ^height
+    }
+}
+
+func main() {
+    r = Rectangle(10, 5)
+
+    print("area:  { r.Area() }")
+    print("perim: { r.Perim() }")
+}
