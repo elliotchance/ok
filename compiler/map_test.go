@@ -165,7 +165,7 @@ func TestMap(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, nil)
+			}, &compiler.Compiled{})
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

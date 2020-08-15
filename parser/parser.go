@@ -14,6 +14,7 @@ type Parser struct {
 	finalizers       map[string][]*ast.Finally
 	functionNames    []string
 	anonFunctionName int
+	Interfaces       map[string]map[string]string
 }
 
 // AppendError adds an error to the stack.

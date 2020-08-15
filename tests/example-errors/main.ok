@@ -18,13 +18,9 @@ func f1(arg number) number {
 // Sometimes just a message is not enough. We can create our own custom error
 // type by implementing the Error interface. That is, any type that has the
 // property Error of type string.
-func argError(arg number, prob string) argError {
-    // Save these properties for later.
-    Arg = arg
-    Prob = prob
-
+func argError(Arg number, Prob string) argError {
     // This satisfies the Error interface.
-    Error = "{arg} - {prob}"
+    Error = "{Arg} - {Prob}"
 }
 
 // f2 performs the same logic as f1, but we raise our custom error instead.

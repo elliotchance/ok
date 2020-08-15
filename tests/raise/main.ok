@@ -1,9 +1,7 @@
-func MyError(msg string) MyError {
-    Message = msg
+func MyError(Message string) MyError {
 }
 
-func MyOtherError(msg string) MyOtherError {
-    Message = msg
+func MyOtherError(Message string) MyOtherError {
     Secret = 1
 }
 

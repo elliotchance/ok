@@ -260,7 +260,7 @@ func TestCompileFile(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			compiledFile, err := compiler.CompileFile(test.f)
+			compiledFile, err := compiler.CompileFile(test.f, nil)
 			require.NoError(t, err)
 
 			// It is not worth testing these because the Statements make it very

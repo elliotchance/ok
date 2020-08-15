@@ -24,6 +24,7 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, []error) {
 	var errs []error
 	funcs := map[string]*ast.Func{}
 	var tests []*ast.Test
+	interfaces := map[string]map[string]string{}
 
 	for len(fileNames) > 0 {
 		fileName := fileNames[0]
@@ -46,6 +47,10 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, []error) {
 		}
 
 		tests = append(tests, p.File.Tests...)
+
+		for key, i := range p.Interfaces {
+			interfaces[key] = i
+		}
 
 		for pkg := range p.File.Imports {
 			// TODO(elliot): Check import location exists.
@@ -72,7 +77,7 @@ func CompilePackage(dir string, includeTests bool) (*Compiled, []error) {
 	}
 
 	// Step 3: Compile everything all at once.
-	compiled, err := compile(funcs, tests)
+	compiled, err := compile(funcs, tests, interfaces)
 	if err != nil {
 		return nil, []error{err}
 	}

@@ -1,4 +1,3 @@
 // Error is a basic type to carry an error message.
-func Error(message string) Error {
-    Error = message
+func Error(Error string) Error {
 }

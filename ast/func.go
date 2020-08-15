@@ -12,6 +12,10 @@ type Argument struct {
 	Type string
 }
 
+func (arg *Argument) String() string {
+	return strings.TrimSpace(arg.Name + " " + arg.Type)
+}
+
 // Func represents the definition of a function.
 type Func struct {
 	// Name is the name of the function being declared.
@@ -32,8 +36,48 @@ type Func struct {
 	Pos string
 }
 
-// String returns the signature, like `Foo(x number, y number) (string, string)`.
+func (f *Func) Interface() (map[string]string, error) {
+	fields := map[string]string{}
+
+	for _, arg := range f.Arguments {
+		if util.IsPublic(arg.Name) {
+			fields[arg.Name] = arg.Type
+		}
+	}
+
+	for _, stmt := range f.Statements {
+		if a, ok := stmt.(*Assign); ok {
+			if len(a.Lefts) == 1 {
+				if b, ok := a.Lefts[0].(*Identifier); ok {
+					if util.IsPublic(b.Name) {
+						ty, err := TypeOf(a.Rights[0])
+						if err != nil {
+							return nil, err
+						}
+
+						fields[b.Name] = ty
+					}
+				}
+			}
+		}
+	}
+
+	return fields, nil
+}
+
+// String returns the signature, like:
+//
+//   func Foo(x number, y number) (string, string)
+//
 func (f *Func) String() string {
+	return f.signature(true)
+}
+
+func (f *Func) Type() string {
+	return f.signature(false)
+}
+
+func (f *Func) signature(includeName bool) string {
 	var args []string
 	for _, arg := range f.Arguments {
 		if arg.Name == "" {
@@ -52,7 +96,7 @@ func (f *Func) String() string {
 	}
 
 	prefix := "func"
-	if f.Name != "" {
+	if f.Name != "" && includeName {
 		prefix += " " + f.Name
 	}
 
@@ -62,6 +106,10 @@ func (f *Func) String() string {
 // Position returns the position.
 func (f *Func) Position() string {
 	return f.Pos
+}
+
+func (f *Func) IsConstructor() bool {
+	return f.Name != "" && f.Name == strings.Join(f.Returns, ",")
 }
 
 // NewFuncFromPrototype is a hack for now. It should be derived directly from
