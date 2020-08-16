@@ -1,0 +1,16 @@
+func Person(Name string, age number) Person {
+    func Greet(nickname string) {
+    }
+
+    foo = func() {
+    }
+
+    GetAge = func() number {
+        return ^age
+    }
+}
+
+test "Interface" {
+    bob = Person("Bob", 30)
+    assert(reflect.Interface(bob) == "\{ GetAge() number; Greet(string); Name string }")
+}

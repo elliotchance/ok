@@ -27,7 +27,7 @@ func TestTypeOf(t *testing.T) {
 				},
 				Returns: []string{"number"},
 			},
-			"func(bar string) number",
+			"func(string) number",
 		},
 		"closure": {
 			&ast.Func{},

@@ -1,0 +1,21 @@
+// Kind returns the runtime type of a value. One of; "bool", "char", "data",
+// "number", "string", "array", "map" or "func".
+func Kind(value any) string {
+    type = Type(value)
+
+    switch {
+        case hasPrefix(type, "[]") {
+            return "array"
+        }
+
+        case hasPrefix(type, "\{}") {
+            return "map"
+        }
+
+        case hasPrefix(type, "func(") {
+            return "func"
+        }
+    }
+
+    return type
+}

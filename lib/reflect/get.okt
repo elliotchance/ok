@@ -1,0 +1,25 @@
+func SomeObject() SomeObject {
+    Foo = 1.23
+
+    func bar() {}
+
+    func Baz(a number) string {
+        return string a
+    }
+}
+
+test "Get" {
+    // arrays
+    a = ["foo", "bar", "baz"]
+    assert(Get(a, 1) == "bar")
+
+    // maps
+    m = {"foo": "bar", "baz": "qux"}
+    assert(Get(m, "baz") == "qux")
+
+    // objects
+    o = SomeObject()
+    assert(Get(o, "Foo") == 1.23)
+
+    // TODO(elliot): Test for failure conditions.
+}

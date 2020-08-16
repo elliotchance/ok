@@ -77,10 +77,10 @@ func (f *Func) Type() string {
 	return f.signature(false)
 }
 
-func (f *Func) signature(includeName bool) string {
+func (f *Func) signature(includeNames bool) string {
 	var args []string
 	for _, arg := range f.Arguments {
-		if arg.Name == "" {
+		if arg.Name == "" || !includeNames {
 			args = append(args, arg.Type)
 		} else {
 			args = append(args, arg.Name+" "+arg.Type)
@@ -96,7 +96,7 @@ func (f *Func) signature(includeName bool) string {
 	}
 
 	prefix := "func"
-	if f.Name != "" && includeName {
+	if f.Name != "" && includeNames {
 		prefix += " " + f.Name
 	}
 

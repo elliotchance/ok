@@ -2,9 +2,9 @@ package vm
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/compiler/kind"
 )
 
 // Len is used to determine the size of an array or map.
@@ -17,10 +17,10 @@ func (ins *Len) Execute(_ *int, vm *VM) error {
 	r := vm.Get(ins.Argument)
 	var result int
 	switch {
-	case strings.HasPrefix(r.Kind, "[]"):
+	case kind.IsArray(r.Kind):
 		result = len(r.Array)
 
-	case strings.HasPrefix(r.Kind, "{}"):
+	case kind.IsMap(r.Kind):
 		result = len(r.Map)
 
 	case r.Kind == "string":

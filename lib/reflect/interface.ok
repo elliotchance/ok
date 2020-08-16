@@ -1,0 +1,12 @@
+// Interface returns the canonical interface as a string.
+//
+// Examples:
+//
+// ```
+// { }
+// { Name string }
+// { Greet(string) bool; Name string }
+// ```
+func Interface(value any) string {
+    return __interface(value)
+}

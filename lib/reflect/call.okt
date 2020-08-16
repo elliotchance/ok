@@ -1,0 +1,7 @@
+func fn(a, b number) number {
+    return a + b
+}
+
+test "Call" {
+    assert(reflect.Call(fn, []any [1.2, 3.4]) == []any [4.6])
+}

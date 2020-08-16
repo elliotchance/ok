@@ -8,15 +8,15 @@ func main() {
     A = 12
     b = 3.7
 
-    fn = func (a, b number) number {
+    fn2 = func (a, b number) number {
         return a * b + ^A + ^b
     }
 
-    print(fn(3, 5))
+    print(fn2(3, 5))
 
     b = 5.7
 
-    print(fn(3, 5))
+    print(fn2(3, 5))
 
     func setA(newVal number) {
         ^A = newVal
@@ -24,5 +24,5 @@ func main() {
     }
 
     setA(7.8)
-    print(fn(3, 5))
+    print(fn2(3, 5))
 }

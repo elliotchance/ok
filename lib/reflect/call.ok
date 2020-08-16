@@ -1,0 +1,18 @@
+// Call can be used to call a function variable without knowing the type.
+//
+// `fn` must be a callable function and args must have the correct number of
+// arguments for the function. The number of return values will depend on the
+// function being called.
+//
+// Example:
+//
+// ```
+// fn = func(a, b number) number {
+//    return a + b
+// }
+//
+// print(reflect.Call(fn, []any [1.2, 3.4]))
+// ```
+func Call(fn any, args []any) []any {
+    return __call(fn, args)
+}

@@ -1,0 +1,41 @@
+test "Type" {
+    func myType() myType {
+    }
+
+    assert(reflect.Type(true) == "bool")
+    assert(reflect.Type(false) == "bool")
+
+    assert(reflect.Type('a') == "char")
+    assert(reflect.Type('😉') == "char")
+
+    assert(reflect.Type(``) == "data")
+    assert(reflect.Type(`hello`) == "data")
+
+    assert(reflect.Type(0) == "number")
+    assert(reflect.Type(3) == "number")
+    assert(reflect.Type(-3.2) == "number")
+
+    assert(reflect.Type("") == "string")
+    assert(reflect.Type("hello") == "string")
+
+    assert(reflect.Type(["foo", "bar"]) == "[]string")
+    assert(reflect.Type([1, 2, 3]) == "[]number")
+    assert(reflect.Type(any [1, 2, 3]) == "[]number")
+    assert(reflect.Type([]bool []) == "[]bool")
+
+    assert(reflect.Type({"foo": "bar", "baz": "qux"}) == "\{}string")
+    assert(reflect.Type({"foo": 1, "bar": 2, "baz": 3}) == "\{}number")
+    assert(reflect.Type(any {"foo": 1, "bar": 2, "baz": 3}) == "\{}number")
+    assert(reflect.Type({}bool {}) == "\{}bool")
+
+    assert(reflect.Type(func() {}) == "func()")
+    assert(reflect.Type(func() number {}) == "func() number")
+    assert(reflect.Type(func() (string, number) {}) == "func() (string, number)")
+    assert(reflect.Type(func(a char) {}) == "func(char)")
+    assert(reflect.Type(func(a, b char) {}) == "func(char, char)")
+    assert(reflect.Type(func(a, b char, c []string) number {}) == "func(char, char, []string) number")
+
+    assert(reflect.Type(myType) == "func() myType")
+    instanceOfMyType = myType()
+    assert(reflect.Type(instanceOfMyType) == "myType")
+}

@@ -7,6 +7,7 @@ import (
 	"runtime/debug"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 )
 
 // StateRegister is a reserved register for holding the map of the state.
@@ -52,21 +53,27 @@ type VM struct {
 
 	// FinallyBlocks are stacked with stack.
 	FinallyBlocks [][]*FinallyBlock
+
+	// Interfaces describes all the interfaces types known by the VM.
+	Interfaces map[string]map[string]string
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
-func NewVM(fns map[string]*CompiledFunc, tests []*CompiledTest, pkg string) *VM {
+func NewVM(fns map[string]*CompiledFunc, tests []*CompiledTest, interfaces map[string]map[string]string, pkg string) *VM {
 	return &VM{
-		fns:    fns,
-		tests:  tests,
-		pkg:    pkg,
-		Stdout: os.Stdout,
+		fns:        fns,
+		tests:      tests,
+		pkg:        pkg,
+		Stdout:     os.Stdout,
+		Interfaces: interfaces,
 	}
 }
 
 // Run will run the program.
 func (vm *VM) Run() error {
-	_, err := vm.call("main", nil, map[string]*ast.Literal{})
+	_, err := vm.call("main", nil, map[string]*ast.Literal{}, "any")
+
+	vm.catchUnhandledError()
 
 	return err
 }
@@ -90,14 +97,13 @@ func (vm *VM) RunTests() error {
 	return nil
 }
 
-func (vm *VM) appendStack(parentScope map[string]*ast.Literal) {
+func (vm *VM) appendStack(parentScope map[string]*ast.Literal, returnType string) {
 	registers := map[Register]*ast.Literal{}
 	vm.Stack = append(vm.Stack, registers)
 
 	// Setup a new state, even we don't use it.
 	vm.Set(StateRegister, &ast.Literal{
-		// TODO(elliot): This should probably be the actual type returned.
-		Kind: "any",
+		Kind: returnType,
 		Map: map[string]*ast.Literal{
 			StateRegister: {
 				Kind: "any",
@@ -107,10 +113,10 @@ func (vm *VM) appendStack(parentScope map[string]*ast.Literal) {
 	})
 }
 
-func (vm *VM) call(name string, arguments []Register, parentScope map[string]*ast.Literal) ([]Register, error) {
+func (vm *VM) call(name string, arguments []Register, parentScope map[string]*ast.Literal, returnType string) ([]Register, error) {
 	// TODO(elliot): Check function exists, especially main.
 
-	vm.appendStack(parentScope)
+	vm.appendStack(parentScope, returnType)
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
@@ -179,14 +185,12 @@ func (vm *VM) dumpMemory() {
 	}
 }
 
-func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool) ([]Register, error) {
-	i := 0
-
-	defer func() {
+func (vm *VM) recoverPanic(funcName string, ins []Instruction, i *int) func() {
+	return func() {
 		if r := recover(); r != nil {
 			// i+1 because the first instruction shown in "ok asm" is #1.
 			fmt.Printf("VM panicked in function %s at instruction #%d: %s\n\n",
-				funcName, i+1, ins[i].String())
+				funcName, *i+1, ins[*i].String())
 			vm.dumpMemory()
 
 			fmt.Println()
@@ -194,7 +198,12 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 			fmt.Println(string(debug.Stack()))
 			os.Exit(1)
 		}
-	}()
+	}
+}
+
+func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool) ([]Register, error) {
+	i := 0
+	defer vm.recoverPanic(funcName, ins, &i)()
 
 	totalInstructions := len(ins)
 	for ; i < totalInstructions; i++ {
@@ -216,7 +225,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 
 					// TODO(elliot): The err register might be better as a
 					//  fixed position register rather than a variable?
-					vm.Set(Register("err"), vm.ErrValue)
+					vm.Set("err", vm.ErrValue)
 
 					// We found the handler. Remove the error state and continue
 					// as normal. There is a jump at the end of the handler that
@@ -249,21 +258,22 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 	return nil, nil
 }
 
+func (vm *VM) catchUnhandledError() {
+	if vm.ErrType != "" {
+		// TODO(elliot): This needs to be handled much more gracefully.
+		panic(fmt.Sprintf("unhandled %s: %+v", vm.ErrType, vm.ErrValue.Map["Error"]))
+	}
+}
+
 func (vm *VM) runTest(testName string, instructions []Instruction, parentScope map[string]*ast.Literal) error {
 	vm.CurrentTestName = testName
 
-	vm.appendStack(parentScope)
+	vm.appendStack(parentScope, "any")
+	_, err := vm.runInstructions(testName, instructions, false)
 
-	totalInstructions := len(instructions)
-	for i := 0; i < totalInstructions; i++ {
-		ins := instructions[i]
-		err := ins.Execute(&i, vm)
-		if err != nil {
-			return err
-		}
-	}
+	vm.catchUnhandledError()
 
-	return nil
+	return err
 }
 
 func (vm *VM) assert(pass bool, left, op, right, pos string) {
@@ -317,4 +327,15 @@ func (vm *VM) get(register Register, offset int) *ast.Literal {
 // Get will get a register.
 func (vm *VM) Get(register Register) *ast.Literal {
 	return vm.get(register, 1)
+}
+
+func (vm *VM) Raise(message string) {
+	vm.ErrType = "Error"
+	vm.ErrValue = &ast.Literal{
+		Kind:  "Error",
+		Array: []*ast.Literal{asttest.NewLiteralString("Error")},
+		Map: map[string]*ast.Literal{
+			"Error": asttest.NewLiteralString(message),
+		},
+	}
 }

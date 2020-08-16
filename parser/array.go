@@ -21,10 +21,17 @@ func consumeArray(parser *Parser, offset int) (*ast.Array, int, error) {
 		node.Kind = ty
 	}
 
-	// The type must be an array or the explicit "any" type. Otherwise "foo[0]"
+	// If "any" is placed in front of the array we need to remove it. Apart from
+	// the fact it's redundant (since everything is an "any"). It also isn't a
+	// valid runtime type, we need to resolve the real type of the array below.
+	if node.Kind == "any" {
+		node.Kind = ""
+	}
+
+	// The type must be an array or the explicit "[]any" type. Otherwise "foo[0]"
 	// would be interpreted as an array of type foo with one element instead of
 	// an element accessor.
-	if ty != "" && ty != "any" && !strings.HasPrefix(ty, "[]") {
+	if node.Kind != "" && !strings.HasPrefix(ty, "[]") {
 		return nil, originalOffset, errors.New("invalid type for array")
 	}
 

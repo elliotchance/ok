@@ -22,8 +22,16 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 		node.Kind = ty
 	}
 
-	// The type must be a map or the explicit "any" type. See Array for details.
-	if ty != "" && ty != "any" && !strings.HasPrefix(ty, "{}") {
+	// If "any" is placed in front of the array we need to remove it. Apart from
+	// the fact it's redundant (since everything is an "any"). It also isn't a
+	// valid runtime type, we need to resolve the real type of the array below.
+	if node.Kind == "any" {
+		node.Kind = ""
+	}
+
+	// The type must be a map or the explicit "{}any" type. See Array for
+	// details.
+	if node.Kind != "" && !strings.HasPrefix(ty, "{}") {
 		return nil, originalOffset, errors.New("invalid type for map")
 	}
 

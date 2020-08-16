@@ -17,8 +17,11 @@ func TestType(t *testing.T) {
 		expected ast.Node
 	}{
 		"any": {
-			str:      "any []",
-			expected: &ast.Array{Kind: "any"},
+			str: "any []",
+			expected: &ast.Array{
+				// Not "any" because it's redundant and not a runtime time.
+				Kind: "",
+			},
 		},
 		"any-array": {
 			str:      "[]any []",

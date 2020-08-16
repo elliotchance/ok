@@ -1,0 +1,21 @@
+test "Set" {
+    // arrays
+    a = []any ["foo", "bar", "baz"]
+    Set(a, 1, "qux")
+    assert(a == []any ["foo", "qux", "baz"])
+
+    // maps
+    m = {}any {"foo": "bar", "baz": "qux"}
+    Set(m, "baz", 1.23)
+    assert(m == {}any {"foo": "bar", "baz": 1.23})
+
+    Set(m, "qux", "hello")
+    assert(m == {}any {"foo": "bar", "baz": 1.23, "qux": "hello"})
+
+    // objects
+    o = SomeObject()
+    Set(o, "Foo", 23)
+    assert(o.Foo == 23)
+
+    // TODO(elliot): Test for failure conditions.
+}

@@ -1,0 +1,10 @@
+// Type returns the runtime type of a value, some examples would be:
+//
+// ```
+// reflect.Type(3)                      == "number"
+// reflect.Type(["foo", "bar"])         == "[]string"
+// reflect.Type(func hello(ok bool) {}) == "func(bool)"
+// ```
+func Type(value any) string {
+    return __type(value)
+}

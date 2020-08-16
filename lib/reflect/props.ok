@@ -1,0 +1,5 @@
+// Properties returns the public properties of an object. If the input is not an
+// object, an error is raised. The properties will be sorted.
+func Properties(obj any) []string {
+    return __props(obj)
+}
