@@ -241,6 +241,14 @@ func interpolate(s string, pos Pos, fileName string) ([]Token, error) {
 
 	stringLiteral := ""
 	for i := 0; i < len(s); i++ {
+		// We don't have to worry about checking len() because "\{" can only
+		// come as a single unit from readQuotedLiteral.
+		if s[i] == '\\' && s[i+1] == '{' {
+			stringLiteral += "{"
+			i++
+			continue
+		}
+
 		if s[i] == '{' {
 			if stringLiteral != "" {
 				tokens = append(tokens, NewToken(TokenStringLiteral, stringLiteral, pos))
@@ -290,7 +298,29 @@ func interpolate(s string, pos Pos, fileName string) ([]Token, error) {
 }
 
 func containsInterpolation(s string) bool {
+	// This will match a string that doesn't contain interpolation, like "\{".
+	// However, we still need it to match because the interpolate process will
+	// reduce the "\{" to "{".
 	return strings.Contains(s, "{")
+}
+
+var escapeCharacters = map[rune]rune{
+	'a':  '\a', // alert or bell
+	'b':  '\b', // backspace
+	'f':  '\f', // form feed
+	'n':  '\n', // line feed or newline
+	'r':  '\r', // carriage return
+	't':  '\t', // horizontal tab
+	'v':  '\v', // vertical tab
+	'\\': '\\', // backslash
+	'"':  '"',  // double-quote
+
+	// TODO(elliot): \ooo → o is octal digit.
+	// TODO(elliot): \xhh → a byte. h here is a hexadecimal digit.
+	// TODO(elliot): \uhhhh → a Unicode character whose codepoint can be
+	//  expressed in 4 hexadecimal digits. (pad 0 in front)
+	// TODO(elliot): \Uhhhhhhhh → a Unicode character whose codepoint can be
+	//  expressed in 8 hexadecimal digits. (pad 0 in front)
 }
 
 func readQuotedLiteral(str []rune, i int, quote rune, pos Pos) (string, int, error) {
@@ -298,6 +328,31 @@ func readQuotedLiteral(str []rune, i int, quote rune, pos Pos) (string, int, err
 	terminated := false
 	value := ""
 	for ; i < len(str); i++ {
+		if str[i] == '\\' {
+			if i >= len(str)-1 {
+				return "", i, fmt.Errorf(
+					"%s escape missing following character",
+					pos.String())
+			}
+			i++
+
+			// Interpolation is a special case because we cannot simply reduce
+			// '\{' to '{' because otherwise interpolate() will interpret it
+			// incorrect. We have to retain the '\'.
+			if str[i] == '{' {
+				value += "\\{"
+				continue
+			}
+
+			if c, ok := escapeCharacters[str[i]]; ok {
+				value += string(c)
+				continue
+			} else {
+				return "", i, fmt.Errorf("%s invalid escape '\\%c'",
+					pos.String(), str[i])
+			}
+		}
+
 		if str[i] == quote {
 			terminated = true
 			break

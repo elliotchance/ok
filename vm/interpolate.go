@@ -94,11 +94,11 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 
 		// We do not render function literals. These would almost never be
 		// useful in a JSON output.
-		if kind.IsFunc(v.Map[key].Kind) {
+		element := v.Map[key]
+		if kind.IsFunc(element.Kind) {
 			continue
 		}
 
-		element := v.Map[key]
 		if j > 0 {
 			s += ", "
 		}

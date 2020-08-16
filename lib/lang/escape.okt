@@ -1,0 +1,12 @@
+test "escape characters" {
+    // The values are hard to test, but we can check the lengths.
+    assert(len("\a") == 1)
+    assert(len("\b") == 1)
+    assert(len("\f") == 1)
+    assert(len("\n") == 1)
+    assert(len("\r") == 1)
+    assert(len("\t") == 1)
+    assert(len("\v") == 1)
+    assert(len("\{") == 1)
+    assert(len("\"") == 1)
+}

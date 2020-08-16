@@ -98,12 +98,6 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false, pos(2)},
 			},
 		},
-		"newline": {
-			str: "\n",
-			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false, pos2(2, 1)},
-			},
-		},
 		"paren-open-close": {
 			str: "()",
 			expected: []lexer.Token{
@@ -725,18 +719,6 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false, pos(5)},
 			},
 		},
-		"carriage-return": {
-			str: "\r",
-			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false, pos2(2, 1)},
-			},
-		},
-		"tab": {
-			str: "\t",
-			expected: []lexer.Token{
-				{lexer.TokenEOF, "", false, pos(2)},
-			},
-		},
 		"is-end-of-line-1": {
 			str: "a = 1\nprint(",
 			expected: []lexer.Token{
@@ -1142,6 +1124,164 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenIdentifier, "^foo", false, pos(1)},
 				{lexer.TokenEOF, "", false, pos(5)},
 			},
+		},
+		"string-alert-or-bell": {
+			str: `"foo\abar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\abar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-backspace": {
+			str: `"foo\bbar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\bbar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-form-feed": {
+			str: `"foo\fbar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\fbar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-new-line": {
+			str: `"foo\nbar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\nbar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-carriage-return": {
+			str: `"foo\rbar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\rbar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-horizontal-tab": {
+			str: `"foo\tbar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\tbar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-vertical-tab": {
+			str: `"foo\vbar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\vbar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-backslash": {
+			str: `"foo\\bar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\\bar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-double-quote": {
+			str: `"foo\"bar"`,
+			expected: []lexer.Token{
+				{lexer.TokenStringLiteral, "foo\"bar", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(10)},
+			},
+		},
+		"string-open-curly": {
+			str: `"foo\{bar"`,
+			expected: []lexer.Token{
+				{lexer.TokenInterpolateStart, "", false, pos(2)},
+				{lexer.TokenStringLiteral, "foo{bar", false, pos(2)},
+				{lexer.TokenInterpolateEnd, "", false, pos(9)},
+				{lexer.TokenEOF, "", false, pos(11)},
+			},
+		},
+		"string-invalid-escape": {
+			str: `"foo\Zbar"`,
+			err: errors.New("a.ok:1:1 invalid escape '\\Z'"),
+		},
+		"string-escape-missing-char": {
+			str: `"foo\"`,
+			err: errors.New("a.ok:1:1 unterminated literal, did not find closing \""),
+		},
+		"char-alert-or-bell": {
+			str: `'\a'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\a", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-backspace": {
+			str: `'\b'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\b", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-form-feed": {
+			str: `'\f'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\f", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-new-line": {
+			str: `'\n'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\n", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-carriage-return": {
+			str: `'\r'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\r", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-horizontal-tab": {
+			str: `'\t'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\t", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-vertical-tab": {
+			str: `'\v'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\v", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-backslash": {
+			str: `'\\'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\\", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-double-quote": {
+			str: `'\"'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "\"", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-open-curly": {
+			str: `'{'`,
+			expected: []lexer.Token{
+				{lexer.TokenCharLiteral, "{", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(4)},
+			},
+		},
+		"char-invalid-escape": {
+			str: `'\Z'`,
+			err: errors.New("a.ok:1:1 invalid escape '\\Z'"),
+		},
+		"char-escape-missing-char": {
+			str: `'\'`,
+			err: errors.New("a.ok:1:1 invalid escape '\\''"),
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {

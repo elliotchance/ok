@@ -6,17 +6,30 @@ import (
 )
 
 func consumeInterpolate(parser *Parser, offset int) (*ast.Interpolate, int, error) {
+	originalOffset := offset
 	var err error
 	offset, err = consume(parser.File, offset, []string{lexer.TokenInterpolateStart})
 	if err != nil {
 		return nil, offset, err
 	}
 
-	interpolate := &ast.Interpolate{}
+	interpolate := &ast.Interpolate{
+		// Needed to ensure a mangled interpolation will be reported correctly.
+		Pos: parser.File.Pos(originalOffset),
+	}
 
+	isMangled := false
 	for {
 		if parser.File.Tokens[offset].Kind == lexer.TokenInterpolateEnd {
 			break
+		}
+
+		// If the interpolation is mangled we need to consume all tokens until
+		// TokenInterpolateEnd so that the calling function can continue
+		// parsing.
+		if isMangled {
+			offset++
+			continue
 		}
 
 		var group *ast.Group
@@ -34,6 +47,15 @@ func consumeInterpolate(parser *Parser, offset int) (*ast.Interpolate, int, erro
 			interpolate.Parts = append(interpolate.Parts, literal)
 			continue
 		}
+
+		// We reach here if the interpolation is empty (like "{}"), which is not
+		// valid. However, we cannot return an error otherwise the caller will
+		// think this patch was not an interpolation expression.
+		//
+		// TODO(elliot): To properly recover from this we need to consume until TokenInterpolateEnd
+		parser.AppendError(interpolate,
+			"empty interpolation, perhaps missing an escape")
+		isMangled = true
 	}
 
 	offset, err = consume(parser.File, offset, []string{lexer.TokenInterpolateEnd})
