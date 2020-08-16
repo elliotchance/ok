@@ -30,6 +30,7 @@ func cmpOptions() cmp.Options {
 		cmpopts.IgnoreFields(ast.Identifier{}, "Pos"),
 		cmpopts.IgnoreFields(ast.If{}, "Pos"),
 		cmpopts.IgnoreFields(ast.In{}, "Pos"),
+		cmpopts.IgnoreFields(ast.Interpolate{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Key{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Literal{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Map{}, "Pos"),

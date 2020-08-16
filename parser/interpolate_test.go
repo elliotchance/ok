@@ -1,6 +1,7 @@
 package parser_test
 
 import (
+	"errors"
 	"fmt"
 	"testing"
 
@@ -40,6 +41,30 @@ func TestInterpolate(t *testing.T) {
 					},
 					asttest.NewLiteralString(" there"),
 				},
+			},
+		},
+		"empty-1": {
+			str: `"hi {} there"`,
+			expected: &ast.Interpolate{
+				Parts: []ast.Node{
+					asttest.NewLiteralString("hi "),
+					// The remaining interpolate parts are ignored.
+				},
+			},
+			errs: []error{
+				errors.New("a.ok:1:16 empty interpolation, perhaps missing an escape"),
+			},
+		},
+		"empty-2": {
+			str: `"hi { } there"`,
+			expected: &ast.Interpolate{
+				Parts: []ast.Node{
+					asttest.NewLiteralString("hi "),
+					// The remaining interpolate parts are ignored.
+				},
+			},
+			errs: []error{
+				errors.New("a.ok:1:16 empty interpolation, perhaps missing an escape"),
 			},
 		},
 	} {
