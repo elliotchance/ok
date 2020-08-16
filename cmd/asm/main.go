@@ -2,6 +2,7 @@ package asm
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/util"
@@ -26,7 +27,25 @@ func (*Command) Run(args []string) {
 	pkg, errs := compiler.CompilePackage(args[0], false)
 	util.CheckErrorsWithExit(errs)
 
-	for i, fnName := range args[1:] {
+	// Create a map as a function may match more than one glob.
+	funcsToPrint := map[string]struct{}{}
+	for _, glob := range args[1:] {
+		for funcName := range pkg.FuncDefs {
+			if util.MatchesGlob(funcName, glob) {
+				funcsToPrint[funcName] = struct{}{}
+			}
+		}
+	}
+
+	// Display all functions in order. It makes the output easier to read but
+	// also deterministic if we need to diff the output.
+	var funcs []string
+	for funcName := range funcsToPrint {
+		funcs = append(funcs, funcName)
+	}
+	sort.Strings(funcs)
+
+	for i, fnName := range funcs {
 		// Just for vanity, put an empty line between functions.
 		if i > 0 {
 			fmt.Println()
