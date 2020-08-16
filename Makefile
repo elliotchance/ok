@@ -1,4 +1,4 @@
-.PHONY: clean test run-tests tests/* release version readme ok lib-gen
+.PHONY: clean test run-tests tests/* release version ok lib-gen
 
 ok: version vm/lib.go
 	go build
@@ -13,7 +13,7 @@ clean:
 	rm -f coverage.txt
 	rm -f vm/lib.go
 
-ci: clean test-fmt vet test-coverage run-tests check-readme check-doc
+ci: clean test-fmt vet test-coverage run-tests check-doc
 
 test:
 	go test -race ./...
@@ -65,17 +65,6 @@ version: TRAVIS_TAG ?= $(shell git describe --tags --abbrev=0)
 version: DATE := $(shell date +'%F')
 version:
 	sed -i.bak "s/ok version unknown/ok version $(TRAVIS_TAG) $(DATE)/" cmd/version/main.go
-
-readme:
-	./gh-md-toc --insert README.md
-	sed -i.bak '/Added by:/d' README.md
-	rm -f README.md.orig.* README.md.toc.*
-
-check-readme:
-	cp -f README.md README.md.bak2
-	make readme
-	diff README.md README.md.bak2
-	rm -f README.md.bak README.md.bak2
 
 lib-gen:
 	go build ./cmd/lib-gen/
