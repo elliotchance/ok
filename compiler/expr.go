@@ -88,6 +88,20 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 			return []vm.Register{vm.Register(e.Name)}, []string{v}, nil
 		}
 
+		// It could also reference a package-level function.
+		if fn, ok := file.FuncDefs[e.Name]; ok {
+			literalRegister := compiledFunc.NextRegister()
+			compiledFunc.Append(&vm.Assign{
+				VariableName: literalRegister,
+				Value: &ast.Literal{
+					Kind:  fn.Type(),
+					Value: fn.Name,
+				},
+			})
+
+			return []vm.Register{literalRegister}, []string{fn.Type()}, nil
+		}
+
 		return nil, nil, fmt.Errorf("%s undefined variable: %s",
 			e.Pos, e.Name)
 
