@@ -8,9 +8,12 @@ import (
 
 // Assign sets a variable to the result of an expression.
 type Assign struct {
+	// VariableName is the destination.
 	VariableName Register
-	Value        *ast.Literal
-	Register     Register
+
+	// Value or Register must be supplied, but not both.
+	Value    *ast.Literal
+	Register Register
 }
 
 // Execute implements the Instruction interface for the VM.

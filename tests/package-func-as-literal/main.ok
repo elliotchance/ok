@@ -1,0 +1,14 @@
+// Functions at the package-level are special in a way, because they can be
+// referenced as literals but are available regardless of the actual scope of
+// the code referencing them.
+//
+// This verifies that package-level functions can be still treated as literals.
+
+func foo() number {
+    return 13
+}
+
+func main() {
+    bar = foo
+    print(bar())
+}
