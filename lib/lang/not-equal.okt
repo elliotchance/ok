@@ -1,4 +1,4 @@
-test "!=" {
+test "'!=' for literals" {
     assert(true != false)
     assert(false != true)
 
@@ -19,7 +19,9 @@ test "!=" {
     assert(`` != `b`)
     assert(`foo` != `bar`)
     assert(`😃foo` != `😃bar`)
+}
 
+test "'!=' for arrays" {
     assert([]bool [] != []bool [true])
     assert([]bool [true] != []bool [false])
     assert([]bool [true, false] != []bool [true, true])
@@ -39,4 +41,27 @@ test "!=" {
     assert([]string [] != []string ["a"])
     assert([]string ["a"] != []string ["b"])
     assert([]string ["a", "😃foo"] != []string ["a", "😃bar"])
+}
+
+test "'!=' for maps" {
+    assert({}bool {} != {}bool {"a": true})
+    assert({}bool {"a": true} != {}bool {"a": false})
+    assert({}bool {"a": true, "b": false} != {}bool {"a": false, "b": true})
+    assert({}bool {"a": true, "b": false} != {}bool {"a": false, "b": true})
+
+    assert({}char {} != {}char {"foo": 'a'})
+    assert({}char {"foo": 'a'} != {}char {"foo": 'b'})
+    assert({}char {"foo": 'a', "bar": '😃'} != {}char {"foo": '😃', "bar": 'a'})
+
+    assert({}data {} != {}data {"foo": `a`})
+    assert({}data {"foo": `a`} != {}data {"foo": `b`})
+    assert({}data {"foo": `a`, "bar": `😃`} != {}data {"foo": `😃`, "bar": `a`})
+
+    assert({}number {} != {}number {"foo": 1.23})
+    assert({}number {"foo": 1.23} != {}number {"foo": 2.23})
+    assert({}number {"foo": 1.23, "bar": 4.56} != {}number {"foo": 4.56, "bar": 1.23})
+
+    assert({}string {} != {}string {"foo": "a"})
+    assert({}string {"foo": "a"} != {}string {"foo": "b"})
+    assert({}string {"foo": "a", "bar": "😃foo"} != {}string {"foo": "😃foo", "bar": "a"})
 }

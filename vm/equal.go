@@ -71,6 +71,31 @@ func compareValue(a, b *ast.Literal) bool {
 
 		return false
 
+	case kind.IsMap(a.Kind):
+		if len(a.Map) != len(b.Map) {
+			return false
+		}
+
+		keys := make(map[string]struct{})
+		for key := range a.Map {
+			keys[key] = struct{}{}
+		}
+		for key := range b.Map {
+			keys[key] = struct{}{}
+		}
+
+		if len(keys) != len(a.Map) {
+			return false
+		}
+
+		for k, v := range a.Map {
+			if !compareValue(v, b.Map[k]) {
+				return false
+			}
+		}
+
+		return true
+
 	case a.Kind == "number":
 		return numbersAreEqual(a, b)
 

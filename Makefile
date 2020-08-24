@@ -74,7 +74,7 @@ vm/lib.go: lib-gen
 
 run-lib-tests:
 	for d in $(shell ls -d lib/*/); do \
-        ./ok test $$d ; \
+        ./ok test $$d || exit 1 ; \
     done
 
 check-doc:

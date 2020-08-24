@@ -60,13 +60,12 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 		return []vm.Register{returns}, []string{kind}, nil
 
 	case *ast.Map:
-		returns, err := compileMap(compiledFunc, e, file)
+		returns, kind, err := compileMap(compiledFunc, e, file)
 		if err != nil {
 			return nil, nil, err
 		}
 
-		// TODO(elliot): Doesn't return type.
-		return []vm.Register{returns}, []string{"{}"}, nil
+		return []vm.Register{returns}, []string{kind}, nil
 
 	case *ast.Call:
 		results, resultKinds, err := compileCall(compiledFunc, e, file)

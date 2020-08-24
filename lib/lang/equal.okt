@@ -1,4 +1,4 @@
-test "==" {
+test "'==' for literals" {
     assert(true == true)
     assert(false == false)
 
@@ -19,7 +19,9 @@ test "==" {
     assert(`` == ``)
     assert(`foo` == `foo`)
     assert(`😃foo` == `😃foo`)
+}
 
+test "'==' for arrays" {
     assert([]bool [] == []bool [])
     assert([]bool [true] == []bool [true])
     assert([]bool [true, false] == []bool [true, false])
@@ -39,4 +41,26 @@ test "==" {
     assert([]string [] == []string [])
     assert([]string ["a"] == []string ["a"])
     assert([]string ["a", "😃foo"] == []string ["a", "😃foo"])
+}
+
+test "'==' for maps" {
+    assert({}bool {} == {}bool {})
+    assert({}bool {"a": true} == {}bool {"a": true})
+    assert({}bool {"a": true, "b": false} == {}bool {"b": false, "a": true})
+
+    assert({}char {} == {}char {})
+    assert({}char {"foo": 'a'} == {}char {"foo": 'a'})
+    assert({}char {"foo": 'a', "bar": '😃'} == {}char {"bar": '😃', "foo": 'a'})
+
+    assert({}data {} == {}data {})
+    assert({}data {"foo": `a`} == {}data {"foo": `a`})
+    assert({}data {"foo": `a`, "bar": `😃`} == {}data {"bar": `😃`, "foo": `a`})
+
+    assert({}number {} == {}number {})
+    assert({}number {"foo": 1.23} == {}number {"foo": 1.23})
+    assert({}number {"foo": 1.23, "bar": 4.56} == {}number {"bar": 4.56, "foo": 1.23})
+
+    assert({}string {} == {}string {})
+    assert({}string {"foo": "a"} == {}string {"foo": "a"})
+    assert({}string {"foo": "a", "bar": "😃foo"} == {}string {"bar": "😃foo", "foo": "a"})
 }
