@@ -69,25 +69,49 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 	case "bool or bool":
 		return &vm.Or{Left: left, Right: right, Result: result}, "bool"
 
-	case "bool == bool", "char == char", "data == data", "string == string",
+	case "bool == bool",
+		"char == char",
+		"data == data",
+		"string == string",
+
 		// TODO(elliot): These below is not documented in the language spec.
+		// arrays
 		"[]bool == []bool",
 		"[]char == []char",
 		"[]data == []data",
 		"[]number == []number",
-		"[]string == []string":
+		"[]string == []string",
+
+		// maps
+		"{}bool == {}bool",
+		"{}char == {}char",
+		"{}data == {}data",
+		"{}number == {}number",
+		"{}string == {}string":
 		return &vm.Equal{Left: left, Right: right, Result: result}, "bool"
 
 	case "number == number":
 		return &vm.EqualNumber{Left: left, Right: right, Result: result}, "bool"
 
-	case "bool != bool", "char != char", "data != data", "string != string",
+	case "bool != bool",
+		"char != char",
+		"data != data",
+		"string != string",
+
 		// TODO(elliot): These below is not documented in the language spec.
+		// arrays
 		"[]bool != []bool",
 		"[]char != []char",
 		"[]data != []data",
 		"[]number != []number",
-		"[]string != []string":
+		"[]string != []string",
+
+		// maps
+		"{}bool != {}bool",
+		"{}char != {}char",
+		"{}data != {}data",
+		"{}number != {}number",
+		"{}string != {}string":
 		return &vm.NotEqual{Left: left, Right: right, Result: result}, "bool"
 
 	case "number != number":
@@ -116,7 +140,6 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 
 	case "string <= string":
 		return &vm.LessThanEqualString{Left: left, Right: right, Result: result}, "bool"
-
 	}
 
 	return nil, ""

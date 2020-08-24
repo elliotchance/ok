@@ -211,7 +211,7 @@ func TestFor(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}any",
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
@@ -296,7 +296,7 @@ func TestFor(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}any",
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
