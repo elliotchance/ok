@@ -1,9 +1,8 @@
 package compiler
 
 import (
-	"strings"
-
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -21,12 +20,35 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.R
 
 	resultRegister := compiledFunc.NextRegister()
 	switch {
-	case strings.HasPrefix(arrayOrMapKind[0], "[]"):
+	case kind.IsArray(arrayOrMapKind[0]):
 		compiledFunc.Append(&vm.ArrayGet{
 			Array:  arrayOrMapRegisters[0],
 			Index:  keyRegisters[0],
 			Result: resultRegister,
 		})
+
+		return resultRegister, kind.ElementType(arrayOrMapKind[0]), nil
+
+	case kind.IsMap(arrayOrMapKind[0]):
+		compiledFunc.Append(&vm.MapGet{
+			Map:    arrayOrMapRegisters[0],
+			Key:    keyRegisters[0],
+			Result: resultRegister,
+		})
+
+		return resultRegister, kind.ElementType(arrayOrMapKind[0]), nil
+
+	case kind.IsObject(arrayOrMapKind[0]):
+		compiledFunc.Append(&vm.MapGet{
+			Map:    arrayOrMapRegisters[0],
+			Key:    keyRegisters[0],
+			Result: resultRegister,
+		})
+
+		// TODO(elliot): Check exists.
+		ty := file.Interfaces[arrayOrMapKind[0]][n.Key.(*ast.Literal).Value]
+
+		return resultRegister, ty, nil
 
 	case arrayOrMapKind[0] == "string":
 		compiledFunc.Append(&vm.StringIndex{
@@ -36,16 +58,7 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.R
 		})
 
 		return resultRegister, "char", nil
-
-	default:
-		// This applies for both maps and objects.
-		compiledFunc.Append(&vm.MapGet{
-			Map:    arrayOrMapRegisters[0],
-			Key:    keyRegisters[0],
-			Result: resultRegister,
-		})
 	}
 
-	// TODO(elliot): Does not return element type.
-	return resultRegister, "", nil
+	panic(arrayOrMapKind[0])
 }

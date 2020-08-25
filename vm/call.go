@@ -23,7 +23,7 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(ins.FunctionName, ins.Arguments, parentScope)
+	results, err := vm.call(ins.FunctionName, ins.Arguments, parentScope, ins.FunctionName)
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,5 @@
+// Len returns the number of elements in an array or map. If the value is not an
+// array or map then an error is raised.
+func Len(value any) number {
+    return __len(value)
+}

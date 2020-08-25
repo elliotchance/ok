@@ -11,6 +11,11 @@ import (
 )
 
 func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instruction, string) {
+	if strings.HasPrefix(op, "any == ") ||
+		strings.HasSuffix(op, " == any") {
+		return &vm.Equal{Left: left, Right: right, Result: result}, "bool"
+	}
+
 	switch op {
 	// TODO(elliot): These below is not documented in the language spec.
 	case "[]bool + []bool",
@@ -81,13 +86,15 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 		"[]data == []data",
 		"[]number == []number",
 		"[]string == []string",
+		"[]any == []any",
 
 		// maps
 		"{}bool == {}bool",
 		"{}char == {}char",
 		"{}data == {}data",
 		"{}number == {}number",
-		"{}string == {}string":
+		"{}string == {}string",
+		"{}any == {}any":
 		return &vm.Equal{Left: left, Right: right, Result: result}, "bool"
 
 	case "number == number":
@@ -105,13 +112,15 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 		"[]data != []data",
 		"[]number != []number",
 		"[]string != []string",
+		"[]any != []any",
 
 		// maps
 		"{}bool != {}bool",
 		"{}char != {}char",
 		"{}data != {}data",
 		"{}number != {}number",
-		"{}string != {}string":
+		"{}string != {}string",
+		"{}any != {}any":
 		return &vm.NotEqual{Left: left, Right: right, Result: result}, "bool"
 
 	case "number != number":

@@ -1,0 +1,17 @@
+// Get performs one of the following (depending on the input type):
+//
+// - Arrays: `prop` must be an number that represents the index in the array. If
+// it is not a number or is out of bound then an error is raised.
+//
+// - Maps: `prop` must be a string that represents the key in the map. If prop
+// is not a string of the key does not exist in the map an error will be raised.
+//
+// - Objects: `prop` must be a string representing the property name. You may
+// only access public properties (starting with a capital letter). Trying to
+// access a property that does not exist or is not public will result in an
+// error.
+//
+// Any other type will always result in an error.
+func Get(obj, prop any) any {
+    return __get(obj, prop)
+}

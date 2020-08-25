@@ -1,0 +1,11 @@
+test "Len" {
+    // arrays
+    a = ["foo", "bar", "baz"]
+    assert(Len(a) == 3)
+
+    // maps
+    m = {"foo": "bar", "baz": "qux"}
+    assert(Len(m) == 2)
+
+    // TODO(elliot): Test for failure conditions.
+}

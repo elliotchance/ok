@@ -1,0 +1,15 @@
+test "Kind" {
+    assert(reflect.Kind(true) == "bool")
+    assert(reflect.Kind('a') == "char")
+    assert(reflect.Kind(``) == "data")
+    assert(reflect.Kind(12.3) == "number")
+    assert(reflect.Kind("") == "string")
+
+    assert(reflect.Kind([]any []) == "array")
+    assert(reflect.Kind([1, 2, 3]) == "array")
+
+    assert(reflect.Kind({}any {}) == "map")
+    assert(reflect.Kind({"a": 1, "b": 2}) == "map")
+
+    assert(reflect.Kind(func() {}) == "func")
+}

@@ -33,7 +33,7 @@ func (*Command) Run(args []string) {
 		pkg, errs := compiler.CompilePackage(arg, false)
 		util.CheckErrorsWithExit(errs)
 
-		m := vm.NewVM(pkg.Funcs, pkg.Tests, packageName)
+		m := vm.NewVM(pkg.Funcs, pkg.Tests, pkg.Interfaces, packageName)
 		err := m.Run()
 		check(err)
 	}

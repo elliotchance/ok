@@ -13,13 +13,20 @@ type builtinFn func(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instr
 
 // TODO(elliot): These needs to check function signatures.
 var builtinFunctions = map[string]builtinFn{
-	"__log":  funcLog,
-	"__pow":  funcPow,
-	"len":    funcLen,
-	"print":  funcPrint,
-	"string": funcString,
-	"number": funcNumber,
-	"char":   funcChar,
+	"__call":      funcCall,
+	"__get":       funcGet,
+	"__interface": funcInterface,
+	"__len":       funcLen,
+	"__log":       funcLog,
+	"__pow":       funcPow,
+	"__props":     funcProps,
+	"__set":       funcSet,
+	"__type":      funcType,
+	"char":        funcChar,
+	"len":         funcLen,
+	"number":      funcNumber,
+	"print":       funcPrint,
+	"string":      funcString,
 }
 
 func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) ([]vm.Register, []string, error) {
@@ -162,6 +169,74 @@ func funcChar(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction
 	}
 
 	return ins, result, "char", nil
+}
+
+func funcInterface(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Interface{
+		Value:  args[0],
+		Result: result,
+	}
+
+	return ins, result, "string", nil
+}
+
+func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Get{
+		Object: args[0],
+		Prop:   args[1],
+		Result: result,
+	}
+
+	return ins, result, "string", nil
+}
+
+func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Set{
+		Object: args[0],
+		Prop:   args[1],
+		Value:  args[2],
+		Result: result,
+	}
+
+	return ins, result, "bool", nil
+}
+
+func funcProps(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Props{
+		Object: args[0],
+		Result: result,
+	}
+
+	return ins, result, "[]string", nil
+}
+
+func funcType(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Type{
+		Value:  args[0],
+		Result: result,
+	}
+
+	return ins, result, "string", nil
+}
+
+func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+	result := compiledFunc.NextRegister()
+
+	// TODO(elliot): This is not a safe operation because it assumes the
+	//  provided inputs are sane since they cannot be checked by the compiler.
+	//  We will need some runtime check in the instruction itself.
+	ins := &vm.DynamicCall{
+		Variable:  args[0],
+		Arguments: args[1],
+		Results:   result,
+	}
+
+	return ins, result, "[]any", nil
 }
 
 func funcLog(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {

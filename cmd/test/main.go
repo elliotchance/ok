@@ -38,7 +38,7 @@ func (*Command) Run(args []string) {
 		pkg, errs := compiler.CompilePackage(arg, true)
 		util.CheckErrorsWithExit(errs)
 
-		m := vm.NewVM(pkg.Funcs, pkg.Tests, packageName)
+		m := vm.NewVM(pkg.Funcs, pkg.Tests, pkg.Interfaces, packageName)
 		startTime := time.Now()
 		err := m.RunTests()
 		elapsed := time.Since(startTime).Milliseconds()

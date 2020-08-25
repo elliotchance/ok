@@ -14,10 +14,25 @@ func IsMap(ty string) bool {
 
 // IsFunc tests for a function literal.
 func IsFunc(ty string) bool {
-	return strings.HasPrefix(ty, "func ")
+	return strings.HasPrefix(ty, "func(")
 }
 
 // ElementType returns the element type of a value of an array or map.
 func ElementType(ty string) string {
 	return ty[2:]
+}
+
+// IsObject returns true for an object type.
+func IsObject(ty string) bool {
+	return !IsLiteral(ty) && !IsMap(ty) && !IsArray(ty)
+}
+
+// IsLiteral return true for any literal (including functions).
+func IsLiteral(ty string) bool {
+	return ty == "bool" ||
+		ty == "char" ||
+		ty == "data" ||
+		ty == "number" ||
+		ty == "string" ||
+		IsFunc(ty)
 }

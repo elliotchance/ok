@@ -32,9 +32,7 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 
 		file.FuncDefs[e.Name] = e
 		file.Funcs[e.Name] = cf
-
-		// TODO(elliot): Doesn't return true function type.
-		fnType := "func (number, number) number"
+		fnType := e.Type()
 
 		returns := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.Assign{

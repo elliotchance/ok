@@ -19,7 +19,8 @@ func TestMap(t *testing.T) {
 		"any-empty": {
 			str: "any {}",
 			expected: &ast.Map{
-				Kind: "any",
+				// Not "any" because it's redundant and not a runtime time.
+				Kind: "",
 			},
 		},
 		"one-number": {

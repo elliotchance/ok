@@ -24,9 +24,9 @@ func compileMap(
 
 	mapRegister := compiledFunc.NextRegister()
 	mapAlloc := &vm.MapAlloc{
-		Kind:   n.Kind,
 		Size:   sizeRegister,
 		Result: mapRegister,
+		Kind:   n.Kind,
 	}
 	compiledFunc.Append(mapAlloc)
 
@@ -38,6 +38,7 @@ func compileMap(
 		}
 
 		// TODO(elliot): Check value is the right type for map.
+		// TODO(elliot): Check all elements are the same kind.
 		valueRegisters, valueKind, _ := compileExpr(compiledFunc, element.Value, file)
 		if mapAlloc.Kind == "" {
 			mapAlloc.Kind = "{}" + valueKind[0]

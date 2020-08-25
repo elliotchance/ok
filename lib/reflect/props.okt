@@ -1,0 +1,6 @@
+test "Properties" {
+    o = SomeObject()
+    assert(Properties(o) == ["Baz", "Foo"])
+
+    // TODO(elliot): Test for failure conditions.
+}
