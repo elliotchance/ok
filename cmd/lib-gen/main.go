@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/util"
 	"github.com/elliotchance/ok/vm"
@@ -27,6 +28,7 @@ func main() {
 	packageNames := map[string]bool{}
 
 	funcs := map[string]*vm.InternalDefinition{}
+	constants := map[string]*ast.Literal{}
 	for _, pathInfo := range packages {
 		if !pathInfo.IsDir() {
 			continue
@@ -43,7 +45,9 @@ func main() {
 		util.CheckErrorsWithExit(errs)
 
 		for name, fn := range pkg.Funcs {
-			// TODO(elliot): Filter out unexported entities.
+			if !util.IsPublic(name) {
+				continue
+			}
 
 			funcDef := pkg.FuncDefs[name]
 
@@ -60,6 +64,19 @@ func main() {
 				FuncDef:      funcDef,
 			}
 		}
+
+		for name, c := range pkg.Constants {
+			if !util.IsPublic(name) {
+				continue
+			}
+
+			key := pkgName + "." + name
+			if pkgName == "lang" {
+				key = name
+			}
+
+			constants[key] = c
+		}
 	}
 
 	f, err := os.Create("vm/lib.go")
@@ -73,6 +90,9 @@ func main() {
 	fmt.Fprintf(f, "\n")
 	fmt.Fprintf(f, "\tLib = ")
 	util.Render(f, funcs, "\t", true)
+	fmt.Fprintf(f, "\n")
+	fmt.Fprintf(f, "\tConstants = ")
+	util.Render(f, constants, "\t", true)
 	fmt.Fprintf(f, "\n}\n")
 	fmt.Fprintf(f, "\n")
 }

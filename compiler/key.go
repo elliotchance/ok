@@ -1,12 +1,38 @@
 package compiler
 
 import (
+	"fmt"
+
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/vm"
 )
 
 func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.Register, string, error) {
+	// It could be an imported constant.
+	// TODO(elliot): This is hack for now, because the package name is not yet a
+	//  variable.
+	if node, ok := n.Expr.(*ast.Identifier); ok {
+		if key, ok := n.Key.(*ast.Literal); ok {
+			if c, ok := vm.Constants[fmt.Sprintf("%s.%s", node.Name, key.Value)]; ok {
+				resultRegister := compiledFunc.NextRegister()
+
+				// Copy the value in case it's modified.
+				//
+				// TODO(elliot): This does not support non-scalar values.
+				compiledFunc.Append(&vm.Assign{
+					VariableName: resultRegister,
+					Value: &ast.Literal{
+						Kind:  c.Kind,
+						Value: c.Value,
+					},
+				})
+
+				return resultRegister, c.Kind, nil
+			}
+		}
+	}
+
 	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, file)
 	if err != nil {
 		return "", "", err

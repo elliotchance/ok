@@ -448,6 +448,13 @@ func TestExpr(t *testing.T) {
 				},
 			),
 		},
+		"import-constant": {
+			str: "math.Pi",
+			expected: &ast.Key{
+				Expr: &ast.Identifier{Name: "math"},
+				Key:  asttest.NewLiteralString("Pi"),
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

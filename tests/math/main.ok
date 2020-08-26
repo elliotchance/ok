@@ -2,4 +2,5 @@ import "math"
 
 func main() {
     print(math.Abs(-1.23))
+    print(math.Pi)
 }

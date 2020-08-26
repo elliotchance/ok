@@ -39,6 +39,8 @@ func (*Command) Run(args []string) {
 		// Step 2: Parse all files.
 		docs := map[string]string{}
 		var funcs []*ast.Func
+		var constantNames []string
+		constants := map[string]*ast.Literal{}
 
 		for _, fileName := range fileNames {
 			data, err := ioutil.ReadFile(fileName)
@@ -48,6 +50,11 @@ func (*Command) Run(args []string) {
 
 			for _, fn := range p.File.Funcs {
 				funcs = append(funcs, fn)
+			}
+
+			for name, c := range p.Constants {
+				constants[name] = c
+				constantNames = append(constantNames, name)
 			}
 
 			for _, comment := range p.File.Comments {
@@ -63,18 +70,48 @@ func (*Command) Run(args []string) {
 		sort.Slice(funcs, func(i, j int) bool {
 			return funcs[i].Name < funcs[j].Name
 		})
+		sort.Strings(constantNames)
 
 		fmt.Println("#", packageName)
 		fmt.Println()
+
+		// Constants should appear at the top (before functions).
+		for _, name := range constantNames {
+			if !util.IsPublic(name) {
+				continue
+			}
+
+			fmt.Printf("- [%s %s](#constants)\n", name, constants[name].Kind)
+		}
+
+		if len(constants) > 0 {
+			fmt.Println()
+		}
 
 		for _, fn := range funcs {
 			if !util.IsPublic(fn.Name) {
 				continue
 			}
 
-			fmt.Printf("- [%s](#%s)\n", fn.Name, fn.Name)
+			fmt.Printf("- [%s](#%s)\n", fn.String(), fn.Name)
 		}
 		fmt.Println()
+
+		if len(constants) > 0 {
+			fmt.Println("## Constants")
+			fmt.Println()
+
+			for _, name := range constantNames {
+				if !util.IsPublic(name) {
+					continue
+				}
+
+				fmt.Println("```")
+				fmt.Printf("%s = %s\n", name, constants[name].Value)
+				fmt.Println("```")
+				fmt.Println()
+			}
+		}
 
 		for _, fn := range funcs {
 			if !util.IsPublic(fn.Name) {

@@ -10,6 +10,7 @@ func ParseString(s string, fileName string) *Parser {
 	parser := &Parser{
 		File:       &File{},
 		finalizers: map[string][]*ast.Finally{},
+		Constants:  map[string]*ast.Literal{},
 	}
 	parser.File.Funcs = map[string]*ast.Func{}
 	parser.File.Imports = map[string]string{}
@@ -40,6 +41,19 @@ func ParseString(s string, fileName string) *Parser {
 	var offset int
 	for {
 		switch parser.File.Tokens[offset].Kind {
+		case lexer.TokenIdentifier:
+			var name string
+			var value *ast.Literal
+			name, value, offset, err = consumeConstant(parser, offset)
+			if err != nil {
+				parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
+
+				goto done
+			}
+
+			// TODO(elliot): Check for redefinition.
+			parser.Constants[name] = value
+
 		case lexer.TokenFunc:
 			// TODO(elliot): Check for already declared functions.
 			// TODO(elliot): Function cannot be anonymous here.

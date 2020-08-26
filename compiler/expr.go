@@ -85,6 +85,26 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 			return []vm.Register{vm.Register(e.Name)}, []string{v}, nil
 		}
 
+		// It could be a package-level constant.
+		if c, ok := file.Constants[e.Name]; ok {
+			// We copy it locally to make sure it's value isn't changed. The
+			// compiler will prevent a constant from being modified directly.
+			//
+			// TODO(elliot): The compiler needs to raise an error when trying to
+			//  modify a constant.
+			literalRegister := compiledFunc.NextRegister()
+			compiledFunc.Append(&vm.Assign{
+				VariableName: literalRegister,
+				// TODO(elliot): Does not support non-scalar values.
+				Value: &ast.Literal{
+					Kind:  c.Kind,
+					Value: c.Value,
+				},
+			})
+
+			return []vm.Register{literalRegister}, []string{c.Kind}, nil
+		}
+
 		// It could also reference a package-level function.
 		if fn, ok := file.FuncDefs[e.Name]; ok {
 			literalRegister := compiledFunc.NextRegister()
