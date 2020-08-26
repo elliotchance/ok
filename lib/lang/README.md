@@ -1,6 +1,6 @@
 # lang
 
-- [Error](#Error)
+- [func Error(Error string) Error](#Error)
 
 ## Error
 

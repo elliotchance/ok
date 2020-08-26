@@ -24,6 +24,7 @@ type InternalDefinition struct {
 // These are populated with the generated lib.go file. See Makefile.
 var Lib map[string]*InternalDefinition
 var Packages map[string]bool
+var Constants map[string]*ast.Literal
 
 // CompiledTest is a runnable test.
 type CompiledTest struct {

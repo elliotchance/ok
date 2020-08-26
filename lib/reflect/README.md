@@ -1,13 +1,13 @@
 # reflect
 
-- [Call](#Call)
-- [Get](#Get)
-- [Interface](#Interface)
-- [Kind](#Kind)
-- [Len](#Len)
-- [Properties](#Properties)
-- [Set](#Set)
-- [Type](#Type)
+- [func Call(fn any, args []any) []any](#Call)
+- [func Get(obj any, prop any) any](#Get)
+- [func Interface(value any) string](#Interface)
+- [func Kind(value any) string](#Kind)
+- [func Len(value any) number](#Len)
+- [func Properties(obj any) []string](#Properties)
+- [func Set(obj any, prop any, value any) any](#Set)
+- [func Type(value any) string](#Type)
 
 ## Call
 

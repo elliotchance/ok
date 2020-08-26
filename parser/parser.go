@@ -15,6 +15,13 @@ type Parser struct {
 	functionNames    []string
 	anonFunctionName int
 	Interfaces       map[string]map[string]string
+
+	// Constants are variables defined at the package level. They cannot be
+	// modified and only allow literals for values.
+	//
+	// TODO(elliot): We should allow for expressions that can be resolved at
+	//  compile time, such as "3600 * 24".
+	Constants map[string]*ast.Literal
 }
 
 // AppendError adds an error to the stack.

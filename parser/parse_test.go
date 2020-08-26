@@ -12,11 +12,12 @@ import (
 
 func TestParseString(t *testing.T) {
 	for testName, test := range map[string]struct {
-		str      string
-		expected *ast.Func
-		comments []*ast.Comment
-		errs     []error
-		imports  map[string]string
+		str       string
+		expected  *ast.Func
+		comments  []*ast.Comment
+		errs      []error
+		imports   map[string]string
+		constants map[string]*ast.Literal
 	}{
 		"empty": {
 			str: "",
@@ -207,6 +208,13 @@ func TestParseString(t *testing.T) {
 				"math": "math",
 			},
 		},
+		"package-level-variable": {
+			str:      "Pi = 3.14\nfunc main() {}",
+			expected: newFunc(),
+			constants: map[string]*ast.Literal{
+				"Pi": asttest.NewLiteralNumber("3.14"),
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.ParseString(test.str, "a.ok")
@@ -220,6 +228,13 @@ func TestParseString(t *testing.T) {
 				}, p.File.Funcs)
 			}
 			assert.Equal(t, test.comments, p.File.Comments)
+
+			// Constants is always initialized by the parser, we only need to
+			// specify in tests when needed.
+			if test.constants == nil {
+				test.constants = map[string]*ast.Literal{}
+			}
+			asttest.AssertEqual(t, test.constants, p.Constants)
 		})
 	}
 }
