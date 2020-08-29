@@ -1,6 +1,6 @@
 .PHONY: clean test run-tests tests/* release version ok lib-gen
 
-ok: version vm/lib.go
+ok: version
 	go build
 
 	# Restore the original main.go so that git does not track the changes.
@@ -11,7 +11,6 @@ clean:
 	rm -f ok-linux.zip ok-windows.zip
 	rm -f ok
 	rm -f coverage.txt
-	rm -f vm/lib.go
 
 ci: clean test-fmt vet test-coverage run-tests check-doc
 
@@ -47,15 +46,15 @@ tests/*: ok
 
 	./ok test $@
 
-ok-macos.zip: version clean vm/lib.go
+ok-macos.zip: version clean
 	GOOS=darwin GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
-ok-linux.zip: version clean vm/lib.go
+ok-linux.zip: version clean
 	GOOS=linux GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
-ok-windows.zip: version clean vm/lib.go
+ok-windows.zip: version clean
 	GOOS=windows GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
@@ -67,10 +66,7 @@ version:
 	sed -i.bak "s/ok version unknown/ok version $(TRAVIS_TAG) $(DATE)/" cmd/version/main.go
 
 lib-gen:
-	go build ./cmd/lib-gen/
-
-vm/lib.go: lib-gen
-	./lib-gen
+	go install ./cmd/lib-gen/
 
 run-lib-tests:
 	for d in $(shell ls -d lib/*/); do \
