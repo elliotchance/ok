@@ -17,13 +17,14 @@ type Call struct {
 func (ins *Call) Execute(_ *int, vm *VM) error {
 	// TODO(elliot): This is a hack that matches up with compiler/call.go.
 	parentScope := map[string]*ast.Literal{}
+	funcName := ins.FunctionName
 	if ins.FunctionName[0] == '*' {
 		funcLit := vm.Get(Register(ins.FunctionName[1:]))
-		ins.FunctionName = funcLit.Value
+		funcName = funcLit.Value
 		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(ins.FunctionName, ins.Arguments, parentScope, ins.FunctionName)
+	results, err := vm.call(funcName, ins.Arguments, parentScope, funcName)
 	if err != nil {
 		return err
 	}

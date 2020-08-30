@@ -25,6 +25,7 @@ type InternalDefinition struct {
 var Lib map[string]*InternalDefinition
 var Packages map[string]bool
 var Constants map[string]*ast.Literal
+var Interfaces map[string]map[string]string
 
 // CompiledTest is a runnable test.
 type CompiledTest struct {
@@ -60,7 +61,12 @@ type VM struct {
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
-func NewVM(fns map[string]*CompiledFunc, tests []*CompiledTest, interfaces map[string]map[string]string, pkg string) *VM {
+func NewVM(
+	fns map[string]*CompiledFunc,
+	tests []*CompiledTest,
+	interfaces map[string]map[string]string,
+	pkg string,
+) *VM {
 	return &VM{
 		fns:        fns,
 		tests:      tests,

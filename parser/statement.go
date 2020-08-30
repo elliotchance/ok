@@ -28,7 +28,7 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, hoist bool
 	var fn *ast.Func
 	var fnAnon bool
 	fn, offset, fnAnon, err = consumeFunc(parser, offset)
-	if err == nil && !fnAnon {
+	if err == nil {
 		assign := &ast.Assign{
 			Lefts: []ast.Node{
 				&ast.Identifier{Name: fn.Name},
@@ -36,6 +36,12 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, hoist bool
 			Rights: []ast.Node{
 				fn,
 			},
+		}
+
+		// If the function literal has a name it will confuse the compiler into
+		// thinking it's a package-level entity.
+		if !fnAnon {
+			fn.Name = parser.NextFunctionName()
 		}
 
 		// It's not enough to simply translate a nested function into a variable

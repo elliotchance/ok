@@ -11,6 +11,7 @@ func ParseString(s string, fileName string) *Parser {
 		File:       &File{},
 		finalizers: map[string][]*ast.Finally{},
 		Constants:  map[string]*ast.Literal{},
+		Interfaces: map[string]map[string]string{},
 	}
 	parser.File.Funcs = map[string]*ast.Func{}
 	parser.File.Imports = map[string]string{}

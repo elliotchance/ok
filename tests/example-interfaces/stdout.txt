@@ -1,0 +1,12 @@
+g =  {"Height": 4, "Sides": 4, "Width": 3}
+sides = 4
+area = 12
+perim = 14
+g =  {"Radius": 5, "Sides": 0}
+sides = 0
+area = 78.539816339744830962
+perim = 31.415926535897932384
+g =  {"Sides": 4}
+sides = 4
+area = 25
+perim = 20

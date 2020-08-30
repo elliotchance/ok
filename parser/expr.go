@@ -37,8 +37,15 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		// statement level. However, this doesn't mean that function literals
 		// here are not allowed to have a name.
 		var fn *ast.Func
-		fn, offset, _, err = consumeFunc(parser, offset)
+		var fnAnon bool
+		fn, offset, fnAnon, err = consumeFunc(parser, offset)
 		if err == nil {
+			// If the function literal has a name it will confuse the compiler
+			// into thinking it's a package-level entity.
+			if !fnAnon {
+				parser.AppendError(fn, "function literals cannot be named")
+			}
+
 			parts = append(parts, fn)
 			didJustConsumeLiteral = true
 			continue
