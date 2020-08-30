@@ -1,0 +1,73 @@
+import "math"
+
+// All functions in ok have an implicit interface. Here's a basic interface for
+// geometric shapes. What's important here is that the function name and return
+// type are the same, and that all arguments start with a capital letter:
+func Geometry(
+    Sides number,
+    Area func() number,
+    Perim func() number
+) Geometry {}
+
+// For our example we'll implement this interface on Rect and Circle types.
+
+func Rect(Width, Height number) Rect {
+    // Here we implement Geometry on Rect. To implement an interface in ok, we
+    // just need to implement all the properties (variables and functions) in
+    // the interface.
+    Sides = 4
+
+    func Area() number {
+        return ^Width * ^Height
+    }
+
+    func Perim() number {
+        return 2 * ^Width + 2 * ^Height
+    }
+}
+
+func Circle(Radius number) Circle {
+    // The implementation for Circle.
+
+    // Even though this is 0, we need to explicitly set it to implement the
+    // interface.
+    Sides = 0
+
+    func Area() number {
+        return math.Pi * ^Radius * ^Radius
+    }
+
+    func Perim() number {
+        return 2 * math.Pi * ^Radius
+    }
+}
+
+// Here's a generic measure function taking advantage of this to work on any
+// Geometry.
+func measure(g Geometry) {
+    print("g = ", g)
+    print("sides =", g.Sides)
+    print("area =", g.Area())
+    print("perim =", g.Perim())
+}
+
+func main() {
+    rect = Rect(3, 4)
+    circle = Circle(5)
+
+    measure(rect)
+    measure(circle)
+
+    // Since Geometry is actually a function we can use it to create a dynamic
+    // implementation just by providing the arguments.
+    square = Geometry(
+        4,
+        func() number {
+            return 25
+        },
+        func() number {
+            return 20
+        }
+    )
+    measure(square)
+}

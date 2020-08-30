@@ -71,10 +71,19 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.R
 			Result: resultRegister,
 		})
 
-		// TODO(elliot): Check exists.
-		ty := file.Interfaces[arrayOrMapKind[0]][n.Key.(*ast.Literal).Value]
+		if iface, ok := file.Interfaces[arrayOrMapKind[0]]; ok {
+			ty := iface[n.Key.(*ast.Literal).Value]
 
-		return resultRegister, ty, nil
+			return resultRegister, ty, nil
+		}
+
+		if iface, ok := vm.Interfaces[arrayOrMapKind[0]]; ok {
+			ty := iface[n.Key.(*ast.Literal).Value]
+
+			return resultRegister, ty, nil
+		}
+
+		return "", "", fmt.Errorf("unknown type: %s", arrayOrMapKind[0])
 
 	case arrayOrMapKind[0] == "string":
 		compiledFunc.Append(&vm.StringIndex{

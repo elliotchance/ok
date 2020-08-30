@@ -1300,4 +1300,9 @@ func init() {
 		"math.SqrtPhi": &ast.Literal{"number", "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11"},
 		"math.SqrtPi":  &ast.Literal{"number", "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11"},
 	}
+	Interfaces = map[string]map[string]string{
+		"Error": map[string]string{
+			"Error": "string",
+		},
+	}
 }

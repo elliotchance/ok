@@ -1,10 +1,10 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func (p *Parser) resolveInterfaces() error {
-	p.Interfaces = make(map[string]map[string]string)
-
 	for _, fn := range p.File.Funcs {
 		if fn.IsConstructor() {
 			ty, err := fn.Interface()

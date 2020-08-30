@@ -1,7 +1,7 @@
-test "Type" {
-    func myType() myType {
-    }
+func myType() myType {
+}
 
+test "Type" {
     assert(reflect.Type(true) == "bool")
     assert(reflect.Type(false) == "bool")
 
