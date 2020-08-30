@@ -12,7 +12,7 @@ clean:
 	rm -f ok
 	rm -f coverage.txt
 
-ci: clean test-fmt vet test-coverage run-tests check-doc check-stdlib
+ci: clean test-fmt vet test run-tests check-doc check-stdlib
 
 test:
 	go test -race ./...
