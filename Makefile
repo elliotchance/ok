@@ -11,9 +11,8 @@ clean:
 	rm -f ok-linux.zip ok-windows.zip
 	rm -f ok
 	rm -f coverage.txt
-	rm -f vm/lib.go
 
-ci: clean test-fmt vet test-coverage run-tests check-doc
+ci: clean test-fmt vet test-coverage run-tests check-doc check-stdlib
 
 test:
 	go test -race ./...
@@ -26,7 +25,11 @@ test-fmt:
 	exit $(shell go fmt ./... | wc -l)
 
 vet:
+	# vet doesn't have a way to exclude files, so we have to do this hacky
+	# workaround for now.
+	mv -f vm/lib.go vm/lib.notgo
 	go vet ./...
+	mv -f vm/lib.notgo vm/lib.go
 
 test-coverage:
 	echo "" > coverage.txt
@@ -47,15 +50,15 @@ tests/*: ok
 
 	./ok test $@
 
-ok-macos.zip: version clean vm/lib.go
+ok-macos.zip: version clean
 	GOOS=darwin GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
-ok-linux.zip: version clean vm/lib.go
+ok-linux.zip: version clean
 	GOOS=linux GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
-ok-windows.zip: version clean vm/lib.go
+ok-windows.zip: version clean
 	GOOS=windows GOARCH=amd64 go build -o bin/ok
 	zip $@ -r bin
 
@@ -71,6 +74,7 @@ lib-gen:
 
 vm/lib.go: lib-gen
 	./lib-gen
+	go fmt vm/lib.go
 
 run-lib-tests:
 	for d in $(shell ls -d lib/*/); do \
@@ -88,6 +92,11 @@ check-doc:
     	diff $$d/README.md $$d/README.md.bak2 ; \
     	rm -f $$d/README.md.bak $$d/README.md.bak2 ; \
     done
+
+check-stdlib:
+	mv -f vm/lib.go vm/lib.go.bak
+	make vm/lib.go
+	diff vm/lib.go vm/lib.go.bak
 
 doc: ok
 	for d in $(shell ls -d lib/*/); do \

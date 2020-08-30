@@ -9,6 +9,7 @@ import (
 
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/util"
+	"github.com/elliotchance/ok/vm"
 )
 
 func check(err error) {
@@ -50,7 +51,7 @@ func runArg(arg string) {
 	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/vm\"\n\n")
 	fmt.Fprintf(f, "func main() {\n")
 	fmt.Fprintf(f, "\tfuncs := ")
-	util.Render(f, pkg.Funcs, "\t", false)
+	vm.Render(f, pkg.Funcs, "\t", false)
 	fmt.Fprintf(f, "\n")
 	fmt.Fprintf(f, "\tm := vm.NewVM(funcs, nil, \"\")\n")
 	fmt.Fprintf(f, "\tif err := m.Run(); err != nil {\n")
