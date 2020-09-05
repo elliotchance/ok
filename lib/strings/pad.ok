@@ -1,0 +1,29 @@
+// PadLeft will return a string with a length of at least `toLen` in length.
+// `s` will not be truncated if it's longer than `toLen`.
+//
+// If `pad` is more than one character, the whole string is repeated, except if
+// `pad` does not entirely fit, then `pad` will be truncated on the last
+// occurrence.
+//
+// If `pad` is empty, the original string will always be returned.
+func PadLeft(s, pad string, toLen number) string {
+    if len(s) >= toLen or pad == "" {
+        return s
+    }
+
+    return createPad(pad, toLen - len(s)) + s
+}
+
+// PadRight follows all the same rules as PadLeft, but will place padding (if
+// any) on the right side of the string.
+func PadRight(s, pad string, toLen number) string {
+    if len(s) >= toLen or pad == "" {
+        return s
+    }
+
+    return s + createPad(pad, toLen - len(s))
+}
+
+func createPad(pad string, toLen number) string {
+    return Substr(Repeat(pad, toLen / len(pad)), 0, toLen)
+}

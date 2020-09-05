@@ -89,7 +89,7 @@ check-doc:
 	make doc
 
 	for d in $(shell ls -d lib/*/); do \
-    	diff $$d/README.md $$d/README.md.bak2 ; \
+    	diff $$d/README.md $$d/README.md.bak2 || exit 1 ; \
     	rm -f $$d/README.md.bak $$d/README.md.bak2 ; \
     done
 
