@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"regexp"
 	"runtime/debug"
 
 	"github.com/elliotchance/ok/ast"
@@ -86,8 +87,16 @@ func (vm *VM) Run() error {
 }
 
 // Run will run the tests only.
-func (vm *VM) RunTests() error {
+func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
 	for _, t := range vm.tests {
+		if !filter.MatchString(t.TestName) {
+			continue
+		}
+
+		if verbose {
+			fmt.Println("#", t.TestName)
+		}
+
 		vm.CurrentTestPassed = true
 		err := vm.runTest(t.TestName, t.Instructions, map[string]*ast.Literal{})
 		if err != nil {

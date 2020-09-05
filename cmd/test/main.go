@@ -1,9 +1,11 @@
 package test
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/elliotchance/ok/compiler"
@@ -11,7 +13,13 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-type Command struct{}
+type Command struct {
+	// Verbose will print all test names.
+	Verbose bool
+
+	// Filter is a regexp based on the test name.
+	Filter string
+}
 
 func check(err error) {
 	if err != nil {
@@ -25,12 +33,16 @@ func (*Command) Description() string {
 }
 
 // Run is the entry point for the "ok test" command.
-func (*Command) Run(args []string) {
+func (c *Command) Run(args []string) {
+	flag.StringVar(&c.Filter, "f", "", "regexp to filter tests by name")
+	flag.BoolVar(&c.Verbose, "v", false, "print all test names")
+	flag.CommandLine.Parse(args)
+
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
-	for _, arg := range args {
+	for _, arg := range flag.Args() {
 		packageName := util.PackageNameFromPath("", arg)
 
 		// Use the relative arg here. This will be used to produce error
@@ -40,7 +52,7 @@ func (*Command) Run(args []string) {
 
 		m := vm.NewVM(pkg.Funcs, pkg.Tests, pkg.Interfaces, packageName)
 		startTime := time.Now()
-		err := m.RunTests()
+		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter))
 		elapsed := time.Since(startTime).Milliseconds()
 		check(err)
 
