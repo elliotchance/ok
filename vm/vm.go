@@ -7,6 +7,7 @@ import (
 	"path"
 	"regexp"
 	"runtime/debug"
+	"sort"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
@@ -94,7 +95,7 @@ func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
 		}
 
 		vm.CurrentTestPassed = true
-		err := vm.runTest(t.TestName, t.Instructions, map[string]*ast.Literal{})
+		err := vm.runTest(t, map[string]*ast.Literal{})
 		if err != nil {
 			return err
 		}
@@ -109,8 +110,10 @@ func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
 	return nil
 }
 
-func (vm *VM) appendStack(parentScope map[string]*ast.Literal, returnType *types.Type) {
-	registers := map[Register]*ast.Literal{}
+func (vm *VM) appendStack(stackDescription string, parentScope map[string]*ast.Literal, returnType *types.Type) {
+	registers := map[Register]*ast.Literal{
+		Register("__stack"): asttest.NewLiteralString(stackDescription),
+	}
 	vm.Stack = append(vm.Stack, registers)
 
 	// Setup a new state, even we don't use it.
@@ -133,13 +136,18 @@ func (vm *VM) call(
 ) ([]Register, error) {
 	// TODO(elliot): Check function exists, especially main.
 
-	vm.appendStack(parentScope, returnType)
-
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
 	if fn == nil {
 		panic("no such function: " + name)
 	}
+
+	if fn == nil {
+		fmt.Println(name, vm.fns)
+	}
+
+	stackDescription := fmt.Sprintf("%s (%s)", fn.Name, fn.Pos)
+	vm.appendStack(stackDescription, parentScope, returnType)
 
 	// Setup the finally blocks. Copy so they all start disabled.
 	var finallyBlocks []*FinallyBlock
@@ -183,18 +191,36 @@ func (vm *VM) dumpMemory() {
 
 	fmt.Printf("Registers:\n")
 
-	for n, v := range vm.Stack[len(vm.Stack)-1] {
+	var keys []string
+	for key := range vm.Stack[len(vm.Stack)-1] {
+		keys = append(keys, string(key))
+	}
+	sort.Strings(keys)
+
+	for _, n := range keys {
 		if n == StateRegister {
 			fmt.Printf("  %s: <State>\n", n)
 		} else {
-			fmt.Printf("  %s: %v\n", n, v)
+			fmt.Printf("  %s: %v\n", n, vm.Stack[len(vm.Stack)-1][Register(n)])
 		}
 	}
 
 	fmt.Printf("\nState:\n")
 
-	for n, v := range vm.Stack[len(vm.Stack)-1][StateRegister].Map {
-		fmt.Printf("  %s: %v\n", n, v)
+	keys = nil
+	for key := range vm.Stack[len(vm.Stack)-1][StateRegister].Map {
+		keys = append(keys, key)
+	}
+	sort.Strings(keys)
+
+	for _, n := range keys {
+		fmt.Printf("  %s: %v\n", n, vm.Stack[len(vm.Stack)-1][StateRegister].Map[n])
+	}
+
+	fmt.Printf("\nStack:\n")
+
+	for _, v := range vm.Stack {
+		fmt.Printf("  %s\n", v["__stack"].Value)
 	}
 }
 
@@ -278,13 +304,18 @@ func (vm *VM) catchUnhandledError() {
 	}
 }
 
-func (vm *VM) runTest(testName string, instructions []Instruction, parentScope map[string]*ast.Literal) error {
-	vm.CurrentTestName = testName
+func (vm *VM) runTest(test *CompiledTest, parentScope map[string]*ast.Literal) error {
+	vm.CurrentTestName = test.TestName
 
-	vm.appendStack(parentScope, types.Any)
-	_, err := vm.runInstructions(testName, instructions, false)
+	funcName := fmt.Sprintf("test \"%s\" (%s)", test.TestName, test.Pos)
+	vm.appendStack(funcName, parentScope, types.Any)
+	_, err := vm.runInstructions(test.TestName, test.Instructions, false)
 
 	vm.catchUnhandledError()
+
+	// Make sure we roll the stack back after each test. This is normally
+	// handled in Call for functions that are not tests.
+	vm.Stack = vm.Stack[:len(vm.Stack)-1]
 
 	return err
 }
@@ -324,9 +355,10 @@ func (vm *VM) set(register Register, val *ast.Literal, offset int) {
 }
 
 // Get will get a register.
-func (vm *VM) get(register Register, offset int) *ast.Literal {
+func (vm *VM) get(register Register, offset int) (lit *ast.Literal) {
 	if register[0] == '^' {
 		parentScope := vm.Stack[len(vm.Stack)-1][StateRegister].Map[StateRegister].Map
+
 		return parentScope[string(register[1:])]
 	}
 

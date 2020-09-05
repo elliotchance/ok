@@ -1,0 +1,9 @@
+test "Unix" {
+    assert(Unix(Time(2001, September, 9, 1, 46, 40.123)) == 1000000000.123)
+}
+
+test "FromUnix" {
+    expected = Time(2001, September, 9, 1, 46, 40.123)
+    actual = FromUnix(1000000000.123)
+    assert(expected.String() == actual.String())
+}

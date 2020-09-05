@@ -1,0 +1,9 @@
+test "Sleep" {
+    duration = Duration(10 * Millisecond)
+
+    startTime = Now()
+    Sleep(duration)
+
+    assert(duration.Seconds() == 0.01)
+    assert(Unix(Now()) - Unix(startTime) >= duration.Seconds())
+}

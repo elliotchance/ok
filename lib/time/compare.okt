@@ -1,0 +1,34 @@
+test "Sub" {
+    t1 = FromUnix(123456789.123)
+    assert(t1.String() == "1973-11-29 21:33:09.123")
+
+    t2 = FromUnix(123123123.456)
+    assert(t2.String() == "1973-11-26 00:52:03.456")
+
+    duration = Sub(t1, t2)
+    assert(duration.Seconds() == 333665.667)
+    assert(duration.String() == "92h41m5.667s")
+}
+
+test "Equal" {
+    t1 = FromUnix(123456789.123)
+    t2 = FromUnix(123123123.456)
+    assert(Equal(t1, t2) == false)
+    assert(Equal(t1, t1) == true)
+}
+
+test "Before" {
+    t1 = FromUnix(123456789.123)
+    t2 = FromUnix(123123123.456)
+    assert(Before(t1, t2) == false)
+    assert(Before(t2, t1) == true)
+    assert(Before(t1, t1) == false)
+}
+
+test "After" {
+    t1 = FromUnix(123456789.123)
+    t2 = FromUnix(123123123.456)
+    assert(After(t1, t2) == true)
+    assert(After(t2, t1) == false)
+    assert(After(t1, t1) == false)
+}

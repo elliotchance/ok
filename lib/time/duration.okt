@@ -1,0 +1,27 @@
+test "duration constants" {
+    assert(Nanosecond == 0.000000001)
+    assert(Microsecond == 0.000001)
+    assert(Millisecond == 0.001)
+    assert(Second == 1)
+    assert(Minute == 60)
+    assert(Hour == 3600)
+}
+
+test "Duration" {
+    d = Duration(2 * Hour + 50 * Millisecond)
+    assert(d.Nanoseconds() == 7200050000000)
+    assert(d.Microseconds() == 7200050000)
+    assert(d.Milliseconds() == 7200050)
+    assert(d.Seconds() == 7200.05)
+    assert(d.Minutes() == 120.00083333333333333)
+    assert(d.Hours() == 2.0000138888888888889)
+}
+
+test "Duration.String" {
+    assert(Duration(0.5 * Second).String() == "0.5s")
+    assert(Duration(60 * Second).String() == "1m")
+    assert(Duration(172.01 * Second).String() == "2m52.01s")
+    assert(Duration(Hour).String() == "1h")
+    assert(Duration(Hour + 3 * Second).String() == "1h3s")
+    assert(Duration(172.01 * Minute).String() == "2h52m0.6s")
+}

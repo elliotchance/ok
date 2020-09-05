@@ -1,0 +1,7 @@
+test "Add" {
+    t1 = FromUnix(123456789.123)
+    assert(t1.String() == "1973-11-29 21:33:09.123")
+
+    d = Duration(2 * Hour + 50 * Millisecond)
+    assert(Add(t1, d).String() == "1973-11-29 23:33:09.173")
+}

@@ -11,7 +11,11 @@ func compileInterpolate(compiledFunc *vm.CompiledFunc, n *ast.Interpolate, file 
 	}
 
 	for _, part := range n.Parts {
-		partRegisters, _, _ := compileExpr(compiledFunc, part, file)
+		partRegisters, _, err := compileExpr(compiledFunc, part, file)
+		if err != nil {
+			return ins.Result, err
+		}
+
 		ins.Args = append(ins.Args, partRegisters[0])
 	}
 

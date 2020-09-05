@@ -46,7 +46,12 @@ run-tests: tests/* run-lib-tests
 
 tests/*: ok
 	./ok run $@ > /tmp/stdout.txt
-	diff $@/stdout.txt /tmp/stdout.txt
+
+	@if [ -f "$@/stdout-ignored.txt" ]; then \
+		echo "Stdout ignored."; \
+	else \
+		diff $@/stdout.txt /tmp/stdout.txt; \
+	fi
 
 	./ok test $@
 

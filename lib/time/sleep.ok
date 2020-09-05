@@ -1,0 +1,4 @@
+// Sleep will pause the execution for a specific duration of time.
+func Sleep(duration Duration) {
+    __sleep(duration.Seconds())
+}

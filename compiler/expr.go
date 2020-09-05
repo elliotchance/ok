@@ -77,9 +77,19 @@ func compileExpr(
 		return results, resultKinds, nil
 
 	case *ast.Identifier:
-		// TODO(elliot): Doesn't check that the upper scope variable exists or
-		//  fetches the correct type.
 		if e.Name[0] == '^' {
+			// TODO(elliot): We must copy this out-of-scope value to a register
+			//  so that it's found correctly in the stack. This doesn't have to
+			//  be for in-scope variables because they are register names
+			//  themselves. However, the tricky part is that we cannot copy to a
+			//  register if the value is intended to be mutated (eg. ++^i) so
+			//  there needs to be a new option passed down the compile functions
+			//  to indicate this. Without this change code like "padZero(^foo)"
+			//  will not work because the scope will be incorrect by the time
+			//  ^foo is accessed.
+
+			// TODO(elliot): Doesn't check that the upper scope variable exists
+			//  or fetches the correct type.
 			return []vm.Register{vm.Register(e.Name)}, []*types.Type{types.Number}, nil
 		}
 

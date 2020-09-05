@@ -1,0 +1,5 @@
+// Add returns a new time after applying a duration. You may use a negative
+// duration to subtract.
+func Add(t Time, duration Duration) Time {
+    return FromUnix(Unix(t) + duration.Seconds())
+}

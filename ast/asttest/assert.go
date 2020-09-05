@@ -53,5 +53,10 @@ func cmpOptions() cmp.Options {
 		cmpopts.IgnoreFields(ast.Switch{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Test{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Unary{}, "Pos"),
+
+		// TODO(elliot): The function name must be ignored for now because it's
+		//  based off a random value. See anonFunctionName. This should be
+		//  removed once that hack is fixed.
+		cmpopts.IgnoreFields(ast.Func{}, "Name"),
 	}
 }
