@@ -1,0 +1,33 @@
+test "PadLeft" {
+    // toLen <= s
+    assert(PadLeft("abcdef", "0123", 0) == "abcdef")
+    assert(PadLeft("abcdef", "0123", 4) == "abcdef")
+    assert(PadLeft("abcdef", "0123", 6) == "abcdef")
+
+    // normal padding
+    assert(PadLeft("abcdef", "0", 10) == "0000abcdef")
+    assert(PadLeft("abcdef", "01", 10) == "0101abcdef")
+    assert(PadLeft("abcdef", "012", 10) == "0120abcdef")
+
+    // empty pad
+    assert(PadLeft("abcdef", "", 0) == "abcdef")
+    assert(PadLeft("abcdef", "", 6) == "abcdef")
+    assert(PadLeft("abcdef", "", 10) == "abcdef")
+}
+
+test "PadRight" {
+    // toLen <= s
+    assert(PadRight("abcdef", "0123", 0) == "abcdef")
+    assert(PadRight("abcdef", "0123", 4) == "abcdef")
+    assert(PadRight("abcdef", "0123", 6) == "abcdef")
+
+    // normal padding
+    assert(PadRight("abcdef", "0", 10) == "abcdef0000")
+    assert(PadRight("abcdef", "01", 10) == "abcdef0101")
+    assert(PadRight("abcdef", "012", 10) == "abcdef0120")
+
+    // empty pad
+    assert(PadRight("abcdef", "", 0) == "abcdef")
+    assert(PadRight("abcdef", "", 6) == "abcdef")
+    assert(PadRight("abcdef", "", 10) == "abcdef")
+}

@@ -1,0 +1,10 @@
+// Substr returns a portion of the string. The `fromIndex` and `toIndex` must be
+// within the bounds of the string.
+func Substr(s string, fromIndex, toIndex number) string {
+    r = ""
+    for i = fromIndex; i < toIndex; ++i {
+        r += string(s[i])
+    }
+
+    return r
+}

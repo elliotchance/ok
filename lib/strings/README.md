@@ -8,10 +8,13 @@
 - [func Join(strings []string, glue string) string](#Join)
 - [func LastIndex(s string, substr string) number](#LastIndex)
 - [func LastIndexBefore(s string, substr string, offset number) number](#LastIndexBefore)
+- [func PadLeft(s string, pad string, toLen number) string](#PadLeft)
+- [func PadRight(s string, pad string, toLen number) string](#PadRight)
 - [func Repeat(str string, times number) string](#Repeat)
 - [func ReplaceAll(s string, find string, replace string) string](#ReplaceAll)
 - [func Reverse(s string) string](#Reverse)
 - [func Split(s string, delimiter string) []string](#Split)
+- [func Substr(s string, fromIndex number, toIndex number) string](#Substr)
 - [func ToLower(s string) string](#ToLower)
 - [func ToUpper(s string) string](#ToUpper)
 - [func Trim(s string, cutset string) string](#Trim)
@@ -105,6 +108,30 @@ print(i)
 }
 
 
+## PadLeft
+
+```
+func PadLeft(s string, pad string, toLen number) string
+```
+
+PadLeft will return a string with a length of at least `toLen` in length.
+`s` will not be truncated if it's longer than `toLen`.
+
+If `pad` is more than one character, the whole string is repeated, except if
+`pad` does not entirely fit, then `pad` will be truncated on the last
+occurrence.
+
+If `pad` is empty, the original string will always be returned.
+
+## PadRight
+
+```
+func PadRight(s string, pad string, toLen number) string
+```
+
+PadRight follows all the same rules as PadLeft, but will place padding (if
+any) on the right side of the string.
+
 ## Repeat
 
 ```
@@ -145,6 +172,15 @@ string will be split into characters.
 TODO(elliot): This is a horribly inefficient algorithm. This was very early
 on in the language when there we're barely any features, please clean this
 up if you see it.
+
+## Substr
+
+```
+func Substr(s string, fromIndex number, toIndex number) string
+```
+
+Substr returns a portion of the string. The `fromIndex` and `toIndex` must be
+within the bounds of the string.
 
 ## ToLower
 
