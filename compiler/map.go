@@ -11,7 +11,7 @@ import (
 func compileMap(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Map,
-	file *Compiled,
+	file *vm.File,
 ) (vm.Register, string, error) {
 	// TODO(elliot): Check type is valid for the map.
 	// TODO(elliot): Maps with duplicate keys should be an error.

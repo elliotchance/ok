@@ -1,5 +1,7 @@
+import "error"
+
 // Errors in ok work very similar to exceptions in some other languages. If you
-// are not familar with exceptions, read on.
+// are not familiar with exceptions, read on.
 
 // Any function can raise an error. Raising an error prevents any more code from
 // running, the code will jump to an error handler. If there is no error handler
@@ -9,7 +11,7 @@ func f1(arg number) number {
     if arg == 42 {
         // Error is a build in type that takes a message. Since we do not handle
         // the error here, it will be passed up to the caller.
-        raise Error("can't work with 42")
+        raise error.Error("can't work with 42")
     }
 
     return arg + 3
@@ -41,7 +43,7 @@ func main() {
             // If f1 raised an error this will not run because the code will
             // jump immediately to the error handler below.
             print("f1 worked:", r)
-        } on Error {
+        } on error.Error {
             // When an error is caught, a special "err" variable is provided.
             // Since the Error type must include an Error string property, we
             // can print it out now.
@@ -55,7 +57,7 @@ func main() {
         try {
             r = f2(i)
             print("f2 worked:", r)
-        } on Error {
+        } on error.Error {
             // The type of "err" is still an Error, so we cannot access Arg and
             // Prob. We can rely on the Error message through.
             print("f2 failed:", err.Error)
@@ -81,7 +83,7 @@ func main() {
     } on argError {
         // f1 raises an Error, so it will not be caught here.
         print("This should not happen!")
-    } on Error {
+    } on error.Error {
         // This will handle the error.
         print("f1 failed, all we have is the message:", err.Error)
     }

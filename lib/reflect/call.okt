@@ -3,5 +3,5 @@ func fn(a, b number) number {
 }
 
 test "Call" {
-    assert(reflect.Call(fn, []any [1.2, 3.4]) == []any [4.6])
+    assert(Call(fn, []any [1.2, 3.4]) == []any [4.6])
 }

@@ -12,5 +12,5 @@ func Person(Name string, age number) Person {
 
 test "Interface" {
     bob = Person("Bob", 30)
-    assert(reflect.Interface(bob) == "\{ GetAge() number; Greet(string); Name string }")
+    assert(Interface(bob) == "\{ GetAge() number; Greet(string); Name string }")
 }

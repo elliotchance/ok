@@ -6,7 +6,7 @@ import (
 )
 
 // CompileTest will compile a test.
-func CompileTest(fn *ast.Test, file *Compiled) (*vm.CompiledTest, error) {
+func CompileTest(fn *ast.Test, file *vm.File) (*vm.CompiledTest, error) {
 	// Tests can be compiled as if they were functions, then wrapped in a
 	// CompiledTest.
 	compiledFunc, err := CompileFunc(&ast.Func{

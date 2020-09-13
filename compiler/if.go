@@ -7,7 +7,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, file *Compiled) error {
+func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns vm.Instruction, file *vm.File) error {
 	conditionResults, conditionKinds, err := compileExpr(compiledFunc, n.Condition, file)
 	if err != nil {
 		return err

@@ -8,7 +8,7 @@ import (
 )
 
 // compileExpr return the (result register, result type, error)
-func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) ([]vm.Register, []string, error) {
+func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *vm.File) ([]vm.Register, []string, error) {
 	switch e := expr.(type) {
 	case *ast.Assign:
 		err := compileAssign(compiledFunc, e, file)
@@ -85,7 +85,6 @@ func compileExpr(compiledFunc *vm.CompiledFunc, expr ast.Node, file *Compiled) (
 			return []vm.Register{vm.Register(e.Name)}, []string{v}, nil
 		}
 
-		// It could be a package-level constant.
 		if c, ok := file.Constants[e.Name]; ok {
 			// We copy it locally to make sure it's value isn't changed. The
 			// compiler will prevent a constant from being modified directly.

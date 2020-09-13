@@ -57,7 +57,7 @@ func consumeOn(parser *Parser, offset int) (*ast.On, int, error) {
 	}
 
 	var ident *ast.Identifier
-	ident, offset, err = consumeIdentifier(parser, offset)
+	ident, offset, err = consumeEntity(parser, offset)
 	if err != nil {
 		return nil, originalOffset, err
 	}

@@ -9,7 +9,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *Compiled) error {
+func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error {
 	// There's nothing special about Init here. It just executes once before the
 	// loop.
 	if n.Init != nil {

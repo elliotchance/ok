@@ -36,22 +36,24 @@ func (*Command) Description() string {
 func (c *Command) Run(args []string) {
 	flag.StringVar(&c.Filter, "f", "", "regexp to filter tests by name")
 	flag.BoolVar(&c.Verbose, "v", false, "print all test names")
-	flag.CommandLine.Parse(args)
+	check(flag.CommandLine.Parse(args))
+	args = flag.Args()
 
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
-	for _, arg := range flag.Args() {
-		packageName := util.PackageNameFromPath("", arg)
+	okPath, err := util.OKPath()
+	check(err)
 
-		// Use the relative arg here. This will be used to produce error
-		// messages during the compilation.
-		pkg, errs := compiler.CompilePackage(arg, true)
+	for _, arg := range args {
+		packageName := util.PackageNameFromPath(okPath, arg)
+		_, errs := compiler.Compile(okPath, packageName, true)
 		util.CheckErrorsWithExit(errs)
 
-		m := vm.NewVM(pkg.Funcs, pkg.Tests, pkg.Interfaces, packageName)
+		m := vm.NewVM(nil, nil, nil, "no-package")
 		startTime := time.Now()
+		check(m.LoadPackage("", packageName))
 		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter))
 		elapsed := time.Since(startTime).Milliseconds()
 		check(err)

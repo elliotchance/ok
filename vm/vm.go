@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"path"
 	"regexp"
 	"runtime/debug"
 
@@ -15,18 +16,8 @@ import (
 // Effectively the instance or "this" context.
 const StateRegister = "0"
 
-// InternalDefinition is used by Lib to hold the definitions and compiled code
-// for internal functions.
-type InternalDefinition struct {
-	CompiledFunc *CompiledFunc
-	FuncDef      *ast.Func
-}
-
 // These are populated with the generated lib.go file. See Makefile.
-var Lib map[string]*InternalDefinition
-var Packages map[string]bool
-var Constants map[string]*ast.Literal
-var Interfaces map[string]map[string]string
+var Packages map[string]*File
 
 // CompiledTest is a runnable test.
 type CompiledTest struct {
@@ -68,6 +59,15 @@ func NewVM(
 	interfaces map[string]map[string]string,
 	pkg string,
 ) *VM {
+	// The VM probably starts empty, make sure we prepare the fns for loading
+	// later. See LoadGob().
+	if fns == nil {
+		fns = make(map[string]*CompiledFunc)
+	}
+	if interfaces == nil {
+		interfaces = make(map[string]map[string]string)
+	}
+
 	return &VM{
 		fns:        fns,
 		tests:      tests,
@@ -77,8 +77,17 @@ func NewVM(
 	}
 }
 
-// Run will run the program.
+// Run will run the program. That is, execute the "main" function. If there is
+// no main() method then nothing will run, but no error will be raised.
+//
+// TODO(elliot): Change missing main into an error in the future. It was done
+//  this way so I could use "ok run" like an "ok compile" (that didn't exist at
+//  the time) for compiling the standard libraries.
 func (vm *VM) Run() error {
+	if _, ok := vm.fns["main"]; !ok {
+		return nil
+	}
+
 	_, err := vm.call("main", nil, map[string]*ast.Literal{}, "any")
 
 	vm.catchUnhandledError()
@@ -136,13 +145,6 @@ func (vm *VM) call(name string, arguments []Register, parentScope map[string]*as
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
-
-	// TODO(elliot): It's probably not a good idea to fallback onto the standard
-	//  lib. Perhaps the compiler can append these functions so this isn't
-	//  necessary?
-	if fn == nil {
-		fn = Lib[name].CompiledFunc
-	}
 
 	// Setup the finally blocks. Copy so they all start disabled.
 	var finallyBlocks []*FinallyBlock
@@ -237,7 +239,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 				case vm.ErrType,
 					// TODO(elliot): This is a stupid hack for now. This was
 					//  created before interfaces could determine this properly.
-					"Error":
+					"error.Error":
 
 					// TODO(elliot): The err register might be better as a
 					//  fixed position register rather than a variable?
@@ -346,12 +348,48 @@ func (vm *VM) Get(register Register) *ast.Literal {
 }
 
 func (vm *VM) Raise(message string) {
-	vm.ErrType = "Error"
+	vm.ErrType = "error.Error"
 	vm.ErrValue = &ast.Literal{
-		Kind:  "Error",
+		Kind:  "error.Error",
 		Array: []*ast.Literal{asttest.NewLiteralString("Error")},
 		Map: map[string]*ast.Literal{
 			"Error": asttest.NewLiteralString(message),
 		},
 	}
+}
+
+func (vm *VM) LoadPackage(pkgVariable, packageName string) error {
+	file, err := Load(packageName)
+	if err != nil {
+		return err
+	}
+
+	return vm.LoadFile(pkgVariable, file)
+}
+
+func (vm *VM) LoadFile(pkgVariable string, file *File) error {
+	for k, v := range file.Funcs {
+		if pkgVariable != "" {
+			k = pkgVariable + "." + k
+		}
+		vm.fns[k] = v
+	}
+
+	for k, v := range file.Interfaces {
+		if pkgVariable != "" {
+			k = pkgVariable + "." + k
+		}
+		vm.Interfaces[k] = v
+	}
+
+	vm.tests = file.Tests
+
+	for packageName := range file.Imports {
+		err := vm.LoadPackage(path.Base(packageName), packageName)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

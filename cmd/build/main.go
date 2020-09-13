@@ -37,7 +37,11 @@ func (*Command) Run(args []string) {
 }
 
 func runArg(arg string) {
-	pkg, errs := compiler.CompilePackage(arg, false)
+	okPath, err := util.OKPath()
+	check(err)
+
+	packageName := util.PackageNameFromPath(okPath, arg)
+	file, errs := compiler.Compile(okPath, packageName, false)
 	util.CheckErrorsWithExit(errs)
 
 	goFile := path.Join(arg, "main.go")
@@ -50,10 +54,13 @@ func runArg(arg string) {
 	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/ast\"\n")
 	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/vm\"\n\n")
 	fmt.Fprintf(f, "func main() {\n")
-	fmt.Fprintf(f, "\tfuncs := ")
-	vm.Render(f, pkg.Funcs, "\t", false)
+	fmt.Fprintf(f, "\tfile := ")
+	vm.Render(f, file, "\t", false)
 	fmt.Fprintf(f, "\n")
-	fmt.Fprintf(f, "\tm := vm.NewVM(funcs, nil, \"\")\n")
+	fmt.Fprintf(f, "\tm := vm.NewVM(nil, nil, nil, \"\")\n")
+	fmt.Fprintf(f, "\tif err := m.LoadFile(\"\", file); err != nil {\n")
+	fmt.Fprintf(f, "\t\tpanic(err)\n")
+	fmt.Fprintf(f, "\t}\n")
 	fmt.Fprintf(f, "\tif err := m.Run(); err != nil {\n")
 	fmt.Fprintf(f, "\t\tpanic(err)\n")
 	fmt.Fprintf(f, "\t}\n")

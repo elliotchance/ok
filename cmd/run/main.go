@@ -27,14 +27,17 @@ func (*Command) Run(args []string) {
 		args = []string{"."}
 	}
 
-	for _, arg := range args {
-		packageName := util.PackageNameFromPath("", arg)
+	okPath, err := util.OKPath()
+	check(err)
 
-		pkg, errs := compiler.CompilePackage(arg, false)
+	for _, arg := range args {
+		packageName := util.PackageNameFromPath(okPath, arg)
+
+		m := vm.NewVM(nil, nil, nil, "no-package")
+		_, errs := compiler.Compile(okPath, packageName, false)
 		util.CheckErrorsWithExit(errs)
 
-		m := vm.NewVM(pkg.Funcs, pkg.Tests, pkg.Interfaces, packageName)
-		err := m.Run()
-		check(err)
+		check(m.LoadPackage("", packageName))
+		check(m.Run())
 	}
 }

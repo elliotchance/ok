@@ -2,6 +2,7 @@ package asm
 
 import (
 	"fmt"
+	"log"
 	"sort"
 
 	"github.com/elliotchance/ok/compiler"
@@ -9,6 +10,12 @@ import (
 )
 
 type Command struct{}
+
+func check(err error) {
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
 
 // Description is shown in "ok -help".
 func (*Command) Description() string {
@@ -24,7 +31,11 @@ func (*Command) Run(args []string) {
 		args = append(args, "main")
 	}
 
-	pkg, errs := compiler.CompilePackage(args[0], false)
+	okPath, err := util.OKPath()
+	check(err)
+
+	packageName := util.PackageNameFromPath(okPath, args[0])
+	pkg, errs := compiler.Compile(okPath, packageName, false)
 	util.CheckErrorsWithExit(errs)
 
 	// Create a map as a function may match more than one glob.

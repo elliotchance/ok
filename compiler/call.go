@@ -29,7 +29,11 @@ var builtinFunctions = map[string]builtinFn{
 	"string":      funcString,
 }
 
-func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) ([]vm.Register, []string, error) {
+func compileCall(
+	compiledFunc *vm.CompiledFunc,
+	call *ast.Call,
+	file *vm.File,
+) ([]vm.Register, []string, error) {
 	var argResults []vm.Register
 	for _, arg := range call.Arguments {
 		argResult, _, err := compileExpr(compiledFunc, arg, file)
@@ -73,7 +77,11 @@ func compileCall(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) 
 	return returnRegisters, toCall.Returns, nil
 }
 
-func findFunc(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) (*ast.Func, error) {
+func findFunc(
+	compiledFunc *vm.CompiledFunc,
+	call *ast.Call,
+	file *vm.File,
+) (*ast.Func, error) {
 	// Before we look for the function by name, we should first ensure that it's
 	// not a variable being called as a function.
 	//
@@ -96,11 +104,9 @@ func findFunc(compiledFunc *vm.CompiledFunc, call *ast.Call, file *Compiled) (*a
 		return toCall, nil
 	}
 
-	// It might be a built in function.
-	//
-	// TODO(elliot): This needs to only allow this usage if its imported.
-	if internal := vm.Lib[call.FunctionName]; internal != nil {
-		return internal.FuncDef, nil
+	toCall = file.ImportedFuncs[call.FunctionName]
+	if toCall != nil {
+		return toCall, nil
 	}
 
 	// Is it a method being called on a variable?

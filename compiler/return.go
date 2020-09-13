@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileReturn(compiledFunc *vm.CompiledFunc, n *ast.Return, file *Compiled) error {
+func compileReturn(compiledFunc *vm.CompiledFunc, n *ast.Return, file *vm.File) error {
 	var results []vm.Register
 	for _, expr := range n.Exprs {
 		// TODO(elliot): Check return types are valid.

@@ -154,7 +154,11 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 	return nil, ""
 }
 
-func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *Compiled) (vm.Register, string, error) {
+func compileBinary(
+	compiledFunc *vm.CompiledFunc,
+	node *ast.Binary,
+	file *vm.File,
+) (vm.Register, string, error) {
 	// TokenAssign is not possible here because that is handled by an Assign
 	// operation.
 	if node.Op == lexer.TokenPlusAssign ||
@@ -284,7 +288,7 @@ func compileBinary(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *Compil
 	return returns, returnKind, err
 }
 
-func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *Compiled) (vm.Register, vm.Register, vm.Register, string, error) {
+func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *vm.File) (vm.Register, vm.Register, vm.Register, string, error) {
 	left, leftKind, err := compileExpr(compiledFunc, node.Left, file)
 	if err != nil {
 		return "", "", "", "", err

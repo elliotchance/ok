@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, file *Compiled) error {
+func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, file *vm.File) error {
 	// Only activate the finally clause if there is one.
 	if n.Finally != nil {
 		compiledFunc.Append(&vm.Finally{
