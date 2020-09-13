@@ -16,11 +16,11 @@ import (
 func TestCompileFile(t *testing.T) {
 	for testName, test := range map[string]struct {
 		f        *parser.File
-		expected *compiler.Compiled
+		expected *vm.File
 	}{
 		"no-functions": {
 			&parser.File{},
-			&compiler.Compiled{
+			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{},
 			},
 		},
@@ -36,7 +36,7 @@ func TestCompileFile(t *testing.T) {
 					},
 				},
 			},
-			&compiler.Compiled{
+			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{
 					"main": {
 						Instructions: []vm.Instruction{
@@ -62,7 +62,7 @@ func TestCompileFile(t *testing.T) {
 					},
 				},
 			},
-			&compiler.Compiled{
+			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{
 					"main": {
 						Instructions: []vm.Instruction{
@@ -107,7 +107,7 @@ func TestCompileFile(t *testing.T) {
 					},
 				},
 			},
-			&compiler.Compiled{
+			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{
 					"main": {
 						Variables: map[string]string{},
@@ -164,7 +164,7 @@ func TestCompileFile(t *testing.T) {
 					},
 				},
 			},
-			&compiler.Compiled{
+			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{
 					"foo": {
 						Instructions: []vm.Instruction{
@@ -228,7 +228,7 @@ func TestCompileFile(t *testing.T) {
 					},
 				},
 			},
-			&compiler.Compiled{
+			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{
 					"main": {
 						Instructions: []vm.Instruction{

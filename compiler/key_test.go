@@ -500,7 +500,7 @@ func TestKey(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(&ast.Func{
 				Statements: test.nodes,
-			}, &compiler.Compiled{})
+			}, &vm.File{})
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

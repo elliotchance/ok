@@ -2,19 +2,20 @@ package compiler
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.Register, string, error) {
+func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *vm.File) (vm.Register, string, error) {
 	// It could be an imported constant.
 	// TODO(elliot): This is hack for now, because the package name is not yet a
 	//  variable.
-	if node, ok := n.Expr.(*ast.Identifier); ok {
+	if node, ok := n.Expr.(*ast.Identifier); ok && vm.Packages[node.Name] != nil {
 		if key, ok := n.Key.(*ast.Literal); ok {
-			if c, ok := vm.Constants[fmt.Sprintf("%s.%s", node.Name, key.Value)]; ok {
+			if c, ok := vm.Packages[node.Name].Constants[key.Value]; ok {
 				resultRegister := compiledFunc.NextRegister()
 
 				// Copy the value in case it's modified.
@@ -77,13 +78,17 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *Compiled) (vm.R
 			return resultRegister, ty, nil
 		}
 
-		if iface, ok := vm.Interfaces[arrayOrMapKind[0]]; ok {
-			ty := iface[n.Key.(*ast.Literal).Value]
+		parts := strings.Split(arrayOrMapKind[0], ".")
+		if len(parts) == 2 {
+			if iface, ok := vm.Packages[parts[0]].Interfaces[parts[1]]; ok {
+				ty := iface[n.Key.(*ast.Literal).Value]
 
-			return resultRegister, ty, nil
+				return resultRegister, ty, nil
+			}
 		}
 
-		return "", "", fmt.Errorf("unknown type: %s", arrayOrMapKind[0])
+		return "", "", fmt.Errorf("%s unknown type: %s",
+			n.Position(), arrayOrMapKind[0])
 
 	case arrayOrMapKind[0] == "string":
 		compiledFunc.Append(&vm.StringIndex{

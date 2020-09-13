@@ -6,32 +6,25 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-// CompiledFile contains all the compiled entities in a file.
-type Compiled struct {
-	Funcs      map[string]*vm.CompiledFunc
-	FuncDefs   map[string]*ast.Func
-	Tests      []*vm.CompiledTest
-	Interfaces map[string]map[string]string
-	Constants  map[string]*ast.Literal
-}
-
 // CompileFile translates a single file into a set of instructions. The number
 // of instructions returned may be zero.
-func CompileFile(f *parser.File, interfaces map[string]map[string]string, constants map[string]*ast.Literal) (*Compiled, error) {
-	return compile(f.Funcs, f.Tests, interfaces, constants)
+func CompileFile(f *parser.File, interfaces map[string]map[string]string, constants map[string]*ast.Literal) (*vm.File, error) {
+	return compile(f.Funcs, nil, f.Tests, interfaces, constants)
 }
 
 func compile(
 	funcs map[string]*ast.Func,
+	importedFuncs map[string]*ast.Func,
 	tests []*ast.Test,
 	interfaces map[string]map[string]string,
 	constants map[string]*ast.Literal,
-) (*Compiled, error) {
-	file := &Compiled{
-		Funcs:      map[string]*vm.CompiledFunc{},
-		FuncDefs:   funcs,
-		Interfaces: interfaces,
-		Constants:  constants,
+) (*vm.File, error) {
+	file := &vm.File{
+		Funcs:         map[string]*vm.CompiledFunc{},
+		FuncDefs:      funcs,
+		Interfaces:    interfaces,
+		Constants:     constants,
+		ImportedFuncs: importedFuncs,
 	}
 
 	for name, fn := range funcs {

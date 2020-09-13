@@ -6,7 +6,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, file *Compiled) (vm.Register, string, error) {
+func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, file *vm.File) (vm.Register, string, error) {
 	returns1, kinds, err := compileExpr(compiledFunc, e.Expr, file)
 	if err != nil {
 		return "", "", err

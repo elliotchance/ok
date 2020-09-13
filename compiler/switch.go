@@ -7,7 +7,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister vm.Register, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, file *Compiled) error {
+func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister vm.Register, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, file *vm.File) error {
 	// TODO(elliot): This is a poor solution. It simply expands the conditions
 	//  out as if they were individual case statements. This duplicates
 	//  statements and uses more memory.
@@ -56,7 +56,7 @@ func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister vm.Re
 	return nil
 }
 
-func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, continueIns vm.Instruction, file *Compiled) error {
+func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, continueIns vm.Instruction, file *vm.File) error {
 	afterMatch := &vm.Jump{
 		To: -1, // Corrected later.
 	}

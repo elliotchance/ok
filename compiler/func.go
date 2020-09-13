@@ -7,7 +7,7 @@ import (
 
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunc(fn *ast.Func, file *Compiled) (*vm.CompiledFunc, error) {
+func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
 	compiled := &vm.CompiledFunc{
 		Variables:  map[string]string{},
 		Interfaces: file.Interfaces,

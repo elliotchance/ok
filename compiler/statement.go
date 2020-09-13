@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIns, continueIns vm.Instruction, file *Compiled) error {
+func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIns, continueIns vm.Instruction, file *vm.File) error {
 	switch n := statement.(type) {
 	case *ast.Break:
 		compiledFunc.Append(breakIns)

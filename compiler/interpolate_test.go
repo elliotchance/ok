@@ -65,7 +65,7 @@ func TestInterpolate(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &compiler.Compiled{})
+			}, &vm.File{})
 			require.NoError(t, err)
 			assert.Equal(t, test.expected, compiledFunc.Instructions)
 		})

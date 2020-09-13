@@ -11,7 +11,7 @@ import (
 func compileArray(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Array,
-	file *Compiled,
+	file *vm.File,
 ) (vm.Register, string, error) {
 	if len(n.Elements) == 0 && n.Kind == "" {
 		err := fmt.Errorf("%s empty array needs to specify a type",

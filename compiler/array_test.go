@@ -158,7 +158,7 @@ func TestArray(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &compiler.Compiled{})
+			}, &vm.File{})
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

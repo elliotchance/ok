@@ -13,7 +13,11 @@ type resultKindPair struct {
 	kind   string
 }
 
-func compileAssign(compiledFunc *vm.CompiledFunc, node *ast.Assign, file *Compiled) error {
+func compileAssign(
+	compiledFunc *vm.CompiledFunc,
+	node *ast.Assign,
+	file *vm.File,
+) error {
 	// First evaluate all the right expressions.
 	var rightResults []resultKindPair
 	for _, r := range node.Rights {

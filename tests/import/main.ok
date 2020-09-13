@@ -1,4 +1,4 @@
-import "mypkg"
+import "tests/import/mypkg"
 
 func main() {
     print(mypkg.Add(1.2, 3.4))

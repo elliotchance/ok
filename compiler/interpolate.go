@@ -5,7 +5,7 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileInterpolate(compiledFunc *vm.CompiledFunc, n *ast.Interpolate, file *Compiled) (vm.Register, error) {
+func compileInterpolate(compiledFunc *vm.CompiledFunc, n *ast.Interpolate, file *vm.File) (vm.Register, error) {
 	ins := &vm.Interpolate{
 		Result: compiledFunc.NextRegister(),
 	}
