@@ -13,7 +13,7 @@ type Type struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Type) Execute(_ *int, vm *VM) error {
-	vm.Set(ins.Result, asttest.NewLiteralString(vm.Get(ins.Value).Kind))
+	vm.Set(ins.Result, asttest.NewLiteralString(vm.Get(ins.Value).Kind.String()))
 
 	return nil
 }

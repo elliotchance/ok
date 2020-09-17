@@ -5,9 +5,10 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 )
 
-var types = []string{
+var typeTokens = []string{
 	lexer.TokenAny,
 	lexer.TokenBool,
 	lexer.TokenChar,
@@ -16,21 +17,28 @@ var types = []string{
 	lexer.TokenString,
 }
 
-func consumeType(parser *Parser, offset int) (string, int, error) {
+func consumeType(parser *Parser, offset int) (ty *types.Type, _ int, _ error) {
 	originalOffset := offset
-	ty := ""
 
 	for {
 		switch {
 		case parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen &&
 			parser.File.Tokens[offset+1].Kind == lexer.TokenSquareClose:
 			offset += 2
-			ty += "[]"
+			defer func() {
+				if ty != nil {
+					ty = ty.ToArray()
+				}
+			}()
 
 		case parser.File.Tokens[offset].Kind == lexer.TokenCurlyOpen &&
 			parser.File.Tokens[offset+1].Kind == lexer.TokenCurlyClose:
 			offset += 2
-			ty += "{}"
+			defer func() {
+				if ty != nil {
+					ty = ty.ToMap()
+				}
+			}()
 
 		default:
 			goto done
@@ -43,43 +51,41 @@ done:
 	offset, err = consume(parser.File, offset, []string{lexer.TokenFunc})
 	if err == nil {
 		fn := &ast.Func{}
-		var tys []string
-		tys, offset, err = consumeTypes(parser, offset, true)
+		var args []*types.Type
+		args, offset, err = consumeTypes(parser, offset, true)
 		if err != nil {
-			return "", originalOffset, err
+			return nil, originalOffset, err
 		}
 
-		for _, ty := range tys {
+		for _, ty := range args {
 			fn.Arguments = append(fn.Arguments, &ast.Argument{Type: ty})
 		}
 
 		// Returns is optional, so don't error if it wasn't consumed.
 		fn.Returns, offset, _ = consumeTypes(parser, offset, false)
 
-		return ty + fn.String(), offset, nil
+		return types.NewFunc(args, fn.Returns), offset, nil
 	}
 
 	var t lexer.Token
-	t, offset, err = consumeOneOf(parser.File, offset, types)
+	t, offset, err = consumeOneOf(parser.File, offset, typeTokens)
 	if err != nil {
 		// Any identifier is also valid.
 		var ident *ast.Identifier
 		ident, offset, err = consumeIdentifier(parser, offset)
 		if err != nil {
-			return "", originalOffset, err
+			return nil, originalOffset, err
 		}
 
 		t.Kind = ident.Name
 	}
 
-	ty += strings.Split(t.Kind, " ")[0]
-
-	return ty, offset, nil
+	return types.TypeFromString(strings.Split(t.Kind, " ")[0]), offset, nil
 }
 
-func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]string, int, error) {
+func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]*types.Type, int, error) {
 	originalOffset := offset
-	var types []string
+	var tys []*types.Type
 	var err error
 
 	if parser.File.Tokens[offset].Kind == lexer.TokenParenOpen {
@@ -91,13 +97,13 @@ func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]string, int, e
 		}
 
 		for {
-			var ty string
+			var ty *types.Type
 			ty, offset, err = consumeType(parser, offset)
 			if err != nil {
 				return nil, originalOffset, err
 			}
 
-			types = append(types, ty)
+			tys = append(tys, ty)
 
 			if parser.File.Tokens[offset].Kind != lexer.TokenComma {
 				break
@@ -112,14 +118,14 @@ func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]string, int, e
 			return nil, originalOffset, err
 		}
 	} else {
-		var ty string
+		var ty *types.Type
 		ty, offset, err = consumeType(parser, offset)
 		if err != nil {
 			return nil, originalOffset, err
 		}
 
-		types = []string{ty}
+		tys = []*types.Type{ty}
 	}
 
-	return types, offset, nil
+	return tys, offset, nil
 }

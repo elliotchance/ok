@@ -6,10 +6,14 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
-type builtinFn func(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error)
+type builtinFn func(
+	compiledFunc *vm.CompiledFunc,
+	args []vm.Register,
+) (vm.Instruction, vm.Register, *types.Type, error)
 
 // TODO(elliot): These needs to check function signatures.
 var builtinFunctions = map[string]builtinFn{
@@ -33,7 +37,7 @@ func compileCall(
 	compiledFunc *vm.CompiledFunc,
 	call *ast.Call,
 	file *vm.File,
-) ([]vm.Register, []string, error) {
+) ([]vm.Register, []*types.Type, error) {
 	var argResults []vm.Register
 	for _, arg := range call.Arguments {
 		argResult, _, err := compileExpr(compiledFunc, arg, file)
@@ -52,7 +56,7 @@ func compileCall(
 
 		compiledFunc.Append(ins)
 
-		return []vm.Register{result}, []string{returnType}, nil
+		return []vm.Register{result}, []*types.Type{returnType}, nil
 	}
 
 	toCall, err := findFunc(compiledFunc, call, file)
@@ -122,7 +126,7 @@ func findFunc(
 			call.Position(), call.FunctionName, parts[0])
 	}
 
-	methodType, ok := file.Interfaces[ty][parts[1]]
+	methodType, ok := file.Interfaces[ty.Name][parts[1]]
 	if !ok {
 		return nil, fmt.Errorf("%s no such function %s on %s",
 			call.Position(), parts[1], ty)
@@ -147,47 +151,47 @@ func findFunc(
 	return toCall, nil
 }
 
-func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastNumber{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, "number", nil
+	return ins, result, types.Number, nil
 }
 
-func funcString(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcString(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastString{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, "string", nil
+	return ins, result, types.String, nil
 }
 
-func funcChar(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcChar(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastChar{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, "char", nil
+	return ins, result, types.Char, nil
 }
 
-func funcInterface(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcInterface(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Interface{
 		Value:  args[0],
 		Result: result,
 	}
 
-	return ins, result, "string", nil
+	return ins, result, types.String, nil
 }
 
-func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Get{
 		Object: args[0],
@@ -195,10 +199,10 @@ func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 		Result: result,
 	}
 
-	return ins, result, "string", nil
+	return ins, result, types.String, nil
 }
 
-func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Set{
 		Object: args[0],
@@ -207,30 +211,30 @@ func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 		Result: result,
 	}
 
-	return ins, result, "bool", nil
+	return ins, result, types.Bool, nil
 }
 
-func funcProps(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcProps(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Props{
 		Object: args[0],
 		Result: result,
 	}
 
-	return ins, result, "[]string", nil
+	return ins, result, types.StringArray, nil
 }
 
-func funcType(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcType(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Type{
 		Value:  args[0],
 		Result: result,
 	}
 
-	return ins, result, "string", nil
+	return ins, result, types.String, nil
 }
 
-func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 
 	// TODO(elliot): This is not a safe operation because it assumes the
@@ -242,20 +246,20 @@ func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction
 		Results:   result,
 	}
 
-	return ins, result, "[]any", nil
+	return ins, result, types.AnyArray, nil
 }
 
-func funcLog(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcLog(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Log{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, "number", nil
+	return ins, result, types.Number, nil
 }
 
-func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Power{
 		Base:   args[0],
@@ -263,23 +267,23 @@ func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 		Result: result,
 	}
 
-	return ins, result, "number", nil
+	return ins, result, types.Number, nil
 }
 
-func funcLen(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcLen(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Len{
 		Argument: args[0],
 		Result:   result,
 	}
 
-	return ins, result, "number", nil
+	return ins, result, types.Number, nil
 }
 
-func funcPrint(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, string, error) {
+func funcPrint(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
 	ins := &vm.Print{
 		Arguments: args,
 	}
 
-	return ins, "", "", nil
+	return ins, "", nil, nil
 }

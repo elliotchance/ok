@@ -4,6 +4,7 @@ import (
 	"sort"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 )
 
 // NewMapNumbers creates a Map with some number literal values. This function is
@@ -27,7 +28,7 @@ func NewMapNumbers(values map[string]string) *ast.Map {
 	}
 
 	return &ast.Map{
-		Kind:     "{}number",
+		Kind:     types.NumberMap,
 		Elements: elements,
 	}
 }

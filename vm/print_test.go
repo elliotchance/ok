@@ -7,6 +7,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 
 	"github.com/stretchr/testify/assert"
@@ -19,40 +20,40 @@ func TestPrint_Execute(t *testing.T) {
 	}{
 		"no-args": {nil, "\n"},
 		"true": {
-			[]*ast.Literal{{Kind: "bool", Value: "true"}},
+			[]*ast.Literal{{Kind: types.Bool, Value: "true"}},
 			"true\n",
 		},
 		"false": {
-			[]*ast.Literal{{Kind: "bool", Value: "false"}},
+			[]*ast.Literal{{Kind: types.Bool, Value: "false"}},
 			"false\n",
 		},
 		"char": {
-			[]*ast.Literal{{Kind: "char", Value: "#"}},
+			[]*ast.Literal{{Kind: types.Char, Value: "#"}},
 			"#\n",
 		},
 		"data": {
-			[]*ast.Literal{{Kind: "data", Value: "abc"}},
+			[]*ast.Literal{{Kind: types.Data, Value: "abc"}},
 			"abc\n",
 		},
 		"number": {
-			[]*ast.Literal{{Kind: "number", Value: "1.23"}},
+			[]*ast.Literal{{Kind: types.Number, Value: "1.23"}},
 			"1.23\n",
 		},
 		"string": {
-			[]*ast.Literal{{Kind: "string", Value: "foo bar"}},
+			[]*ast.Literal{{Kind: types.String, Value: "foo bar"}},
 			"foo bar\n",
 		},
 		"multiple-args": {
 			[]*ast.Literal{
-				{Kind: "string", Value: "foo"},
-				{Kind: "number", Value: "123"},
+				{Kind: types.String, Value: "foo"},
+				{Kind: types.Number, Value: "123"},
 			},
 			"foo 123\n",
 		},
 		"number-array": {
 			[]*ast.Literal{
 				{
-					Kind: "[]number",
+					Kind: types.NumberArray,
 					Array: []*ast.Literal{
 						asttest.NewLiteralNumber("123"),
 						asttest.NewLiteralNumber("456"),
@@ -65,7 +66,7 @@ func TestPrint_Execute(t *testing.T) {
 		"any-array": {
 			[]*ast.Literal{
 				{
-					Kind: "[]any",
+					Kind: types.AnyArray,
 					Array: []*ast.Literal{
 						asttest.NewLiteralBool(true),
 						asttest.NewLiteralChar('a'),
@@ -80,7 +81,7 @@ func TestPrint_Execute(t *testing.T) {
 		"number-map": {
 			[]*ast.Literal{
 				{
-					Kind: "{}number",
+					Kind: types.NumberMap,
 					Map: map[string]*ast.Literal{
 						"a": asttest.NewLiteralNumber("123"),
 						"b": asttest.NewLiteralNumber("456"),
@@ -93,7 +94,7 @@ func TestPrint_Execute(t *testing.T) {
 		"any-map": {
 			[]*ast.Literal{
 				{
-					Kind: "{}any",
+					Kind: types.AnyMap,
 					Map: map[string]*ast.Literal{
 						"a": asttest.NewLiteralBool(true),
 						"b": asttest.NewLiteralChar('a'),
@@ -108,7 +109,7 @@ func TestPrint_Execute(t *testing.T) {
 		"Person": {
 			[]*ast.Literal{
 				{
-					Kind: "Person",
+					Kind: types.NewUnresolvedInterface("Person"),
 					Map: map[string]*ast.Literal{
 						"Foo": asttest.NewLiteralNumber("123"),
 						"bar": asttest.NewLiteralNumber("456"),

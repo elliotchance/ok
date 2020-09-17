@@ -6,6 +6,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -20,7 +21,7 @@ func TestObject(t *testing.T) {
 		"empty-object": {
 			node: &ast.Func{
 				Name:    "Foo",
-				Returns: []string{"Foo"},
+				Returns: []*types.Type{types.NewUnresolvedInterface("Foo")},
 			},
 			expected: []vm.Instruction{
 				// return instance
@@ -32,7 +33,7 @@ func TestObject(t *testing.T) {
 		"one-variable": {
 			node: &ast.Func{
 				Name:    "Foo",
-				Returns: []string{"Foo"},
+				Returns: []*types.Type{types.NewUnresolvedInterface("Foo")},
 				Statements: []ast.Node{
 					&ast.Assign{
 						Lefts: []ast.Node{

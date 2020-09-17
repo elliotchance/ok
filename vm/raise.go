@@ -2,6 +2,8 @@ package vm
 
 import (
 	"fmt"
+
+	"github.com/elliotchance/ok/types"
 )
 
 // Raise put the VM into an error mode. The VM will look for an error handler.
@@ -10,7 +12,7 @@ type Raise struct {
 	Err Register
 
 	// Type is used to match the handler.
-	Type string
+	Type *types.Type
 }
 
 // Execute implements the Instruction interface for the VM.

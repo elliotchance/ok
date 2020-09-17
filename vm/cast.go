@@ -5,6 +5,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 )
 
 // CastString returns a string value of a value.
@@ -15,7 +16,7 @@ type CastString struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *CastString) Execute(_ *int, vm *VM) error {
 	vm.Set(ins.Result, &ast.Literal{
-		Kind:  "string",
+		Kind:  types.String,
 		Value: renderLiteral(vm.Get(ins.X), false),
 	})
 
@@ -35,7 +36,7 @@ type CastNumber struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *CastNumber) Execute(_ *int, vm *VM) error {
 	vm.Set(ins.Result, &ast.Literal{
-		Kind:  "number",
+		Kind:  types.Number,
 		Value: fmt.Sprintf("%d", int([]rune(vm.Get(ins.X).Value)[0])),
 	})
 
@@ -55,7 +56,7 @@ type CastChar struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *CastChar) Execute(_ *int, vm *VM) error {
 	vm.Set(ins.Result, &ast.Literal{
-		Kind:  "char",
+		Kind:  types.Char,
 		Value: fmt.Sprintf("%c", number.Int(number.NewNumber(vm.Get(ins.X).Value))),
 	})
 

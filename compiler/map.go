@@ -5,6 +5,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -12,7 +13,7 @@ func compileMap(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Map,
 	file *vm.File,
-) (vm.Register, string, error) {
+) (vm.Register, *types.Type, error) {
 	// TODO(elliot): Check type is valid for the map.
 	// TODO(elliot): Maps with duplicate keys should be an error.
 
@@ -34,14 +35,14 @@ func compileMap(
 		// TODO(elliot): Check keyKind is string.
 		keyRegisters, _, err := compileExpr(compiledFunc, element.Key, file)
 		if err != nil {
-			return "", "", err
+			return "", nil, err
 		}
 
 		// TODO(elliot): Check value is the right type for map.
 		// TODO(elliot): Check all elements are the same kind.
 		valueRegisters, valueKind, _ := compileExpr(compiledFunc, element.Value, file)
-		if mapAlloc.Kind == "" {
-			mapAlloc.Kind = "{}" + valueKind[0]
+		if mapAlloc.Kind == nil {
+			mapAlloc.Kind = valueKind[0].ToMap()
 		}
 
 		compiledFunc.Append(&vm.MapSet{

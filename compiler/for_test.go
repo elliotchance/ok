@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -44,7 +45,7 @@ func TestFor(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 
 				// set 2 elements
@@ -129,7 +130,7 @@ func TestFor(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 
 				// set 2 elements
@@ -211,7 +212,7 @@ func TestFor(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   types.NumberMap,
 					Size:   "1",
 					Result: "2",
 				},
@@ -296,7 +297,7 @@ func TestFor(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   types.NumberMap,
 					Size:   "1",
 					Result: "2",
 				},

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/compiler/kind"
+	"github.com/elliotchance/ok/types"
 )
 
 // Len is used to determine the size of an array or map.
@@ -16,14 +16,14 @@ type Len struct {
 func (ins *Len) Execute(_ *int, vm *VM) error {
 	r := vm.Get(ins.Argument)
 	var result int
-	switch {
-	case kind.IsArray(r.Kind):
+	switch r.Kind.Kind {
+	case types.KindArray:
 		result = len(r.Array)
 
-	case kind.IsMap(r.Kind):
+	case types.KindMap:
 		result = len(r.Map)
 
-	case r.Kind == "string":
+	case types.KindString:
 		result = len([]rune(r.Value))
 
 	default:

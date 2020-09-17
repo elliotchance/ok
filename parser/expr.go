@@ -3,6 +3,7 @@ package parser
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 )
 
 // unlimitedTokens is just some very large amount to be used when you do not
@@ -112,9 +113,11 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 				// A unary can be a "-" number, this can be reduced now into a
 				// number. This saves on some processing buts it's also required
 				// for assertions that only work with simple binary operations.
-				if lit, ok := unary.Expr.(*ast.Literal); ok && lit.Kind == "number" && unary.Op == lexer.TokenMinus {
+				if lit, ok := unary.Expr.(*ast.Literal); ok &&
+					lit.Kind.Kind == types.KindNumber &&
+					unary.Op == lexer.TokenMinus {
 					newLit := &ast.Literal{
-						Kind:  "number",
+						Kind:  types.Number,
 						Value: "-" + lit.Value,
 						Pos:   unary.Pos,
 					}

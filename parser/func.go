@@ -3,6 +3,7 @@ package parser
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 )
 
 func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, finalErr error) {
@@ -117,7 +118,7 @@ func consumeArgument(parser *Parser, offset int) ([]*ast.Argument, int, error) {
 		}
 	}
 
-	var ty string
+	var ty *types.Type
 	ty, offset, err = consumeType(parser, offset)
 	if err != nil {
 		return nil, originalOffset, err

@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/pkg/errors"
 )
 
@@ -14,7 +15,7 @@ type Parser struct {
 	finalizers       map[string][]*ast.Finally
 	functionNames    []string
 	anonFunctionName int
-	Interfaces       map[string]map[string]string
+	Interfaces       map[string]map[string]*types.Type
 
 	// Constants are variables defined at the package level. They cannot be
 	// modified and only allow literals for values.

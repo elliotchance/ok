@@ -5,11 +5,12 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 )
 
 // MapAlloc allocates a map of fixed size.
 type MapAlloc struct {
-	Kind         string
+	Kind         *types.Type
 	Size, Result Register
 }
 

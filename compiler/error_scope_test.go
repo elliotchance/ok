@@ -5,6 +5,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -26,7 +27,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "",
+					Type: nil,
 				},
 			},
 		},
@@ -47,7 +48,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "",
+					Type: nil,
 				},
 			},
 		},
@@ -61,7 +62,7 @@ func TestErrorScope(t *testing.T) {
 					},
 					On: []*ast.On{
 						{
-							Type: "SomeError",
+							Type: types.NewUnresolvedInterface("SomeError"),
 						},
 					},
 				},
@@ -73,14 +74,14 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "SomeError",
+					Type: types.NewInterface("SomeError", nil),
 				},
 				&vm.Jump{
 					To: 4,
 				},
 
 				&vm.On{
-					Type: "",
+					Type: nil,
 				},
 			},
 		},
@@ -94,10 +95,10 @@ func TestErrorScope(t *testing.T) {
 					},
 					On: []*ast.On{
 						{
-							Type: "SomeError",
+							Type: types.NewUnresolvedInterface("SomeError"),
 						},
 						{
-							Type: "SomethingElse",
+							Type: types.NewUnresolvedInterface("SomethingElse"),
 							Statements: []ast.Node{
 								&ast.Call{
 									FunctionName: "print",
@@ -114,14 +115,14 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "SomeError",
+					Type: types.NewInterface("SomeError", nil),
 				},
 				&vm.Jump{
 					To: 7,
 				},
 
 				&vm.On{
-					Type: "SomethingElse",
+					Type: types.NewInterface("SomethingElse", nil),
 				},
 				&vm.Print{},
 				&vm.Jump{
@@ -129,7 +130,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "",
+					Type: nil,
 				},
 			},
 		},
@@ -163,7 +164,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "",
+					Type: nil,
 				},
 
 				// If we enter the finally block we need to disable it, this

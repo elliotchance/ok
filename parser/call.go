@@ -20,7 +20,7 @@ func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 	// although maybe moving it to unary and refactoring array/map makes more
 	// sense?
 	var ty lexer.Token
-	ty, offset, err = consumeOneOf(parser.File, offset, types)
+	ty, offset, err = consumeOneOf(parser.File, offset, typeTokens)
 	if err == nil {
 		var expr ast.Node
 		expr, offset, err = consumeExpr(parser, offset, 1)

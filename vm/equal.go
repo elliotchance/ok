@@ -5,8 +5,8 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 )
 
 // EqualNumber will compare two numbers for equality.
@@ -57,8 +57,8 @@ func (ins *Equal) String() string {
 }
 
 func compareValue(a, b *ast.Literal) bool {
-	switch {
-	case kind.IsArray(a.Kind):
+	switch a.Kind.Kind {
+	case types.KindArray:
 		if len(a.Array) == len(b.Array) {
 			for i, v := range a.Array {
 				if !compareValue(v, b.Array[i]) {
@@ -71,7 +71,7 @@ func compareValue(a, b *ast.Literal) bool {
 
 		return false
 
-	case kind.IsMap(a.Kind):
+	case types.KindMap:
 		if len(a.Map) != len(b.Map) {
 			return false
 		}
@@ -96,7 +96,7 @@ func compareValue(a, b *ast.Literal) bool {
 
 		return true
 
-	case a.Kind == "number":
+	case types.KindNumber:
 		return numbersAreEqual(a, b)
 
 	default:

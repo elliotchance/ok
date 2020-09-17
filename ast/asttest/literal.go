@@ -4,12 +4,13 @@ import (
 	"strconv"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 )
 
 // NewLiteralData create a new literal representing a data value.
 func NewLiteralData(data []byte) *ast.Literal {
 	return &ast.Literal{
-		Kind:  "data",
+		Kind:  types.Data,
 		Value: string(data),
 	}
 }
@@ -17,7 +18,7 @@ func NewLiteralData(data []byte) *ast.Literal {
 // NewLiteralNumber create a new literal representing a number value.
 func NewLiteralNumber(number string) *ast.Literal {
 	return &ast.Literal{
-		Kind:  "number",
+		Kind:  types.Number,
 		Value: number,
 	}
 }
@@ -25,7 +26,7 @@ func NewLiteralNumber(number string) *ast.Literal {
 // NewLiteralString create a new literal representing a string value.
 func NewLiteralString(str string) *ast.Literal {
 	return &ast.Literal{
-		Kind:  "string",
+		Kind:  types.String,
 		Value: str,
 	}
 }
@@ -33,7 +34,7 @@ func NewLiteralString(str string) *ast.Literal {
 // NewLiteralBool create a new literal representing a boolean value.
 func NewLiteralBool(b bool) *ast.Literal {
 	return &ast.Literal{
-		Kind:  "bool",
+		Kind:  types.Bool,
 		Value: strconv.FormatBool(b),
 	}
 }
@@ -41,7 +42,7 @@ func NewLiteralBool(b bool) *ast.Literal {
 // NewLiteralChar create a new literal representing a character value.
 func NewLiteralChar(c rune) *ast.Literal {
 	return &ast.Literal{
-		Kind:  "char",
+		Kind:  types.Char,
 		Value: string(c),
 	}
 }

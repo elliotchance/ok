@@ -9,6 +9,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,28 +22,28 @@ func TestExpr(t *testing.T) {
 		"literal-true": {
 			str: `true`,
 			expected: &ast.Literal{
-				Kind:  "bool",
+				Kind:  types.Bool,
 				Value: "true",
 			},
 		},
 		"literal-false": {
 			str: `false`,
 			expected: &ast.Literal{
-				Kind:  "bool",
+				Kind:  types.Bool,
 				Value: "false",
 			},
 		},
 		"literal-char": {
 			str: `'a'`,
 			expected: &ast.Literal{
-				Kind:  "char",
+				Kind:  types.Char,
 				Value: "a",
 			},
 		},
 		"literal-zero-length-char": {
 			str: `''`,
 			expected: &ast.Literal{
-				Kind:  "char",
+				Kind:  types.Char,
 				Value: "",
 			},
 			errs: []error{
@@ -52,7 +53,7 @@ func TestExpr(t *testing.T) {
 		"literal-number-zero": {
 			str: `0`,
 			expected: &ast.Literal{
-				Kind:  "number",
+				Kind:  types.Number,
 				Value: "0",
 			},
 		},

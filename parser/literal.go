@@ -6,6 +6,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 )
 
 // constant := identifier "=" literal
@@ -36,7 +37,7 @@ func consumeConstant(parser *Parser, offset int) (string, *ast.Literal, int, err
 func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 	originalOffset := offset
 
-	types := []string{
+	typeLiteralTokens := []string{
 		lexer.TokenBoolLiteral,
 		lexer.TokenCharLiteral,
 		lexer.TokenDataLiteral,
@@ -44,10 +45,10 @@ func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 		lexer.TokenStringLiteral,
 	}
 
-	for _, ty := range types {
+	for _, ty := range typeLiteralTokens {
 		if t := parser.File.Tokens[offset]; t.Kind == ty {
 			literal := &ast.Literal{
-				Kind:  strings.Split(ty, " ")[0],
+				Kind:  types.TypeFromString(strings.Split(ty, " ")[0]),
 				Value: t.Value,
 				Pos:   parser.File.Pos(originalOffset),
 			}
@@ -66,8 +67,8 @@ func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 }
 
 func validateLiteral(literal *ast.Literal) error {
-	switch literal.Kind {
-	case "char":
+	switch literal.Kind.Kind {
+	case types.KindChar:
 		if len(literal.Value) == 0 {
 			return errors.New("character literal cannot be empty")
 		}

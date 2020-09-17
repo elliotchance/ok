@@ -3,9 +3,11 @@ package util
 import (
 	"sort"
 	"strings"
+
+	"github.com/elliotchance/ok/types"
 )
 
-func Interface(in map[string]string) string {
+func Interface(in map[string]*types.Type) string {
 	var keys []string
 	for key := range in {
 		keys = append(keys, key)
@@ -19,10 +21,10 @@ func Interface(in map[string]string) string {
 			s += "; "
 		}
 
-		if strings.HasPrefix(in[key], "func(") {
-			s += key + strings.TrimPrefix(in[key], "func")
+		if in[key].Kind == types.KindFunc {
+			s += key + strings.TrimPrefix(in[key].String(), "func")
 		} else {
-			s += key + " " + in[key]
+			s += key + " " + in[key].String()
 		}
 	}
 

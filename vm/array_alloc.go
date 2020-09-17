@@ -5,12 +5,13 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 )
 
 // ArrayAlloc allocates an array of fixed size.
 type ArrayAlloc struct {
 	Size, Result Register
-	Kind         string
+	Kind         *types.Type
 }
 
 // Execute implements the Instruction interface for the VM.

@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -9,7 +10,7 @@ import (
 // number of instructions returned may be zero.
 func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
 	compiled := &vm.CompiledFunc{
-		Variables:  map[string]string{},
+		Variables:  map[string]*types.Type{},
 		Interfaces: file.Interfaces,
 	}
 
@@ -19,7 +20,7 @@ func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
 	//
 	// It is important that we always use a map (even if its not returns)
 	// because we may need it for a subscope (closure).
-	isObject := len(fn.Returns) == 1 && fn.Returns[0] == fn.Name
+	isObject := len(fn.Returns) == 1 && fn.Returns[0].Name == fn.Name
 
 	// Load the arguments from the registers.
 	for _, arg := range fn.Arguments {

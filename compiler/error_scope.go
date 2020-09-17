@@ -5,7 +5,11 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, file *vm.File) error {
+func compileErrorScope(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.ErrorScope,
+	file *vm.File,
+) error {
 	// Only activate the finally clause if there is one.
 	if n.Finally != nil {
 		compiledFunc.Append(&vm.Finally{
@@ -33,7 +37,7 @@ func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, file *v
 	// Each of the On clauses.
 	for _, on := range n.On {
 		compiledFunc.Append(&vm.On{
-			Type: on.Type,
+			Type: file.ResolveType(on.Type),
 		})
 
 		// Provide the err variable. The runtime value will be provided by the
@@ -50,7 +54,7 @@ func compileErrorScope(compiledFunc *vm.CompiledFunc, n *ast.ErrorScope, file *v
 
 	// An On with an empty Type signals to a VM trying to recover from an error
 	// that there is no handler. It will pass the error up to the caller.
-	compiledFunc.Append(&vm.On{Type: ""})
+	compiledFunc.Append(&vm.On{Type: nil})
 
 	// Correct the jump after the error has been handled. The "-1" is to
 	// correct for the "+1" that would happen after every instruction.

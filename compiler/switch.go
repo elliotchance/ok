@@ -4,10 +4,20 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister vm.Register, expectedConditionKind string, afterMatch, breakIns, continueIns vm.Instruction, file *vm.File) error {
+func compileCase(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.Case,
+	valueRegister vm.Register,
+	expectedConditionKind *types.Type,
+	afterMatch,
+	breakIns,
+	continueIns vm.Instruction,
+	file *vm.File,
+) error {
 	// TODO(elliot): This is a poor solution. It simply expands the conditions
 	//  out as if they were individual case statements. This duplicates
 	//  statements and uses more memory.
@@ -18,7 +28,8 @@ func compileCase(compiledFunc *vm.CompiledFunc, n *ast.Case, valueRegister vm.Re
 			return err
 		}
 
-		if conditionKinds[0] != expectedConditionKind {
+		// TODO(elliot): This is not the right way to handle this comparison.
+		if conditionKinds[0].String() != expectedConditionKind.String() {
 			return fmt.Errorf(
 				"expression in case condition must be %s, got %s",
 				expectedConditionKind, conditionKinds[0])
@@ -63,7 +74,7 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 
 	// Condition must be a bool if no value has been provided, otherwise all
 	// conditions must be the same type as the value.
-	expectedConditionKinds := []string{"bool"}
+	expectedConditionKinds := []*types.Type{types.Bool}
 	valueRegisters := []vm.Register{""}
 	if n.Expr != nil {
 		var err error
@@ -74,7 +85,8 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 	}
 
 	for _, caseStmt := range n.Cases {
-		err := compileCase(compiledFunc, caseStmt, valueRegisters[0], expectedConditionKinds[0], afterMatch, breakIns, continueIns, file)
+		err := compileCase(compiledFunc, caseStmt, valueRegisters[0],
+			expectedConditionKinds[0], afterMatch, breakIns, continueIns, file)
 		if err != nil {
 			return err
 		}

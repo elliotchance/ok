@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -17,7 +18,7 @@ func compileAssert(
 		return err
 	}
 
-	if returnKind != "bool" {
+	if returnKind.Kind != types.KindBool {
 		return fmt.Errorf("assert condition must be a bool but is %s", returnKind)
 	}
 

@@ -6,7 +6,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/compiler/kind"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/util"
 )
 
@@ -19,7 +19,10 @@ type Props struct {
 func (ins *Props) Execute(_ *int, vm *VM) error {
 	object := vm.Get(ins.Object)
 
-	if kind.IsObject(object.Kind) {
+	if object.Kind.Kind == types.KindResolvedInterface ||
+		object.Kind.Kind == types.KindUnresolvedInterface {
+		// TODO(elliot): This should not allow KindUnresolvedInterface.
+
 		var props []*ast.Literal
 		for prop := range object.Map {
 			if util.IsPublic(prop) {
@@ -32,14 +35,14 @@ func (ins *Props) Execute(_ *int, vm *VM) error {
 		})
 
 		vm.Set(ins.Result, &ast.Literal{
-			Kind:  "[]string",
+			Kind:  types.StringArray,
 			Array: props,
 		})
 
 		return nil
 	}
 
-	vm.Raise("cannot use props on non-object, received " + object.Kind)
+	vm.Raise("cannot use props on non-object, received " + object.Kind.String())
 
 	return nil
 }

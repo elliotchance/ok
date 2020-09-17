@@ -5,15 +5,20 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
-func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instruction, string) {
+func getBinaryInstruction(
+	op string,
+	left,
+	right,
+	result vm.Register,
+) (vm.Instruction, *types.Type) {
 	if strings.HasPrefix(op, "any == ") ||
 		strings.HasSuffix(op, " == any") {
-		return &vm.Equal{Left: left, Right: right, Result: result}, "bool"
+		return &vm.Equal{Left: left, Right: right, Result: result}, types.Bool
 	}
 
 	switch op {
@@ -24,55 +29,55 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 		"[]number + []number",
 		"[]string + []string":
 		return &vm.Append{A: left, B: right, Result: result},
-			strings.Split(op, " ")[0]
+			types.TypeFromString(strings.Split(op, " ")[0])
 
 	case "data + data":
-		return &vm.Combine{Left: left, Right: right, Result: result}, "data"
+		return &vm.Combine{Left: left, Right: right, Result: result}, types.Data
 
 	case "data += data":
-		return &vm.Combine{Left: left, Right: right, Result: left}, "data"
+		return &vm.Combine{Left: left, Right: right, Result: left}, types.Data
 
 	case "number + number":
-		return &vm.Add{Left: left, Right: right, Result: result}, "number"
+		return &vm.Add{Left: left, Right: right, Result: result}, types.Number
 
 	case "number += number":
-		return &vm.Add{Left: left, Right: right, Result: left}, "number"
+		return &vm.Add{Left: left, Right: right, Result: left}, types.Number
 
 	case "number - number":
-		return &vm.Subtract{Left: left, Right: right, Result: result}, "number"
+		return &vm.Subtract{Left: left, Right: right, Result: result}, types.Number
 
 	case "number -= number":
-		return &vm.Subtract{Left: left, Right: right, Result: left}, "number"
+		return &vm.Subtract{Left: left, Right: right, Result: left}, types.Number
 
 	case "number * number":
-		return &vm.Multiply{Left: left, Right: right, Result: result}, "number"
+		return &vm.Multiply{Left: left, Right: right, Result: result}, types.Number
 
 	case "number *= number":
-		return &vm.Multiply{Left: left, Right: right, Result: left}, "number"
+		return &vm.Multiply{Left: left, Right: right, Result: left}, types.Number
 
 	case "number / number":
-		return &vm.Divide{Left: left, Right: right, Result: result}, "number"
+		return &vm.Divide{Left: left, Right: right, Result: result}, types.Number
 
 	case "number /= number":
-		return &vm.Divide{Left: left, Right: right, Result: left}, "number"
+		return &vm.Divide{Left: left, Right: right, Result: left}, types.Number
 
 	case "number % number":
-		return &vm.Remainder{Left: left, Right: right, Result: result}, "number"
+		return &vm.Remainder{Left: left, Right: right, Result: result}, types.Number
 
 	case "number %= number":
-		return &vm.Remainder{Left: left, Right: right, Result: left}, "number"
+		return &vm.Remainder{Left: left, Right: right, Result: left}, types.Number
 
 	case "string + string":
-		return &vm.Concat{Left: left, Right: right, Result: result}, "string"
+		return &vm.Concat{Left: left, Right: right, Result: result}, types.String
 
 	case "string += string":
-		return &vm.Concat{Left: left, Right: right, Result: left}, "string"
+		return &vm.Concat{Left: left, Right: right, Result: left}, types.String
 
 	case "bool and bool":
-		return &vm.And{Left: left, Right: right, Result: result}, "bool"
+		return &vm.And{Left: left, Right: right, Result: result}, types.Bool
 
 	case "bool or bool":
-		return &vm.Or{Left: left, Right: right, Result: result}, "bool"
+		return &vm.Or{Left: left, Right: right, Result: result}, types.Bool
 
 	case "bool == bool",
 		"char == char",
@@ -95,10 +100,10 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 		"{}number == {}number",
 		"{}string == {}string",
 		"{}any == {}any":
-		return &vm.Equal{Left: left, Right: right, Result: result}, "bool"
+		return &vm.Equal{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number == number":
-		return &vm.EqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.EqualNumber{Left: left, Right: right, Result: result}, types.Bool
 
 	case "bool != bool",
 		"char != char",
@@ -121,44 +126,44 @@ func getBinaryInstruction(op string, left, right, result vm.Register) (vm.Instru
 		"{}number != {}number",
 		"{}string != {}string",
 		"{}any != {}any":
-		return &vm.NotEqual{Left: left, Right: right, Result: result}, "bool"
+		return &vm.NotEqual{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number != number":
-		return &vm.NotEqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.NotEqualNumber{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number > number":
-		return &vm.GreaterThanNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanNumber{Left: left, Right: right, Result: result}, types.Bool
 
 	case "string > string":
-		return &vm.GreaterThanString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanString{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number < number":
-		return &vm.LessThanNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanNumber{Left: left, Right: right, Result: result}, types.Bool
 
 	case "string < string":
-		return &vm.LessThanString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanString{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number >= number":
-		return &vm.GreaterThanEqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanEqualNumber{Left: left, Right: right, Result: result}, types.Bool
 
 	case "string >= string":
-		return &vm.GreaterThanEqualString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.GreaterThanEqualString{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number <= number":
-		return &vm.LessThanEqualNumber{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanEqualNumber{Left: left, Right: right, Result: result}, types.Bool
 
 	case "string <= string":
-		return &vm.LessThanEqualString{Left: left, Right: right, Result: result}, "bool"
+		return &vm.LessThanEqualString{Left: left, Right: right, Result: result}, types.Bool
 	}
 
-	return nil, ""
+	return nil, nil
 }
 
 func compileBinary(
 	compiledFunc *vm.CompiledFunc,
 	node *ast.Binary,
 	file *vm.File,
-) (vm.Register, string, error) {
+) (vm.Register, *types.Type, error) {
 	// TokenAssign is not possible here because that is handled by an Assign
 	// operation.
 	if node.Op == lexer.TokenPlusAssign ||
@@ -169,7 +174,7 @@ func compileBinary(
 
 		right, rightKind, err := compileExpr(compiledFunc, node.Right, file)
 		if err != nil {
-			return "", "", err
+			return "", nil, err
 		}
 
 		// TODO(elliot): Check +=, etc.
@@ -177,16 +182,16 @@ func compileBinary(
 			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
 				key.Expr, file)
 			if err != nil {
-				return "", "", err
+				return "", nil, err
 			}
 
 			// TODO(elliot): Check this is a sane operation.
 			keyResults, _, err := compileExpr(compiledFunc, key.Key, file)
 			if err != nil {
-				return "", "", err
+				return "", nil, err
 			}
 
-			if kind.IsArray(arrayOrMapKind[0]) {
+			if arrayOrMapKind[0].Kind == types.KindArray {
 				ins := &vm.ArraySet{
 					Array: arrayOrMapResults[0],
 					Index: keyResults[0],
@@ -204,17 +209,18 @@ func compileBinary(
 			}
 
 			// TODO(elliot): Return something more reasonable here.
-			return "", "", nil
+			return "", nil, nil
 		}
 
 		variable, ok := node.Left.(*ast.Identifier)
 		if !ok {
-			return "", "", fmt.Errorf("cannot assign to non-variable")
+			return "", nil, fmt.Errorf("cannot assign to non-variable")
 		}
 
 		// Make sure we do not assign the wrong type to an existing variable.
-		if v, ok := compiledFunc.Variables[variable.Name]; ok && rightKind[0] != v {
-			return "", "", fmt.Errorf(
+		if v, ok := compiledFunc.Variables[variable.Name]; ok &&
+			rightKind[0].String() != v.String() {
+			return "", nil, fmt.Errorf(
 				"%s cannot assign %s to variable %s (expecting %s)",
 				variable.Position(), rightKind[0], variable.Name, v)
 		}
@@ -222,28 +228,28 @@ func compileBinary(
 		switch node.Op {
 		case lexer.TokenPlusAssign:
 			switch {
-			case kind.IsArray(rightKind[0]):
+			case rightKind[0].Kind == types.KindArray:
 				compiledFunc.Append(&vm.Append{
 					A:      vm.Register(variable.Name),
 					B:      right[0],
 					Result: vm.Register(variable.Name),
 				})
 
-			case rightKind[0] == "data":
+			case rightKind[0].Kind == types.KindData:
 				compiledFunc.Append(&vm.Combine{
 					Left:   vm.Register(variable.Name),
 					Right:  right[0],
 					Result: vm.Register(variable.Name),
 				})
 
-			case rightKind[0] == "number":
+			case rightKind[0].Kind == types.KindNumber:
 				compiledFunc.Append(&vm.Add{
 					Left:   vm.Register(variable.Name),
 					Right:  vm.Register(right[0]),
 					Result: vm.Register(variable.Name),
 				})
 
-			case rightKind[0] == "string":
+			case rightKind[0].Kind == types.KindString:
 				compiledFunc.Append(&vm.Concat{
 					Left:   vm.Register(variable.Name),
 					Right:  right[0],
@@ -288,15 +294,19 @@ func compileBinary(
 	return returns, returnKind, err
 }
 
-func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *vm.File) (vm.Register, vm.Register, vm.Register, string, error) {
+func compileComparison(
+	compiledFunc *vm.CompiledFunc,
+	node *ast.Binary,
+	file *vm.File,
+) (vm.Register, vm.Register, vm.Register, *types.Type, error) {
 	left, leftKind, err := compileExpr(compiledFunc, node.Left, file)
 	if err != nil {
-		return "", "", "", "", err
+		return "", "", "", nil, err
 	}
 
 	right, rightKind, err := compileExpr(compiledFunc, node.Right, file)
 	if err != nil {
-		return "", "", "", "", err
+		return "", "", "", nil, err
 	}
 
 	returns := compiledFunc.NextRegister()
@@ -311,6 +321,6 @@ func compileComparison(compiledFunc *vm.CompiledFunc, node *ast.Binary, file *vm
 		return left[0], right[0], returns, kind, nil
 	}
 
-	return left[0], right[0], returns, "",
+	return left[0], right[0], returns, nil,
 		fmt.Errorf("%s cannot perform %s", node.Position(), op)
 }

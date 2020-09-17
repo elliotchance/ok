@@ -3,12 +3,12 @@ package ast
 import (
 	"encoding/json"
 
-	"github.com/elliotchance/ok/compiler/kind"
+	"github.com/elliotchance/ok/types"
 )
 
 // Literal represents a literal of any type.
 type Literal struct {
-	Kind  string
+	Kind  *types.Type
 	Value string
 
 	// Array is also used to hold the keys of the map. This is required for
@@ -31,14 +31,14 @@ func (node *Literal) Position() string {
 func (node *Literal) String() string {
 	var x interface{} = node.Value
 
-	switch {
-	case kind.IsArray(node.Kind):
+	switch node.Kind.Kind {
+	case types.KindArray:
 		x = node.Array
 
-	case kind.IsMap(node.Kind):
+	case types.KindMap:
 		x = node.Map
 
-	case kind.IsFunc(node.Kind):
+	case types.KindFunc:
 		return "func " + node.Value
 	}
 

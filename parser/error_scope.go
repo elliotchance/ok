@@ -3,6 +3,7 @@ package parser
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 )
 
 func consumeErrorScope(parser *Parser, offset int) (*ast.ErrorScope, int, error) {
@@ -63,7 +64,7 @@ func consumeOn(parser *Parser, offset int) (*ast.On, int, error) {
 	}
 
 	node := &ast.On{
-		Type: ident.Name,
+		Type: types.NewUnresolvedInterface(ident.Name),
 		Pos:  parser.File.Pos(originalOffset),
 	}
 

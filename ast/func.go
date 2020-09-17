@@ -3,17 +3,18 @@ package ast
 import (
 	"strings"
 
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/util"
 )
 
 // Argument is used to define a name and type for a function argument.
 type Argument struct {
 	Name string
-	Type string
+	Type *types.Type
 }
 
 func (arg *Argument) String() string {
-	return strings.TrimSpace(arg.Name + " " + arg.Type)
+	return strings.TrimSpace(arg.Name + " " + arg.Type.String())
 }
 
 // Func represents the definition of a function.
@@ -27,7 +28,7 @@ type Func struct {
 
 	// Returns may contain zero or more types. They will always be in the order
 	// in which they are declared.
-	Returns []string
+	Returns []*types.Type
 
 	// Statements can have zero or more elements for each of the ordered
 	// discreet statements in the function.
@@ -36,8 +37,8 @@ type Func struct {
 	Pos string
 }
 
-func (f *Func) Interface() (map[string]string, error) {
-	fields := map[string]string{}
+func (f *Func) Interface() (map[string]*types.Type, error) {
+	fields := map[string]*types.Type{}
 
 	for _, arg := range f.Arguments {
 		if util.IsPublic(arg.Name) {
@@ -70,37 +71,41 @@ func (f *Func) Interface() (map[string]string, error) {
 //   func Foo(x number, y number) (string, string)
 //
 func (f *Func) String() string {
-	return f.signature(true)
-}
-
-func (f *Func) Type() string {
-	return f.signature(false)
-}
-
-func (f *Func) signature(includeNames bool) string {
 	var args []string
 	for _, arg := range f.Arguments {
-		if arg.Name == "" || !includeNames {
-			args = append(args, arg.Type)
-		} else {
-			args = append(args, arg.Name+" "+arg.Type)
-		}
+		args = append(args, arg.Name+" "+arg.Type.String())
 	}
 
 	returnSignature := ""
 	if len(f.Returns) == 1 {
-		returnSignature = " " + f.Returns[0]
+		returnSignature = " " + f.Returns[0].String()
 	}
 	if len(f.Returns) > 1 {
-		returnSignature = " (" + strings.Join(f.Returns, ", ") + ")"
+		var returns []string
+		for _, r := range f.Returns {
+			returns = append(returns, r.String())
+		}
+		returnSignature = " (" + strings.Join(returns, ", ") + ")"
 	}
 
 	prefix := "func"
-	if f.Name != "" && includeNames {
+	if f.Name != "" {
 		prefix += " " + f.Name
 	}
 
 	return prefix + "(" + strings.Join(args, ", ") + ")" + returnSignature
+}
+
+func (f *Func) Type() *types.Type {
+	var args, returns []*types.Type
+	for _, arg := range f.Arguments {
+		args = append(args, arg.Type)
+	}
+	for _, r := range f.Returns {
+		returns = append(returns, r)
+	}
+
+	return types.NewFunc(args, returns)
 }
 
 // Position returns the position.
@@ -109,26 +114,19 @@ func (f *Func) Position() string {
 }
 
 func (f *Func) IsConstructor() bool {
-	return f.Name != "" && f.Name == strings.Join(f.Returns, ",")
+	return f.Name != "" && len(f.Returns) == 1 && f.Name == f.Returns[0].Name
 }
 
 // NewFuncFromPrototype is a hack for now. It should be derived directly from
 // the type itself.
-func NewFuncFromPrototype(ty string) *Func {
+func NewFuncFromPrototype(ty *types.Type) *Func {
 	f := &Func{}
 
-	// TODO(elliot): This is a bad solution. Fix me.
-	parts := strings.Split(ty[5:], ")")
-
-	if strings.TrimSpace(parts[0]) != "" {
-		for _, a := range util.StringSliceMap(strings.Split(parts[0], ","), strings.TrimSpace) {
-			f.Arguments = append(f.Arguments, &Argument{Name: "", Type: a})
-		}
+	for _, a := range ty.Arguments {
+		f.Arguments = append(f.Arguments, &Argument{Name: "", Type: a})
 	}
 
-	if strings.TrimSpace(parts[1]) != "" {
-		f.Returns = util.StringSliceMap(strings.Split(parts[1], ","), strings.TrimSpace)
-	}
+	f.Returns = ty.Returns
 
 	return f
 }
