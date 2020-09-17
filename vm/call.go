@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 )
 
 // Call tells the VM to jump to another function.
@@ -24,7 +25,7 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(funcName, ins.Arguments, parentScope, funcName)
+	results, err := vm.call(funcName, ins.Arguments, parentScope, types.TypeFromString(funcName))
 	if err != nil {
 		return err
 	}

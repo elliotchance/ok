@@ -8,6 +8,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 )
 
 func TestMap(t *testing.T) {
@@ -20,7 +21,7 @@ func TestMap(t *testing.T) {
 			str: "any {}",
 			expected: &ast.Map{
 				// Not "any" because it's redundant and not a runtime time.
-				Kind: "",
+				Kind: nil,
 			},
 		},
 		"one-number": {
@@ -88,7 +89,7 @@ func TestMap(t *testing.T) {
 		"numbers": {
 			str: `{}number {"a": 1, "b": 2, "c": 3}`,
 			expected: &ast.Map{
-				Kind: "{}number",
+				Kind: types.NumberMap,
 				Elements: []*ast.KeyValue{
 					{
 						Key:   asttest.NewLiteralString("a"),

@@ -1,4 +1,4 @@
-package util
+package types
 
 // StringSliceMap creates a new slice with a function applied.
 func StringSliceMap(ss []string, fn func(string) string) []string {

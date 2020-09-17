@@ -6,8 +6,8 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/util"
 )
 
@@ -36,11 +36,11 @@ func (ins *Interpolate) String() string {
 }
 
 func renderLiteral(v *ast.Literal, asJSON bool) string {
-	if kind.IsFunc(v.Kind) {
+	if v.Kind.Kind == types.KindFunc {
 		return v.String()
 	}
 
-	if kind.IsArray(v.Kind) {
+	if v.Kind.Kind == types.KindArray {
 		s := "["
 		for j, element := range v.Array {
 			if j > 0 {
@@ -54,8 +54,8 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 	}
 
 	// Literals.
-	switch v.Kind {
-	case "char", "string", "data":
+	switch v.Kind.Kind {
+	case types.KindChar, types.KindString, types.KindData:
 		if asJSON {
 			// TODO(elliot): This is not escaped correctly.
 			return fmt.Sprintf(`"%s"`, v.Value)
@@ -63,10 +63,10 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 
 		return v.Value
 
-	case "number":
+	case types.KindNumber:
 		return number.Format(number.NewNumber(v.Value), -1)
 
-	case "bool":
+	case types.KindBool:
 		return v.Value
 	}
 
@@ -88,14 +88,14 @@ func renderLiteral(v *ast.Literal, asJSON bool) string {
 	j := 0
 	for _, key := range keys {
 		// If it's an object we do not expose non-public entities.
-		if !kind.IsMap(v.Kind) && !util.IsPublic(key) {
+		if v.Kind.Kind != types.KindMap && !util.IsPublic(key) {
 			continue
 		}
 
 		// We do not render function literals. These would almost never be
 		// useful in a JSON output.
 		element := v.Map[key]
-		if kind.IsFunc(element.Kind) {
+		if element.Kind.Kind == types.KindFunc {
 			continue
 		}
 

@@ -10,6 +10,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/types"
 )
 
 // StateRegister is a reserved register for holding the map of the state.
@@ -42,21 +43,21 @@ type VM struct {
 
 	// ErrType will be non-empty once an error is raised. It contains the type
 	// to match for a handler. ErrValue contains the actual error.
-	ErrType  string
+	ErrType  *types.Type
 	ErrValue *ast.Literal
 
 	// FinallyBlocks are stacked with stack.
 	FinallyBlocks [][]*FinallyBlock
 
 	// Interfaces describes all the interfaces types known by the VM.
-	Interfaces map[string]map[string]string
+	Interfaces map[string]map[string]*types.Type
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
 func NewVM(
 	fns map[string]*CompiledFunc,
 	tests []*CompiledTest,
-	interfaces map[string]map[string]string,
+	interfaces map[string]map[string]*types.Type,
 	pkg string,
 ) *VM {
 	// The VM probably starts empty, make sure we prepare the fns for loading
@@ -65,7 +66,7 @@ func NewVM(
 		fns = make(map[string]*CompiledFunc)
 	}
 	if interfaces == nil {
-		interfaces = make(map[string]map[string]string)
+		interfaces = make(map[string]map[string]*types.Type)
 	}
 
 	return &VM{
@@ -88,7 +89,7 @@ func (vm *VM) Run() error {
 		return nil
 	}
 
-	_, err := vm.call("main", nil, map[string]*ast.Literal{}, "any")
+	_, err := vm.call("main", nil, map[string]*ast.Literal{}, types.Any)
 
 	vm.catchUnhandledError()
 
@@ -122,7 +123,7 @@ func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
 	return nil
 }
 
-func (vm *VM) appendStack(parentScope map[string]*ast.Literal, returnType string) {
+func (vm *VM) appendStack(parentScope map[string]*ast.Literal, returnType *types.Type) {
 	registers := map[Register]*ast.Literal{}
 	vm.Stack = append(vm.Stack, registers)
 
@@ -131,14 +132,19 @@ func (vm *VM) appendStack(parentScope map[string]*ast.Literal, returnType string
 		Kind: returnType,
 		Map: map[string]*ast.Literal{
 			StateRegister: {
-				Kind: "any",
+				Kind: types.Any,
 				Map:  parentScope,
 			},
 		},
 	})
 }
 
-func (vm *VM) call(name string, arguments []Register, parentScope map[string]*ast.Literal, returnType string) ([]Register, error) {
+func (vm *VM) call(
+	name string,
+	arguments []Register,
+	parentScope map[string]*ast.Literal,
+	returnType *types.Type,
+) ([]Register, error) {
 	// TODO(elliot): Check function exists, especially main.
 
 	vm.appendStack(parentScope, returnType)
@@ -233,10 +239,18 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 		// TODO(elliot): This can not differentiate a handler in a lower scope
 		//  that should be ignored. It would be best for raise to provide a jump
 		//  to the first (or each) of the handlers, ideally.
-		if vm.ErrType != "" && !inFinally {
+		if vm.ErrType != nil && !inFinally {
 			if on, ok := ins.(*On); ok {
-				switch on.Type {
-				case vm.ErrType,
+				if on.Type == nil {
+					// An empty type signals the end of the error handlers.
+					// Making it to here means none of the error handlers worked
+					// for us. We need to return now and let the parent scope
+					// try to handle it.
+					return nil, nil
+				}
+
+				switch on.Type.Name {
+				case vm.ErrType.Name,
 					// TODO(elliot): This is a stupid hack for now. This was
 					//  created before interfaces could determine this properly.
 					"error.Error":
@@ -248,16 +262,8 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 					// We found the handler. Remove the error state and continue
 					// as normal. There is a jump at the end of the handler that
 					// will launch us out when it's done.
-					vm.ErrType = ""
-
-				case "":
-					// An empty type signals the end of the error handlers.
-					// Making it to here means none of the error handlers worked
-					// for us. We need to return now and let the parent scope
-					// try to handle it.
-					return nil, nil
+					vm.ErrType = nil
 				}
-
 			}
 
 			continue
@@ -277,7 +283,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 }
 
 func (vm *VM) catchUnhandledError() {
-	if vm.ErrType != "" {
+	if vm.ErrType != nil {
 		// TODO(elliot): This needs to be handled much more gracefully.
 		panic(fmt.Sprintf("unhandled %s: %+v", vm.ErrType, vm.ErrValue.Map["Error"]))
 	}
@@ -286,7 +292,7 @@ func (vm *VM) catchUnhandledError() {
 func (vm *VM) runTest(testName string, instructions []Instruction, parentScope map[string]*ast.Literal) error {
 	vm.CurrentTestName = testName
 
-	vm.appendStack(parentScope, "any")
+	vm.appendStack(parentScope, types.Any)
 	_, err := vm.runInstructions(testName, instructions, false)
 
 	vm.catchUnhandledError()
@@ -348,9 +354,9 @@ func (vm *VM) Get(register Register) *ast.Literal {
 }
 
 func (vm *VM) Raise(message string) {
-	vm.ErrType = "error.Error"
+	vm.ErrType = types.ErrorInterface
 	vm.ErrValue = &ast.Literal{
-		Kind:  "error.Error",
+		Kind:  types.ErrorInterface,
 		Array: []*ast.Literal{asttest.NewLiteralString("Error")},
 		Map: map[string]*ast.Literal{
 			"Error": asttest.NewLiteralString(message),

@@ -6,6 +6,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -26,7 +27,7 @@ func TestFunc(t *testing.T) {
 				"foo": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
-						{Name: "bar", Type: "number"},
+						{Name: "bar", Type: types.Number},
 					},
 				},
 			},
@@ -37,8 +38,8 @@ func TestFunc(t *testing.T) {
 				"foo": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
-						{Name: "bar", Type: "number"},
-						{Name: "baz", Type: "string"},
+						{Name: "bar", Type: types.Number},
+						{Name: "baz", Type: types.String},
 					},
 				},
 			},
@@ -49,9 +50,9 @@ func TestFunc(t *testing.T) {
 				"foo": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
-						{Name: "bar", Type: "number"},
-						{Name: "baz", Type: "string"},
-						{Name: "qux", Type: "[]bool"},
+						{Name: "bar", Type: types.Number},
+						{Name: "baz", Type: types.String},
+						{Name: "qux", Type: types.BoolArray},
 					},
 				},
 			},
@@ -61,7 +62,7 @@ func TestFunc(t *testing.T) {
 			expected: map[string]*ast.Func{
 				"bar": {
 					Name:    "bar",
-					Returns: []string{"number"},
+					Returns: []*types.Type{types.Number},
 				},
 			},
 		},
@@ -70,7 +71,7 @@ func TestFunc(t *testing.T) {
 			expected: map[string]*ast.Func{
 				"bar": {
 					Name:    "bar",
-					Returns: []string{"number", "string"},
+					Returns: []*types.Type{types.Number, types.String},
 				},
 			},
 		},
@@ -80,9 +81,9 @@ func TestFunc(t *testing.T) {
 				"foo": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
-						{Name: "bar", Type: "string"},
-						{Name: "baz", Type: "string"},
-						{Name: "qux", Type: "{}number"},
+						{Name: "bar", Type: types.String},
+						{Name: "baz", Type: types.String},
+						{Name: "qux", Type: types.NumberMap},
 					},
 				},
 			},

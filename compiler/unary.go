@@ -3,13 +3,18 @@ package compiler
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, file *vm.File) (vm.Register, string, error) {
+func compileUnary(
+	compiledFunc *vm.CompiledFunc,
+	e *ast.Unary,
+	file *vm.File,
+) (vm.Register, *types.Type, error) {
 	returns1, kinds, err := compileExpr(compiledFunc, e.Expr, file)
 	if err != nil {
-		return "", "", err
+		return "", nil, err
 	}
 
 	var ins vm.Instruction
@@ -49,9 +54,9 @@ func compileUnary(compiledFunc *vm.CompiledFunc, e *ast.Unary, file *vm.File) (v
 		})
 
 		ins = &vm.Add{
-			Left:   vm.Register(returns1[0]),
-			Right:  vm.Register(oneAt),
-			Result: vm.Register(returns1[0]),
+			Left:   returns1[0],
+			Right:  oneAt,
+			Result: returns1[0],
 		}
 		compiledFunc.Append(ins)
 

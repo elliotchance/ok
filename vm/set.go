@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/util"
 )
 
@@ -26,9 +26,9 @@ func (ins *Set) Execute(_ *int, vm *VM) error {
 	prop := vm.Get(ins.Prop)
 	value := vm.Get(ins.Value)
 
-	switch {
-	case kind.IsArray(object.Kind):
-		if prop.Kind != "number" {
+	switch object.Kind.Kind {
+	case types.KindArray:
+		if prop.Kind.Kind != types.KindNumber {
 			vm.Raise("prop must be a number for an array")
 
 			return nil
@@ -47,8 +47,8 @@ func (ins *Set) Execute(_ *int, vm *VM) error {
 
 		return nil
 
-	case kind.IsMap(object.Kind):
-		if prop.Kind != "string" {
+	case types.KindMap:
+		if prop.Kind.Kind != types.KindString {
 			vm.Raise("prop must be a string for a map")
 
 			return nil
@@ -59,8 +59,10 @@ func (ins *Set) Execute(_ *int, vm *VM) error {
 
 		return nil
 
-	case kind.IsObject(object.Kind):
-		if prop.Kind != "string" {
+	case types.KindResolvedInterface, types.KindUnresolvedInterface:
+		// TODO(elliot): This should not allow KindUnresolvedInterface.
+
+		if prop.Kind.Kind != types.KindString {
 			vm.Raise("prop must be a string for an object")
 
 			return nil
@@ -78,7 +80,7 @@ func (ins *Set) Execute(_ *int, vm *VM) error {
 		return nil
 	}
 
-	vm.Raise("cannot use Set on " + object.Kind)
+	vm.Raise("cannot use Set on " + object.Kind.String())
 
 	return nil
 }

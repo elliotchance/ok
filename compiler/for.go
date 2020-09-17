@@ -5,7 +5,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/compiler/kind"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -31,28 +31,27 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 			return err
 		}
 
-		switch {
-		case kind.IsArray(arrayOrMapKind[0]),
-			kind.IsMap(arrayOrMapKind[0]),
-			arrayOrMapKind[0] == "string":
-			// Allowed
+		switch arrayOrMapKind[0].Kind {
+		case types.KindArray, types.KindMap:
+			compiledFunc.NewVariable(cond.Value, arrayOrMapKind[0].Element)
+
+		case types.KindString:
+			compiledFunc.NewVariable(cond.Value, types.Char)
 
 		default:
 			return fmt.Errorf("%s is not iterable", arrayOrMapKind[0])
 		}
 
-		compiledFunc.NewVariable(cond.Value, kind.ElementType(arrayOrMapKind[0]))
-
 		if cond.Key != "" {
 			switch {
-			case kind.IsArray(arrayOrMapKind[0]):
-				compiledFunc.NewVariable(cond.Key, "number")
+			case arrayOrMapKind[0].Kind == types.KindArray:
+				compiledFunc.NewVariable(cond.Key, types.Number)
 
-			case kind.IsMap(arrayOrMapKind[0]):
-				compiledFunc.NewVariable(cond.Key, "string")
+			case arrayOrMapKind[0].Kind == types.KindMap:
+				compiledFunc.NewVariable(cond.Key, types.String)
 
-			case arrayOrMapKind[0] == "string":
-				compiledFunc.NewVariable(cond.Key, "char")
+			case arrayOrMapKind[0].Kind == types.KindString:
+				compiledFunc.NewVariable(cond.Key, types.Char)
 			}
 		}
 
@@ -63,8 +62,8 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 		})
 
 		conditionResults = []vm.Register{compiledFunc.NextRegister()}
-		switch {
-		case kind.IsArray(arrayOrMapKind[0]):
+		switch arrayOrMapKind[0].Kind {
+		case types.KindArray:
 			compiledFunc.Append(&vm.NextArray{
 				Array:       arrayOrMapResults[0],
 				Cursor:      cursorRegister,
@@ -73,7 +72,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 				Result:      conditionResults[0],
 			})
 
-		case kind.IsMap(arrayOrMapKind[0]):
+		case types.KindMap:
 			compiledFunc.Append(&vm.NextMap{
 				Map:         arrayOrMapResults[0],
 				Cursor:      cursorRegister,
@@ -82,7 +81,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 				Result:      conditionResults[0],
 			})
 
-		case arrayOrMapKind[0] == "string":
+		case types.KindString:
 			compiledFunc.Append(&vm.NextString{
 				Str:         arrayOrMapResults[0],
 				Cursor:      cursorRegister,
@@ -93,14 +92,14 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 		}
 
 	default:
-		var conditionKinds []string
+		var conditionKinds []*types.Type
 		var err error
 		conditionResults, conditionKinds, err = compileExpr(compiledFunc, n.Condition, file)
 		if err != nil {
 			return err
 		}
 
-		if conditionKinds[0] != "bool" {
+		if conditionKinds[0].Kind != types.KindBool {
 			return fmt.Errorf(
 				"expression in for condition must be a bool, got %s",
 				conditionKinds[0])

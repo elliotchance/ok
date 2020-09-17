@@ -3,8 +3,8 @@ package vm
 import (
 	"fmt"
 
-	"github.com/elliotchance/ok/compiler/kind"
 	"github.com/elliotchance/ok/number"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/util"
 )
 
@@ -18,9 +18,9 @@ type Get struct {
 func (ins *Get) Execute(_ *int, vm *VM) error {
 	object := vm.Get(ins.Object)
 	prop := vm.Get(ins.Prop)
-	switch {
-	case kind.IsArray(object.Kind):
-		if prop.Kind != "number" {
+	switch object.Kind.Kind {
+	case types.KindArray:
+		if prop.Kind.Kind != types.KindNumber {
 			vm.Raise("prop must be a number for an array")
 
 			return nil
@@ -38,8 +38,8 @@ func (ins *Get) Execute(_ *int, vm *VM) error {
 
 		return nil
 
-	case kind.IsMap(object.Kind):
-		if prop.Kind != "string" {
+	case types.KindMap:
+		if prop.Kind.Kind != types.KindString {
 			vm.Raise("prop must be a string for a map")
 
 			return nil
@@ -55,8 +55,10 @@ func (ins *Get) Execute(_ *int, vm *VM) error {
 
 		return nil
 
-	case kind.IsObject(object.Kind):
-		if prop.Kind != "string" {
+	case types.KindResolvedInterface, types.KindUnresolvedInterface:
+		// TODO(elliot): This should not allow KindUnresolvedInterface.
+
+		if prop.Kind.Kind != types.KindString {
 			vm.Raise("prop must be a string for an object")
 
 			return nil
@@ -79,7 +81,7 @@ func (ins *Get) Execute(_ *int, vm *VM) error {
 		return nil
 	}
 
-	vm.Raise("cannot use Get on " + object.Kind)
+	vm.Raise("cannot use Get on " + object.Kind.String())
 
 	return nil
 }

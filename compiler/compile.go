@@ -6,6 +6,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/util"
 	"github.com/elliotchance/ok/vm"
 )
@@ -23,7 +24,7 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 	funcs := map[string]*ast.Func{}
 	imports := map[string]struct{}{}
 	importedFuncs := map[string]*ast.Func{}
-	interfaces := map[string]map[string]string{}
+	interfaces := map[string]map[string]*types.Type{}
 	var tests []*ast.Test
 	constants := map[string]*ast.Literal{}
 

@@ -6,6 +6,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -19,7 +20,7 @@ func TestMap(t *testing.T) {
 	}{
 		"number-empty": {
 			node: &ast.Map{
-				Kind: "{}number",
+				Kind: types.NumberMap,
 			},
 			expected: []vm.Instruction{
 				// alloc
@@ -28,7 +29,7 @@ func TestMap(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   types.NumberMap,
 					Size:   "1",
 					Result: "2",
 				},
@@ -58,7 +59,7 @@ func TestMap(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   types.NumberMap,
 					Size:   "1",
 					Result: "2",
 				},
@@ -132,7 +133,7 @@ func TestMap(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   types.NumberMap,
 					Size:   "1",
 					Result: "2",
 				},

@@ -43,7 +43,8 @@ func main() {
 	check(err)
 
 	fmt.Fprintf(f, "package vm\n\n")
-	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/ast\"\n\n")
+	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/ast\"\n")
+	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/types\"\n\n")
 	fmt.Fprintf(f, "func init() {\n")
 	fmt.Fprintf(f, "\tPackages = ")
 	vm.Render(f, pkgs, "\t", true)

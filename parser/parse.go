@@ -3,6 +3,7 @@ package parser
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 )
 
 // ParseString parses source code and returns the AST for the file.
@@ -11,7 +12,7 @@ func ParseString(s string, fileName string) *Parser {
 		File:       &File{},
 		finalizers: map[string][]*ast.Finally{},
 		Constants:  map[string]*ast.Literal{},
-		Interfaces: map[string]map[string]string{},
+		Interfaces: map[string]map[string]*types.Type{},
 	}
 	parser.File.Funcs = map[string]*ast.Func{}
 	parser.File.Imports = map[string]string{}

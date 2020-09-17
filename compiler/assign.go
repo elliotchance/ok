@@ -2,15 +2,15 @@ package compiler
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
 type resultKindPair struct {
 	result vm.Register
-	kind   string
+	kind   *types.Type
 }
 
 func compileAssign(
@@ -44,10 +44,11 @@ func compileAssign(
 			variableName := l.Name
 
 			// Make sure we do not assign the wrong type to an existing variable.
-			if v, ok := compiledFunc.Variables[variableName]; ok && rightResults[0].kind != v {
+			if v, ok := compiledFunc.Variables[variableName]; ok &&
+				rightResults[0].kind.String() != v.String() {
 				return fmt.Errorf(
-					"cannot assign %s to variable %s (expecting %s)",
-					rightResults[0].kind, variableName, v)
+					"%s cannot assign %s to variable %s (expecting %s)",
+					node.Position(), rightResults[0].kind, variableName, v)
 			}
 
 			compiledFunc.NewVariable(variableName, rr.kind)
@@ -70,7 +71,7 @@ func compileAssign(
 				return err
 			}
 
-			if strings.HasPrefix(arrayOrMapKind[0], "[]") {
+			if arrayOrMapKind[0].Kind == types.KindArray {
 				ins := &vm.ArraySet{
 					Array: arrayOrMapResults[0],
 					Index: keyResults[0],

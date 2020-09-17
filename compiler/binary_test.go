@@ -8,6 +8,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -278,12 +279,12 @@ func TestBinary(t *testing.T) {
 					Arguments: []ast.Node{
 						&ast.Binary{
 							Left: &ast.Literal{
-								Kind:  "string",
+								Kind:  types.String,
 								Value: "foo",
 							},
 							Op: lexer.TokenDivide,
 							Right: &ast.Literal{
-								Kind:  "number",
+								Kind:  types.Number,
 								Value: "123",
 							},
 						},
@@ -479,7 +480,7 @@ func TestBinary(t *testing.T) {
 					},
 				},
 			},
-			err: errors.New("cannot assign string to variable foo (expecting number)"),
+			err: errors.New(" cannot assign string to variable foo (expecting number)"),
 		},
 		"bool-greater-than-bool": {
 			nodes: []ast.Node{
@@ -1055,12 +1056,12 @@ func TestBinary(t *testing.T) {
 					Arguments: []ast.Node{
 						&ast.Binary{
 							Left: &ast.Literal{
-								Kind:  "bool",
+								Kind:  types.Bool,
 								Value: "true",
 							},
 							Op: lexer.TokenPlus,
 							Right: &ast.Literal{
-								Kind:  "bool",
+								Kind:  types.Bool,
 								Value: "false",
 							},
 						},
@@ -1094,7 +1095,7 @@ func TestBinary(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -1109,7 +1110,7 @@ func TestBinary(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "3",
 					Result: "4",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 
 				// +=

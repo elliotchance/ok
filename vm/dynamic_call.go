@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 )
 
 // DynamicCall tells the VM to jump to another function.
@@ -28,7 +29,7 @@ func (ins *DynamicCall) Execute(_ *int, vm *VM) error {
 
 	var results Registers
 	funcLit := vm.Get(ins.Variable)
-	for range ast.NewFuncFromPrototype(funcLit.Kind).Returns {
+	for range funcLit.Kind.Returns {
 		register := Register(fmt.Sprintf("__%d", i))
 		results = append(results, register)
 		i++
@@ -46,7 +47,7 @@ func (ins *DynamicCall) Execute(_ *int, vm *VM) error {
 	}
 
 	resultsAsArray := &ast.Literal{
-		Kind:  "[]any",
+		Kind:  types.AnyArray,
 		Array: make([]*ast.Literal, len(realCall.Results)),
 	}
 

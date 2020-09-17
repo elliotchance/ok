@@ -5,11 +5,15 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/compiler/kind"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *vm.File) (vm.Register, string, error) {
+func compileKey(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.Key,
+	file *vm.File,
+) (vm.Register, *types.Type, error) {
 	// It could be an imported constant.
 	// TODO(elliot): This is hack for now, because the package name is not yet a
 	//  variable.
@@ -36,49 +40,52 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *vm.File) (vm.Re
 
 	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, file)
 	if err != nil {
-		return "", "", err
+		return "", nil, err
 	}
 
 	// TODO(elliot): Check key is the correct type.
 	keyRegisters, _, err := compileExpr(compiledFunc, n.Key, file)
 	if err != nil {
-		return "", "", err
+		return "", nil, err
 	}
 
 	resultRegister := compiledFunc.NextRegister()
-	switch {
-	case kind.IsArray(arrayOrMapKind[0]):
+	switch arrayOrMapKind[0].Kind {
+	case types.KindArray:
 		compiledFunc.Append(&vm.ArrayGet{
 			Array:  arrayOrMapRegisters[0],
 			Index:  keyRegisters[0],
 			Result: resultRegister,
 		})
 
-		return resultRegister, kind.ElementType(arrayOrMapKind[0]), nil
+		return resultRegister, arrayOrMapKind[0].Element, nil
 
-	case kind.IsMap(arrayOrMapKind[0]):
+	case types.KindMap:
 		compiledFunc.Append(&vm.MapGet{
 			Map:    arrayOrMapRegisters[0],
 			Key:    keyRegisters[0],
 			Result: resultRegister,
 		})
 
-		return resultRegister, kind.ElementType(arrayOrMapKind[0]), nil
+		return resultRegister, arrayOrMapKind[0].Element, nil
 
-	case kind.IsObject(arrayOrMapKind[0]):
+	case types.KindResolvedInterface, types.KindUnresolvedInterface:
+		// TODO(elliot): This should not allow KindUnresolvedInterface. It only
+		//  exists here for now as a hack to permit errors.Error to work.
+
 		compiledFunc.Append(&vm.MapGet{
 			Map:    arrayOrMapRegisters[0],
 			Key:    keyRegisters[0],
 			Result: resultRegister,
 		})
 
-		if iface, ok := file.Interfaces[arrayOrMapKind[0]]; ok {
+		if iface, ok := file.Interfaces[arrayOrMapKind[0].Name]; ok {
 			ty := iface[n.Key.(*ast.Literal).Value]
 
 			return resultRegister, ty, nil
 		}
 
-		parts := strings.Split(arrayOrMapKind[0], ".")
+		parts := strings.Split(arrayOrMapKind[0].Name, ".")
 		if len(parts) == 2 {
 			if iface, ok := vm.Packages[parts[0]].Interfaces[parts[1]]; ok {
 				ty := iface[n.Key.(*ast.Literal).Value]
@@ -87,17 +94,17 @@ func compileKey(compiledFunc *vm.CompiledFunc, n *ast.Key, file *vm.File) (vm.Re
 			}
 		}
 
-		return "", "", fmt.Errorf("%s unknown type: %s",
+		return "", nil, fmt.Errorf("%s unknown type: %s",
 			n.Position(), arrayOrMapKind[0])
 
-	case arrayOrMapKind[0] == "string":
+	case types.KindString:
 		compiledFunc.Append(&vm.StringIndex{
 			Str:    arrayOrMapRegisters[0],
 			Index:  keyRegisters[0],
 			Result: resultRegister,
 		})
 
-		return resultRegister, "char", nil
+		return resultRegister, types.Char, nil
 	}
 
 	panic(arrayOrMapKind[0])

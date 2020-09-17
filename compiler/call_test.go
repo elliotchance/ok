@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -45,7 +46,7 @@ func TestCall(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 				&vm.Len{
 					Argument: "2",

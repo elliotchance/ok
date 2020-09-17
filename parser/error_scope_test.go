@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -40,7 +41,7 @@ func TestErrorScope(t *testing.T) {
 				},
 				On: []*ast.On{
 					{
-						Type: "SomeError",
+						Type: types.NewUnresolvedInterface("SomeError"),
 					},
 				},
 			},
@@ -55,10 +56,10 @@ func TestErrorScope(t *testing.T) {
 				},
 				On: []*ast.On{
 					{
-						Type: "SomeError",
+						Type: types.NewUnresolvedInterface("SomeError"),
 					},
 					{
-						Type: "SomethingElse",
+						Type: types.NewUnresolvedInterface("SomethingElse"),
 						Statements: []ast.Node{
 							&ast.Call{
 								FunctionName: "foo",
@@ -78,7 +79,7 @@ func TestErrorScope(t *testing.T) {
 				},
 				On: []*ast.On{
 					{
-						Type: "SomethingElse",
+						Type: types.NewUnresolvedInterface("SomethingElse"),
 						Statements: []ast.Node{
 							&ast.Call{
 								FunctionName: "foo",

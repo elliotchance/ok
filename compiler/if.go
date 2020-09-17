@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -13,7 +14,7 @@ func compileIf(compiledFunc *vm.CompiledFunc, n *ast.If, breakIns, continueIns v
 		return err
 	}
 
-	if conditionKinds[0] != "bool" {
+	if conditionKinds[0].Kind != types.KindBool {
 		return fmt.Errorf(
 			"expression in if condition must be a bool, got %s",
 			conditionKinds[0])

@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 )
 
 // File is the root structure that will be serialized into the okc file.
@@ -15,7 +16,7 @@ type File struct {
 	Funcs      map[string]*CompiledFunc
 	FuncDefs   map[string]*ast.Func
 	Tests      []*CompiledTest
-	Interfaces map[string]map[string]string
+	Interfaces map[string]map[string]*types.Type
 	Constants  map[string]*ast.Literal
 
 	// ImportedFuncs are ephemeral. They will be stripped out before saving to
@@ -26,6 +27,19 @@ type File struct {
 	// The VM will find them at runtime because the dependent package will have
 	// already been loaded because of Imports.
 	ImportedFuncs map[string]*ast.Func
+}
+
+func (f *File) ResolveType(t *types.Type) *types.Type {
+	// TODO(elliot): Remove me in the future.
+	if t.Name == "error.Error" {
+		return types.ErrorInterface
+	}
+
+	if t.Kind == types.KindUnresolvedInterface {
+		return types.NewInterface(t.Name, f.Interfaces[t.Name])
+	}
+
+	return t
 }
 
 // Store will create or replace the okc file for the provided package name.

@@ -8,6 +8,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 )
 
 func TestArray(t *testing.T) {
@@ -24,7 +25,7 @@ func TestArray(t *testing.T) {
 			str: "any []",
 			expected: &ast.Array{
 				// Not "any" because it's redundant and not a runtime time.
-				Kind: "",
+				Kind: nil,
 			},
 		},
 		"one-number": {
@@ -66,7 +67,7 @@ func TestArray(t *testing.T) {
 		"numbers": {
 			str: `[]number [1, 2, 3]`,
 			expected: &ast.Array{
-				Kind: "[]number",
+				Kind: types.NumberArray,
 				Elements: []ast.Node{
 					asttest.NewLiteralNumber("1"),
 					asttest.NewLiteralNumber("2"),

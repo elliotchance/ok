@@ -4,38 +4,39 @@ import (
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestTypeOf(t *testing.T) {
 	tests := map[string]struct {
 		n        ast.Node
-		expected string
+		expected *types.Type
 	}{
 		"literal-bool": {
 			&ast.Literal{
-				Kind:  "bool",
+				Kind:  types.Bool,
 				Value: "true",
 			},
-			"bool",
+			types.Bool,
 		},
 		"func": {
 			&ast.Func{
 				Name: "foo",
 				Arguments: []*ast.Argument{
-					{Name: "bar", Type: "string"},
+					{Name: "bar", Type: types.String},
 				},
-				Returns: []string{"number"},
+				Returns: []*types.Type{types.Number},
 			},
-			"func(string) number",
+			types.TypeFromString("func(string) number"),
 		},
 		"closure": {
 			&ast.Func{},
-			"func()",
+			types.TypeFromString("func()"),
 		},
 		"interpolate": {
 			&ast.Interpolate{},
-			"string",
+			types.String,
 		},
 	}
 	for testName, tt := range tests {

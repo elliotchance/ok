@@ -8,6 +8,7 @@ import (
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -42,7 +43,7 @@ func TestCompileFile(t *testing.T) {
 						Instructions: []vm.Instruction{
 							&vm.Print{},
 						},
-						Variables: map[string]string{},
+						Variables: map[string]*types.Type{},
 					},
 				},
 			},
@@ -70,11 +71,11 @@ func TestCompileFile(t *testing.T) {
 								FunctionName: "add",
 							},
 						},
-						Variables: map[string]string{},
+						Variables: map[string]*types.Type{},
 						Registers: 0,
 					},
 					"add": {
-						Variables: map[string]string{},
+						Variables: map[string]*types.Type{},
 					},
 				},
 			},
@@ -84,7 +85,7 @@ func TestCompileFile(t *testing.T) {
 				Funcs: map[string]*ast.Func{
 					"add": {
 						Arguments: []*ast.Argument{
-							{Name: "x", Type: "number"},
+							{Name: "x", Type: types.Number},
 						},
 						Statements: []ast.Node{
 							&ast.Call{
@@ -110,7 +111,7 @@ func TestCompileFile(t *testing.T) {
 			&vm.File{
 				Funcs: map[string]*vm.CompiledFunc{
 					"main": {
-						Variables: map[string]string{},
+						Variables: map[string]*types.Type{},
 						Registers: 1,
 						Instructions: []vm.Instruction{
 							&vm.Assign{
@@ -125,8 +126,8 @@ func TestCompileFile(t *testing.T) {
 					},
 					"add": {
 						Arguments: []string{"x"},
-						Variables: map[string]string{
-							"x": "number",
+						Variables: map[string]*types.Type{
+							"x": types.Number,
 						},
 						Registers: 1,
 						Instructions: []vm.Instruction{
@@ -170,7 +171,7 @@ func TestCompileFile(t *testing.T) {
 						Instructions: []vm.Instruction{
 							&vm.Print{},
 						},
-						Variables: map[string]string{},
+						Variables: map[string]*types.Type{},
 					},
 				},
 				Tests: []*vm.CompiledTest{
@@ -197,7 +198,7 @@ func TestCompileFile(t *testing.T) {
 									Final: "3",
 								},
 							},
-							Variables: map[string]string{},
+							Variables: map[string]*types.Type{},
 							Registers: 3,
 						},
 						TestName: "test foo",
@@ -209,8 +210,10 @@ func TestCompileFile(t *testing.T) {
 			&parser.File{
 				Funcs: map[string]*ast.Func{
 					"Person": {
-						Name:    "Person",
-						Returns: []string{"Person"},
+						Name: "Person",
+						Returns: []*types.Type{
+							types.NewUnresolvedInterface("Person"),
+						},
 					},
 					"main": {
 						Statements: []ast.Node{
@@ -241,13 +244,13 @@ func TestCompileFile(t *testing.T) {
 								Register:     "1",
 							},
 						},
-						Variables: map[string]string{
-							"p": "Person",
+						Variables: map[string]*types.Type{
+							"p": types.NewUnresolvedInterface("Person"),
 						},
 						Registers: 1,
 					},
 					"Person": {
-						Variables: map[string]string{},
+						Variables: map[string]*types.Type{},
 						Instructions: []vm.Instruction{
 							// return instance
 							&vm.Return{

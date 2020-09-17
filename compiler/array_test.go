@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -24,7 +25,7 @@ func TestArray(t *testing.T) {
 		},
 		"number-empty": {
 			node: &ast.Array{
-				Kind: "[]number",
+				Kind: types.NumberArray,
 			},
 			expected: []vm.Instruction{
 				// alloc
@@ -35,7 +36,7 @@ func TestArray(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 			},
 		},
@@ -56,7 +57,7 @@ func TestArray(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 
 				// set 0
@@ -127,7 +128,7 @@ func TestArray(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   types.NumberArray,
 				},
 
 				// set 0

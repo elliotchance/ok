@@ -2,15 +2,17 @@ package vm
 
 import (
 	"fmt"
+
+	"github.com/elliotchance/ok/types"
 )
 
 type CompiledFunc struct {
 	Arguments    []string
 	Instructions []Instruction
 	Registers    int
-	Variables    map[string]string // name: type
+	Variables    map[string]*types.Type // name: type
 	Finally      [][]Instruction
-	Interfaces   map[string]map[string]string
+	Interfaces   map[string]map[string]*types.Type
 }
 
 type FinallyBlock struct {
@@ -28,7 +30,7 @@ func (c *CompiledFunc) Append(instruction Instruction) {
 	c.Instructions = append(c.Instructions, instruction)
 }
 
-func (c *CompiledFunc) NewVariable(variableName string, kind string) {
+func (c *CompiledFunc) NewVariable(variableName string, kind *types.Type) {
 	// TODO(elliot): Check already registered variables.
 	c.Variables[variableName] = kind
 }

@@ -5,6 +5,7 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -12,12 +13,12 @@ func compileArray(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Array,
 	file *vm.File,
-) (vm.Register, string, error) {
-	if len(n.Elements) == 0 && n.Kind == "" {
+) (vm.Register, *types.Type, error) {
+	if len(n.Elements) == 0 && n.Kind == nil {
 		err := fmt.Errorf("%s empty array needs to specify a type",
 			n.Position())
 
-		return "", "", err
+		return "", nil, err
 	}
 
 	sizeRegister := compiledFunc.NextRegister()
@@ -43,8 +44,8 @@ func compileArray(
 
 		// TODO(elliot): Check all elements are the same kind.
 		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, file)
-		if arrayAlloc.Kind == "" {
-			arrayAlloc.Kind = "[]" + valueKind[0]
+		if arrayAlloc.Kind == nil {
+			arrayAlloc.Kind = valueKind[0].ToArray()
 		}
 
 		compiledFunc.Append(&vm.ArraySet{

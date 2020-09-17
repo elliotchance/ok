@@ -1,8 +1,12 @@
 package ast
 
-import "fmt"
+import (
+	"fmt"
 
-func TypeOf(node Node) (string, error) {
+	"github.com/elliotchance/ok/types"
+)
+
+func TypeOf(node Node) (*types.Type, error) {
 	switch n := node.(type) {
 	case *Literal:
 		return n.Kind, nil
@@ -12,8 +16,8 @@ func TypeOf(node Node) (string, error) {
 
 	case *Interpolate:
 		// The result of an interpolation is always a string.
-		return "string", nil
+		return types.String, nil
 	}
 
-	return "", fmt.Errorf("cannot resolve type for %v (%T)", node, node)
+	return nil, fmt.Errorf("cannot resolve type for %v (%T)", node, node)
 }
