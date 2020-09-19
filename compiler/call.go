@@ -2,10 +2,8 @@ package compiler
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
@@ -48,107 +46,46 @@ func compileCall(
 		argResults = append(argResults, argResult...)
 	}
 
-	if fn, ok := builtinFunctions[call.FunctionName()]; ok {
-		ins, result, returnType, err := fn(compiledFunc, argResults)
-		if err != nil {
-			return nil, nil, err
+	if name, ok := call.Expr.(*ast.Identifier); ok {
+		if fn, ok := builtinFunctions[name.Name]; ok {
+			ins, result, returnType, err := fn(compiledFunc, argResults)
+			if err != nil {
+				return nil, nil, err
+			}
+
+			compiledFunc.Append(ins)
+
+			return []vm.Register{result}, []*types.Type{returnType}, nil
 		}
-
-		compiledFunc.Append(ins)
-
-		return []vm.Register{result}, []*types.Type{returnType}, nil
 	}
 
-	toCall, err := findFunc(compiledFunc, call, file)
+	fnResult, fnType, err := compileExpr(compiledFunc, call.Expr, file)
 	if err != nil {
 		return nil, nil, err
 	}
 
+	// TODO(elliot): IMPORTANT: Check argument types are valid.
+	if len(fnType) != 1 || fnType[0].Kind != types.KindFunc {
+		// TODO(elliot): Make this error message cleaner and more helpful.
+		return nil, nil, fmt.Errorf("%s cannot call %s",
+			call.Expr.Position(), fnType)
+	}
+
 	// Prepare enough return registers.
 	var returnRegisters []vm.Register
-	for range toCall.Returns {
+	for range fnType[0].Returns {
 		returnRegisters = append(returnRegisters, compiledFunc.NextRegister())
 	}
 
 	ins := &vm.Call{
-		FunctionName: call.FunctionName(),
+		FunctionName: fmt.Sprintf("*%s", string(fnResult[0])),
 		Arguments:    argResults,
 		Results:      returnRegisters,
 	}
 
 	compiledFunc.Append(ins)
 
-	return returnRegisters, toCall.Returns, nil
-}
-
-func findFunc(
-	compiledFunc *vm.CompiledFunc,
-	call *ast.Call,
-	file *vm.File,
-) (*ast.Func, error) {
-	// Before we look for the function by name, we should first ensure that it's
-	// not a variable being called as a function.
-	//
-	// TODO(elliot): Don't let a variable shadow a function of the same name.
-	//
-	// TODO(elliot): Check variable is indeed a function and the arguments and
-	//  return values are legal.
-	if ty, ok := compiledFunc.Variables[call.FunctionName()]; ok {
-		toCall := ast.NewFuncFromPrototype(ty)
-
-		// TODO(elliot): This is a pretty nasty hack for now. This will tell the
-		//  VM at runtime to resolve this variable to the real function name.
-		call.Expr = &ast.Identifier{Name: "*" + call.FunctionName()}
-
-		return toCall, nil
-	}
-
-	toCall := file.FuncDefs[call.FunctionName()]
-	if toCall != nil {
-		return toCall, nil
-	}
-
-	toCall = file.ImportedFuncs[call.FunctionName()]
-	if toCall != nil {
-		return toCall, nil
-	}
-
-	// Is it a method being called on a variable?
-	parts := strings.Split(call.FunctionName(), ".")
-	if len(parts) != 2 {
-		return nil, fmt.Errorf("%s no such function: %s",
-			call.Position(), call.FunctionName())
-	}
-
-	ty, ok := compiledFunc.Variables[parts[0]]
-	if !ok {
-		return nil, fmt.Errorf("%s no such function %s on variable %s",
-			call.Position(), call.FunctionName(), parts[0])
-	}
-
-	methodType, ok := file.Interfaces[ty.Name][parts[1]]
-	if !ok {
-		return nil, fmt.Errorf("%s no such function %s on %s",
-			call.Position(), parts[1], ty)
-	}
-
-	keyRegister := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.Assign{
-		VariableName: keyRegister,
-		Value:        asttest.NewLiteralString(parts[1]),
-	})
-
-	callRegister := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.MapGet{
-		Map:    vm.Register(parts[0]),
-		Key:    keyRegister,
-		Result: callRegister,
-	})
-
-	toCall = ast.NewFuncFromPrototype(methodType)
-	call.Expr = &ast.Identifier{Name: "*" + string(callRegister)}
-
-	return toCall, nil
+	return returnRegisters, fnType[0].Returns, nil
 }
 
 func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {

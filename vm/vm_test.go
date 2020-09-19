@@ -27,7 +27,7 @@ func add(a, b number) number {
 }
 `, "a.ok")
 		require.Nil(t, p.Errors())
-		f, err := compiler.CompileFile(p.File, nil, nil)
+		f, err := compiler.CompileFile(p.File, nil, nil, nil)
 		require.NoError(t, err)
 
 		m := vm.NewVM(f.Funcs, f.Tests, f.Interfaces, "pkg")
@@ -49,7 +49,7 @@ func main() {
 }
 `, "a.ok")
 		require.Nil(t, p.Errors())
-		f, err := compiler.CompileFile(p.File, nil, nil)
+		f, err := compiler.CompileFile(p.File, nil, nil, nil)
 		require.NoError(t, err)
 
 		m := vm.NewVM(f.Funcs, f.Tests, f.Interfaces, "pkg")

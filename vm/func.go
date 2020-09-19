@@ -13,6 +13,7 @@ type CompiledFunc struct {
 	Variables    map[string]*types.Type // name: type
 	Finally      [][]Instruction
 	Interfaces   map[string]map[string]*types.Type
+	Type         *types.Type
 }
 
 type FinallyBlock struct {

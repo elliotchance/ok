@@ -554,42 +554,103 @@ func init() {
 				"Kind": &CompiledFunc{
 					Arguments: []string{"value"},
 					Instructions: []Instruction{
-						&Call{"Type", Registers{"value"}, Registers{"2"}},
-						&Assign{"type", nil, "2"},
-						&Assign{"3", &ast.Literal{&types.Type{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 2,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Type", nil, nil, ""}, ""},
+						&Call{"*2", Registers{"value"}, Registers{"3"}},
+						&Assign{"type", nil, "3"},
+						&Assign{"4", &ast.Literal{&types.Type{
 							Kind: 7,
 						}, "[]", nil, nil, "lib/reflect/kind.ok:7:30"}, ""},
-						&Call{"hasPrefix", Registers{"type", "3"}, Registers{"4"}},
-						&JumpUnless{"4", 7},
 						&Assign{"5", &ast.Literal{&types.Type{
-							Kind: 7,
-						}, "array", nil, nil, "lib/reflect/kind.ok:8:20"}, ""},
-						&Return{Registers{"5"}},
-						&Jump{20},
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						}, "hasPrefix", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"type", "4"}, Registers{"6"}},
+						&JumpUnless{"6", 9},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 7,
-						}, "{}", nil, nil, "lib/reflect/kind.ok:11:31"}, ""},
-						&Interpolate{"6", Registers{"7"}},
-						&Call{"hasPrefix", Registers{"type", "6"}, Registers{"8"}},
-						&JumpUnless{"8", 14},
+						}, "array", nil, nil, "lib/reflect/kind.ok:8:20"}, ""},
+						&Return{Registers{"7"}},
+						&Jump{24},
 						&Assign{"9", &ast.Literal{&types.Type{
 							Kind: 7,
-						}, "map", nil, nil, "lib/reflect/kind.ok:12:20"}, ""},
-						&Return{Registers{"9"}},
-						&Jump{20},
+						}, "{}", nil, nil, "lib/reflect/kind.ok:11:31"}, ""},
+						&Interpolate{"8", Registers{"9"}},
 						&Assign{"10", &ast.Literal{&types.Type{
-							Kind: 7,
-						}, "func(", nil, nil, "lib/reflect/kind.ok:15:30"}, ""},
-						&Call{"hasPrefix", Registers{"type", "10"}, Registers{"11"}},
-						&JumpUnless{"11", 20},
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						}, "hasPrefix", nil, nil, ""}, ""},
+						&Call{"*10", Registers{"type", "8"}, Registers{"11"}},
+						&JumpUnless{"11", 17},
 						&Assign{"12", &ast.Literal{&types.Type{
 							Kind: 7,
-						}, "func", nil, nil, "lib/reflect/kind.ok:16:20"}, ""},
+						}, "map", nil, nil, "lib/reflect/kind.ok:12:20"}, ""},
 						&Return{Registers{"12"}},
-						&Jump{20},
+						&Jump{24},
+						&Assign{"13", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "func(", nil, nil, "lib/reflect/kind.ok:15:30"}, ""},
+						&Assign{"14", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						}, "hasPrefix", nil, nil, ""}, ""},
+						&Call{"*14", Registers{"type", "13"}, Registers{"15"}},
+						&JumpUnless{"15", 24},
+						&Assign{"16", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "func", nil, nil, "lib/reflect/kind.ok:16:20"}, ""},
+						&Return{Registers{"16"}},
+						&Jump{24},
 						&Return{Registers{"type"}},
 					},
-					Registers: 12,
+					Registers: 16,
 					Variables: map[string]*types.Type{
 						"type": &types.Type{
 							Kind: 7,
@@ -874,14 +935,30 @@ func init() {
 				"Contains": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
 					Instructions: []Instruction{
-						&Call{"Index", Registers{"s", "substr"}, Registers{"3"}},
-						&Assign{"4", &ast.Literal{&types.Type{
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "Index", nil, nil, ""}, ""},
+						&Call{"*3", Registers{"s", "substr"}, Registers{"4"}},
+						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/contains.ok:3:32"}, ""},
-						&NotEqualNumber{"3", "4", "5"},
-						&Return{Registers{"5"}},
+						&NotEqualNumber{"4", "5", "6"},
+						&Return{Registers{"6"}},
 					},
-					Registers: 5,
+					Registers: 6,
 					Variables: map[string]*types.Type{
 						"s": &types.Type{
 							Kind: 7,
@@ -1015,10 +1092,29 @@ func init() {
 						&Assign{"3", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:3:34"}, ""},
-						&Call{"IndexAfter", Registers{"s", "substr", "3"}, Registers{"4"}},
-						&Return{Registers{"4"}},
+						&Assign{"4", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "IndexAfter", nil, nil, ""}, ""},
+						&Call{"*4", Registers{"s", "substr", "3"}, Registers{"5"}},
+						&Return{Registers{"5"}},
 					},
-					Registers: 4,
+					Registers: 5,
 					Variables: map[string]*types.Type{
 						"s": &types.Type{
 							Kind: 7,
@@ -1035,57 +1131,73 @@ func init() {
 						&Assign{"4", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:18:26"}, ""},
-						&Call{"max", Registers{"offset", "4"}, Registers{"5"}},
-						&Assign{"offset", nil, "5"},
-						&Assign{"6", &ast.Literal{&types.Type{
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "max", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"offset", "4"}, Registers{"6"}},
+						&Assign{"offset", nil, "6"},
+						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, "lib/strings/index.ok:20:22"}, ""},
-						&Add{"offset", "6", "7"},
-						&Assign{"i", nil, "7"},
-						&Len{"s", "8"},
-						&Len{"substr", "9"},
-						&Subtract{"8", "9", "10"},
-						&LessThanEqualNumber{"i", "10", "11"},
-						&JumpUnless{"11", 33},
-						&Assign{"12", &ast.Literal{&types.Type{
+						&Add{"offset", "7", "8"},
+						&Assign{"i", nil, "8"},
+						&Len{"s", "9"},
+						&Len{"substr", "10"},
+						&Subtract{"9", "10", "11"},
+						&LessThanEqualNumber{"i", "11", "12"},
+						&JumpUnless{"12", 34},
+						&Assign{"13", &ast.Literal{&types.Type{
 							Kind: 3,
 						}, "true", nil, nil, "lib/strings/index.ok:21:17"}, ""},
-						&Assign{"found", nil, "12"},
-						&Assign{"13", &ast.Literal{&types.Type{
+						&Assign{"found", nil, "13"},
+						&Assign{"14", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "0", nil, nil, "lib/strings/index.ok:23:17"}, ""},
-						&Assign{"j", nil, "13"},
-						&Len{"substr", "14"},
-						&LessThanNumber{"j", "14", "15"},
-						&JumpUnless{"15", 28},
-						&Add{"i", "j", "16"},
-						&StringIndex{"s", "16", "17"},
-						&StringIndex{"substr", "j", "18"},
-						&NotEqual{"17", "18", "19"},
-						&JumpUnless{"19", 25},
-						&Assign{"20", &ast.Literal{&types.Type{
+						&Assign{"j", nil, "14"},
+						&Len{"substr", "15"},
+						&LessThanNumber{"j", "15", "16"},
+						&JumpUnless{"16", 29},
+						&Add{"i", "j", "17"},
+						&StringIndex{"s", "17", "18"},
+						&StringIndex{"substr", "j", "19"},
+						&NotEqual{"18", "19", "20"},
+						&JumpUnless{"20", 26},
+						&Assign{"21", &ast.Literal{&types.Type{
 							Kind: 3,
 						}, "false", nil, nil, "lib/strings/index.ok:25:25"}, ""},
-						&Assign{"found", nil, "20"},
-						&Jump{28},
-						&Assign{"21", &ast.Literal{&types.Type{
-							Kind: 6,
-						}, "1", nil, nil, ""}, ""},
-						&Add{"j", "21", "j"},
-						&Jump{15},
-						&JumpUnless{"found", 30},
-						&Return{Registers{"i"}},
+						&Assign{"found", nil, "21"},
+						&Jump{29},
 						&Assign{"22", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, ""}, ""},
-						&Add{"i", "22", "i"},
-						&Jump{8},
+						&Add{"j", "22", "j"},
+						&Jump{16},
+						&JumpUnless{"found", 31},
+						&Return{Registers{"i"}},
 						&Assign{"23", &ast.Literal{&types.Type{
 							Kind: 6,
+						}, "1", nil, nil, ""}, ""},
+						&Add{"i", "23", "i"},
+						&Jump{9},
+						&Assign{"24", &ast.Literal{&types.Type{
+							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:35:12"}, ""},
-						&Return{Registers{"23"}},
+						&Return{Registers{"24"}},
 					},
-					Registers: 23,
+					Registers: 24,
 					Variables: map[string]*types.Type{
 						"found": &types.Type{
 							Kind: 3,
@@ -1156,26 +1268,68 @@ func init() {
 				"LastIndex": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
 					Instructions: []Instruction{
-						&Call{"Reverse", Registers{"s"}, Registers{"3"}},
-						&Call{"Reverse", Registers{"substr"}, Registers{"4"}},
-						&Call{"Index", Registers{"3", "4"}, Registers{"5"}},
-						&Assign{"index", nil, "5"},
-						&Assign{"6", &ast.Literal{&types.Type{
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*3", Registers{"s"}, Registers{"4"}},
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"substr"}, Registers{"6"}},
+						&Assign{"7", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "Index", nil, nil, ""}, ""},
+						&Call{"*7", Registers{"4", "6"}, Registers{"8"}},
+						&Assign{"index", nil, "8"},
+						&Assign{"9", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:59:17"}, ""},
-						&EqualNumber{"index", "6", "7"},
-						&JumpUnless{"7", 8},
-						&Assign{"8", &ast.Literal{&types.Type{
+						&EqualNumber{"index", "9", "10"},
+						&JumpUnless{"10", 11},
+						&Assign{"11", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:60:16"}, ""},
-						&Return{Registers{"8"}},
-						&Len{"s", "9"},
-						&Len{"substr", "10"},
-						&Add{"index", "10", "11"},
-						&Subtract{"9", "11", "12"},
-						&Return{Registers{"12"}},
+						&Return{Registers{"11"}},
+						&Len{"s", "12"},
+						&Len{"substr", "13"},
+						&Add{"index", "13", "14"},
+						&Subtract{"12", "14", "15"},
+						&Return{Registers{"15"}},
 					},
-					Registers: 12,
+					Registers: 15,
 					Variables: map[string]*types.Type{
 						"index": &types.Type{
 							Kind: 6,
@@ -1194,33 +1348,94 @@ func init() {
 					Instructions: []Instruction{
 						&Len{"s", "4"},
 						&Len{"s", "5"},
-						&Call{"min", Registers{"offset", "5"}, Registers{"6"}},
-						&Assign{"7", &ast.Literal{&types.Type{
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "min", nil, nil, ""}, ""},
+						&Call{"*6", Registers{"offset", "5"}, Registers{"7"}},
+						&Assign{"8", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, "lib/strings/index.ok:79:45"}, ""},
-						&Add{"6", "7", "8"},
-						&Subtract{"4", "8", "9"},
-						&Assign{"offset", nil, "9"},
-						&Call{"Reverse", Registers{"s"}, Registers{"10"}},
-						&Call{"Reverse", Registers{"substr"}, Registers{"11"}},
-						&Call{"IndexAfter", Registers{"10", "11", "offset"}, Registers{"12"}},
-						&Assign{"index", nil, "12"},
+						&Add{"7", "8", "9"},
+						&Subtract{"4", "9", "10"},
+						&Assign{"offset", nil, "10"},
+						&Assign{"11", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*11", Registers{"s"}, Registers{"12"}},
 						&Assign{"13", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*13", Registers{"substr"}, Registers{"14"}},
+						&Assign{"15", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "IndexAfter", nil, nil, ""}, ""},
+						&Call{"*15", Registers{"12", "14", "offset"}, Registers{"16"}},
+						&Assign{"index", nil, "16"},
+						&Assign{"17", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:82:17"}, ""},
-						&EqualNumber{"index", "13", "14"},
-						&JumpUnless{"14", 15},
-						&Assign{"15", &ast.Literal{&types.Type{
+						&EqualNumber{"index", "17", "18"},
+						&JumpUnless{"18", 19},
+						&Assign{"19", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/index.ok:83:16"}, ""},
-						&Return{Registers{"15"}},
-						&Len{"s", "16"},
-						&Len{"substr", "17"},
-						&Add{"index", "17", "18"},
-						&Subtract{"16", "18", "19"},
 						&Return{Registers{"19"}},
+						&Len{"s", "20"},
+						&Len{"substr", "21"},
+						&Add{"index", "21", "22"},
+						&Subtract{"20", "22", "23"},
+						&Return{Registers{"23"}},
 					},
-					Registers: 19,
+					Registers: 23,
 					Variables: map[string]*types.Type{
 						"index": &types.Type{
 							Kind: 6,
@@ -1251,11 +1466,27 @@ func init() {
 						&Return{Registers{"s"}},
 						&Len{"s", "9"},
 						&Subtract{"toLen", "9", "10"},
-						&Call{"createPad", Registers{"pad", "10"}, Registers{"11"}},
-						&Concat{"11", "s", "12"},
-						&Return{Registers{"12"}},
+						&Assign{"11", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "createPad", nil, nil, ""}, ""},
+						&Call{"*11", Registers{"pad", "10"}, Registers{"12"}},
+						&Concat{"12", "s", "13"},
+						&Return{Registers{"13"}},
 					},
-					Registers: 12,
+					Registers: 13,
 					Variables: map[string]*types.Type{
 						"pad": &types.Type{
 							Kind: 7,
@@ -1283,11 +1514,27 @@ func init() {
 						&Return{Registers{"s"}},
 						&Len{"s", "9"},
 						&Subtract{"toLen", "9", "10"},
-						&Call{"createPad", Registers{"pad", "10"}, Registers{"11"}},
-						&Concat{"s", "11", "12"},
-						&Return{Registers{"12"}},
+						&Assign{"11", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "createPad", nil, nil, ""}, ""},
+						&Call{"*11", Registers{"pad", "10"}, Registers{"12"}},
+						&Concat{"s", "12", "13"},
+						&Return{Registers{"13"}},
 					},
-					Registers: 12,
+					Registers: 13,
 					Variables: map[string]*types.Type{
 						"pad": &types.Type{
 							Kind: 7,
@@ -1342,11 +1589,49 @@ func init() {
 				"ReplaceAll": &CompiledFunc{
 					Arguments: []string{"s", "find", "replace"},
 					Instructions: []Instruction{
-						&Call{"Split", Registers{"s", "find"}, Registers{"4"}},
-						&Call{"Join", Registers{"4", "replace"}, Registers{"5"}},
-						&Return{Registers{"5"}},
+						&Assign{"4", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						}, "Split", nil, nil, ""}, ""},
+						&Call{"*4", Registers{"s", "find"}, Registers{"5"}},
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Kind: 7,
+									},
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Join", nil, nil, ""}, ""},
+						&Call{"*6", Registers{"5", "replace"}, Registers{"7"}},
+						&Return{Registers{"7"}},
 					},
-					Registers: 5,
+					Registers: 7,
 					Variables: map[string]*types.Type{
 						"find": &types.Type{
 							Kind: 7,
@@ -1448,7 +1733,7 @@ func init() {
 						}, "1", nil, nil, ""}, ""},
 						&Add{"i", "15", "i"},
 						&Jump{8},
-						&Jump{58},
+						&Jump{59},
 						&Assign{"16", &ast.Literal{&types.Type{
 							Kind: 7,
 						}, "", nil, nil, "lib/strings/split.ok:17:19"}, ""},
@@ -1459,68 +1744,87 @@ func init() {
 						&Assign{"i", nil, "17"},
 						&Len{"s", "18"},
 						&LessThanNumber{"i", "18", "19"},
-						&JumpUnless{"19", 53},
+						&JumpUnless{"19", 54},
 						&Assign{"20", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, "lib/strings/split.ok:19:45"}, ""},
 						&Subtract{"i", "20", "21"},
-						&Call{"IndexAfter", Registers{"s", "delimiter", "21"}, Registers{"22"}},
-						&Subtract{"22", "i", "23"},
-						&Assign{"24", &ast.Literal{&types.Type{
+						&Assign{"22", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "IndexAfter", nil, nil, ""}, ""},
+						&Call{"*22", Registers{"s", "delimiter", "21"}, Registers{"23"}},
+						&Subtract{"23", "i", "24"},
+						&Assign{"25", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "0", nil, nil, "lib/strings/split.ok:19:55"}, ""},
-						&EqualNumber{"23", "24", "25"},
-						&JumpUnless{"25", 47},
-						&Assign{"26", &ast.Literal{&types.Type{
+						&EqualNumber{"24", "25", "26"},
+						&JumpUnless{"26", 48},
+						&Assign{"27", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, ""}, ""},
-						&ArrayAlloc{"26", "27", &types.Type{
+						&ArrayAlloc{"27", "28", &types.Type{
 							Kind: 8,
 							Element: &types.Type{
 								Kind: 7,
 							},
 						}},
-						&Assign{"28", &ast.Literal{&types.Type{
+						&Assign{"29", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "0", nil, nil, ""}, ""},
-						&ArraySet{"27", "28", "element"},
-						&Append{"elements", "27", "elements"},
-						&Assign{"29", &ast.Literal{&types.Type{
+						&ArraySet{"28", "29", "element"},
+						&Append{"elements", "28", "elements"},
+						&Assign{"30", &ast.Literal{&types.Type{
 							Kind: 7,
 						}, "", nil, nil, "lib/strings/split.ok:21:27"}, ""},
-						&Assign{"element", nil, "29"},
-						&Len{"delimiter", "30"},
-						&Assign{"31", &ast.Literal{&types.Type{
+						&Assign{"element", nil, "30"},
+						&Len{"delimiter", "31"},
+						&Assign{"32", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, "lib/strings/split.ok:22:39"}, ""},
-						&Subtract{"30", "31", "32"},
-						&Add{"i", "32", "i"},
-						&Jump{50},
-						&StringIndex{"s", "i", "33"},
-						&CastString{"33", "34"},
-						&Concat{"element", "34", "element"},
-						&Assign{"35", &ast.Literal{&types.Type{
-							Kind: 6,
-						}, "1", nil, nil, ""}, ""},
-						&Add{"i", "35", "i"},
-						&Jump{26},
+						&Subtract{"31", "32", "33"},
+						&Add{"i", "33", "i"},
+						&Jump{51},
+						&StringIndex{"s", "i", "34"},
+						&CastString{"34", "35"},
+						&Concat{"element", "35", "element"},
 						&Assign{"36", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, ""}, ""},
-						&ArrayAlloc{"36", "37", &types.Type{
+						&Add{"i", "36", "i"},
+						&Jump{26},
+						&Assign{"37", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, ""}, ""},
+						&ArrayAlloc{"37", "38", &types.Type{
 							Kind: 8,
 							Element: &types.Type{
 								Kind: 7,
 							},
 						}},
-						&Assign{"38", &ast.Literal{&types.Type{
+						&Assign{"39", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "0", nil, nil, ""}, ""},
-						&ArraySet{"37", "38", "element"},
-						&Append{"elements", "37", "elements"},
+						&ArraySet{"38", "39", "element"},
+						&Append{"elements", "38", "elements"},
 						&Return{Registers{"elements"}},
 					},
-					Registers: 38,
+					Registers: 39,
 					Variables: map[string]*types.Type{
 						"delimiter": &types.Type{
 							Kind: 7,
@@ -1698,11 +2002,43 @@ func init() {
 				"Trim": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
 					Instructions: []Instruction{
-						&Call{"TrimLeft", Registers{"s", "cutset"}, Registers{"3"}},
-						&Call{"TrimRight", Registers{"3", "cutset"}, Registers{"4"}},
-						&Return{Registers{"4"}},
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "TrimLeft", nil, nil, ""}, ""},
+						&Call{"*3", Registers{"s", "cutset"}, Registers{"4"}},
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "TrimRight", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"4", "cutset"}, Registers{"6"}},
+						&Return{Registers{"6"}},
 					},
-					Registers: 4,
+					Registers: 6,
 					Variables: map[string]*types.Type{
 						"cutset": &types.Type{
 							Kind: 7,
@@ -1722,25 +2058,57 @@ func init() {
 						&Assign{"offset", nil, "3"},
 						&Len{"s", "4"},
 						&LessThanNumber{"offset", "4", "5"},
-						&JumpUnless{"5", 15},
+						&JumpUnless{"5", 17},
 						&StringIndex{"s", "offset", "6"},
 						&CastString{"6", "7"},
-						&Call{"Index", Registers{"cutset", "7"}, Registers{"8"}},
-						&Assign{"9", &ast.Literal{&types.Type{
+						&Assign{"8", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						}, "Index", nil, nil, ""}, ""},
+						&Call{"*8", Registers{"cutset", "7"}, Registers{"9"}},
+						&Assign{"10", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/trim.ok:5:47"}, ""},
-						&EqualNumber{"8", "9", "10"},
-						&JumpUnless{"10", 12},
-						&Call{"substrFrom", Registers{"s", "offset"}, Registers{"11"}},
-						&Return{Registers{"11"}},
+						&EqualNumber{"9", "10", "11"},
+						&JumpUnless{"11", 14},
 						&Assign{"12", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "substrFrom", nil, nil, ""}, ""},
+						&Call{"*12", Registers{"s", "offset"}, Registers{"13"}},
+						&Return{Registers{"13"}},
+						&Assign{"14", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, ""}, ""},
-						&Add{"offset", "12", "offset"},
+						&Add{"offset", "14", "offset"},
 						&Jump{2},
 						&Return{Registers{"s"}},
 					},
-					Registers: 12,
+					Registers: 14,
 					Variables: map[string]*types.Type{
 						"cutset": &types.Type{
 							Kind: 7,
@@ -1757,14 +2125,46 @@ func init() {
 				"TrimPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
 					Instructions: []Instruction{
-						&Call{"HasPrefix", Registers{"s", "prefix"}, Registers{"3"}},
-						&JumpUnless{"3", 4},
-						&Len{"prefix", "4"},
-						&Call{"substrFrom", Registers{"s", "4"}, Registers{"5"}},
-						&Return{Registers{"5"}},
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						}, "HasPrefix", nil, nil, ""}, ""},
+						&Call{"*3", Registers{"s", "prefix"}, Registers{"4"}},
+						&JumpUnless{"4", 6},
+						&Len{"prefix", "5"},
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "substrFrom", nil, nil, ""}, ""},
+						&Call{"*6", Registers{"s", "5"}, Registers{"7"}},
+						&Return{Registers{"7"}},
 						&Return{Registers{"s"}},
 					},
-					Registers: 5,
+					Registers: 7,
 					Variables: map[string]*types.Type{
 						"prefix": &types.Type{
 							Kind: 7,
@@ -1778,12 +2178,54 @@ func init() {
 				"TrimRight": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
 					Instructions: []Instruction{
-						&Call{"Reverse", Registers{"s"}, Registers{"3"}},
-						&Call{"TrimLeft", Registers{"3", "cutset"}, Registers{"4"}},
-						&Call{"Reverse", Registers{"4"}, Registers{"5"}},
-						&Return{Registers{"5"}},
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*3", Registers{"s"}, Registers{"4"}},
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "TrimLeft", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"4", "cutset"}, Registers{"6"}},
+						&Assign{"7", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*7", Registers{"6"}, Registers{"8"}},
+						&Return{Registers{"8"}},
 					},
-					Registers: 5,
+					Registers: 8,
 					Variables: map[string]*types.Type{
 						"cutset": &types.Type{
 							Kind: 7,
@@ -1797,13 +2239,68 @@ func init() {
 				"TrimSuffix": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
 					Instructions: []Instruction{
-						&Call{"Reverse", Registers{"s"}, Registers{"3"}},
-						&Call{"Reverse", Registers{"suffix"}, Registers{"4"}},
-						&Call{"TrimPrefix", Registers{"3", "4"}, Registers{"5"}},
-						&Call{"Reverse", Registers{"5"}, Registers{"6"}},
-						&Return{Registers{"6"}},
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*3", Registers{"s"}, Registers{"4"}},
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"suffix"}, Registers{"6"}},
+						&Assign{"7", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "TrimPrefix", nil, nil, ""}, ""},
+						&Call{"*7", Registers{"4", "6"}, Registers{"8"}},
+						&Assign{"9", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Reverse", nil, nil, ""}, ""},
+						&Call{"*9", Registers{"8"}, Registers{"10"}},
+						&Return{Registers{"10"}},
 					},
-					Registers: 6,
+					Registers: 10,
 					Variables: map[string]*types.Type{
 						"s": &types.Type{
 							Kind: 7,
@@ -1819,14 +2316,49 @@ func init() {
 					Instructions: []Instruction{
 						&Len{"pad", "3"},
 						&Divide{"toLen", "3", "4"},
-						&Call{"Repeat", Registers{"pad", "4"}, Registers{"5"}},
-						&Assign{"6", &ast.Literal{&types.Type{
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Repeat", nil, nil, ""}, ""},
+						&Call{"*5", Registers{"pad", "4"}, Registers{"6"}},
+						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "0", nil, nil, "lib/strings/pad.ok:28:50"}, ""},
-						&Call{"Substr", Registers{"5", "6", "toLen"}, Registers{"7"}},
-						&Return{Registers{"7"}},
+						&Assign{"8", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "Substr", nil, nil, ""}, ""},
+						&Call{"*8", Registers{"6", "7", "toLen"}, Registers{"9"}},
+						&Return{Registers{"9"}},
 					},
-					Registers: 7,
+					Registers: 9,
 					Variables: map[string]*types.Type{
 						"pad": &types.Type{
 							Kind: 7,

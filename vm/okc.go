@@ -11,22 +11,13 @@ import (
 // File is the root structure that will be serialized into the okc file.
 type File struct {
 	// Imports lists all the packages that this package relies on.
-	Imports map[string]struct{}
+	Imports map[string]map[string]*types.Type
 
 	Funcs      map[string]*CompiledFunc
 	FuncDefs   map[string]*ast.Func
 	Tests      []*CompiledTest
 	Interfaces map[string]map[string]*types.Type
 	Constants  map[string]*ast.Literal
-
-	// ImportedFuncs are ephemeral. They will be stripped out before saving to
-	// the file and will be nil when the file is loaded. They provide a way to
-	// tell the compiler about functions imported by other packages at compile
-	// time.
-	//
-	// The VM will find them at runtime because the dependent package will have
-	// already been loaded because of Imports.
-	ImportedFuncs map[string]*ast.Func
 }
 
 func (f *File) ResolveType(t *types.Type) *types.Type {
@@ -56,7 +47,6 @@ func Store(file *File, packageName string) error {
 	}
 
 	encoder := gob.NewEncoder(f)
-	file.ImportedFuncs = nil
 	err = encoder.Encode(file)
 	if err != nil {
 		return err

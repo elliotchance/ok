@@ -83,7 +83,18 @@ func compileKey(
 
 		return resultRegister, arrayOrMapKind[0].Element, nil
 
-	case types.KindResolvedInterface, types.KindUnresolvedInterface:
+	case types.KindResolvedInterface:
+		compiledFunc.Append(&vm.MapGet{
+			Map:    arrayOrMapRegisters[0],
+			Key:    keyRegisters[0],
+			Result: resultRegister,
+		})
+
+		// TODO(elliot): Might not be an identifier?
+		return resultRegister,
+			arrayOrMapKind[0].Properties[n.Key.(*ast.Identifier).Name], nil
+
+	case types.KindUnresolvedInterface:
 		// TODO(elliot): This should not allow KindUnresolvedInterface. It only
 		//  exists here for now as a hack to permit errors.Error to work.
 

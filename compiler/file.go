@@ -13,23 +13,24 @@ func CompileFile(
 	f *parser.File,
 	interfaces map[string]map[string]*types.Type,
 	constants map[string]*ast.Literal,
+	imports map[string]map[string]*types.Type,
 ) (*vm.File, error) {
-	return compile(f.Funcs, nil, f.Tests, interfaces, constants)
+	return compile(f.Funcs, f.Tests, interfaces, constants, imports)
 }
 
 func compile(
 	funcs map[string]*ast.Func,
-	importedFuncs map[string]*ast.Func,
 	tests []*ast.Test,
 	interfaces map[string]map[string]*types.Type,
 	constants map[string]*ast.Literal,
+	imports map[string]map[string]*types.Type,
 ) (*vm.File, error) {
 	file := &vm.File{
-		Funcs:         map[string]*vm.CompiledFunc{},
-		FuncDefs:      funcs,
-		Interfaces:    interfaces,
-		Constants:     constants,
-		ImportedFuncs: importedFuncs,
+		Funcs:      map[string]*vm.CompiledFunc{},
+		FuncDefs:   funcs,
+		Interfaces: interfaces,
+		Constants:  constants,
+		Imports:    imports,
 	}
 
 	for name, fn := range funcs {
