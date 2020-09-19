@@ -62,6 +62,8 @@ func NewVM(
 ) *VM {
 	// The VM probably starts empty, make sure we prepare the fns for loading
 	// later. See LoadGob().
+	//
+	// TODO(elliot): Remove these.
 	if fns == nil {
 		fns = make(map[string]*CompiledFunc)
 	}

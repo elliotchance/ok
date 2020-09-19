@@ -1,6 +1,8 @@
 package parser
 
 import (
+	"strings"
+
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
@@ -15,8 +17,12 @@ func consumeImport(parser *Parser, offset int) (*ast.Import, int, error) {
 		return nil, originalOffset, err
 	}
 
+	packageName := parser.File.Tokens[offset-1].Value
+	parts := strings.Split(packageName, "/")
+
 	return &ast.Import{
-		PackageName: parser.File.Tokens[offset-1].Value,
-		Pos:         parser.File.Pos(originalOffset),
+		VariableName: parts[len(parts)-1],
+		PackageName:  packageName,
+		Pos:          parser.File.Pos(originalOffset),
 	}, offset, nil
 }

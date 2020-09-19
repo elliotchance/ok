@@ -86,7 +86,7 @@ func ParseString(s string, fileName string) *Parser {
 
 				goto done
 			}
-			parser.File.Imports[imp.PackageName] = imp.PackageName
+			parser.File.Imports[imp.VariableName] = imp.PackageName
 
 		case lexer.TokenEOF:
 			goto done

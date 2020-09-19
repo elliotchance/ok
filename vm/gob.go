@@ -36,6 +36,7 @@ func init() {
 	gob.Register(&LessThanEqualString{})
 	gob.Register(&LessThanNumber{})
 	gob.Register(&LessThanString{})
+	gob.Register(&LoadPackage{})
 	gob.Register(&Log{})
 	gob.Register(&MapAlloc{})
 	gob.Register(&MapGet{})

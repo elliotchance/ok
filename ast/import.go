@@ -2,8 +2,9 @@ package ast
 
 // Import is used to include packages.
 type Import struct {
-	PackageName string
-	Pos         string
+	VariableName string
+	PackageName  string
+	Pos          string
 }
 
 // Position returns the position.

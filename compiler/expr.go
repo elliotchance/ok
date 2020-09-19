@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/types"
@@ -84,6 +85,22 @@ func compileExpr(
 
 		if v, ok := compiledFunc.Variables[e.Name]; ok || e.Name[0] == '^' {
 			return []vm.Register{vm.Register(e.Name)}, []*types.Type{v}, nil
+		}
+
+		// It could be an imported package.
+		for packageName := range file.Imports {
+			if e.Name == packageName || strings.HasSuffix(packageName, "/"+e.Name) {
+				imp := file.Imports[packageName]
+				packageRegister := compiledFunc.NextRegister()
+				compiledFunc.Append(&vm.LoadPackage{
+					Result:      packageRegister,
+					PackageName: e.Name,
+				})
+
+				return []vm.Register{packageRegister}, []*types.Type{
+					types.NewInterface(e.Name, imp),
+				}, nil
+			}
 		}
 
 		if c, ok := file.Constants[e.Name]; ok {

@@ -22,8 +22,7 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 	}
 
 	funcs := map[string]*ast.Func{}
-	imports := map[string]struct{}{}
-	importedFuncs := map[string]*ast.Func{}
+	imports := map[string]map[string]*types.Type{}
 	interfaces := map[string]map[string]*types.Type{}
 	var tests []*ast.Test
 	constants := map[string]*ast.Literal{}
@@ -39,24 +38,23 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 			return nil, errs
 		}
 
-		for pkg := range p.File.Imports {
-			imports[pkg] = struct{}{}
+		for _, pkgName := range p.File.Imports {
+			imports[pkgName] = map[string]*types.Type{}
 
 			// TODO(elliot): Check import location exists.
 
-			if p, ok := vm.Packages[pkg]; ok {
+			if p, ok := vm.Packages[pkgName]; ok {
 				for fnName, fn := range p.FuncDefs {
-					importedFuncs[pkg+"."+fnName] = fn
+					imports[pkgName][fnName] = fn.Type()
 				}
 			} else {
-				subFile, errs := Compile(rootPath, pkg, false)
+				subFile, errs := Compile(rootPath, pkgName, false)
 				if len(errs) > 0 {
 					return nil, errs
 				}
 
-				pkgVariable := path.Base(pkg)
 				for fnName, fn := range subFile.FuncDefs {
-					importedFuncs[pkgVariable+"."+fnName] = fn
+					imports[pkgName][fnName] = fn.Type()
 				}
 			}
 		}
@@ -76,15 +74,19 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 		tests = append(tests, p.File.Tests...)
 	}
 
-	okcFile, err := compile(funcs, importedFuncs, tests, interfaces, constants)
+	okcFile, err := compile(funcs, tests, interfaces, constants, imports)
 	if err != nil {
 		return nil, []error{err}
 	}
-	okcFile.Imports = imports
 
 	for _, funcDef := range okcFile.FuncDefs {
 		// We don't need to serialize this.
 		funcDef.Statements = nil
+	}
+
+	for _, fn := range okcFile.Funcs {
+		// We don't need to serialize this.
+		fn.Type = nil
 	}
 
 	err = vm.Store(okcFile, packageName)

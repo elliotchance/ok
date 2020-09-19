@@ -25,7 +25,8 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(funcName, ins.Arguments, parentScope, types.TypeFromString(funcName))
+	results, err := vm.call(funcName, ins.Arguments, parentScope,
+		types.TypeFromString(funcName))
 	if err != nil {
 		return err
 	}
