@@ -83,7 +83,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										&ast.Identifier{Name: "a"},
 									},
@@ -101,7 +101,7 @@ func TestSwitch(t *testing.T) {
 				&ast.Switch{
 					Else: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 							Arguments: []ast.Node{
 								&ast.Identifier{Name: "b"},
 							},

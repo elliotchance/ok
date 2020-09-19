@@ -379,7 +379,7 @@ func TestFor(t *testing.T) {
 					},
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 							Arguments: []ast.Node{
 								&ast.Identifier{Name: "a"},
 							},

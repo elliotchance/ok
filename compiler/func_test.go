@@ -24,7 +24,7 @@ func TestFunc(t *testing.T) {
 			fn: &ast.Func{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 			},
@@ -36,10 +36,10 @@ func TestFunc(t *testing.T) {
 			fn: &ast.Func{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralString("hello"),
 						},

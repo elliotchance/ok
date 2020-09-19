@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
@@ -18,8 +19,8 @@ func compileKey(
 	// TODO(elliot): This is hack for now, because the package name is not yet a
 	//  variable.
 	if node, ok := n.Expr.(*ast.Identifier); ok && vm.Packages[node.Name] != nil {
-		if key, ok := n.Key.(*ast.Literal); ok {
-			if c, ok := vm.Packages[node.Name].Constants[key.Value]; ok {
+		if key, ok := n.Key.(*ast.Identifier); ok {
+			if c, ok := vm.Packages[node.Name].Constants[key.Name]; ok {
 				resultRegister := compiledFunc.NextRegister()
 
 				// Copy the value in case it's modified.
@@ -43,8 +44,21 @@ func compileKey(
 		return "", nil, err
 	}
 
+	// TODO(elliot): This can be removed once the compiler can understand Key
+	//  expressions better.
+	key := n.Key
+	switch arrayOrMapKind[0].Kind {
+	case types.KindResolvedInterface, types.KindUnresolvedInterface:
+		// TODO(elliot): This should not allow KindUnresolvedInterface. It only
+		//  exists here for now as a hack to permit errors.Error to work.
+
+		if k, ok := key.(*ast.Identifier); ok {
+			key = asttest.NewLiteralString(k.Name)
+		}
+	}
+
 	// TODO(elliot): Check key is the correct type.
-	keyRegisters, _, err := compileExpr(compiledFunc, n.Key, file)
+	keyRegisters, _, err := compileExpr(compiledFunc, key, file)
 	if err != nil {
 		return "", nil, err
 	}
@@ -80,7 +94,7 @@ func compileKey(
 		})
 
 		if iface, ok := file.Interfaces[arrayOrMapKind[0].Name]; ok {
-			ty := iface[n.Key.(*ast.Literal).Value]
+			ty := iface[n.Key.(*ast.Identifier).Name]
 
 			return resultRegister, ty, nil
 		}
@@ -88,7 +102,7 @@ func compileKey(
 		parts := strings.Split(arrayOrMapKind[0].Name, ".")
 		if len(parts) == 2 {
 			if iface, ok := vm.Packages[parts[0]].Interfaces[parts[1]]; ok {
-				ty := iface[n.Key.(*ast.Literal).Value]
+				ty := iface[n.Key.(*ast.Identifier).Name]
 
 				return resultRegister, ty, nil
 			}

@@ -36,7 +36,7 @@ func TestErrorScope(t *testing.T) {
 				&ast.ErrorScope{
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 						},
 					},
 				},
@@ -57,7 +57,7 @@ func TestErrorScope(t *testing.T) {
 				&ast.ErrorScope{
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 						},
 					},
 					On: []*ast.On{
@@ -90,7 +90,7 @@ func TestErrorScope(t *testing.T) {
 				&ast.ErrorScope{
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 						},
 					},
 					On: []*ast.On{
@@ -101,7 +101,7 @@ func TestErrorScope(t *testing.T) {
 							Type: types.NewUnresolvedInterface("SomethingElse"),
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 								},
 							},
 						},
@@ -139,13 +139,13 @@ func TestErrorScope(t *testing.T) {
 				&ast.ErrorScope{
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 						},
 					},
 					Finally: &ast.Finally{
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "print",
+								Expr: &ast.Identifier{Name: "print"},
 							},
 						},
 					},

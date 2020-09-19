@@ -3,7 +3,7 @@ package ast
 // Raise will raise an error to be handled. An error must be in the form of a
 // constructor call, this is for simplicity right now.
 type Raise struct {
-	Err *Call
+	Err Node
 	Pos string
 }
 

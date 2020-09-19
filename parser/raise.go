@@ -18,7 +18,7 @@ func consumeRaise(parser *Parser, offset int) (*ast.Raise, int, error) {
 		Pos: parser.File.Pos(originalOffset),
 	}
 
-	node.Err, offset, err = consumeCall(parser, offset)
+	node.Err, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 	if err != nil {
 		return nil, offset, err
 	}

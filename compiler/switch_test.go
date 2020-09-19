@@ -46,7 +46,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("ONE"),
 									},
@@ -63,7 +63,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("TWO"),
 									},
@@ -161,7 +161,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("ONE"),
 									},
@@ -178,7 +178,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("TWO"),
 									},
@@ -188,7 +188,7 @@ func TestSwitch(t *testing.T) {
 					},
 					Else: []ast.Node{
 						&ast.Call{
-							FunctionName: "print",
+							Expr: &ast.Identifier{Name: "print"},
 							Arguments: []ast.Node{
 								asttest.NewLiteralString("NO MATCH"),
 							},
@@ -298,7 +298,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("ONE OR TWO"),
 									},
@@ -315,7 +315,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("THREE"),
 									},
@@ -464,7 +464,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("ONE OR TWO"),
 									},
@@ -477,7 +477,7 @@ func TestSwitch(t *testing.T) {
 							},
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 									Arguments: []ast.Node{
 										asttest.NewLiteralString("THREE"),
 									},

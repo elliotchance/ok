@@ -2,7 +2,6 @@ package parser
 
 import (
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 )
 
@@ -50,14 +49,8 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 
 		return &ast.Key{
 			Expr: identifier,
-
-			// Converting the identifier to a literal string means that the
-			// compiler need not even know that it is handling an object or map.
-			// The only difference is the compiler will need to check the key
-			// exists.
-			Key: asttest.NewLiteralString(key.Name),
-
-			Pos: parser.File.Pos(originalOffset),
+			Key:  key,
+			Pos:  parser.File.Pos(originalOffset),
 		}, offset, nil
 	}
 

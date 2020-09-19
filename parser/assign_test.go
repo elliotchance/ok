@@ -61,7 +61,7 @@ func TestAssign(t *testing.T) {
 				Rights: []ast.Node{
 					asttest.NewBinary(
 						&ast.Call{
-							FunctionName: "len",
+							Expr: &ast.Identifier{Name: "len"},
 							Arguments: []ast.Node{
 								&ast.Identifier{Name: "bar"},
 							},

@@ -89,13 +89,13 @@ func TestParseString(t *testing.T) {
 				Name: "main",
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralString("hello"),
 						},
 					},
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralString("world"),
 						},
@@ -167,7 +167,7 @@ func TestParseString(t *testing.T) {
 					},
 				},
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 					Arguments: []ast.Node{
 						&ast.Identifier{Name: "a"},
 					},
@@ -186,7 +186,7 @@ func TestParseString(t *testing.T) {
 					},
 				},
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 					Arguments: []ast.Node{
 						&ast.Identifier{Name: "b"},
 					},
@@ -258,8 +258,8 @@ func newFuncPrint(args ...ast.Node) *ast.Func {
 		Name: "main",
 		Statements: []ast.Node{
 			&ast.Call{
-				FunctionName: "print",
-				Arguments:    args,
+				Expr:      &ast.Identifier{Name: "print"},
+				Arguments: args,
 			},
 		},
 	}

@@ -119,14 +119,14 @@ func TestFunc(t *testing.T) {
 						&ast.ErrorScope{
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 								},
 							},
 							Finally: &ast.Finally{
 								Index: 0,
 								Statements: []ast.Node{
 									&ast.Call{
-										FunctionName: "foo",
+										Expr: &ast.Identifier{Name: "foo"},
 									},
 								},
 							},
@@ -134,14 +134,14 @@ func TestFunc(t *testing.T) {
 						&ast.ErrorScope{
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 								},
 							},
 							Finally: &ast.Finally{
 								Index: 1,
 								Statements: []ast.Node{
 									&ast.Call{
-										FunctionName: "bar",
+										Expr: &ast.Identifier{Name: "bar"},
 									},
 								},
 							},
@@ -164,14 +164,14 @@ func TestFunc(t *testing.T) {
 						&ast.ErrorScope{
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 								},
 							},
 							Finally: &ast.Finally{
 								Index: 0,
 								Statements: []ast.Node{
 									&ast.Call{
-										FunctionName: "foo",
+										Expr: &ast.Identifier{Name: "foo"},
 									},
 								},
 							},
@@ -184,14 +184,14 @@ func TestFunc(t *testing.T) {
 						&ast.ErrorScope{
 							Statements: []ast.Node{
 								&ast.Call{
-									FunctionName: "print",
+									Expr: &ast.Identifier{Name: "print"},
 								},
 							},
 							Finally: &ast.Finally{
 								Index: 0,
 								Statements: []ast.Node{
 									&ast.Call{
-										FunctionName: "bar",
+										Expr: &ast.Identifier{Name: "bar"},
 									},
 								},
 							},

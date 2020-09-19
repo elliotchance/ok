@@ -48,7 +48,7 @@ func compileCall(
 		argResults = append(argResults, argResult...)
 	}
 
-	if fn, ok := builtinFunctions[call.FunctionName]; ok {
+	if fn, ok := builtinFunctions[call.FunctionName()]; ok {
 		ins, result, returnType, err := fn(compiledFunc, argResults)
 		if err != nil {
 			return nil, nil, err
@@ -71,7 +71,7 @@ func compileCall(
 	}
 
 	ins := &vm.Call{
-		FunctionName: call.FunctionName,
+		FunctionName: call.FunctionName(),
 		Arguments:    argResults,
 		Results:      returnRegisters,
 	}
@@ -93,37 +93,37 @@ func findFunc(
 	//
 	// TODO(elliot): Check variable is indeed a function and the arguments and
 	//  return values are legal.
-	if ty, ok := compiledFunc.Variables[call.FunctionName]; ok {
+	if ty, ok := compiledFunc.Variables[call.FunctionName()]; ok {
 		toCall := ast.NewFuncFromPrototype(ty)
 
 		// TODO(elliot): This is a pretty nasty hack for now. This will tell the
 		//  VM at runtime to resolve this variable to the real function name.
-		call.FunctionName = "*" + call.FunctionName
+		call.Expr = &ast.Identifier{Name: "*" + call.FunctionName()}
 
 		return toCall, nil
 	}
 
-	toCall := file.FuncDefs[call.FunctionName]
+	toCall := file.FuncDefs[call.FunctionName()]
 	if toCall != nil {
 		return toCall, nil
 	}
 
-	toCall = file.ImportedFuncs[call.FunctionName]
+	toCall = file.ImportedFuncs[call.FunctionName()]
 	if toCall != nil {
 		return toCall, nil
 	}
 
 	// Is it a method being called on a variable?
-	parts := strings.Split(call.FunctionName, ".")
+	parts := strings.Split(call.FunctionName(), ".")
 	if len(parts) != 2 {
 		return nil, fmt.Errorf("%s no such function: %s",
-			call.Position(), call.FunctionName)
+			call.Position(), call.FunctionName())
 	}
 
 	ty, ok := compiledFunc.Variables[parts[0]]
 	if !ok {
 		return nil, fmt.Errorf("%s no such function %s on variable %s",
-			call.Position(), call.FunctionName, parts[0])
+			call.Position(), call.FunctionName(), parts[0])
 	}
 
 	methodType, ok := file.Interfaces[ty.Name][parts[1]]
@@ -146,7 +146,7 @@ func findFunc(
 	})
 
 	toCall = ast.NewFuncFromPrototype(methodType)
-	call.FunctionName = "*" + string(callRegister)
+	call.Expr = &ast.Identifier{Name: "*" + string(callRegister)}
 
 	return toCall, nil
 }

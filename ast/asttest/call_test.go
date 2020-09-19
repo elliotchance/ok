@@ -14,7 +14,7 @@ func TestNewCall(t *testing.T) {
 		asttest.NewLiteralString("bar"),
 		asttest.NewLiteralString("baz"),
 	)
-	assert.Equal(t, "foo", call.FunctionName)
+	assert.Equal(t, &ast.Identifier{Name: "foo"}, call.Expr)
 	assert.Equal(t, []ast.Node{
 		asttest.NewLiteralString("bar"),
 		asttest.NewLiteralString("baz"),
