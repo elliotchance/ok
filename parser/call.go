@@ -1,12 +1,40 @@
 package parser
 
 import (
-	"fmt"
-
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
 )
 
+func consumeTypeCast(parser *Parser, offset int) (*ast.Call, int, error) {
+	originalOffset := offset
+
+	// If we receive a type followed by a value, then we are casting a value.
+	// This is picked up as a function call rather than a unary operation,
+	// although maybe moving it to unary and refactoring array/map makes more
+	// sense?
+	var ty lexer.Token
+	var err error
+	ty, offset, err = consumeOneOf(parser.File, offset, typeTokens)
+	if err != nil {
+		return nil, originalOffset, err
+	}
+
+	var expr ast.Node
+	expr, offset, err = consumeExpr(parser, offset, 1)
+	if err != nil {
+		return nil, originalOffset, err
+	}
+
+	call := &ast.Call{
+		Expr:      &ast.Identifier{Name: ty.Value},
+		Arguments: []ast.Node{expr},
+	}
+
+	return call, offset, nil
+}
+
+// consumeCall only consumes the arguments, it is expected to be called after an
+// expression. That expression will need to be places back into the Call.Expr.
 func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 	originalOffset := offset
 	var err error
@@ -15,43 +43,9 @@ func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 		Pos: parser.File.Pos(originalOffset),
 	}
 
-	// If we receive a type followed by a value, then we are casting a value.
-	// This is picked up as a function call rather than a unary operation,
-	// although maybe moving it to unary and refactoring array/map makes more
-	// sense?
-	var ty lexer.Token
-	ty, offset, err = consumeOneOf(parser.File, offset, typeTokens)
-	if err == nil {
-		var expr ast.Node
-		expr, offset, err = consumeExpr(parser, offset, 1)
-		if err == nil {
-			call.FunctionName = ty.Value
-			call.Arguments = []ast.Node{expr}
-
-			return call, offset, nil
-		}
-	}
-
-	offset, err = consume(parser.File, offset, []string{
-		lexer.TokenIdentifier,
-		lexer.TokenDot,
-		lexer.TokenIdentifier,
-		lexer.TokenParenOpen,
-	})
+	offset, err = consume(parser.File, offset, []string{lexer.TokenParenOpen})
 	if err != nil {
-		offset, err = consume(parser.File, offset, []string{
-			lexer.TokenIdentifier,
-			lexer.TokenParenOpen,
-		})
-		if err != nil {
-			return nil, originalOffset, err
-		}
-
-		call.FunctionName = parser.File.Tokens[offset-2].Value
-	} else {
-		call.FunctionName = fmt.Sprintf("%s.%s",
-			parser.File.Tokens[offset-4].Value,
-			parser.File.Tokens[offset-2].Value)
+		return nil, originalOffset, err
 	}
 
 	// Catch zero arguments.

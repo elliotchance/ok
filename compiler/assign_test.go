@@ -71,6 +71,54 @@ func TestAssign(t *testing.T) {
 				},
 			},
 		},
+		"key-assign": {
+			nodes: []ast.Node{
+				// TODO(elliot): This will fail once the compiler is smart
+				//  enough to know foo cannot be used an object.
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "foo"},
+					},
+					Rights: []ast.Node{
+						asttest.NewLiteralNumber("1.5"),
+					},
+				},
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Key{
+							Expr: &ast.Identifier{Name: "foo"},
+							Key:  &ast.Identifier{Name: "bar"},
+						},
+					},
+					Rights: []ast.Node{
+						asttest.NewLiteralNumber("1.5"),
+					},
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.Assign{
+					VariableName: "1",
+					Value:        asttest.NewLiteralNumber("1.5"),
+				},
+				&vm.Assign{
+					VariableName: "foo",
+					Register:     "1",
+				},
+				&vm.Assign{
+					VariableName: "2",
+					Value:        asttest.NewLiteralNumber("1.5"),
+				},
+				&vm.Assign{
+					VariableName: "3",
+					Value:        asttest.NewLiteralString("bar"),
+				},
+				&vm.MapSet{
+					Map:   "foo",
+					Key:   "3",
+					Value: "2",
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),

@@ -331,14 +331,14 @@ func TestExpr(t *testing.T) {
 				lexer.TokenLessThan,
 				&ast.Binary{
 					Left: &ast.Call{
-						FunctionName: "len",
+						Expr: &ast.Identifier{Name: "len"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
 					},
 					Op: lexer.TokenMinus,
 					Right: &ast.Call{
-						FunctionName: "len",
+						Expr: &ast.Identifier{Name: "len"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "b"},
 						},
@@ -351,14 +351,14 @@ func TestExpr(t *testing.T) {
 			expected: asttest.NewBinary(
 				&ast.Binary{
 					Left: &ast.Call{
-						FunctionName: "len",
+						Expr: &ast.Identifier{Name: "len"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
 					},
 					Op: lexer.TokenMinus,
 					Right: &ast.Call{
-						FunctionName: "len",
+						Expr: &ast.Identifier{Name: "len"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "b"},
 						},
@@ -391,7 +391,7 @@ func TestExpr(t *testing.T) {
 					&ast.Identifier{Name: "n"},
 					lexer.TokenGreaterThanEqual,
 					&ast.Call{
-						FunctionName: "foo",
+						Expr: &ast.Identifier{Name: "foo"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralChar('A'),
 						},
@@ -402,7 +402,7 @@ func TestExpr(t *testing.T) {
 					&ast.Identifier{Name: "n"},
 					lexer.TokenLessThanEqual,
 					&ast.Call{
-						FunctionName: "bar",
+						Expr: &ast.Identifier{Name: "bar"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralChar('Z'),
 						},
@@ -417,7 +417,7 @@ func TestExpr(t *testing.T) {
 					&ast.Identifier{Name: "n"},
 					lexer.TokenGreaterThanEqual,
 					&ast.Call{
-						FunctionName: "number",
+						Expr: &ast.Identifier{Name: "number"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralChar('A'),
 						},
@@ -428,7 +428,7 @@ func TestExpr(t *testing.T) {
 					&ast.Identifier{Name: "n"},
 					lexer.TokenLessThanEqual,
 					&ast.Call{
-						FunctionName: "number",
+						Expr: &ast.Identifier{Name: "number"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralChar('Z'),
 						},
@@ -442,7 +442,7 @@ func TestExpr(t *testing.T) {
 				&ast.Identifier{Name: "n"},
 				lexer.TokenGreaterThanEqual,
 				&ast.Call{
-					FunctionName: "number",
+					Expr: &ast.Identifier{Name: "number"},
 					Arguments: []ast.Node{
 						asttest.NewLiteralChar('A'),
 					},
@@ -453,7 +453,7 @@ func TestExpr(t *testing.T) {
 			str: "math.Pi",
 			expected: &ast.Key{
 				Expr: &ast.Identifier{Name: "math"},
-				Key:  asttest.NewLiteralString("Pi"),
+				Key:  &ast.Identifier{Name: "Pi"},
 			},
 		},
 	} {

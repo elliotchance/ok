@@ -30,13 +30,13 @@ func TestFor(t *testing.T) {
 				Condition: asttest.NewLiteralBool(true),
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
 					},
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "b"},
 						},
@@ -53,13 +53,13 @@ func TestFor(t *testing.T) {
 			expected: &ast.For{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
 					},
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "b"},
 						},
@@ -73,7 +73,7 @@ func TestFor(t *testing.T) {
 				Statements: []ast.Node{
 					&ast.Break{},
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
@@ -86,7 +86,7 @@ func TestFor(t *testing.T) {
 			expected: &ast.For{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
@@ -117,7 +117,7 @@ func TestFor(t *testing.T) {
 				},
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},
@@ -155,7 +155,7 @@ func TestFor(t *testing.T) {
 				},
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 						Arguments: []ast.Node{
 							&ast.Identifier{Name: "a"},
 						},

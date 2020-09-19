@@ -23,7 +23,7 @@ func TestTest(t *testing.T) {
 			fn: &ast.Test{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 			},

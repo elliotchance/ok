@@ -22,7 +22,7 @@ func TestCall(t *testing.T) {
 		"print-0": {
 			nodes: []ast.Node{
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 				},
 			},
 			expected: []vm.Instruction{
@@ -32,7 +32,7 @@ func TestCall(t *testing.T) {
 		"len-1": {
 			nodes: []ast.Node{
 				&ast.Call{
-					FunctionName: "len",
+					Expr: &ast.Identifier{Name: "len"},
 					Arguments: []ast.Node{
 						asttest.NewArrayNumbers(nil),
 					},
@@ -65,7 +65,7 @@ func TestCall(t *testing.T) {
 					},
 				},
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 					Arguments: []ast.Node{
 						&ast.Identifier{Name: "foo"},
 					},
@@ -96,7 +96,7 @@ func TestCall(t *testing.T) {
 					},
 				},
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 					Arguments: []ast.Node{
 						&ast.Binary{
 							Left:  &ast.Identifier{Name: "foo"},

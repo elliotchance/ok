@@ -19,33 +19,48 @@ func TestCall(t *testing.T) {
 		"no-args": {
 			str: "foo()",
 			expected: &ast.Call{
-				FunctionName: "foo",
+				Expr: &ast.Identifier{Name: "foo"},
 			},
 		},
 		"one-arg": {
 			str: `bar("baz")`,
 			expected: &ast.Call{
-				FunctionName: "bar",
+				Expr: &ast.Identifier{Name: "bar"},
 				Arguments: []ast.Node{
 					asttest.NewLiteralString("baz"),
-				},
-			},
-		},
-		"math-abs": {
-			str: `math.abs(123)`,
-			expected: &ast.Call{
-				FunctionName: "math.abs",
-				Arguments: []ast.Node{
-					asttest.NewLiteralNumber("123"),
 				},
 			},
 		},
 		"cast-string": {
 			str: `string 'a'`,
 			expected: &ast.Call{
-				FunctionName: "string",
+				Expr: &ast.Identifier{Name: "string"},
 				Arguments: []ast.Node{
 					asttest.NewLiteralChar('a'),
+				},
+			},
+		},
+		"math-abs": {
+			str: `math.abs(123)`,
+			expected: &ast.Call{
+				Expr: &ast.Key{
+					Expr: &ast.Identifier{Name: "math"},
+					Key:  &ast.Identifier{Name: "abs"},
+				},
+				Arguments: []ast.Node{
+					asttest.NewLiteralNumber("123"),
+				},
+			},
+		},
+		"cast-string-index": {
+			str: `string foo[10]`,
+			expected: &ast.Call{
+				Expr: &ast.Identifier{Name: "string"},
+				Arguments: []ast.Node{
+					&ast.Key{
+						Expr: &ast.Identifier{Name: "foo"},
+						Key:  asttest.NewLiteralNumber("10"),
+					},
 				},
 			},
 		},
@@ -54,7 +69,7 @@ func TestCall(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
 			p := parser.ParseString(str, "a.ok")
 
-			assert.Nil(t, p.Errors())
+			assert.Empty(t, p.Errors().String())
 			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
 			}, p.File.Funcs)

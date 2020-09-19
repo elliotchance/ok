@@ -29,7 +29,8 @@ func (ins *Assign) Execute(_ *int, vm *VM) error {
 
 func (ins *Assign) String() string {
 	if ins.Value != nil {
-		return fmt.Sprintf("%s = %s", ins.VariableName, ins.Value)
+		return fmt.Sprintf("%s = %s (%s)", ins.VariableName, ins.Value,
+			ins.Value.Kind.String())
 	}
 
 	return fmt.Sprintf("%s = %s", ins.VariableName, ins.Register)

@@ -13,4 +13,7 @@ test "string()" {
 
     s5 = string false
     assert(s5 == "false")
+
+    s6 = string s2[1]
+    assert(s6 == ".")
 }

@@ -19,7 +19,7 @@ func TestRaise(t *testing.T) {
 			str: "raise Error()",
 			expected: &ast.Raise{
 				Err: &ast.Call{
-					FunctionName: "Error",
+					Expr: &ast.Identifier{Name: "Error"},
 				},
 			},
 		},
@@ -27,7 +27,7 @@ func TestRaise(t *testing.T) {
 			str: "raise Error(123)",
 			expected: &ast.Raise{
 				Err: &ast.Call{
-					FunctionName: "Error",
+					Expr: &ast.Identifier{Name: "Error"},
 					Arguments: []ast.Node{
 						asttest.NewLiteralNumber("123"),
 					},
@@ -38,7 +38,7 @@ func TestRaise(t *testing.T) {
 			str: "raise MyError(123, \"foo\")",
 			expected: &ast.Raise{
 				Err: &ast.Call{
-					FunctionName: "MyError",
+					Expr: &ast.Identifier{Name: "MyError"},
 					Arguments: []ast.Node{
 						asttest.NewLiteralNumber("123"),
 						asttest.NewLiteralString("foo"),

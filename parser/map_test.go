@@ -74,7 +74,7 @@ func TestMap(t *testing.T) {
 						Key: asttest.NewLiteralString("b"),
 						Value: asttest.NewBinary(
 							&ast.Call{
-								FunctionName: "foo",
+								Expr: &ast.Identifier{Name: "foo"},
 								Arguments: []ast.Node{
 									asttest.NewLiteralString("bar"),
 								},

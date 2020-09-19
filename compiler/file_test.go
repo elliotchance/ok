@@ -31,7 +31,7 @@ func TestCompileFile(t *testing.T) {
 					"main": {
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "print",
+								Expr: &ast.Identifier{Name: "print"},
 							},
 						},
 					},
@@ -57,7 +57,7 @@ func TestCompileFile(t *testing.T) {
 					"main": {
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "add",
+								Expr: &ast.Identifier{Name: "add"},
 							},
 						},
 					},
@@ -89,7 +89,7 @@ func TestCompileFile(t *testing.T) {
 						},
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "print",
+								Expr: &ast.Identifier{Name: "print"},
 								Arguments: []ast.Node{
 									&ast.Identifier{Name: "x"},
 								},
@@ -99,7 +99,7 @@ func TestCompileFile(t *testing.T) {
 					"main": {
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "add",
+								Expr: &ast.Identifier{Name: "add"},
 								Arguments: []ast.Node{
 									asttest.NewLiteralNumber("123"),
 								},
@@ -145,7 +145,7 @@ func TestCompileFile(t *testing.T) {
 					"foo": {
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "print",
+								Expr: &ast.Identifier{Name: "print"},
 							},
 						},
 					},
@@ -223,7 +223,7 @@ func TestCompileFile(t *testing.T) {
 								},
 								Rights: []ast.Node{
 									&ast.Call{
-										FunctionName: "Person",
+										Expr: &ast.Identifier{Name: "Person"},
 									},
 								},
 							},

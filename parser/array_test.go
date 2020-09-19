@@ -56,7 +56,7 @@ func TestArray(t *testing.T) {
 						asttest.NewLiteralNumber("2"),
 					),
 					&ast.Call{
-						FunctionName: "foo",
+						Expr: &ast.Identifier{Name: "foo"},
 						Arguments: []ast.Node{
 							asttest.NewLiteralString("bar"),
 						},

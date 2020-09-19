@@ -275,7 +275,7 @@ func TestBinary(t *testing.T) {
 		"string-divide-number": {
 			nodes: []ast.Node{
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 					Arguments: []ast.Node{
 						&ast.Binary{
 							Left: &ast.Literal{
@@ -1052,7 +1052,7 @@ func TestBinary(t *testing.T) {
 		"bool-plus-bool": {
 			nodes: []ast.Node{
 				&ast.Call{
-					FunctionName: "print",
+					Expr: &ast.Identifier{Name: "print"},
 					Arguments: []ast.Node{
 						&ast.Binary{
 							Left: &ast.Literal{

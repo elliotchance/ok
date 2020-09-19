@@ -26,7 +26,7 @@ func TestErrorScope(t *testing.T) {
 			expected: &ast.ErrorScope{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 			},
@@ -36,7 +36,7 @@ func TestErrorScope(t *testing.T) {
 			expected: &ast.ErrorScope{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 				On: []*ast.On{
@@ -51,7 +51,7 @@ func TestErrorScope(t *testing.T) {
 			expected: &ast.ErrorScope{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 				On: []*ast.On{
@@ -62,7 +62,7 @@ func TestErrorScope(t *testing.T) {
 						Type: types.NewUnresolvedInterface("SomethingElse"),
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "foo",
+								Expr: &ast.Identifier{Name: "foo"},
 							},
 						},
 					},
@@ -74,7 +74,7 @@ func TestErrorScope(t *testing.T) {
 			expected: &ast.ErrorScope{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 				On: []*ast.On{
@@ -82,7 +82,7 @@ func TestErrorScope(t *testing.T) {
 						Type: types.NewUnresolvedInterface("SomethingElse"),
 						Statements: []ast.Node{
 							&ast.Call{
-								FunctionName: "foo",
+								Expr: &ast.Identifier{Name: "foo"},
 							},
 						},
 					},
@@ -91,7 +91,7 @@ func TestErrorScope(t *testing.T) {
 					Index: 0,
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "bar",
+							Expr: &ast.Identifier{Name: "bar"},
 						},
 					},
 				},
@@ -102,14 +102,14 @@ func TestErrorScope(t *testing.T) {
 			expected: &ast.ErrorScope{
 				Statements: []ast.Node{
 					&ast.Call{
-						FunctionName: "print",
+						Expr: &ast.Identifier{Name: "print"},
 					},
 				},
 				Finally: &ast.Finally{
 					Index: 0,
 					Statements: []ast.Node{
 						&ast.Call{
-							FunctionName: "foo",
+							Expr: &ast.Identifier{Name: "foo"},
 						},
 					},
 				},

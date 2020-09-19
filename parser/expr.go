@@ -87,22 +87,36 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			continue
 		}
 
-		// Call
+		// Type cast
 		var call *ast.Call
-		call, offset, err = consumeCall(parser, offset)
+		call, offset, err = consumeTypeCast(parser, offset)
 		if err == nil {
 			parts = append(parts, call)
 			didJustConsumeLiteral = true
 			continue
 		}
 
-		// Grouping "()"
-		var group *ast.Group
-		group, offset, err = consumeGroup(parser, offset)
-		if err == nil {
-			parts = append(parts, group)
-			didJustConsumeLiteral = false
-			continue
+		// Depending on whether the last token was an operator determines if "("
+		// indicates a Call or Group.
+		if len(parts) > 0 && operatorPrecedence[parser.File.Tokens[offset-1].Kind] == 0 {
+			var call *ast.Call
+			call, offset, err = consumeCall(parser, offset)
+			if err == nil {
+				// Transform the last expression into a Call.
+				call.Expr = parts[len(parts)-1].(ast.Node)
+				parts = append(parts[:len(parts)-1], call)
+				didJustConsumeLiteral = true
+				continue
+			}
+		} else {
+			// Grouping "()"
+			var group *ast.Group
+			group, offset, err = consumeGroup(parser, offset)
+			if err == nil {
+				parts = append(parts, group)
+				didJustConsumeLiteral = false
+				continue
+			}
 		}
 
 		// Unary operator (can not be consumed directly after a literal).
@@ -158,7 +172,10 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			// Assignment
 			lexer.TokenAssign, lexer.TokenPlusAssign, lexer.TokenMinusAssign,
 			lexer.TokenTimesAssign, lexer.TokenDivideAssign,
-			lexer.TokenRemainderAssign:
+			lexer.TokenRemainderAssign,
+
+			// Access
+			lexer.TokenDot:
 
 			parts = append(parts, tok)
 			offset++
@@ -233,6 +250,8 @@ var operatorPrecedence = map[string]int{
 	lexer.TokenTimes:     6,
 	lexer.TokenDivide:    6,
 	lexer.TokenRemainder: 6,
+
+	lexer.TokenDot: 7,
 }
 
 func reduceExpr(parts []interface{}) ast.Node {
