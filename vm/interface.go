@@ -14,7 +14,7 @@ type Interface struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Interface) Execute(_ *int, vm *VM) error {
-	i := util.Interface(vm.Interfaces[vm.Get(ins.Value).Kind.Name])
+	i := util.Interface(vm.Get(ins.Value).Kind.Properties)
 	vm.Set(ins.Result, asttest.NewLiteralString(i))
 
 	return nil

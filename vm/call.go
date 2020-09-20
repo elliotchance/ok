@@ -12,6 +12,10 @@ type Call struct {
 	FunctionName string
 	Arguments    Registers
 	Results      Registers
+
+	// Type is the resolved interface when calling constructors. In any other
+	// case this should be types.Any.
+	Type *types.Type
 }
 
 // Execute implements the Instruction interface for the VM.
@@ -25,8 +29,7 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(funcName, ins.Arguments, parentScope,
-		types.TypeFromString(funcName))
+	results, err := vm.call(funcName, ins.Arguments, parentScope, ins.Type)
 	if err != nil {
 		return err
 	}

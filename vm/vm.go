@@ -48,35 +48,14 @@ type VM struct {
 
 	// FinallyBlocks are stacked with stack.
 	FinallyBlocks [][]*FinallyBlock
-
-	// Interfaces describes all the interfaces types known by the VM.
-	Interfaces map[string]map[string]*types.Type
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
-func NewVM(
-	fns map[string]*CompiledFunc,
-	tests []*CompiledTest,
-	interfaces map[string]map[string]*types.Type,
-	pkg string,
-) *VM {
-	// The VM probably starts empty, make sure we prepare the fns for loading
-	// later. See LoadGob().
-	//
-	// TODO(elliot): Remove these.
-	if fns == nil {
-		fns = make(map[string]*CompiledFunc)
-	}
-	if interfaces == nil {
-		interfaces = make(map[string]map[string]*types.Type)
-	}
-
+func NewVM(pkg string) *VM {
 	return &VM{
-		fns:        fns,
-		tests:      tests,
-		pkg:        pkg,
-		Stdout:     os.Stdout,
-		Interfaces: interfaces,
+		fns:    make(map[string]*CompiledFunc),
+		pkg:    pkg,
+		Stdout: os.Stdout,
 	}
 }
 
@@ -381,13 +360,6 @@ func (vm *VM) LoadFile(pkgVariable string, file *File) error {
 			k = pkgVariable + "." + k
 		}
 		vm.fns[k] = v
-	}
-
-	for k, v := range file.Interfaces {
-		if pkgVariable != "" {
-			k = pkgVariable + "." + k
-		}
-		vm.Interfaces[k] = v
 	}
 
 	vm.tests = file.Tests

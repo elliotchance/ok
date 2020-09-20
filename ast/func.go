@@ -37,6 +37,8 @@ type Func struct {
 	Pos string
 }
 
+// TODO(elliot): Deprecated. This shouldn't be part of the public API. Use
+//  Type() instead.
 func (f *Func) Interface() (map[string]*types.Type, error) {
 	fields := map[string]*types.Type{}
 
@@ -101,8 +103,20 @@ func (f *Func) Type() *types.Type {
 	for _, arg := range f.Arguments {
 		args = append(args, arg.Type)
 	}
-	for _, r := range f.Returns {
-		returns = append(returns, r)
+
+	// If this function is a constructor we need to transform the result to a
+	// resolved interface based on it's own type.
+	if f.IsConstructor() {
+		iface, err := f.Interface()
+		if err != nil {
+			panic(err)
+		}
+
+		returns = []*types.Type{types.NewInterface(f.Name, iface)}
+	} else {
+		for _, r := range f.Returns {
+			returns = append(returns, r)
+		}
 	}
 
 	return types.NewFunc(args, returns)

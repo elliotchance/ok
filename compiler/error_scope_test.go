@@ -62,7 +62,7 @@ func TestErrorScope(t *testing.T) {
 					},
 					On: []*ast.On{
 						{
-							Type: types.NewUnresolvedInterface("SomeError"),
+							Type: types.NewInterface("SomeError", nil),
 						},
 					},
 				},
@@ -95,10 +95,10 @@ func TestErrorScope(t *testing.T) {
 					},
 					On: []*ast.On{
 						{
-							Type: types.NewUnresolvedInterface("SomeError"),
+							Type: types.NewInterface("SomeError", nil),
 						},
 						{
-							Type: types.NewUnresolvedInterface("SomethingElse"),
+							Type: types.NewInterface("SomethingElse", nil),
 							Statements: []ast.Node{
 								&ast.Call{
 									Expr: &ast.Identifier{Name: "print"},

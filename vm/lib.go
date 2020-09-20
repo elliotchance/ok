@@ -19,13 +19,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: map[string]map[string]*types.Type{
-						"Error": map[string]*types.Type{
-							"Error": &types.Type{
-								Kind: 7,
-							},
-						},
-					},
 				},
 			},
 			FuncDefs: map[string]*ast.Func{
@@ -38,17 +31,16 @@ func init() {
 					},
 					Returns: []*types.Type{
 						&types.Type{
+							Kind: 1,
 							Name: "Error",
+							Properties: map[string]*types.Type{
+								"Error": &types.Type{
+									Kind: 7,
+								},
+							},
 						},
 					},
 					Pos: "lib/error/error.ok:2:1",
-				},
-			},
-			Interfaces: map[string]map[string]*types.Type{
-				"Error": map[string]*types.Type{
-					"Error": &types.Type{
-						Kind: 7,
-					},
 				},
 			},
 			Constants: nil,
@@ -77,7 +69,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Cbrt": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -98,7 +89,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Ceil": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -137,7 +127,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Exp": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -158,7 +147,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Floor": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -197,7 +185,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Log10": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -216,7 +203,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"LogE": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -230,7 +216,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Pow": &CompiledFunc{
 					Arguments: []string{"base", "power"},
@@ -247,7 +232,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Round": &CompiledFunc{
 					Arguments: []string{"x", "prec"},
@@ -298,7 +282,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Sqrt": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -315,7 +298,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 			},
 			FuncDefs: map[string]*ast.Func{
@@ -466,7 +448,6 @@ func init() {
 					Pos: "lib/math/powers.ok:15:1",
 				},
 			},
-			Interfaces: nil,
 			Constants: map[string]*ast.Literal{
 				"E": &ast.Literal{&types.Type{
 					Kind: 6,
@@ -518,7 +499,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Get": &CompiledFunc{
 					Arguments: []string{"obj", "prop"},
@@ -535,7 +515,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Interface": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -549,7 +528,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Kind": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -567,7 +545,9 @@ func init() {
 								},
 							},
 						}, "Type", nil, nil, ""}, ""},
-						&Call{"*2", Registers{"value"}, Registers{"3"}},
+						&Call{"*2", Registers{"value"}, Registers{"3"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"type", nil, "3"},
 						&Assign{"4", &ast.Literal{&types.Type{
 							Kind: 7,
@@ -588,7 +568,9 @@ func init() {
 								},
 							},
 						}, "hasPrefix", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"type", "4"}, Registers{"6"}},
+						&Call{"*5", Registers{"type", "4"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&JumpUnless{"6", 9},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 7,
@@ -615,7 +597,9 @@ func init() {
 								},
 							},
 						}, "hasPrefix", nil, nil, ""}, ""},
-						&Call{"*10", Registers{"type", "8"}, Registers{"11"}},
+						&Call{"*10", Registers{"type", "8"}, Registers{"11"}, &types.Type{
+							Kind: 2,
+						}},
 						&JumpUnless{"11", 17},
 						&Assign{"12", &ast.Literal{&types.Type{
 							Kind: 7,
@@ -641,7 +625,9 @@ func init() {
 								},
 							},
 						}, "hasPrefix", nil, nil, ""}, ""},
-						&Call{"*14", Registers{"type", "13"}, Registers{"15"}},
+						&Call{"*14", Registers{"type", "13"}, Registers{"15"}, &types.Type{
+							Kind: 2,
+						}},
 						&JumpUnless{"15", 24},
 						&Assign{"16", &ast.Literal{&types.Type{
 							Kind: 7,
@@ -659,7 +645,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Len": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -673,7 +658,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Properties": &CompiledFunc{
 					Arguments: []string{"obj"},
@@ -687,7 +671,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Set": &CompiledFunc{
 					Arguments: []string{"obj", "prop", "value"},
@@ -707,7 +690,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Type": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -721,7 +703,6 @@ func init() {
 							Kind: 2,
 						},
 					},
-					Interfaces: nil,
 				},
 				"hasPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -771,7 +752,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 			},
 			FuncDefs: map[string]*ast.Func{
@@ -926,8 +906,7 @@ func init() {
 					Pos: "lib/reflect/strings.ok:4:1",
 				},
 			},
-			Interfaces: nil,
-			Constants:  nil,
+			Constants: nil,
 		},
 		"strings": &File{
 			Imports: nil,
@@ -951,7 +930,9 @@ func init() {
 								},
 							},
 						}, "Index", nil, nil, ""}, ""},
-						&Call{"*3", Registers{"s", "substr"}, Registers{"4"}},
+						&Call{"*3", Registers{"s", "substr"}, Registers{"4"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/contains.ok:3:32"}, ""},
@@ -967,7 +948,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"HasPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -1017,7 +997,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"HasSuffix": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
@@ -1084,7 +1063,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Index": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -1111,7 +1089,9 @@ func init() {
 								},
 							},
 						}, "IndexAfter", nil, nil, ""}, ""},
-						&Call{"*4", Registers{"s", "substr", "3"}, Registers{"5"}},
+						&Call{"*4", Registers{"s", "substr", "3"}, Registers{"5"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"5"}},
 					},
 					Registers: 5,
@@ -1123,7 +1103,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"IndexAfter": &CompiledFunc{
 					Arguments: []string{"s", "substr", "offset"},
@@ -1147,7 +1126,9 @@ func init() {
 								},
 							},
 						}, "max", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"offset", "4"}, Registers{"6"}},
+						&Call{"*5", Registers{"offset", "4"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"offset", nil, "6"},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 6,
@@ -1218,7 +1199,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Join": &CompiledFunc{
 					Arguments: []string{"strings", "glue"},
@@ -1263,7 +1243,6 @@ func init() {
 							},
 						},
 					},
-					Interfaces: nil,
 				},
 				"LastIndex": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -1281,7 +1260,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*3", Registers{"s"}, Registers{"4"}},
+						&Call{"*3", Registers{"s"}, Registers{"4"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -1295,7 +1276,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"substr"}, Registers{"6"}},
+						&Call{"*5", Registers{"substr"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -1312,7 +1295,9 @@ func init() {
 								},
 							},
 						}, "Index", nil, nil, ""}, ""},
-						&Call{"*7", Registers{"4", "6"}, Registers{"8"}},
+						&Call{"*7", Registers{"4", "6"}, Registers{"8"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"index", nil, "8"},
 						&Assign{"9", &ast.Literal{&types.Type{
 							Kind: 6,
@@ -1341,7 +1326,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"LastIndexBefore": &CompiledFunc{
 					Arguments: []string{"s", "substr", "offset"},
@@ -1364,7 +1348,9 @@ func init() {
 								},
 							},
 						}, "min", nil, nil, ""}, ""},
-						&Call{"*6", Registers{"offset", "5"}, Registers{"7"}},
+						&Call{"*6", Registers{"offset", "5"}, Registers{"7"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"8", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "1", nil, nil, "lib/strings/index.ok:79:45"}, ""},
@@ -1384,7 +1370,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*11", Registers{"s"}, Registers{"12"}},
+						&Call{"*11", Registers{"s"}, Registers{"12"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"13", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -1398,7 +1386,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*13", Registers{"substr"}, Registers{"14"}},
+						&Call{"*13", Registers{"substr"}, Registers{"14"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"15", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -1418,7 +1408,9 @@ func init() {
 								},
 							},
 						}, "IndexAfter", nil, nil, ""}, ""},
-						&Call{"*15", Registers{"12", "14", "offset"}, Registers{"16"}},
+						&Call{"*15", Registers{"12", "14", "offset"}, Registers{"16"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"index", nil, "16"},
 						&Assign{"17", &ast.Literal{&types.Type{
 							Kind: 6,
@@ -1450,7 +1442,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"PadLeft": &CompiledFunc{
 					Arguments: []string{"s", "pad", "toLen"},
@@ -1482,7 +1473,9 @@ func init() {
 								},
 							},
 						}, "createPad", nil, nil, ""}, ""},
-						&Call{"*11", Registers{"pad", "10"}, Registers{"12"}},
+						&Call{"*11", Registers{"pad", "10"}, Registers{"12"}, &types.Type{
+							Kind: 2,
+						}},
 						&Concat{"12", "s", "13"},
 						&Return{Registers{"13"}},
 					},
@@ -1498,7 +1491,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"PadRight": &CompiledFunc{
 					Arguments: []string{"s", "pad", "toLen"},
@@ -1530,7 +1522,9 @@ func init() {
 								},
 							},
 						}, "createPad", nil, nil, ""}, ""},
-						&Call{"*11", Registers{"pad", "10"}, Registers{"12"}},
+						&Call{"*11", Registers{"pad", "10"}, Registers{"12"}, &types.Type{
+							Kind: 2,
+						}},
 						&Concat{"s", "12", "13"},
 						&Return{Registers{"13"}},
 					},
@@ -1546,7 +1540,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Repeat": &CompiledFunc{
 					Arguments: []string{"str", "times"},
@@ -1584,7 +1577,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"ReplaceAll": &CompiledFunc{
 					Arguments: []string{"s", "find", "replace"},
@@ -1608,7 +1600,9 @@ func init() {
 								},
 							},
 						}, "Split", nil, nil, ""}, ""},
-						&Call{"*4", Registers{"s", "find"}, Registers{"5"}},
+						&Call{"*4", Registers{"s", "find"}, Registers{"5"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"6", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -1628,7 +1622,9 @@ func init() {
 								},
 							},
 						}, "Join", nil, nil, ""}, ""},
-						&Call{"*6", Registers{"5", "replace"}, Registers{"7"}},
+						&Call{"*6", Registers{"5", "replace"}, Registers{"7"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"7"}},
 					},
 					Registers: 7,
@@ -1643,7 +1639,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Reverse": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -1685,7 +1680,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Split": &CompiledFunc{
 					Arguments: []string{"s", "delimiter"},
@@ -1768,7 +1762,9 @@ func init() {
 								},
 							},
 						}, "IndexAfter", nil, nil, ""}, ""},
-						&Call{"*22", Registers{"s", "delimiter", "21"}, Registers{"23"}},
+						&Call{"*22", Registers{"s", "delimiter", "21"}, Registers{"23"}, &types.Type{
+							Kind: 2,
+						}},
 						&Subtract{"23", "i", "24"},
 						&Assign{"25", &ast.Literal{&types.Type{
 							Kind: 6,
@@ -1845,7 +1841,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Substr": &CompiledFunc{
 					Arguments: []string{"s", "fromIndex", "toIndex"},
@@ -1885,7 +1880,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"ToLower": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -1941,7 +1935,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"ToUpper": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -1997,7 +1990,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"Trim": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -2018,7 +2010,9 @@ func init() {
 								},
 							},
 						}, "TrimLeft", nil, nil, ""}, ""},
-						&Call{"*3", Registers{"s", "cutset"}, Registers{"4"}},
+						&Call{"*3", Registers{"s", "cutset"}, Registers{"4"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2035,7 +2029,9 @@ func init() {
 								},
 							},
 						}, "TrimRight", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"4", "cutset"}, Registers{"6"}},
+						&Call{"*5", Registers{"4", "cutset"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"6"}},
 					},
 					Registers: 6,
@@ -2047,7 +2043,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"TrimLeft": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -2077,7 +2072,9 @@ func init() {
 								},
 							},
 						}, "Index", nil, nil, ""}, ""},
-						&Call{"*8", Registers{"cutset", "7"}, Registers{"9"}},
+						&Call{"*8", Registers{"cutset", "7"}, Registers{"9"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"10", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "-1", nil, nil, "lib/strings/trim.ok:5:47"}, ""},
@@ -2099,7 +2096,9 @@ func init() {
 								},
 							},
 						}, "substrFrom", nil, nil, ""}, ""},
-						&Call{"*12", Registers{"s", "offset"}, Registers{"13"}},
+						&Call{"*12", Registers{"s", "offset"}, Registers{"13"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"13"}},
 						&Assign{"14", &ast.Literal{&types.Type{
 							Kind: 6,
@@ -2120,7 +2119,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"TrimPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -2141,7 +2139,9 @@ func init() {
 								},
 							},
 						}, "HasPrefix", nil, nil, ""}, ""},
-						&Call{"*3", Registers{"s", "prefix"}, Registers{"4"}},
+						&Call{"*3", Registers{"s", "prefix"}, Registers{"4"}, &types.Type{
+							Kind: 2,
+						}},
 						&JumpUnless{"4", 6},
 						&Len{"prefix", "5"},
 						&Assign{"6", &ast.Literal{&types.Type{
@@ -2160,7 +2160,9 @@ func init() {
 								},
 							},
 						}, "substrFrom", nil, nil, ""}, ""},
-						&Call{"*6", Registers{"s", "5"}, Registers{"7"}},
+						&Call{"*6", Registers{"s", "5"}, Registers{"7"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"7"}},
 						&Return{Registers{"s"}},
 					},
@@ -2173,7 +2175,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"TrimRight": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -2191,7 +2192,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*3", Registers{"s"}, Registers{"4"}},
+						&Call{"*3", Registers{"s"}, Registers{"4"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2208,7 +2211,9 @@ func init() {
 								},
 							},
 						}, "TrimLeft", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"4", "cutset"}, Registers{"6"}},
+						&Call{"*5", Registers{"4", "cutset"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2222,7 +2227,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*7", Registers{"6"}, Registers{"8"}},
+						&Call{"*7", Registers{"6"}, Registers{"8"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"8"}},
 					},
 					Registers: 8,
@@ -2234,7 +2241,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"TrimSuffix": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
@@ -2252,7 +2258,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*3", Registers{"s"}, Registers{"4"}},
+						&Call{"*3", Registers{"s"}, Registers{"4"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2266,7 +2274,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"suffix"}, Registers{"6"}},
+						&Call{"*5", Registers{"suffix"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2283,7 +2293,9 @@ func init() {
 								},
 							},
 						}, "TrimPrefix", nil, nil, ""}, ""},
-						&Call{"*7", Registers{"4", "6"}, Registers{"8"}},
+						&Call{"*7", Registers{"4", "6"}, Registers{"8"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"9", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2297,7 +2309,9 @@ func init() {
 								},
 							},
 						}, "Reverse", nil, nil, ""}, ""},
-						&Call{"*9", Registers{"8"}, Registers{"10"}},
+						&Call{"*9", Registers{"8"}, Registers{"10"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"10"}},
 					},
 					Registers: 10,
@@ -2309,7 +2323,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 				"createPad": &CompiledFunc{
 					Arguments: []string{"pad", "toLen"},
@@ -2332,7 +2345,9 @@ func init() {
 								},
 							},
 						}, "Repeat", nil, nil, ""}, ""},
-						&Call{"*5", Registers{"pad", "4"}, Registers{"6"}},
+						&Call{"*5", Registers{"pad", "4"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 6,
 						}, "0", nil, nil, "lib/strings/pad.ok:28:50"}, ""},
@@ -2355,7 +2370,9 @@ func init() {
 								},
 							},
 						}, "Substr", nil, nil, ""}, ""},
-						&Call{"*8", Registers{"6", "7", "toLen"}, Registers{"9"}},
+						&Call{"*8", Registers{"6", "7", "toLen"}, Registers{"9"}, &types.Type{
+							Kind: 2,
+						}},
 						&Return{Registers{"9"}},
 					},
 					Registers: 9,
@@ -2367,7 +2384,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"max": &CompiledFunc{
 					Arguments: []string{"a", "b"},
@@ -2386,7 +2402,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"min": &CompiledFunc{
 					Arguments: []string{"a", "b"},
@@ -2405,7 +2420,6 @@ func init() {
 							Kind: 6,
 						},
 					},
-					Interfaces: nil,
 				},
 				"substrFrom": &CompiledFunc{
 					Arguments: []string{"s", "index"},
@@ -2439,7 +2453,6 @@ func init() {
 							Kind: 7,
 						},
 					},
-					Interfaces: nil,
 				},
 			},
 			FuncDefs: map[string]*ast.Func{
@@ -2901,8 +2914,7 @@ func init() {
 					Pos: "lib/strings/trim.ok:52:1",
 				},
 			},
-			Interfaces: nil,
-			Constants:  nil,
+			Constants: nil,
 		},
 	}
 }

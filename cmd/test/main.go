@@ -51,7 +51,7 @@ func (c *Command) Run(args []string) {
 		_, errs := compiler.Compile(okPath, packageName, true)
 		util.CheckErrorsWithExit(errs)
 
-		m := vm.NewVM(nil, nil, nil, "no-package")
+		m := vm.NewVM("no-package")
 		startTime := time.Now()
 		check(m.LoadPackage("", packageName))
 		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter))

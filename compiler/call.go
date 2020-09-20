@@ -77,10 +77,17 @@ func compileCall(
 		returnRegisters = append(returnRegisters, compiledFunc.NextRegister())
 	}
 
+	objType := types.Any
+	if len(fnType[0].Returns) == 1 &&
+		fnType[0].Returns[0].Kind == types.KindResolvedInterface {
+		objType = fnType[0].Returns[0]
+	}
+
 	ins := &vm.Call{
 		FunctionName: fmt.Sprintf("*%s", string(fnResult[0])),
 		Arguments:    argResults,
 		Results:      returnRegisters,
+		Type:         objType,
 	}
 
 	compiledFunc.Append(ins)

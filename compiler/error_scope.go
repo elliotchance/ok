@@ -37,7 +37,7 @@ func compileErrorScope(
 	// Each of the On clauses.
 	for _, on := range n.On {
 		compiledFunc.Append(&vm.On{
-			Type: file.ResolveType(on.Type),
+			Type: on.Type,
 		})
 
 		// Provide the err variable. The runtime value will be provided by the

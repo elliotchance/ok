@@ -39,6 +39,10 @@ func (ins *DynamicCall) Execute(_ *int, vm *VM) error {
 		FunctionName: "*" + string(ins.Variable),
 		Arguments:    args,
 		Results:      results,
+
+		// TODO(elliot): This should be the correct return type, otherwise the
+		//  reflect won't work.
+		Type: types.Any,
 	}
 
 	err := realCall.Execute(nil, vm)

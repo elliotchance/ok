@@ -33,7 +33,7 @@ func (*Command) Run(args []string) {
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath(okPath, arg)
 
-		m := vm.NewVM(nil, nil, nil, "no-package")
+		m := vm.NewVM("no-package")
 		_, errs := compiler.Compile(okPath, packageName, false)
 		util.CheckErrorsWithExit(errs)
 

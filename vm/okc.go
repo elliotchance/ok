@@ -13,24 +13,10 @@ type File struct {
 	// Imports lists all the packages that this package relies on.
 	Imports map[string]map[string]*types.Type
 
-	Funcs      map[string]*CompiledFunc
-	FuncDefs   map[string]*ast.Func
-	Tests      []*CompiledTest
-	Interfaces map[string]map[string]*types.Type
-	Constants  map[string]*ast.Literal
-}
-
-func (f *File) ResolveType(t *types.Type) *types.Type {
-	// TODO(elliot): Remove me in the future.
-	if t.Name == "error.Error" {
-		return types.ErrorInterface
-	}
-
-	if t.Kind == types.KindUnresolvedInterface {
-		return types.NewInterface(t.Name, f.Interfaces[t.Name])
-	}
-
-	return t
+	Funcs     map[string]*CompiledFunc
+	FuncDefs  map[string]*ast.Func
+	Tests     []*CompiledTest
+	Constants map[string]*ast.Literal
 }
 
 // Store will create or replace the okc file for the provided package name.

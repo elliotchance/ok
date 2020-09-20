@@ -104,18 +104,24 @@ func compileKey(
 			Result: resultRegister,
 		})
 
-		if iface, ok := file.Interfaces[arrayOrMapKind[0].Name]; ok {
-			ty := iface[n.Key.(*ast.Identifier).Name]
+		if fn, ok := file.FuncDefs[arrayOrMapKind[0].Name]; ok {
+			if !fn.IsConstructor() {
+				return "", nil, fmt.Errorf("%s %s is not an interface",
+					n.Position(), fn.Name)
+			}
 
-			return resultRegister, ty, nil
+			return resultRegister, fn.Returns[0], nil
 		}
 
 		parts := strings.Split(arrayOrMapKind[0].Name, ".")
 		if len(parts) == 2 {
-			if iface, ok := vm.Packages[parts[0]].Interfaces[parts[1]]; ok {
-				ty := iface[n.Key.(*ast.Identifier).Name]
+			if fn, ok := vm.Packages[parts[0]].FuncDefs[parts[1]]; ok {
+				if !fn.IsConstructor() {
+					return "", nil, fmt.Errorf("%s %s is not an interface",
+						n.Position(), fn.Name)
+				}
 
-				return resultRegister, ty, nil
+				return resultRegister, fn.Returns[0], nil
 			}
 		}
 
