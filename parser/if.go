@@ -9,13 +9,13 @@ func consumeIf(parser *Parser, offset int) (*ast.If, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenIf})
+	offset, err = consume(parser, offset, []string{lexer.TokenIf})
 	if err != nil {
 		return nil, offset, err
 	}
 
 	node := &ast.If{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	node.Condition, offset, err = consumeExpr(parser, offset, unlimitedTokens)
@@ -29,7 +29,7 @@ func consumeIf(parser *Parser, offset int) (*ast.If, int, error) {
 	}
 
 	// Else is optional.
-	offset, err = consume(parser.File, offset, []string{lexer.TokenElse})
+	offset, err = consume(parser, offset, []string{lexer.TokenElse})
 	if err != nil {
 		return node, offset, nil // still success
 	}

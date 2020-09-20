@@ -130,12 +130,13 @@ func TestMap(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
-			}, p.File.Funcs)
+			}, p.Funcs())
 		})
 	}
 }

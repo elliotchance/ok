@@ -1,25 +1,19 @@
 package parser
 
 import (
+	"io/ioutil"
+
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
-	"github.com/elliotchance/ok/types"
 )
 
-// ParseString parses source code and returns the AST for the file.
-func ParseString(s string, fileName string) *Parser {
-	parser := &Parser{
-		File:       &File{},
-		finalizers: map[string][]*ast.Finally{},
-		Constants:  map[string]*ast.Literal{},
-		Interfaces: map[string]map[string]*types.Type{},
-	}
-	parser.File.Funcs = map[string]*ast.Func{}
-	parser.File.Imports = map[string]string{}
+// ParseString parses source code from a string. The fileName is used in error
+// messages, the file does not have to exist.
+func (parser *Parser) ParseString(s string, fileName string) {
 	defer func() {
 		err := parser.resolveInterfaces()
 		if err != nil {
-			parser.AppendErrorAt("", err.Error())
+			parser.appendErrorAt("", err.Error())
 		}
 	}()
 
@@ -27,28 +21,30 @@ func ParseString(s string, fileName string) *Parser {
 	options := lexer.Options{
 		IncludeComments: false,
 	}
-	parser.File.Tokens, parser.File.Comments, err = lexer.TokenizeString(s,
-		options, fileName)
+	var comments []*ast.Comment
+	parser.tokens, comments, err = lexer.TokenizeString(s, options, fileName)
+	parser.comments = append(parser.comments, comments...)
+
 	if err != nil {
 		at := "at the start"
-		if len(parser.File.Tokens) > 0 {
-			at = "after " + parser.File.Tokens[len(parser.File.Tokens)-1].String()
+		if len(parser.tokens) > 0 {
+			at = "after " + parser.tokens[len(parser.tokens)-1].String()
 		}
 
-		parser.AppendErrorf(nil, "unterminated string found %s", at)
+		parser.appendErrorf(nil, "unterminated string found %s", at)
 
-		return parser
+		return
 	}
 
 	var offset int
 	for {
-		switch parser.File.Tokens[offset].Kind {
+		switch parser.tokens[offset].Kind {
 		case lexer.TokenIdentifier:
 			var name string
 			var value *ast.Literal
 			name, value, offset, err = consumeConstant(parser, offset)
 			if err != nil {
-				parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
+				parser.appendErrorAt(parser.pos(offset), err.Error())
 
 				goto done
 			}
@@ -62,58 +58,58 @@ func ParseString(s string, fileName string) *Parser {
 			var fn *ast.Func
 			fn, offset, _, err = consumeFunc(parser, offset)
 			if err != nil {
-				parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
+				parser.appendErrorAt(parser.pos(offset), err.Error())
 
 				goto done
 			}
-			parser.File.Funcs[fn.Name] = fn
+			parser.funcs[fn.Name] = fn
 
 		case lexer.TokenTest:
 			var t *ast.Test
 			t, offset, err = consumeTest(parser, offset)
 			if err != nil {
-				parser.AppendError(t, err.Error())
+				parser.appendError(t, err.Error())
 
 				goto done
 			}
-			parser.File.Tests = append(parser.File.Tests, t)
+			parser.tests = append(parser.tests, t)
 
 		case lexer.TokenImport:
 			var imp *ast.Import
 			imp, offset, err = consumeImport(parser, offset)
 			if err != nil {
-				parser.AppendError(imp, err.Error())
+				parser.appendError(imp, err.Error())
 
 				goto done
 			}
-			parser.File.Imports[imp.VariableName] = imp.PackageName
+			parser.imports[imp.VariableName] = imp.PackageName
 
 		case lexer.TokenEOF:
 			goto done
 
 		default:
-			parser.AppendErrorf(nil,
+			parser.appendErrorf(nil,
 				"found extra %s at the end of the file",
-				parser.File.Tokens[offset])
+				parser.tokens[offset])
 
-			return parser
+			return
 		}
 	}
 done:
 
-	return parser
+	return
 }
 
-func consume(f *File, offset int, expected []string) (int, error) {
+func consume(p *Parser, offset int, expected []string) (int, error) {
 	originalOffset := offset
 
 	for i, t := range expected {
-		tok := f.Tokens[offset+i]
+		tok := p.tokens[offset+i]
 
 		if t != tok.Kind {
 			var after string
 			if offset+i-1 >= 0 {
-				after = f.Tokens[offset+i-1].Kind
+				after = p.tokens[offset+i-1].Kind
 			}
 
 			return originalOffset, newTokenMismatch(expected[i], after, tok.Kind)
@@ -121,4 +117,34 @@ func consume(f *File, offset int, expected []string) (int, error) {
 	}
 
 	return offset + len(expected), nil
+}
+
+// ParseFile will read and parse the file. If the file cannot be read the error
+// will be appended to the parser errors.
+func (parser *Parser) ParseFile(fileName string) {
+	data, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		parser.appendError(nil, err.Error())
+		return
+	}
+
+	parser.ParseString(string(data), fileName)
+}
+
+// ParseDirectory will read and parse all ".ok" files in a directory (not
+// recursive). This is analogous to parsing a package. If any of the files (or
+// the directory itself) cannot be read the error will be appended to the parser
+// errors.
+//
+// If includeTests = true, then ".okt" files will also be included.
+func (parser *Parser) ParseDirectory(dirPath string, includeTests bool) {
+	fileNames, err := getAllOKFilesInPath(dirPath, includeTests)
+	if err != nil {
+		parser.appendError(nil, err.Error())
+		return
+	}
+
+	for _, fileName := range fileNames {
+		parser.ParseFile(fileName)
+	}
 }

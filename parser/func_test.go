@@ -208,11 +208,12 @@ func TestFunc(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(test.str, "a.ok")
 
 			assert.Nil(t, p.Errors())
-			asttest.AssertEqual(t, test.expected, p.File.Funcs)
-			assert.Nil(t, p.File.Comments)
+			asttest.AssertEqual(t, test.expected, p.Funcs())
+			assert.Nil(t, p.Comments())
 		})
 	}
 }

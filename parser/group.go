@@ -10,7 +10,7 @@ func consumeGroup(parser *Parser, offset int) (*ast.Group, int, error) {
 	originalOffset := offset
 
 	var err error
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenOpen})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenOpen})
 	if err != nil {
 		return nil, originalOffset, err
 	}
@@ -21,13 +21,13 @@ func consumeGroup(parser *Parser, offset int) (*ast.Group, int, error) {
 		return nil, originalOffset, err
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenClose})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	return &ast.Group{
 		Expr: expr,
-		Pos:  parser.File.Pos(originalOffset),
+		Pos:  parser.pos(originalOffset),
 	}, offset, nil
 }

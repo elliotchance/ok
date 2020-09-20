@@ -2,7 +2,6 @@ package doc
 
 import (
 	"fmt"
-	"io/ioutil"
 	"log"
 	"sort"
 
@@ -33,37 +32,29 @@ func (*Command) Run(args []string) {
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath("", arg)
 
-		fileNames, err := util.GetAllOKFilesInPath(arg, false)
-		check(err)
+		p := parser.NewParser()
+		p.ParseDirectory(arg, false)
 
-		// Step 2: Parse all files.
 		docs := map[string]string{}
 		var funcs []*ast.Func
 		var constantNames []string
 		constants := map[string]*ast.Literal{}
 
-		for _, fileName := range fileNames {
-			data, err := ioutil.ReadFile(fileName)
-			check(err)
+		for _, fn := range p.Funcs() {
+			funcs = append(funcs, fn)
+		}
 
-			p := parser.ParseString(string(data), fileName)
+		for name, c := range p.Constants {
+			constants[name] = c
+			constantNames = append(constantNames, name)
+		}
 
-			for _, fn := range p.File.Funcs {
-				funcs = append(funcs, fn)
+		for _, comment := range p.Comments() {
+			if comment.Func == "" {
+				continue
 			}
 
-			for name, c := range p.Constants {
-				constants[name] = c
-				constantNames = append(constantNames, name)
-			}
-
-			for _, comment := range p.File.Comments {
-				if comment.Func == "" {
-					continue
-				}
-
-				docs[comment.Func] = comment.String()
-			}
+			docs[comment.Func] = comment.String()
 		}
 
 		// Sort by function name and output docs.

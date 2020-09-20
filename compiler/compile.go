@@ -1,7 +1,6 @@
 package compiler
 
 import (
-	"io/ioutil"
 	"path"
 
 	"github.com/elliotchance/ok/ast"
@@ -14,67 +13,43 @@ import (
 // Compile will return the compiled file. If there are any dependent packages
 // they will also be compiled.
 func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
-	packageName := util.PackageNameFromPath(rootPath, pkgPath)
-
-	fileNames, err := util.GetAllOKFilesInPath(path.Join(rootPath, pkgPath), includeTests)
-	if err != nil {
-		return nil, []error{err}
+	p := parser.NewParser()
+	p.ParseDirectory(path.Join(rootPath, pkgPath), includeTests)
+	if errs := p.Errors(); len(errs) > 0 {
+		return nil, errs
 	}
+
+	packageName := util.PackageNameFromPath(rootPath, pkgPath)
 
 	funcs := map[string]*ast.Func{}
 	imports := map[string]map[string]*types.Type{}
-	interfaces := map[string]map[string]*types.Type{}
-	var tests []*ast.Test
-	constants := map[string]*ast.Literal{}
 
-	for _, fileName := range fileNames {
-		data, err := ioutil.ReadFile(fileName)
-		if err != nil {
-			return nil, []error{err}
-		}
+	for _, pkgName := range p.Imports() {
+		imports[pkgName] = map[string]*types.Type{}
 
-		p := parser.ParseString(string(data), fileName)
-		if errs := p.Errors(); len(errs) > 0 {
-			return nil, errs
-		}
+		// TODO(elliot): Check import location exists.
 
-		for _, pkgName := range p.File.Imports {
-			imports[pkgName] = map[string]*types.Type{}
+		if p, ok := vm.Packages[pkgName]; ok {
+			for fnName, fn := range p.FuncDefs {
+				imports[pkgName][fnName] = fn.Type()
+			}
+		} else {
+			subFile, errs := Compile(rootPath, pkgName, false)
+			if len(errs) > 0 {
+				return nil, errs
+			}
 
-			// TODO(elliot): Check import location exists.
-
-			if p, ok := vm.Packages[pkgName]; ok {
-				for fnName, fn := range p.FuncDefs {
-					imports[pkgName][fnName] = fn.Type()
-				}
-			} else {
-				subFile, errs := Compile(rootPath, pkgName, false)
-				if len(errs) > 0 {
-					return nil, errs
-				}
-
-				for fnName, fn := range subFile.FuncDefs {
-					imports[pkgName][fnName] = fn.Type()
-				}
+			for fnName, fn := range subFile.FuncDefs {
+				imports[pkgName][fnName] = fn.Type()
 			}
 		}
-
-		for fnName, fn := range p.File.Funcs {
-			funcs[fnName] = fn
-		}
-
-		for key, i := range p.Interfaces {
-			interfaces[key] = i
-		}
-
-		for key, i := range p.Constants {
-			constants[key] = i
-		}
-
-		tests = append(tests, p.File.Tests...)
 	}
 
-	okcFile, err := compile(funcs, tests, interfaces, constants, imports)
+	for fnName, fn := range p.Funcs() {
+		funcs[fnName] = fn
+	}
+
+	okcFile, err := compile(funcs, p.Tests(), p.Interfaces, p.Constants, imports)
 	if err != nil {
 		return nil, []error{err}
 	}

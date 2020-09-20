@@ -1,12 +1,12 @@
-package util
+package parser
 
 import (
 	"io/ioutil"
 	"path"
 )
 
-// GetAllOKFilesInPath non-recursively returns a list of OK files.
-func GetAllOKFilesInPath(dir string, includeTests bool) ([]string, error) {
+// getAllOKFilesInPath non-recursively returns a list of OK files.
+func getAllOKFilesInPath(dir string, includeTests bool) ([]string, error) {
 	fs, err := ioutil.ReadDir(dir)
 	if err != nil {
 		return nil, err

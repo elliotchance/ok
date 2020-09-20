@@ -9,15 +9,15 @@ func consumeTest(parser *Parser, offset int) (*ast.Test, int, error) {
 	originalOffset := offset
 	var err error
 
-	offset, err = consume(parser.File, offset, []string{
+	offset, err = consume(parser, offset, []string{
 		lexer.TokenTest, lexer.TokenStringLiteral})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	t := &ast.Test{
-		Name: parser.File.Tokens[offset-1].Value,
-		Pos:  parser.File.Pos(originalOffset),
+		Name: parser.tokens[offset-1].Value,
+		Pos:  parser.pos(originalOffset),
 	}
 
 	t.Statements, offset, err = consumeBlock(parser, offset)

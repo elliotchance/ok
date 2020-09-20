@@ -11,7 +11,7 @@ func consumeUnary(parser *Parser, offset int) (*ast.Unary, int, error) {
 
 	var err error
 	var t lexer.Token
-	t, offset, err = consumeOneOf(parser.File, offset, []string{
+	t, offset, err = consumeOneOf(parser, offset, []string{
 		lexer.TokenNot,
 		lexer.TokenMinus,
 		lexer.TokenIncrement,
@@ -53,6 +53,6 @@ done:
 	return &ast.Unary{
 		Op:   t.Kind,
 		Expr: expr,
-		Pos:  parser.File.Pos(originalOffset),
+		Pos:  parser.pos(originalOffset),
 	}, offset, nil
 }

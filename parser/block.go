@@ -9,14 +9,14 @@ func consumeBlock(parser *Parser, offset int) ([]ast.Node, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyOpen})
+	offset, err = consume(parser, offset, []string{lexer.TokenCurlyOpen})
 	if err != nil {
 		return nil, offset, err
 	}
 
 	var statements []ast.Node
 	for {
-		if parser.File.Tokens[offset].Kind == lexer.TokenCurlyClose {
+		if parser.tokens[offset].Kind == lexer.TokenCurlyClose {
 			break
 		}
 
@@ -24,7 +24,7 @@ func consumeBlock(parser *Parser, offset int) ([]ast.Node, int, error) {
 		var hoist bool
 		statement, offset, hoist, err = consumeStatement(parser, offset)
 		if err != nil {
-			parser.AppendErrorAt(parser.File.Pos(offset), err.Error())
+			parser.appendErrorAt(parser.pos(offset), err.Error())
 
 			return nil, originalOffset, err
 		}
@@ -36,7 +36,7 @@ func consumeBlock(parser *Parser, offset int) ([]ast.Node, int, error) {
 		}
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenCurlyClose})
 	if err != nil {
 		return nil, offset, err
 	}

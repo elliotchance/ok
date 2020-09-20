@@ -9,17 +9,17 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenFor})
+	offset, err = consume(parser, offset, []string{lexer.TokenFor})
 	if err != nil {
 		return nil, offset, err
 	}
 
 	node := &ast.For{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	// Condition is optional.
-	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
+	if parser.tokens[offset].Kind != lexer.TokenCurlyOpen {
 		// Condition may be an "in" expression.
 		node.Condition, offset, err = consumeIn(parser, offset)
 		if err != nil {
@@ -33,7 +33,7 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 
 	// If we encounter a ';' it means the Condition was actually an Init and we
 	// should expected to see two more nodes.
-	offset, err = consume(parser.File, offset, []string{lexer.TokenSemiColon})
+	offset, err = consume(parser, offset, []string{lexer.TokenSemiColon})
 	if err == nil {
 		node.Init = node.Condition
 
@@ -60,7 +60,7 @@ func consumeFor(parser *Parser, offset int) (*ast.For, int, error) {
 			}
 		}
 
-		offset, err = consume(parser.File, offset, []string{lexer.TokenSemiColon})
+		offset, err = consume(parser, offset, []string{lexer.TokenSemiColon})
 		if err != nil {
 			return nil, offset, err
 		}
@@ -87,23 +87,23 @@ func consumeIn(parser *Parser, offset int) (*ast.In, int, error) {
 	originalOffset := offset
 	var err error
 	node := &ast.In{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+	offset, err = consume(parser, offset, []string{lexer.TokenIdentifier})
 	if err != nil {
 		return nil, originalOffset, err
 	}
-	node.Value = parser.File.Tokens[originalOffset].Value
+	node.Value = parser.tokens[originalOffset].Value
 
 	// Key is optional.
-	offset, err = consume(parser.File, offset, []string{
+	offset, err = consume(parser, offset, []string{
 		lexer.TokenComma, lexer.TokenIdentifier})
 	if err == nil {
-		node.Key = parser.File.Tokens[offset-1].Value
+		node.Key = parser.tokens[offset-1].Value
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenIn})
+	offset, err = consume(parser, offset, []string{lexer.TokenIn})
 	if err != nil {
 		return nil, originalOffset, err
 	}

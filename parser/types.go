@@ -4,15 +4,15 @@ import (
 	"fmt"
 )
 
-func (p *Parser) resolveInterfaces() error {
-	for _, fn := range p.File.Funcs {
+func (parser *Parser) resolveInterfaces() error {
+	for _, fn := range parser.funcs {
 		if fn.IsConstructor() {
 			ty, err := fn.Interface()
 			if err != nil {
 				return fmt.Errorf("%v %s", fn.Position(), err)
 			}
 
-			p.Interfaces[fn.Name] = ty
+			parser.Interfaces[fn.Name] = ty
 		}
 	}
 

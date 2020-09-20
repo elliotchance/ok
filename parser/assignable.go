@@ -17,7 +17,7 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 	}
 
 	// Read ahead for key expression.
-	switch parser.File.Tokens[offset].Kind {
+	switch parser.tokens[offset].Kind {
 	case lexer.TokenSquareOpen:
 		offset++ // skip "["
 
@@ -27,7 +27,7 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 			return nil, originalOffset, err
 		}
 
-		offset, err = consume(parser.File, offset, []string{lexer.TokenSquareClose})
+		offset, err = consume(parser, offset, []string{lexer.TokenSquareClose})
 		if err != nil {
 			return nil, originalOffset, err
 		}
@@ -35,7 +35,7 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 		return &ast.Key{
 			Expr: identifier,
 			Key:  key,
-			Pos:  parser.File.Pos(originalOffset),
+			Pos:  parser.pos(originalOffset),
 		}, offset, nil
 
 	case lexer.TokenDot:
@@ -50,7 +50,7 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 		return &ast.Key{
 			Expr: identifier,
 			Key:  key,
-			Pos:  parser.File.Pos(originalOffset),
+			Pos:  parser.pos(originalOffset),
 		}, offset, nil
 	}
 

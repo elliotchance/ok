@@ -13,7 +13,7 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 
 	var err error
 	node := &ast.Map{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	var ty *types.Type
@@ -35,7 +35,7 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 		return nil, originalOffset, errors.New("invalid type for map")
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyOpen})
+	offset, err = consume(parser, offset, []string{lexer.TokenCurlyOpen})
 	if err != nil {
 		return nil, originalOffset, err
 	}
@@ -45,7 +45,7 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 	//
 	// We are only allowed to consume zero elements if a type was supplied,
 	// otherwise an empty map would be confused with a block.
-	if parser.File.Tokens[offset].Kind == lexer.TokenCurlyClose && ty != nil {
+	if parser.tokens[offset].Kind == lexer.TokenCurlyClose && ty != nil {
 		return node, offset + 1, nil
 	}
 
@@ -54,7 +54,7 @@ func consumeMap(parser *Parser, offset int) (*ast.Map, int, error) {
 		return nil, originalOffset, err
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenCurlyClose})
 	if err != nil {
 		return nil, originalOffset, err
 	}

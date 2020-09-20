@@ -9,13 +9,13 @@ func consumeCase(parser *Parser, offset int) (*ast.Case, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCase})
+	offset, err = consume(parser, offset, []string{lexer.TokenCase})
 	if err != nil {
 		return nil, offset, err
 	}
 
 	node := &ast.Case{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	node.Conditions, offset, err = consumeExprs(parser, offset)
@@ -35,24 +35,24 @@ func consumeSwitch(parser *Parser, offset int) (*ast.Switch, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenSwitch})
+	offset, err = consume(parser, offset, []string{lexer.TokenSwitch})
 	if err != nil {
 		return nil, offset, err
 	}
 
 	node := &ast.Switch{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	// An expression is optional.
-	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
+	if parser.tokens[offset].Kind != lexer.TokenCurlyOpen {
 		node.Expr, offset, err = consumeExpr(parser, offset, unlimitedTokens)
 		if err != nil {
 			return nil, offset, err
 		}
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyOpen})
+	offset, err = consume(parser, offset, []string{lexer.TokenCurlyOpen})
 	if err != nil {
 		return nil, offset, err
 	}
@@ -60,7 +60,7 @@ func consumeSwitch(parser *Parser, offset int) (*ast.Switch, int, error) {
 	for {
 		// Else is optional, but if we do consume it then we cannot expect any
 		// cases after this since it must always appear at the end.
-		if parser.File.Tokens[offset].Kind == lexer.TokenElse {
+		if parser.tokens[offset].Kind == lexer.TokenElse {
 			offset++ // skip else
 
 			node.Else, offset, err = consumeBlock(parser, offset)
@@ -78,7 +78,7 @@ func consumeSwitch(parser *Parser, offset int) (*ast.Switch, int, error) {
 		node.Cases = append(node.Cases, caseStmt)
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenCurlyClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenCurlyClose})
 	if err != nil {
 		return nil, offset, err
 	}

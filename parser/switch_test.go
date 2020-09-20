@@ -160,13 +160,14 @@ func TestSwitch(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(test.str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": test.expected,
-			}, p.File.Funcs)
-			assert.Equal(t, test.comments, p.File.Comments)
+			}, p.Funcs())
+			assert.Equal(t, test.comments, p.Comments())
 		})
 	}
 }

@@ -75,13 +75,14 @@ func TestType(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(str, "a.ok")
 
 			require.Empty(t, p.Errors().String(), str)
 			asttest.AssertEqual(t, map[string]*ast.Func{
 				"main": newFunc(test.expected),
-			}, p.File.Funcs)
-			assert.Nil(t, p.File.Comments)
+			}, p.Funcs())
+			assert.Nil(t, p.Comments())
 		})
 	}
 }

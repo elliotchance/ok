@@ -6,9 +6,9 @@ import (
 	"github.com/elliotchance/ok/lexer"
 )
 
-func consumeOneOf(f *File, offset int, tokens []string) (lexer.Token, int, error) {
+func consumeOneOf(p *Parser, offset int, tokens []string) (lexer.Token, int, error) {
 	for _, ty := range tokens {
-		if t := f.Tokens[offset]; t.Kind == ty {
+		if t := p.tokens[offset]; t.Kind == ty {
 			return t, offset + 1, nil
 		}
 	}

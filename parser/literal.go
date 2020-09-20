@@ -20,7 +20,7 @@ func consumeConstant(parser *Parser, offset int) (string, *ast.Literal, int, err
 		return "", nil, originalOffset, err
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenAssign})
+	offset, err = consume(parser, offset, []string{lexer.TokenAssign})
 	if err != nil {
 		return "", nil, originalOffset, err
 	}
@@ -46,17 +46,17 @@ func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 	}
 
 	for _, ty := range typeLiteralTokens {
-		if t := parser.File.Tokens[offset]; t.Kind == ty {
+		if t := parser.tokens[offset]; t.Kind == ty {
 			literal := &ast.Literal{
 				Kind:  types.TypeFromString(strings.Split(ty, " ")[0]),
 				Value: t.Value,
-				Pos:   parser.File.Pos(originalOffset),
+				Pos:   parser.pos(originalOffset),
 			}
 
 			err := validateLiteral(literal)
 			if err != nil {
 				// This kind of error should not stop the parsing.
-				parser.AppendError(literal, err.Error())
+				parser.appendError(literal, err.Error())
 			}
 
 			return literal, offset + 1, nil

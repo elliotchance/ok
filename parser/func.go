@@ -10,13 +10,13 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 	originalOffset := offset
 	var err error
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenFunc})
+	offset, err = consume(parser, offset, []string{lexer.TokenFunc})
 	if err != nil {
 		return nil, originalOffset, anon, err
 	}
 
 	fn := &ast.Func{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	// The name of the function is optional. For anonymous functions we will
@@ -24,15 +24,15 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 	//
 	// TODO(elliot): Anonymous functions should not be allowed just anywhere.
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+	offset, err = consume(parser, offset, []string{lexer.TokenIdentifier})
 	if err == nil {
-		fn.Name = parser.File.Tokens[offset-1].Value
+		fn.Name = parser.tokens[offset-1].Value
 	} else {
-		fn.Name = parser.NextFunctionName()
+		fn.Name = parser.nextFunctionName()
 		anon = true
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenOpen})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenOpen})
 	if err != nil {
 		return nil, originalOffset, anon, err
 	}
@@ -44,12 +44,12 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 	}
 	fn.Arguments = args
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenClose})
 	if err != nil {
 		return nil, originalOffset, anon, err
 	}
 
-	if parser.File.Tokens[offset].Kind != lexer.TokenCurlyOpen {
+	if parser.tokens[offset].Kind != lexer.TokenCurlyOpen {
 		fn.Returns, offset, err = consumeTypes(parser, offset, false)
 		if err != nil {
 			return nil, originalOffset, anon, err
@@ -73,7 +73,7 @@ func consumeArguments(parser *Parser, offset int) ([]*ast.Argument, int, error) 
 	originalOffset := offset
 
 	// Catch no arguments.
-	if parser.File.Tokens[offset].Kind == lexer.TokenParenClose {
+	if parser.tokens[offset].Kind == lexer.TokenParenClose {
 		return nil, offset, nil
 	}
 
@@ -88,7 +88,7 @@ func consumeArguments(parser *Parser, offset int) ([]*ast.Argument, int, error) 
 
 		args = append(args, args2...)
 
-		if parser.File.Tokens[offset].Kind != lexer.TokenComma {
+		if parser.tokens[offset].Kind != lexer.TokenComma {
 			break
 		} else {
 			offset++ // skip ","
@@ -104,14 +104,14 @@ func consumeArgument(parser *Parser, offset int) ([]*ast.Argument, int, error) {
 
 	var names []string
 	for {
-		offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+		offset, err = consume(parser, offset, []string{lexer.TokenIdentifier})
 		if err != nil {
 			return nil, originalOffset, err
 		}
 
-		names = append(names, parser.File.Tokens[offset-1].Value)
+		names = append(names, parser.tokens[offset-1].Value)
 
-		if parser.File.Tokens[offset].Kind != lexer.TokenComma {
+		if parser.tokens[offset].Kind != lexer.TokenComma {
 			break
 		} else {
 			offset++ // skip ","

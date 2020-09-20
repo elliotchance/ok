@@ -5,17 +5,21 @@ import (
 	"reflect"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/types"
 	"github.com/pkg/errors"
 )
 
 type Parser struct {
 	errors           []error
-	File             *File
+	funcs            map[string]*ast.Func
+	tests            []*ast.Test
 	finalizers       map[string][]*ast.Finally
 	functionNames    []string
 	anonFunctionName int
 	Interfaces       map[string]map[string]*types.Type
+	imports          map[string]string
+	comments         []*ast.Comment
 
 	// Constants are variables defined at the package level. They cannot be
 	// modified and only allow literals for values.
@@ -23,50 +27,86 @@ type Parser struct {
 	// TODO(elliot): We should allow for expressions that can be resolved at
 	//  compile time, such as "3600 * 24".
 	Constants map[string]*ast.Literal
+
+	// tokens are reset with each Parse* function call.
+	tokens []lexer.Token
 }
 
-// AppendError adds an error to the stack.
-func (p *Parser) AppendErrorAt(pos string, message string) {
+// appendError adds an error to the stack.
+func (parser *Parser) appendErrorAt(pos string, message string) {
 	var err error
 	if pos != "" {
 		err = fmt.Errorf("%s %s", pos, message)
 	} else {
 		err = errors.New(message)
 	}
-	p.errors = append(p.errors, err)
+	parser.errors = append(parser.errors, err)
 }
 
-// AppendError adds an error to the stack.
-func (p *Parser) AppendError(node ast.Node, message string) {
+// appendError adds an error to the stack.
+func (parser *Parser) appendError(node ast.Node, message string) {
 	if v := reflect.ValueOf(node); v.IsValid() && !v.IsNil() {
-		p.AppendErrorAt(node.Position(), message)
+		parser.appendErrorAt(node.Position(), message)
 	} else {
-		p.AppendErrorAt("", message)
+		parser.appendErrorAt("", message)
 	}
 }
 
-// AppendErrorf adds an error to the stack.
-func (p *Parser) AppendErrorf(node ast.Node, format string, args ...interface{}) {
-	p.AppendError(node, fmt.Sprintf(format, args...))
+// appendErrorf adds an error to the stack.
+func (parser *Parser) appendErrorf(node ast.Node, format string, args ...interface{}) {
+	parser.appendError(node, fmt.Sprintf(format, args...))
 }
 
 // Errors returns all errors.
-func (p *Parser) Errors() Errors {
-	return p.errors
+func (parser *Parser) Errors() Errors {
+	return parser.errors
 }
 
-// AppendFinally will track finalizers until the function is finished, then it
+// appendFinally will track finalizers until the function is finished, then it
 // will be reset.
-func (p *Parser) AppendFinally(finally *ast.Finally) {
-	funcName := p.functionNames[len(p.functionNames)-1]
-	finally.Index = len(p.finalizers[funcName])
-	p.finalizers[funcName] = append(p.finalizers[funcName], finally)
+func (parser *Parser) appendFinally(finally *ast.Finally) {
+	funcName := parser.functionNames[len(parser.functionNames)-1]
+	finally.Index = len(parser.finalizers[funcName])
+	parser.finalizers[funcName] = append(parser.finalizers[funcName], finally)
 }
 
-// NextFunctionName returns a unique name to be used internally for anonymous
+// nextFunctionName returns a unique name to be used internally for anonymous
 // functions.
-func (p *Parser) NextFunctionName() string {
-	p.anonFunctionName++
+func (parser *Parser) nextFunctionName() string {
+	parser.anonFunctionName++
 
-	return fmt.Sprintf("%d", p.anonFunctionName)
+	return fmt.Sprintf("%d", parser.anonFunctionName)
+}
+
+func (parser *Parser) Funcs() map[string]*ast.Func {
+	return parser.funcs
+}
+
+func (parser *Parser) Tests() []*ast.Test {
+	return parser.tests
+}
+
+func (parser *Parser) Imports() map[string]string {
+	return parser.imports
+}
+
+// Comments returns all comments collected from parsing all inputs.
+func (parser *Parser) Comments() []*ast.Comment {
+	return parser.comments
+}
+
+// NewParser creates an empty parser.
+func NewParser() *Parser {
+	return &Parser{
+		finalizers: map[string][]*ast.Finally{},
+		Constants:  map[string]*ast.Literal{},
+		Interfaces: map[string]map[string]*types.Type{},
+		imports:    map[string]string{},
+		funcs:      map[string]*ast.Func{},
+	}
+}
+
+// pos returns the rendered position of a token.
+func (parser *Parser) pos(offset int) string {
+	return parser.tokens[offset].Pos.String()
 }

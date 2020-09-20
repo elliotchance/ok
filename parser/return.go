@@ -9,17 +9,17 @@ func consumeReturn(parser *Parser, offset int) (*ast.Return, int, error) {
 	originalOffset := offset
 	var err error
 	node := &ast.Return{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenReturn})
+	offset, err = consume(parser, offset, []string{lexer.TokenReturn})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	// Detect zero return values because consumeExprs will require at least one
 	// expression.
-	if parser.File.Tokens[offset-1].IsEndOfLine {
+	if parser.tokens[offset-1].IsEndOfLine {
 		return node, offset, nil
 	}
 

@@ -24,11 +24,12 @@ func TestTest(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(test.str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())
-			asttest.AssertEqual(t, []*ast.Test{test.expected}, p.File.Tests)
-			assert.Len(t, p.File.Funcs, 0)
+			asttest.AssertEqual(t, []*ast.Test{test.expected}, p.Tests())
+			assert.Len(t, p.Funcs(), 0)
 		})
 	}
 }
