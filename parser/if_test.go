@@ -100,20 +100,21 @@ func TestIf(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.ParseString(str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			if test.expected == nil {
-				asttest.AssertEqual(t, map[string]*ast.Func{}, p.File.Funcs)
+				asttest.AssertEqual(t, map[string]*ast.Func{}, p.Funcs())
 			} else {
 				asttest.AssertEqual(t, map[string]*ast.Func{
 					"main": {
 						Name:       "main",
 						Statements: []ast.Node{test.expected},
 					},
-				}, p.File.Funcs)
+				}, p.Funcs())
 			}
-			assert.Nil(t, p.File.Comments)
+			assert.Nil(t, p.Comments())
 		})
 	}
 }

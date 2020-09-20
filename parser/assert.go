@@ -10,7 +10,7 @@ func consumeAssert(parser *Parser, offset int) (*ast.Assert, int, error) {
 	var err error
 	var expr ast.Node
 
-	offset, err = consume(parser.File, offset, []string{
+	offset, err = consume(parser, offset, []string{
 		lexer.TokenAssert, lexer.TokenParenOpen})
 	if err != nil {
 		return nil, originalOffset, err
@@ -21,18 +21,18 @@ func consumeAssert(parser *Parser, offset int) (*ast.Assert, int, error) {
 		return nil, originalOffset, err
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenClose})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	assert := &ast.Assert{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 	if e, ok := expr.(*ast.Binary); ok {
 		assert.Expr = e
 	} else {
-		parser.AppendError(assert,
+		parser.appendError(assert,
 			"only binary expressions are permitted in assertions")
 	}
 

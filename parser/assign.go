@@ -19,7 +19,7 @@ func consumeAssign(parser *Parser, offset int) (*ast.Assign, int, error) {
 	assign.Lefts = []ast.Node{assignable}
 
 	// Any more are optional.
-	for parser.File.Tokens[offset].Kind == lexer.TokenComma {
+	for parser.tokens[offset].Kind == lexer.TokenComma {
 		offset++ // skip ","
 
 		assignable, offset, err = consumeAssignable(parser, offset)
@@ -33,7 +33,7 @@ func consumeAssign(parser *Parser, offset int) (*ast.Assign, int, error) {
 	// Need an equals followed by some another expression list. We rely on the
 	// compiler to verify if the number of expressions on the right side is
 	// acceptable.
-	offset, err = consume(parser.File, offset, []string{lexer.TokenAssign})
+	offset, err = consume(parser, offset, []string{lexer.TokenAssign})
 	if err != nil {
 		return nil, originalOffset, err
 	}

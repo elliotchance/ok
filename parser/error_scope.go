@@ -10,13 +10,13 @@ func consumeErrorScope(parser *Parser, offset int) (*ast.ErrorScope, int, error)
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenTry})
+	offset, err = consume(parser, offset, []string{lexer.TokenTry})
 	if err != nil {
 		return nil, offset, err
 	}
 
 	node := &ast.ErrorScope{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	node.Statements, offset, err = consumeBlock(parser, offset)
@@ -25,7 +25,7 @@ func consumeErrorScope(parser *Parser, offset int) (*ast.ErrorScope, int, error)
 	}
 
 	// We can consume zero or more on clauses.
-	for parser.File.Tokens[offset].Kind == lexer.TokenOn {
+	for parser.tokens[offset].Kind == lexer.TokenOn {
 		var on *ast.On
 		on, offset, err = consumeOn(parser, offset)
 		if err != nil {
@@ -36,13 +36,13 @@ func consumeErrorScope(parser *Parser, offset int) (*ast.ErrorScope, int, error)
 	}
 
 	// The finally clause is optional
-	if parser.File.Tokens[offset].Kind == lexer.TokenFinally {
+	if parser.tokens[offset].Kind == lexer.TokenFinally {
 		node.Finally, offset, err = consumeFinally(parser, offset)
 		if err != nil {
 			return nil, originalOffset, err
 		}
 
-		parser.AppendFinally(node.Finally)
+		parser.appendFinally(node.Finally)
 	}
 
 	return node, offset, nil
@@ -52,7 +52,7 @@ func consumeOn(parser *Parser, offset int) (*ast.On, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenOn})
+	offset, err = consume(parser, offset, []string{lexer.TokenOn})
 	if err != nil {
 		return nil, originalOffset, err
 	}
@@ -65,7 +65,7 @@ func consumeOn(parser *Parser, offset int) (*ast.On, int, error) {
 
 	node := &ast.On{
 		Type: types.NewUnresolvedInterface(ident.Name),
-		Pos:  parser.File.Pos(originalOffset),
+		Pos:  parser.pos(originalOffset),
 	}
 
 	node.Statements, offset, err = consumeBlock(parser, offset)
@@ -80,13 +80,13 @@ func consumeFinally(parser *Parser, offset int) (*ast.Finally, int, error) {
 	var err error
 	originalOffset := offset
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenFinally})
+	offset, err = consume(parser, offset, []string{lexer.TokenFinally})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	node := &ast.Finally{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
 	node.Statements, offset, err = consumeBlock(parser, offset)

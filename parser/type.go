@@ -22,8 +22,8 @@ func consumeType(parser *Parser, offset int) (ty *types.Type, _ int, _ error) {
 
 	for {
 		switch {
-		case parser.File.Tokens[offset].Kind == lexer.TokenSquareOpen &&
-			parser.File.Tokens[offset+1].Kind == lexer.TokenSquareClose:
+		case parser.tokens[offset].Kind == lexer.TokenSquareOpen &&
+			parser.tokens[offset+1].Kind == lexer.TokenSquareClose:
 			offset += 2
 			defer func() {
 				if ty != nil {
@@ -31,8 +31,8 @@ func consumeType(parser *Parser, offset int) (ty *types.Type, _ int, _ error) {
 				}
 			}()
 
-		case parser.File.Tokens[offset].Kind == lexer.TokenCurlyOpen &&
-			parser.File.Tokens[offset+1].Kind == lexer.TokenCurlyClose:
+		case parser.tokens[offset].Kind == lexer.TokenCurlyOpen &&
+			parser.tokens[offset+1].Kind == lexer.TokenCurlyClose:
 			offset += 2
 			defer func() {
 				if ty != nil {
@@ -48,7 +48,7 @@ done:
 
 	// A function?
 	var err error
-	offset, err = consume(parser.File, offset, []string{lexer.TokenFunc})
+	offset, err = consume(parser, offset, []string{lexer.TokenFunc})
 	if err == nil {
 		fn := &ast.Func{}
 		var args []*types.Type
@@ -68,7 +68,7 @@ done:
 	}
 
 	var t lexer.Token
-	t, offset, err = consumeOneOf(parser.File, offset, typeTokens)
+	t, offset, err = consumeOneOf(parser, offset, typeTokens)
 	if err != nil {
 		// Any identifier is also valid.
 		var ident *ast.Identifier
@@ -88,11 +88,11 @@ func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]*types.Type, i
 	var tys []*types.Type
 	var err error
 
-	if parser.File.Tokens[offset].Kind == lexer.TokenParenOpen {
+	if parser.tokens[offset].Kind == lexer.TokenParenOpen {
 		offset++ // skip "("
 
 		if allowEmpty &&
-			parser.File.Tokens[offset].Kind == lexer.TokenParenClose {
+			parser.tokens[offset].Kind == lexer.TokenParenClose {
 			goto close
 		}
 
@@ -105,7 +105,7 @@ func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]*types.Type, i
 
 			tys = append(tys, ty)
 
-			if parser.File.Tokens[offset].Kind != lexer.TokenComma {
+			if parser.tokens[offset].Kind != lexer.TokenComma {
 				break
 			} else {
 				offset++ // skip ","
@@ -113,7 +113,7 @@ func consumeTypes(parser *Parser, offset int, allowEmpty bool) ([]*types.Type, i
 		}
 
 	close:
-		offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+		offset, err = consume(parser, offset, []string{lexer.TokenParenClose})
 		if err != nil {
 			return nil, originalOffset, err
 		}

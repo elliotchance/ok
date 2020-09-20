@@ -11,17 +11,17 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, hoist bool
 	originalOffset := offset
 	var err error
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenBreak})
+	offset, err = consume(parser, offset, []string{lexer.TokenBreak})
 	if err == nil {
 		return &ast.Break{
-			Pos: parser.File.Pos(originalOffset),
+			Pos: parser.pos(originalOffset),
 		}, offset, hoist, nil
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenContinue})
+	offset, err = consume(parser, offset, []string{lexer.TokenContinue})
 	if err == nil {
 		return &ast.Continue{
-			Pos: parser.File.Pos(originalOffset),
+			Pos: parser.pos(originalOffset),
 		}, offset, hoist, nil
 	}
 
@@ -41,7 +41,7 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, hoist bool
 		// If the function literal has a name it will confuse the compiler into
 		// thinking it's a package-level entity.
 		if !fnAnon {
-			fn.Name = parser.NextFunctionName()
+			fn.Name = parser.nextFunctionName()
 		}
 
 		// It's not enough to simply translate a nested function into a variable

@@ -217,17 +217,18 @@ func TestParseString(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.ParseString(test.str, "a.ok")
+			p := parser.NewParser()
+			p.ParseString(test.str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			if test.expected == nil {
-				asttest.AssertEqual(t, map[string]*ast.Func{}, p.File.Funcs)
+				asttest.AssertEqual(t, map[string]*ast.Func{}, p.Funcs())
 			} else {
 				asttest.AssertEqual(t, map[string]*ast.Func{
 					"main": test.expected,
-				}, p.File.Funcs)
+				}, p.Funcs())
 			}
-			assert.Equal(t, test.comments, p.File.Comments)
+			assert.Equal(t, test.comments, p.Comments())
 
 			// Constants is always initialized by the parser, we only need to
 			// specify in tests when needed.

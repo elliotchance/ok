@@ -9,14 +9,14 @@ func consumeIdentifier(parser *Parser, offset int) (*ast.Identifier, int, error)
 	originalOffset := offset
 
 	var err error
-	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+	offset, err = consume(parser, offset, []string{lexer.TokenIdentifier})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	return &ast.Identifier{
-		Name: parser.File.Tokens[originalOffset].Value,
-		Pos:  parser.File.Pos(originalOffset),
+		Name: parser.tokens[originalOffset].Value,
+		Pos:  parser.pos(originalOffset),
 	}, offset, nil
 }
 
@@ -26,20 +26,20 @@ func consumeEntity(parser *Parser, offset int) (*ast.Identifier, int, error) {
 	originalOffset := offset
 
 	var err error
-	offset, err = consume(parser.File, offset, []string{lexer.TokenIdentifier})
+	offset, err = consume(parser, offset, []string{lexer.TokenIdentifier})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	identifier := &ast.Identifier{
-		Name: parser.File.Tokens[offset-1].Value,
-		Pos:  parser.File.Pos(originalOffset),
+		Name: parser.tokens[offset-1].Value,
+		Pos:  parser.pos(originalOffset),
 	}
 
-	offset, err = consume(parser.File, offset, []string{
+	offset, err = consume(parser, offset, []string{
 		lexer.TokenDot, lexer.TokenIdentifier})
 	if err == nil {
-		identifier.Name += "." + parser.File.Tokens[offset-1].Value
+		identifier.Name += "." + parser.tokens[offset-1].Value
 	}
 
 	return identifier, offset, nil

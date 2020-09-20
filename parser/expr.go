@@ -18,13 +18,13 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 	var parts []interface{}
 	var err error
 	didJustConsumeLiteral := false
-	for consumed := 0; offset < len(parser.File.Tokens) && consumed < maxTokens; consumed++ {
-		tok := parser.File.Tokens[offset]
+	for consumed := 0; offset < len(parser.tokens) && consumed < maxTokens; consumed++ {
+		tok := parser.tokens[offset]
 
 		// Bail out if we reach the end of the line. However, be careful that we
 		// don't look back to the previous token that is from a previous expr
 		// read (outside the scope of this expression).
-		if offset > originalOffset && parser.File.Tokens[offset-1].IsEndOfLine {
+		if offset > originalOffset && parser.tokens[offset-1].IsEndOfLine {
 			break
 		}
 
@@ -44,7 +44,7 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			// If the function literal has a name it will confuse the compiler
 			// into thinking it's a package-level entity.
 			if !fnAnon {
-				parser.AppendError(fn, "function literals cannot be named")
+				parser.appendError(fn, "function literals cannot be named")
 			}
 
 			parts = append(parts, fn)
@@ -98,7 +98,7 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 
 		// Depending on whether the last token was an operator determines if "("
 		// indicates a Call or Group.
-		if len(parts) > 0 && operatorPrecedence[parser.File.Tokens[offset-1].Kind] == 0 {
+		if len(parts) > 0 && operatorPrecedence[parser.tokens[offset-1].Kind] == 0 {
 			var call *ast.Call
 			call, offset, err = consumeCall(parser, offset)
 			if err == nil {
@@ -189,8 +189,8 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 	if len(parts) == 0 {
 		// Nothing was consumed, this is an error.
 		return nil, originalOffset, newTokenMismatch("expression",
-			parser.File.Tokens[originalOffset-1].Kind,
-			parser.File.Tokens[originalOffset].Kind)
+			parser.tokens[originalOffset-1].Kind,
+			parser.tokens[originalOffset].Kind)
 	}
 
 	return reduceExpr(parts), offset, nil
@@ -209,7 +209,7 @@ func consumeExprs(parser *Parser, offset int) ([]ast.Node, int, error) {
 	// the next expression.
 	exprs := []ast.Node{expr}
 	for {
-		if parser.File.Tokens[offset].Kind != lexer.TokenComma {
+		if parser.tokens[offset].Kind != lexer.TokenComma {
 			break
 		}
 

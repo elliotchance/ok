@@ -18,7 +18,7 @@ func consumeKeyValues(parser *Parser, offset int) ([]*ast.KeyValue, int, error) 
 
 		keyValues = append(keyValues, keyValue)
 
-		if parser.File.Tokens[offset].Kind == lexer.TokenComma {
+		if parser.tokens[offset].Kind == lexer.TokenComma {
 			offset++
 		} else {
 			break
@@ -37,7 +37,7 @@ func consumeKeyValue(parser *Parser, offset int) (*ast.KeyValue, int, error) {
 		return nil, offset, err
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenColon})
+	offset, err = consume(parser, offset, []string{lexer.TokenColon})
 	if err != nil {
 		return nil, offset, err
 	}

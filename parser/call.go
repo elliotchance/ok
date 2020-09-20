@@ -14,7 +14,7 @@ func consumeTypeCast(parser *Parser, offset int) (*ast.Call, int, error) {
 	// sense?
 	var ty lexer.Token
 	var err error
-	ty, offset, err = consumeOneOf(parser.File, offset, typeTokens)
+	ty, offset, err = consumeOneOf(parser, offset, typeTokens)
 	if err != nil {
 		return nil, originalOffset, err
 	}
@@ -40,16 +40,16 @@ func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 	var err error
 
 	call := &ast.Call{
-		Pos: parser.File.Pos(originalOffset),
+		Pos: parser.pos(originalOffset),
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenOpen})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenOpen})
 	if err != nil {
 		return nil, originalOffset, err
 	}
 
 	// Catch zero arguments.
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenClose})
 	if err == nil {
 		return call, offset, nil
 	}
@@ -59,7 +59,7 @@ func consumeCall(parser *Parser, offset int) (*ast.Call, int, error) {
 		return nil, originalOffset, err
 	}
 
-	offset, err = consume(parser.File, offset, []string{lexer.TokenParenClose})
+	offset, err = consume(parser, offset, []string{lexer.TokenParenClose})
 	if err != nil {
 		return nil, originalOffset, err
 	}
