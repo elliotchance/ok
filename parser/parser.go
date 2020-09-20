@@ -6,7 +6,6 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
-	"github.com/elliotchance/ok/types"
 	"github.com/pkg/errors"
 )
 
@@ -17,7 +16,6 @@ type Parser struct {
 	finalizers       map[string][]*ast.Finally
 	functionNames    []string
 	anonFunctionName int
-	Interfaces       map[string]map[string]*types.Type
 	imports          map[string]string
 	comments         []*ast.Comment
 
@@ -100,7 +98,6 @@ func NewParser() *Parser {
 	return &Parser{
 		finalizers: map[string][]*ast.Finally{},
 		Constants:  map[string]*ast.Literal{},
-		Interfaces: map[string]map[string]*types.Type{},
 		imports:    map[string]string{},
 		funcs:      map[string]*ast.Func{},
 	}

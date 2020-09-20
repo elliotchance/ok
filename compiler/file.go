@@ -9,16 +9,14 @@ import (
 func compile(
 	funcs map[string]*ast.Func,
 	tests []*ast.Test,
-	interfaces map[string]map[string]*types.Type,
 	constants map[string]*ast.Literal,
 	imports map[string]map[string]*types.Type,
 ) (*vm.File, error) {
 	file := &vm.File{
-		Funcs:      map[string]*vm.CompiledFunc{},
-		FuncDefs:   funcs,
-		Interfaces: interfaces,
-		Constants:  constants,
-		Imports:    imports,
+		Funcs:     map[string]*vm.CompiledFunc{},
+		FuncDefs:  funcs,
+		Constants: constants,
+		Imports:   imports,
 	}
 
 	for name, fn := range funcs {

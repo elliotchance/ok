@@ -7,10 +7,139 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
+	"github.com/elliotchance/ok/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestParseString(t *testing.T) {
+func TestParser_Funcs(t *testing.T) {
+	t.Run("main function", func(t *testing.T) {
+		p := parser.NewParser()
+		p.ParseString(`func main() { }`, "a.ok")
+		require.Nil(t, p.Errors())
+
+		assert.Equal(t, map[string]*ast.Func{
+			"main": {
+				Name: "main",
+				Pos:  "a.ok:1:1",
+			},
+		}, p.Funcs())
+	})
+
+	t.Run("calling ParseString multiple times appends functions", func(t *testing.T) {
+		p := parser.NewParser()
+		p.ParseString(`func main() { }`, "a.ok")
+		p.ParseString(`func foo() { }`, "a.ok")
+		require.Nil(t, p.Errors())
+
+		assert.Equal(t, map[string]*ast.Func{
+			"main": {
+				Name: "main",
+				Pos:  "a.ok:1:1",
+			},
+			"foo": {
+				Name: "foo",
+				Pos:  "a.ok:1:1",
+			},
+		}, p.Funcs())
+	})
+
+	t.Run("normal function type", func(t *testing.T) {
+		p := parser.NewParser()
+		p.ParseString(`func main(a, b number) string { }`, "a.ok")
+		require.Nil(t, p.Errors())
+
+		assert.Equal(t, &types.Type{
+			Kind:      types.KindFunc,
+			Arguments: []*types.Type{types.Number, types.Number},
+			Returns:   []*types.Type{types.String},
+		}, p.Funcs()["main"].Type())
+	})
+
+	t.Run("constructor function", func(t *testing.T) {
+		p := parser.NewParser()
+		p.ParseString(`
+func Person(Foo, bar, Baz number) Person {
+	func Qux() string { }
+	func quux() { }
+	Corge = func () number { }
+}`, "a.ok")
+		require.Nil(t, p.Errors())
+
+		assert.Equal(t, &types.Type{
+			Kind:      types.KindFunc,
+			Arguments: []*types.Type{types.Number, types.Number, types.Number},
+			Returns: []*types.Type{
+				{
+					Kind: types.KindResolvedInterface,
+					Name: "Person",
+					Properties: map[string]*types.Type{
+						"Foo": {Kind: types.KindNumber},
+						"Baz": {Kind: types.KindNumber},
+						"Qux": {
+							Kind:    types.KindFunc,
+							Returns: []*types.Type{types.String},
+						},
+						"Corge": {
+							Kind:    types.KindFunc,
+							Returns: []*types.Type{types.Number},
+						},
+					},
+				},
+			},
+		}, p.Funcs()["Person"].Type())
+	})
+
+	t.Run("resolve interfaces in return types", func(t *testing.T) {
+		p := parser.NewParser()
+		p.ParseString(`
+func Person(Foo, Bar number) Person { }
+func getPerson() (number, Person) { }
+`, "a.ok")
+		require.Nil(t, p.Errors())
+
+		assert.Equal(t, &types.Type{
+			Kind: types.KindFunc,
+			Returns: []*types.Type{
+				types.Number,
+				{
+					Kind: types.KindResolvedInterface,
+					Name: "Person",
+					Properties: map[string]*types.Type{
+						"Foo": {Kind: types.KindNumber},
+						"Bar": {Kind: types.KindNumber},
+					},
+				},
+			},
+		}, p.Funcs()["getPerson"].Type())
+	})
+
+	t.Run("resolve interfaces in arguments", func(t *testing.T) {
+		p := parser.NewParser()
+		p.ParseString(`
+func Person(Foo, Bar number) Person { }
+func greetPerson(p Person, n number) { }
+`, "a.ok")
+		require.Nil(t, p.Errors())
+
+		assert.Equal(t, &types.Type{
+			Kind: types.KindFunc,
+			Arguments: []*types.Type{
+				{
+					Kind: types.KindResolvedInterface,
+					Name: "Person",
+					Properties: map[string]*types.Type{
+						"Foo": {Kind: types.KindNumber},
+						"Bar": {Kind: types.KindNumber},
+					},
+				},
+				types.Number,
+			},
+		}, p.Funcs()["greetPerson"].Type())
+	})
+}
+
+func TestParser_ParseString(t *testing.T) {
 	for testName, test := range map[string]struct {
 		str       string
 		expected  *ast.Func

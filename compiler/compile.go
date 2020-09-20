@@ -49,7 +49,7 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 		funcs[fnName] = fn
 	}
 
-	okcFile, err := compile(funcs, p.Tests(), p.Interfaces, p.Constants, imports)
+	okcFile, err := compile(funcs, p.Tests(), p.Constants, imports)
 	if err != nil {
 		return nil, []error{err}
 	}
