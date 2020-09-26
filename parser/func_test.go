@@ -200,15 +200,9 @@ func TestFunc(t *testing.T) {
 				},
 			},
 		},
-		"function-without-name": {
-			str: "func () {}",
-			expected: map[string]*ast.Func{
-				"1": {Name: "1"},
-			},
-		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.NewParser()
+			p := parser.NewParser(0)
 			p.ParseString(test.str, "a.ok")
 
 			assert.Nil(t, p.Errors())

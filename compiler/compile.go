@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"path"
+	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/parser"
@@ -12,8 +13,8 @@ import (
 
 // Compile will return the compiled file. If there are any dependent packages
 // they will also be compiled.
-func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
-	p := parser.NewParser()
+func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) (*vm.File, []error) {
+	p := parser.NewParser(anonFunctionName)
 	p.ParseDirectory(path.Join(rootPath, pkgPath), includeTests)
 	if errs := p.Errors(); len(errs) > 0 {
 		return nil, errs
@@ -34,7 +35,7 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 				imports[pkgName][fnName] = fn.Type()
 			}
 		} else {
-			subFile, errs := Compile(rootPath, pkgName, false)
+			subFile, errs := Compile(rootPath, pkgName, false, anonFunctionName+10000)
 			if len(errs) > 0 {
 				return nil, errs
 			}
@@ -53,6 +54,18 @@ func Compile(rootPath, pkgPath string, includeTests bool) (*vm.File, []error) {
 	if err != nil {
 		return nil, []error{err}
 	}
+
+	packageAlias := strings.ReplaceAll(packageName, "/", "__")
+	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), &vm.File{
+		Funcs:     map[string]*vm.CompiledFunc{},
+		FuncDefs:  funcs,
+		Constants: p.Constants,
+		Imports:   imports,
+	})
+	if err != nil {
+		return nil, []error{err}
+	}
+	okcFile.PackageFunc = compiledPackageFn
 
 	for _, funcDef := range okcFile.FuncDefs {
 		// We don't need to serialize this.

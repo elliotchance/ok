@@ -20,7 +20,7 @@ func TestImport(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.NewParser()
+			p := parser.NewParser(0)
 			p.ParseString(test.str, "a.ok")
 
 			assert.Nil(t, p.Errors())

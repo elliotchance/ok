@@ -16,7 +16,8 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 	}
 
 	fn := &ast.Func{
-		Pos: parser.pos(originalOffset),
+		Pos:        parser.pos(originalOffset),
+		UniqueName: parser.nextFunctionName(),
 	}
 
 	// The name of the function is optional. For anonymous functions we will
@@ -28,7 +29,6 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 	if err == nil {
 		fn.Name = parser.tokens[offset-1].Value
 	} else {
-		fn.Name = parser.nextFunctionName()
 		anon = true
 	}
 

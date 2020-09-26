@@ -22,6 +22,10 @@ type Func struct {
 	// Name is the name of the function being declared.
 	Name string
 
+	// All functions have a unique name assigned to them so they can be
+	// referenced by the VM.
+	UniqueName string
+
 	// Arguments may contain zero or more elements. They will always be in the
 	// order in which their are declared.
 	Arguments []*Argument

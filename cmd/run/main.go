@@ -2,6 +2,7 @@ package run
 
 import (
 	"log"
+	"time"
 
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/util"
@@ -34,7 +35,7 @@ func (*Command) Run(args []string) {
 		packageName := util.PackageNameFromPath(okPath, arg)
 
 		m := vm.NewVM("no-package")
-		_, errs := compiler.Compile(okPath, packageName, false)
+		_, errs := compiler.Compile(okPath, packageName, false, time.Now().Nanosecond())
 		util.CheckErrorsWithExit(errs)
 
 		check(m.LoadPackage("", packageName))

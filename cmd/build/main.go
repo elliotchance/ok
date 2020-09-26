@@ -41,7 +41,7 @@ func runArg(arg string) {
 	check(err)
 
 	packageName := util.PackageNameFromPath(okPath, arg)
-	file, errs := compiler.Compile(okPath, packageName, false)
+	file, errs := compiler.Compile(okPath, packageName, false, 0)
 	util.CheckErrorsWithExit(errs)
 
 	goFile := path.Join(arg, "main.go")

@@ -62,7 +62,13 @@ func (parser *Parser) ParseString(s string, fileName string) {
 
 				goto done
 			}
+
+			// TODO(elliot): Remove this. We need to index by real name for
+			//  resolving types. But this also means that types can't exist
+			//  beyond the root level.
 			parser.funcs[fn.Name] = fn
+
+			parser.funcs[fn.UniqueName] = fn
 
 		case lexer.TokenTest:
 			var t *ast.Test

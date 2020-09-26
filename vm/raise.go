@@ -25,5 +25,5 @@ func (ins *Raise) Execute(_ *int, vm *VM) error {
 
 // String is the human-readable description of the instruction.
 func (ins *Raise) String() string {
-	return fmt.Sprintf("%s = raise %s", ins.Err, ins.Type)
+	return fmt.Sprintf("raise %s (%s)", ins.Err, ins.Type)
 }

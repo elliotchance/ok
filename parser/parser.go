@@ -3,9 +3,11 @@ package parser
 import (
 	"fmt"
 	"reflect"
+	"sort"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/pkg/errors"
 )
 
@@ -76,6 +78,50 @@ func (parser *Parser) nextFunctionName() string {
 	return fmt.Sprintf("%d", parser.anonFunctionName)
 }
 
+func (parser *Parser) Package(packageAlias string) *ast.Func {
+	properties := map[string]*types.Type{}
+
+	var constantNames []string
+	for name := range parser.Constants {
+		constantNames = append(constantNames, name)
+	}
+	sort.Strings(constantNames)
+
+	var statements []ast.Node
+	for _, name := range constantNames {
+		c := parser.Constants[name]
+		properties[name] = c.Kind
+		statements = append(statements, &ast.Assign{
+			Lefts:  []ast.Node{&ast.Identifier{Name: name}},
+			Rights: []ast.Node{c},
+		})
+	}
+
+	var funcNames []string
+	for name := range parser.funcs {
+		funcNames = append(funcNames, name)
+	}
+	sort.Strings(funcNames)
+
+	for _, name := range funcNames {
+		fn := parser.funcs[name]
+		properties[name] = fn.Type()
+		statements = append(statements, &ast.Assign{
+			Lefts:  []ast.Node{&ast.Identifier{Name: name}},
+			Rights: []ast.Node{fn},
+		})
+	}
+
+	return &ast.Func{
+		Name: packageAlias,
+		Returns: []*types.Type{
+			types.NewInterface(packageAlias, properties),
+		},
+		Statements: statements,
+		Pos:        parser.pos(0),
+	}
+}
+
 func (parser *Parser) Funcs() map[string]*ast.Func {
 	return parser.funcs
 }
@@ -94,12 +140,13 @@ func (parser *Parser) Comments() []*ast.Comment {
 }
 
 // NewParser creates an empty parser.
-func NewParser() *Parser {
+func NewParser(anonFunctionName int) *Parser {
 	return &Parser{
-		finalizers: map[string][]*ast.Finally{},
-		Constants:  map[string]*ast.Literal{},
-		imports:    map[string]string{},
-		funcs:      map[string]*ast.Func{},
+		finalizers:       map[string][]*ast.Finally{},
+		Constants:        map[string]*ast.Literal{},
+		imports:          map[string]string{},
+		funcs:            map[string]*ast.Func{},
+		anonFunctionName: anonFunctionName,
 	}
 }
 

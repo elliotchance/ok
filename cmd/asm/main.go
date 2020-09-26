@@ -35,7 +35,7 @@ func (*Command) Run(args []string) {
 	check(err)
 
 	packageName := util.PackageNameFromPath(okPath, args[0])
-	pkg, errs := compiler.Compile(okPath, packageName, false)
+	pkg, errs := compiler.Compile(okPath, packageName, false, 0)
 	util.CheckErrorsWithExit(errs)
 
 	// Create a map as a function may match more than one glob.
@@ -68,7 +68,7 @@ func (*Command) Run(args []string) {
 			panic("no such function: " + fnName)
 		}
 
-		fmt.Println(fn.String() + ":")
+		fmt.Println(fn.UniqueName+":", fn.String()+":")
 
 		for i, ins := range pkg.Funcs[fn.Name].Instructions {
 			ty := fmt.Sprintf("%T", ins)[4:]
