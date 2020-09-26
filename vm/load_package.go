@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
 )
@@ -15,22 +14,19 @@ type LoadPackage struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *LoadPackage) Execute(_ *int, vm *VM) error {
-	// TODO(elliot): This is a horrible implementation. Needs to be rewritten.
-
-	pkgMap := map[string]*ast.Literal{}
-
-	prefix := ins.PackageName + "."
-	for fnName, fn := range vm.fns {
-		if strings.HasPrefix(fnName, prefix) {
-			pkgMap[fnName[len(prefix):]] = &ast.Literal{
-				Kind:  fn.Type,
-				Value: fnName,
-			}
-		}
+	vm.fns["__load_package"] = vm.packageFunctions[ins.PackageName]
+	call := &Call{
+		FunctionName: "__load_package",
+		Results:      Registers{"__pkg"},
+		Type:         vm.packageFunctions[ins.PackageName].Type,
+	}
+	err := call.Execute(nil, vm)
+	if err != nil {
+		return err
 	}
 
 	vm.Set(ins.Result, &ast.Literal{
-		Map: pkgMap,
+		Map: vm.Stack[len(vm.Stack)-1][StateRegister].Map["__pkg"].Map,
 	})
 
 	return nil

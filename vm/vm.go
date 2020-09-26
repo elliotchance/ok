@@ -48,14 +48,17 @@ type VM struct {
 
 	// FinallyBlocks are stacked with stack.
 	FinallyBlocks [][]*FinallyBlock
+
+	packageFunctions map[string]*CompiledFunc
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
 func NewVM(pkg string) *VM {
 	return &VM{
-		fns:    make(map[string]*CompiledFunc),
-		pkg:    pkg,
-		Stdout: os.Stdout,
+		fns:              make(map[string]*CompiledFunc),
+		pkg:              pkg,
+		Stdout:           os.Stdout,
+		packageFunctions: make(map[string]*CompiledFunc),
 	}
 }
 
@@ -132,6 +135,9 @@ func (vm *VM) call(
 
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[name]
+	if fn == nil {
+		panic("no such function: " + name)
+	}
 
 	// Setup the finally blocks. Copy so they all start disabled.
 	var finallyBlocks []*FinallyBlock
@@ -234,7 +240,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 				case vm.ErrType.Name,
 					// TODO(elliot): This is a stupid hack for now. This was
 					//  created before interfaces could determine this properly.
-					"error.Error":
+					"error.Error", "Error":
 
 					// TODO(elliot): The err register might be better as a
 					//  fixed position register rather than a variable?
@@ -356,9 +362,6 @@ func (vm *VM) LoadPackage(pkgVariable, packageName string) error {
 
 func (vm *VM) LoadFile(pkgVariable string, file *File) error {
 	for k, v := range file.Funcs {
-		if pkgVariable != "" {
-			k = pkgVariable + "." + k
-		}
 		vm.fns[k] = v
 	}
 
@@ -370,6 +373,8 @@ func (vm *VM) LoadFile(pkgVariable string, file *File) error {
 			return err
 		}
 	}
+
+	vm.packageFunctions[pkgVariable] = file.PackageFunc
 
 	return nil
 }

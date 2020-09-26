@@ -48,7 +48,7 @@ func (c *Command) Run(args []string) {
 
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath(okPath, arg)
-		_, errs := compiler.Compile(okPath, packageName, true)
+		_, errs := compiler.Compile(okPath, packageName, true, 0)
 		util.CheckErrorsWithExit(errs)
 
 		m := vm.NewVM("no-package")

@@ -2,8 +2,8 @@ package doc
 
 import (
 	"fmt"
-	"log"
 	"sort"
+	"strconv"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/parser"
@@ -11,12 +11,6 @@ import (
 )
 
 type Command struct{}
-
-func check(err error) {
-	if err != nil {
-		log.Fatalln(err)
-	}
-}
 
 // Description is shown in "ok -help".
 func (*Command) Description() string {
@@ -32,7 +26,7 @@ func (*Command) Run(args []string) {
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath("", arg)
 
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseDirectory(arg, false)
 
 		docs := map[string]string{}
@@ -40,7 +34,12 @@ func (*Command) Run(args []string) {
 		var constantNames []string
 		constants := map[string]*ast.Literal{}
 
-		for _, fn := range p.Funcs() {
+		for fnName, fn := range p.Funcs() {
+			// TODO(elliot): Remove this check.
+			if _, err := strconv.Atoi(fnName); err == nil {
+				continue
+			}
+
 			funcs = append(funcs, fn)
 		}
 

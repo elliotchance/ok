@@ -17,6 +17,8 @@ type File struct {
 	FuncDefs  map[string]*ast.Func
 	Tests     []*CompiledTest
 	Constants map[string]*ast.Literal
+
+	PackageFunc *CompiledFunc
 }
 
 // Store will create or replace the okc file for the provided package name.

@@ -79,14 +79,15 @@ func TestAssign(t *testing.T) {
 					&ast.Identifier{Name: "fn"},
 				},
 				Rights: []ast.Node{
-					&ast.Func{Name: "1"},
+					// UniqueName would be set, but is ignored by cmpOptions().
+					&ast.Func{},
 				},
 			},
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.NewParser()
+			p := parser.NewParser(0)
 			p.ParseString(str, "a.ok")
 
 			assert.Nil(t, p.Errors())

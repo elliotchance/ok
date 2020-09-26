@@ -33,7 +33,7 @@ func main() {
 			continue
 		}
 
-		f, errs := compiler.Compile("lib", pkgName, false)
+		f, errs := compiler.Compile("lib", pkgName, false, 0)
 		util.CheckErrorsWithExit(errs)
 
 		pkgs[pkgName] = f

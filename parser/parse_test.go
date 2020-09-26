@@ -14,11 +14,11 @@ import (
 
 func TestParser_Funcs(t *testing.T) {
 	t.Run("main function", func(t *testing.T) {
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseString(`func main() { }`, "a.ok")
 		require.Nil(t, p.Errors())
 
-		assert.Equal(t, map[string]*ast.Func{
+		asttest.AssertEqual(t, map[string]*ast.Func{
 			"main": {
 				Name: "main",
 				Pos:  "a.ok:1:1",
@@ -27,12 +27,12 @@ func TestParser_Funcs(t *testing.T) {
 	})
 
 	t.Run("calling ParseString multiple times appends functions", func(t *testing.T) {
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseString(`func main() { }`, "a.ok")
 		p.ParseString(`func foo() { }`, "a.ok")
 		require.Nil(t, p.Errors())
 
-		assert.Equal(t, map[string]*ast.Func{
+		asttest.AssertEqual(t, map[string]*ast.Func{
 			"main": {
 				Name: "main",
 				Pos:  "a.ok:1:1",
@@ -45,7 +45,7 @@ func TestParser_Funcs(t *testing.T) {
 	})
 
 	t.Run("normal function type", func(t *testing.T) {
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseString(`func main(a, b number) string { }`, "a.ok")
 		require.Nil(t, p.Errors())
 
@@ -57,7 +57,7 @@ func TestParser_Funcs(t *testing.T) {
 	})
 
 	t.Run("constructor function", func(t *testing.T) {
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseString(`
 func Person(Foo, bar, Baz number) Person {
 	func Qux() string { }
@@ -91,7 +91,7 @@ func Person(Foo, bar, Baz number) Person {
 	})
 
 	t.Run("resolve interfaces in return types", func(t *testing.T) {
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseString(`
 func Person(Foo, Bar number) Person { }
 func getPerson() (number, Person) { }
@@ -115,7 +115,7 @@ func getPerson() (number, Person) { }
 	})
 
 	t.Run("resolve interfaces in arguments", func(t *testing.T) {
-		p := parser.NewParser()
+		p := parser.NewParser(0)
 		p.ParseString(`
 func Person(Foo, Bar number) Person { }
 func greetPerson(p Person, n number) { }
@@ -346,7 +346,7 @@ func TestParser_ParseString(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.NewParser()
+			p := parser.NewParser(0)
 			p.ParseString(test.str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())

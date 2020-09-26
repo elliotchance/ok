@@ -24,7 +24,7 @@ func TestTest(t *testing.T) {
 		},
 	} {
 		t.Run(testName, func(t *testing.T) {
-			p := parser.NewParser()
+			p := parser.NewParser(0)
 			p.ParseString(test.str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())

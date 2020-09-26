@@ -32,8 +32,9 @@ func compileExpr(
 			return nil, nil, err
 		}
 
-		file.FuncDefs[e.Name] = e
-		file.Funcs[e.Name] = cf
+		file.FuncDefs[e.UniqueName] = e
+		file.Funcs[e.UniqueName] = cf
+
 		fnType := e.Type()
 
 		returns := compiledFunc.NextRegister()
@@ -41,7 +42,7 @@ func compileExpr(
 			VariableName: returns,
 			Value: &ast.Literal{
 				Kind:  fnType,
-				Value: e.Name,
+				Value: e.UniqueName,
 			},
 		})
 
@@ -129,7 +130,7 @@ func compileExpr(
 				VariableName: literalRegister,
 				Value: &ast.Literal{
 					Kind:  fn.Type(),
-					Value: fn.Name,
+					Value: fn.UniqueName,
 				},
 			})
 

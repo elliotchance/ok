@@ -459,7 +459,7 @@ func TestExpr(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
-			p := parser.NewParser()
+			p := parser.NewParser(0)
 			p.ParseString(str, "a.ok")
 
 			assertEqualErrors(t, test.errs, p.Errors())
