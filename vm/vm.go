@@ -69,15 +69,17 @@ func NewVM(pkg string) *VM {
 //  this way so I could use "ok run" like an "ok compile" (that didn't exist at
 //  the time) for compiling the standard libraries.
 func (vm *VM) Run() error {
-	if _, ok := vm.fns["main"]; !ok {
-		return nil
+	for uniqueName, fn := range vm.fns {
+		if fn.Name == "main" {
+			_, err := vm.call(uniqueName, nil, map[string]*ast.Literal{}, types.Any)
+
+			vm.catchUnhandledError()
+
+			return err
+		}
 	}
 
-	_, err := vm.call("main", nil, map[string]*ast.Literal{}, types.Any)
-
-	vm.catchUnhandledError()
-
-	return err
+	return nil
 }
 
 // Run will run the tests only.

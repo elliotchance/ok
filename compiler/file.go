@@ -26,13 +26,13 @@ func compile(
 		}
 	}
 
-	for name, fn := range funcs {
+	for _, fn := range funcs {
 		compiledFn, err := CompileFunc(fn, file)
 		if err != nil {
 			return nil, err
 		}
 
-		file.Funcs[name] = compiledFn
+		file.Funcs[fn.UniqueName] = compiledFn
 	}
 
 	for _, fn := range tests {
