@@ -10,13 +10,20 @@ func compile(
 	funcs map[string]*ast.Func,
 	tests []*ast.Test,
 	constants map[string]*ast.Literal,
-	imports map[string]map[string]*types.Type,
+	imports map[string]*types.Type,
 ) (*vm.File, error) {
 	file := &vm.File{
 		Funcs:     map[string]*vm.CompiledFunc{},
-		FuncDefs:  funcs,
 		Constants: constants,
 		Imports:   imports,
+	}
+
+	for _, fn := range funcs {
+		file.Funcs[fn.UniqueName] = &vm.CompiledFunc{
+			Type:       fn.Type(),
+			Name:       fn.Name,
+			UniqueName: fn.UniqueName,
+		}
 	}
 
 	for name, fn := range funcs {

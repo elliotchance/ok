@@ -48,12 +48,12 @@ func (c *Command) Run(args []string) {
 
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath(okPath, arg)
-		_, errs := compiler.Compile(okPath, packageName, true, 0)
+		f, errs := compiler.Compile(okPath, packageName, true, time.Now().Nanosecond())
 		util.CheckErrorsWithExit(errs)
 
 		m := vm.NewVM("no-package")
 		startTime := time.Now()
-		check(m.LoadPackage("", packageName))
+		check(m.LoadFile("", f))
 		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter))
 		elapsed := time.Since(startTime).Milliseconds()
 		check(err)

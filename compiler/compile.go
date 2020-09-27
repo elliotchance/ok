@@ -23,26 +23,20 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 	packageName := util.PackageNameFromPath(rootPath, pkgPath)
 
 	funcs := map[string]*ast.Func{}
-	imports := map[string]map[string]*types.Type{}
+	imports := map[string]*types.Type{}
 
 	for _, pkgName := range p.Imports() {
-		imports[pkgName] = map[string]*types.Type{}
-
 		// TODO(elliot): Check import location exists.
 
-		if p, ok := vm.Packages[pkgName]; ok {
-			for fnName, fn := range p.FuncDefs {
-				imports[pkgName][fnName] = fn.Type()
-			}
+		if _, ok := vm.Packages[pkgName]; ok {
+			imports[pkgName] = vm.Packages[pkgName].Interface()
 		} else {
 			subFile, errs := Compile(rootPath, pkgName, false, anonFunctionName+10000)
 			if len(errs) > 0 {
 				return nil, errs
 			}
 
-			for fnName, fn := range subFile.FuncDefs {
-				imports[pkgName][fnName] = fn.Type()
-			}
+			imports[pkgName] = subFile.Interface()
 		}
 	}
 
@@ -56,26 +50,26 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 	}
 
 	packageAlias := strings.ReplaceAll(packageName, "/", "__")
-	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), &vm.File{
+
+	file := &vm.File{
 		Funcs:     map[string]*vm.CompiledFunc{},
-		FuncDefs:  funcs,
 		Constants: p.Constants,
 		Imports:   imports,
-	})
+	}
+
+	for _, fn := range funcs {
+		file.Funcs[fn.UniqueName] = &vm.CompiledFunc{
+			Type:       fn.Type(),
+			Name:       fn.Name,
+			UniqueName: fn.UniqueName,
+		}
+	}
+
+	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), file)
 	if err != nil {
 		return nil, []error{err}
 	}
 	okcFile.PackageFunc = compiledPackageFn
-
-	for _, funcDef := range okcFile.FuncDefs {
-		// We don't need to serialize this.
-		funcDef.Statements = nil
-	}
-
-	for _, fn := range okcFile.Funcs {
-		// We don't need to serialize this.
-		fn.Type = nil
-	}
 
 	err = vm.Store(okcFile, packageName)
 	if err != nil {

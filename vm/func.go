@@ -12,7 +12,10 @@ type CompiledFunc struct {
 	Registers    int
 	Variables    map[string]*types.Type // name: type
 	Finally      [][]Instruction
-	Type         *types.Type
+
+	// These are copied from the function definition.
+	Type             *types.Type
+	Name, UniqueName string
 }
 
 type FinallyBlock struct {

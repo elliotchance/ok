@@ -19,6 +19,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Error",
+								Properties: map[string]*types.Type{
+									"Error": &types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+					},
+					Name:       "Error",
+					UniqueName: "1",
 				},
 				"Error": &CompiledFunc{
 					Arguments: []string{"Error"},
@@ -31,50 +52,27 @@ func init() {
 							Kind: 7,
 						},
 					},
-				},
-			},
-			FuncDefs: map[string]*ast.Func{
-				"1": &ast.Func{
-					Name:       "Error",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"Error", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 1,
-							Name: "Error",
-							Properties: map[string]*types.Type{
-								"Error": &types.Type{
-									Kind: 7,
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Error",
+								Properties: map[string]*types.Type{
+									"Error": &types.Type{
+										Kind: 7,
+									},
 								},
 							},
 						},
 					},
-					Pos: "lib/error/error.ok:2:1",
-				},
-				"Error": &ast.Func{
 					Name:       "Error",
 					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"Error", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 1,
-							Name: "Error",
-							Properties: map[string]*types.Type{
-								"Error": &types.Type{
-									Kind: 7,
-								},
-							},
-						},
-					},
-					Pos: "lib/error/error.ok:2:1",
 				},
 			},
 			Constants: nil,
@@ -195,6 +193,7 @@ func init() {
 						},
 					},
 				},
+				Name: "..__error",
 			},
 		},
 		"math": &File{
@@ -221,6 +220,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Abs",
+					UniqueName: "1",
 				},
 				"10": &CompiledFunc{
 					Arguments: []string{"x", "prec"},
@@ -271,6 +285,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Round",
+					UniqueName: "10",
 				},
 				"2": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -284,6 +316,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "LogE",
+					UniqueName: "2",
 				},
 				"3": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -302,6 +349,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Log10",
+					UniqueName: "3",
 				},
 				"4": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -322,6 +384,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Exp",
+					UniqueName: "4",
 				},
 				"5": &CompiledFunc{
 					Arguments: []string{"base", "power"},
@@ -338,6 +415,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Pow",
+					UniqueName: "5",
 				},
 				"6": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -354,6 +449,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Sqrt",
+					UniqueName: "6",
 				},
 				"7": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -374,6 +484,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Cbrt",
+					UniqueName: "7",
 				},
 				"8": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -412,6 +537,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Ceil",
+					UniqueName: "8",
 				},
 				"9": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -450,6 +590,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Floor",
+					UniqueName: "9",
 				},
 				"Abs": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -472,6 +627,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Abs",
+					UniqueName: "1",
 				},
 				"Cbrt": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -492,6 +662,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Cbrt",
+					UniqueName: "7",
 				},
 				"Ceil": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -530,6 +715,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Ceil",
+					UniqueName: "8",
 				},
 				"Exp": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -550,6 +750,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Exp",
+					UniqueName: "4",
 				},
 				"Floor": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -588,6 +803,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Floor",
+					UniqueName: "9",
 				},
 				"Log10": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -606,6 +836,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Log10",
+					UniqueName: "3",
 				},
 				"LogE": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -619,6 +864,21 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "LogE",
+					UniqueName: "2",
 				},
 				"Pow": &CompiledFunc{
 					Arguments: []string{"base", "power"},
@@ -635,6 +895,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Pow",
+					UniqueName: "5",
 				},
 				"Round": &CompiledFunc{
 					Arguments: []string{"x", "prec"},
@@ -685,6 +963,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Round",
+					UniqueName: "10",
 				},
 				"Sqrt": &CompiledFunc{
 					Arguments: []string{"x"},
@@ -701,320 +997,21 @@ func init() {
 							Kind: 6,
 						},
 					},
-				},
-			},
-			FuncDefs: map[string]*ast.Func{
-				"1": &ast.Func{
-					Name:       "Abs",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
 						},
 					},
-					Pos: "lib/math/abs.ok:2:1",
-				},
-				"10": &ast.Func{
-					Name:       "Round",
-					UniqueName: "10",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"prec", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/rounding.ok:31:1",
-				},
-				"2": &ast.Func{
-					Name:       "LogE",
-					UniqueName: "2",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/log.ok:2:1",
-				},
-				"3": &ast.Func{
-					Name:       "Log10",
-					UniqueName: "3",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/log.ok:7:1",
-				},
-				"4": &ast.Func{
-					Name:       "Exp",
-					UniqueName: "4",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:2:1",
-				},
-				"5": &ast.Func{
-					Name:       "Pow",
-					UniqueName: "5",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"base", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"power", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:10:1",
-				},
-				"6": &ast.Func{
 					Name:       "Sqrt",
 					UniqueName: "6",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:15:1",
-				},
-				"7": &ast.Func{
-					Name:       "Cbrt",
-					UniqueName: "7",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:20:1",
-				},
-				"8": &ast.Func{
-					Name:       "Ceil",
-					UniqueName: "8",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/rounding.ok:2:1",
-				},
-				"9": &ast.Func{
-					Name:       "Floor",
-					UniqueName: "9",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/rounding.ok:16:1",
-				},
-				"Abs": &ast.Func{
-					Name:       "Abs",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/abs.ok:2:1",
-				},
-				"Cbrt": &ast.Func{
-					Name:       "Cbrt",
-					UniqueName: "7",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:20:1",
-				},
-				"Ceil": &ast.Func{
-					Name:       "Ceil",
-					UniqueName: "8",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/rounding.ok:2:1",
-				},
-				"Exp": &ast.Func{
-					Name:       "Exp",
-					UniqueName: "4",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:2:1",
-				},
-				"Floor": &ast.Func{
-					Name:       "Floor",
-					UniqueName: "9",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/rounding.ok:16:1",
-				},
-				"Log10": &ast.Func{
-					Name:       "Log10",
-					UniqueName: "3",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/log.ok:7:1",
-				},
-				"LogE": &ast.Func{
-					Name:       "LogE",
-					UniqueName: "2",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/log.ok:2:1",
-				},
-				"Pow": &ast.Func{
-					Name:       "Pow",
-					UniqueName: "5",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"base", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"power", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:10:1",
-				},
-				"Round": &ast.Func{
-					Name:       "Round",
-					UniqueName: "10",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"prec", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/rounding.ok:31:1",
-				},
-				"Sqrt": &ast.Func{
-					Name:       "Sqrt",
-					UniqueName: "6",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"x", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/math/powers.ok:15:1",
 				},
 			},
 			Constants: map[string]*ast.Literal{
@@ -1874,6 +1871,7 @@ func init() {
 						},
 					},
 				},
+				Name: "..__math",
 			},
 		},
 		"reflect": &File{
@@ -1897,6 +1895,30 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 2,
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 2,
+								},
+							},
+						},
+					},
+					Name:       "Call",
+					UniqueName: "1",
 				},
 				"2": &CompiledFunc{
 					Arguments: []string{"obj", "prop"},
@@ -1913,6 +1935,24 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+					},
+					Name:       "Get",
+					UniqueName: "2",
 				},
 				"3": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -1926,6 +1966,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Interface",
+					UniqueName: "3",
 				},
 				"4": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2043,6 +2098,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Kind",
+					UniqueName: "4",
 				},
 				"5": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2056,6 +2126,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Len",
+					UniqueName: "5",
 				},
 				"6": &CompiledFunc{
 					Arguments: []string{"obj"},
@@ -2069,6 +2154,24 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+					Name:       "Properties",
+					UniqueName: "6",
 				},
 				"7": &CompiledFunc{
 					Arguments: []string{"obj", "prop", "value"},
@@ -2088,6 +2191,27 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+					},
+					Name:       "Set",
+					UniqueName: "7",
 				},
 				"8": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -2137,6 +2261,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "hasPrefix",
+					UniqueName: "8",
 				},
 				"9": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2150,6 +2292,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Type",
+					UniqueName: "9",
 				},
 				"Call": &CompiledFunc{
 					Arguments: []string{"fn", "args"},
@@ -2169,6 +2326,30 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 2,
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 2,
+								},
+							},
+						},
+					},
+					Name:       "Call",
+					UniqueName: "1",
 				},
 				"Get": &CompiledFunc{
 					Arguments: []string{"obj", "prop"},
@@ -2185,6 +2366,24 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+					},
+					Name:       "Get",
+					UniqueName: "2",
 				},
 				"Interface": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2198,6 +2397,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Interface",
+					UniqueName: "3",
 				},
 				"Kind": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2315,6 +2529,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Kind",
+					UniqueName: "4",
 				},
 				"Len": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2328,6 +2557,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Len",
+					UniqueName: "5",
 				},
 				"Properties": &CompiledFunc{
 					Arguments: []string{"obj"},
@@ -2341,6 +2585,24 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+					Name:       "Properties",
+					UniqueName: "6",
 				},
 				"Set": &CompiledFunc{
 					Arguments: []string{"obj", "prop", "value"},
@@ -2360,6 +2622,27 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 2,
+							},
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+					},
+					Name:       "Set",
+					UniqueName: "7",
 				},
 				"Type": &CompiledFunc{
 					Arguments: []string{"value"},
@@ -2373,6 +2656,21 @@ func init() {
 							Kind: 2,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 2,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Type",
+					UniqueName: "9",
 				},
 				"hasPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -2422,326 +2720,24 @@ func init() {
 							Kind: 7,
 						},
 					},
-				},
-			},
-			FuncDefs: map[string]*ast.Func{
-				"1": &ast.Func{
-					Name:       "Call",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"fn", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"args", &types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 2,
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
 							},
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 2,
-							},
-						},
-					},
-					Pos: "lib/reflect/call.ok:16:1",
-				},
-				"2": &ast.Func{
-					Name:       "Get",
-					UniqueName: "2",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"obj", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"prop", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 2,
-						},
-					},
-					Pos: "lib/reflect/get.ok:15:1",
-				},
-				"3": &ast.Func{
-					Name:       "Interface",
-					UniqueName: "3",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/reflect/interface.ok:10:1",
-				},
-				"4": &ast.Func{
-					Name:       "Kind",
-					UniqueName: "4",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/reflect/kind.ok:3:1",
-				},
-				"5": &ast.Func{
-					Name:       "Len",
-					UniqueName: "5",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/reflect/len.ok:3:1",
-				},
-				"6": &ast.Func{
-					Name:       "Properties",
-					UniqueName: "6",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"obj", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 8,
-							Element: &types.Type{
+							&types.Type{
 								Kind: 7,
 							},
 						},
-					},
-					Pos: "lib/reflect/props.ok:3:1",
-				},
-				"7": &ast.Func{
-					Name:       "Set",
-					UniqueName: "7",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"obj", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"prop", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 2,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
 						},
 					},
-					Pos: "lib/reflect/set.ok:16:1",
-				},
-				"8": &ast.Func{
 					Name:       "hasPrefix",
 					UniqueName: "8",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"prefix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/reflect/strings.ok:4:1",
-				},
-				"9": &ast.Func{
-					Name:       "Type",
-					UniqueName: "9",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/reflect/type.ok:8:1",
-				},
-				"Call": &ast.Func{
-					Name:       "Call",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"fn", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"args", &types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 2,
-							},
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 2,
-							},
-						},
-					},
-					Pos: "lib/reflect/call.ok:16:1",
-				},
-				"Get": &ast.Func{
-					Name:       "Get",
-					UniqueName: "2",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"obj", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"prop", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 2,
-						},
-					},
-					Pos: "lib/reflect/get.ok:15:1",
-				},
-				"Interface": &ast.Func{
-					Name:       "Interface",
-					UniqueName: "3",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/reflect/interface.ok:10:1",
-				},
-				"Kind": &ast.Func{
-					Name:       "Kind",
-					UniqueName: "4",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/reflect/kind.ok:3:1",
-				},
-				"Len": &ast.Func{
-					Name:       "Len",
-					UniqueName: "5",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/reflect/len.ok:3:1",
-				},
-				"Properties": &ast.Func{
-					Name:       "Properties",
-					UniqueName: "6",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"obj", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 7,
-							},
-						},
-					},
-					Pos: "lib/reflect/props.ok:3:1",
-				},
-				"Set": &ast.Func{
-					Name:       "Set",
-					UniqueName: "7",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"obj", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"prop", &types.Type{
-							Kind: 2,
-						}},
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 2,
-						},
-					},
-					Pos: "lib/reflect/set.ok:16:1",
-				},
-				"Type": &ast.Func{
-					Name:       "Type",
-					UniqueName: "9",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"value", &types.Type{
-							Kind: 2,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/reflect/type.ok:8:1",
-				},
-				"hasPrefix": &ast.Func{
-					Name:       "hasPrefix",
-					UniqueName: "8",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"prefix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/reflect/strings.ok:4:1",
 				},
 			},
 			Constants: nil,
@@ -3488,6 +3484,7 @@ func init() {
 						},
 					},
 				},
+				Name: "..__reflect",
 			},
 		},
 		"strings": &File{
@@ -3547,6 +3544,21 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "ToLower",
+					UniqueName: "1",
 				},
 				"10": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -3630,6 +3642,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "LastIndex",
+					UniqueName: "10",
 				},
 				"11": &CompiledFunc{
 					Arguments: []string{"s", "substr", "offset"},
@@ -3746,6 +3776,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "LastIndexBefore",
+					UniqueName: "11",
 				},
 				"12": &CompiledFunc{
 					Arguments: []string{"strings", "glue"},
@@ -3790,6 +3841,27 @@ func init() {
 							},
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 7,
+								},
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Join",
+					UniqueName: "12",
 				},
 				"13": &CompiledFunc{
 					Arguments: []string{"s", "pad", "toLen"},
@@ -3839,6 +3911,27 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "PadLeft",
+					UniqueName: "13",
 				},
 				"14": &CompiledFunc{
 					Arguments: []string{"s", "pad", "toLen"},
@@ -3888,6 +3981,27 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "PadRight",
+					UniqueName: "14",
 				},
 				"15": &CompiledFunc{
 					Arguments: []string{"pad", "toLen"},
@@ -3949,6 +4063,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "createPad",
+					UniqueName: "15",
 				},
 				"16": &CompiledFunc{
 					Arguments: []string{"str", "times"},
@@ -3986,6 +4118,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Repeat",
+					UniqueName: "16",
 				},
 				"17": &CompiledFunc{
 					Arguments: []string{"s", "find", "replace"},
@@ -4048,6 +4198,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "ReplaceAll",
+					UniqueName: "17",
 				},
 				"18": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -4089,6 +4260,21 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Reverse",
+					UniqueName: "18",
 				},
 				"19": &CompiledFunc{
 					Arguments: []string{"s", "delimiter"},
@@ -4250,6 +4436,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+					Name:       "Split",
+					UniqueName: "19",
 				},
 				"2": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -4305,6 +4512,21 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "ToUpper",
+					UniqueName: "2",
 				},
 				"20": &CompiledFunc{
 					Arguments: []string{"s", "fromIndex", "toIndex"},
@@ -4344,6 +4566,27 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Substr",
+					UniqueName: "20",
 				},
 				"21": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -4420,6 +4663,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimLeft",
+					UniqueName: "21",
 				},
 				"22": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -4486,6 +4747,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimRight",
+					UniqueName: "22",
 				},
 				"23": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -4539,6 +4818,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Trim",
+					UniqueName: "23",
 				},
 				"24": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -4595,6 +4892,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimPrefix",
+					UniqueName: "24",
 				},
 				"25": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
@@ -4677,6 +4992,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimSuffix",
+					UniqueName: "25",
 				},
 				"26": &CompiledFunc{
 					Arguments: []string{"s", "index"},
@@ -4710,6 +5043,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "substrFrom",
+					UniqueName: "26",
 				},
 				"3": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -4748,6 +5099,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "Contains",
+					UniqueName: "3",
 				},
 				"4": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -4797,6 +5166,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "HasPrefix",
+					UniqueName: "4",
 				},
 				"5": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
@@ -4863,6 +5250,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "HasSuffix",
+					UniqueName: "5",
 				},
 				"6": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -4903,6 +5308,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Index",
+					UniqueName: "6",
 				},
 				"7": &CompiledFunc{
 					Arguments: []string{"s", "substr", "offset"},
@@ -4999,6 +5422,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "IndexAfter",
+					UniqueName: "7",
 				},
 				"8": &CompiledFunc{
 					Arguments: []string{"a", "b"},
@@ -5017,6 +5461,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "min",
+					UniqueName: "8",
 				},
 				"9": &CompiledFunc{
 					Arguments: []string{"a", "b"},
@@ -5035,6 +5497,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "max",
+					UniqueName: "9",
 				},
 				"Contains": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -5073,6 +5553,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "Contains",
+					UniqueName: "3",
 				},
 				"HasPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -5122,6 +5620,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "HasPrefix",
+					UniqueName: "4",
 				},
 				"HasSuffix": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
@@ -5188,6 +5704,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "HasSuffix",
+					UniqueName: "5",
 				},
 				"Index": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -5228,6 +5762,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Index",
+					UniqueName: "6",
 				},
 				"IndexAfter": &CompiledFunc{
 					Arguments: []string{"s", "substr", "offset"},
@@ -5324,6 +5876,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "IndexAfter",
+					UniqueName: "7",
 				},
 				"Join": &CompiledFunc{
 					Arguments: []string{"strings", "glue"},
@@ -5368,6 +5941,27 @@ func init() {
 							},
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 7,
+								},
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Join",
+					UniqueName: "12",
 				},
 				"LastIndex": &CompiledFunc{
 					Arguments: []string{"s", "substr"},
@@ -5451,6 +6045,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "LastIndex",
+					UniqueName: "10",
 				},
 				"LastIndexBefore": &CompiledFunc{
 					Arguments: []string{"s", "substr", "offset"},
@@ -5567,6 +6179,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "LastIndexBefore",
+					UniqueName: "11",
 				},
 				"PadLeft": &CompiledFunc{
 					Arguments: []string{"s", "pad", "toLen"},
@@ -5616,6 +6249,27 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "PadLeft",
+					UniqueName: "13",
 				},
 				"PadRight": &CompiledFunc{
 					Arguments: []string{"s", "pad", "toLen"},
@@ -5665,6 +6319,27 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "PadRight",
+					UniqueName: "14",
 				},
 				"Repeat": &CompiledFunc{
 					Arguments: []string{"str", "times"},
@@ -5702,6 +6377,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Repeat",
+					UniqueName: "16",
 				},
 				"ReplaceAll": &CompiledFunc{
 					Arguments: []string{"s", "find", "replace"},
@@ -5764,6 +6457,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "ReplaceAll",
+					UniqueName: "17",
 				},
 				"Reverse": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -5805,6 +6519,21 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Reverse",
+					UniqueName: "18",
 				},
 				"Split": &CompiledFunc{
 					Arguments: []string{"s", "delimiter"},
@@ -5966,6 +6695,27 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+					Name:       "Split",
+					UniqueName: "19",
 				},
 				"Substr": &CompiledFunc{
 					Arguments: []string{"s", "fromIndex", "toIndex"},
@@ -6005,6 +6755,27 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Substr",
+					UniqueName: "20",
 				},
 				"ToLower": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -6060,6 +6831,21 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "ToLower",
+					UniqueName: "1",
 				},
 				"ToUpper": &CompiledFunc{
 					Arguments: []string{"s"},
@@ -6115,6 +6901,21 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "ToUpper",
+					UniqueName: "2",
 				},
 				"Trim": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -6168,6 +6969,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Trim",
+					UniqueName: "23",
 				},
 				"TrimLeft": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -6244,6 +7063,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimLeft",
+					UniqueName: "21",
 				},
 				"TrimPrefix": &CompiledFunc{
 					Arguments: []string{"s", "prefix"},
@@ -6300,6 +7137,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimPrefix",
+					UniqueName: "24",
 				},
 				"TrimRight": &CompiledFunc{
 					Arguments: []string{"s", "cutset"},
@@ -6366,6 +7221,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimRight",
+					UniqueName: "22",
 				},
 				"TrimSuffix": &CompiledFunc{
 					Arguments: []string{"s", "suffix"},
@@ -6448,6 +7321,24 @@ func init() {
 							Kind: 7,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "TrimSuffix",
+					UniqueName: "25",
 				},
 				"createPad": &CompiledFunc{
 					Arguments: []string{"pad", "toLen"},
@@ -6509,6 +7400,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "createPad",
+					UniqueName: "15",
 				},
 				"max": &CompiledFunc{
 					Arguments: []string{"a", "b"},
@@ -6527,6 +7436,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "max",
+					UniqueName: "9",
 				},
 				"min": &CompiledFunc{
 					Arguments: []string{"a", "b"},
@@ -6545,6 +7472,24 @@ func init() {
 							Kind: 6,
 						},
 					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "min",
+					UniqueName: "8",
 				},
 				"substrFrom": &CompiledFunc{
 					Arguments: []string{"s", "index"},
@@ -6578,974 +7523,24 @@ func init() {
 							Kind: 7,
 						},
 					},
-				},
-			},
-			FuncDefs: map[string]*ast.Func{
-				"1": &ast.Func{
-					Name:       "ToLower",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/case.ok:4:1",
-				},
-				"10": &ast.Func{
-					Name:       "LastIndex",
-					UniqueName: "10",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:57:1",
-				},
-				"11": &ast.Func{
-					Name:       "LastIndexBefore",
-					UniqueName: "11",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"offset", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:76:1",
-				},
-				"12": &ast.Func{
-					Name:       "Join",
-					UniqueName: "12",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"strings", &types.Type{
-							Kind: 8,
-							Element: &types.Type{
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
 								Kind: 7,
 							},
-						}},
-						&ast.Argument{"glue", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
+							&types.Type{
+								Kind: 6,
+							},
 						},
-					},
-					Pos: "lib/strings/join.ok:4:1",
-				},
-				"13": &ast.Func{
-					Name:       "PadLeft",
-					UniqueName: "13",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"pad", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"toLen", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/pad.ok:9:1",
-				},
-				"14": &ast.Func{
-					Name:       "PadRight",
-					UniqueName: "14",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"pad", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"toLen", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/pad.ok:19:1",
-				},
-				"15": &ast.Func{
-					Name:       "createPad",
-					UniqueName: "15",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"pad", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"toLen", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/pad.ok:27:1",
-				},
-				"16": &ast.Func{
-					Name:       "Repeat",
-					UniqueName: "16",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"str", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"times", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/repeat.ok:3:1",
-				},
-				"17": &ast.Func{
-					Name:       "ReplaceAll",
-					UniqueName: "17",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"find", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"replace", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/replace.ok:5:1",
-				},
-				"18": &ast.Func{
-					Name:       "Reverse",
-					UniqueName: "18",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/reverse.ok:2:1",
-				},
-				"19": &ast.Func{
-					Name:       "Split",
-					UniqueName: "19",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"delimiter", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 8,
-							Element: &types.Type{
+						Returns: []*types.Type{
+							&types.Type{
 								Kind: 7,
 							},
 						},
 					},
-					Pos: "lib/strings/split.ok:7:1",
-				},
-				"2": &ast.Func{
-					Name:       "ToUpper",
-					UniqueName: "2",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/case.ok:21:1",
-				},
-				"20": &ast.Func{
-					Name:       "Substr",
-					UniqueName: "20",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"fromIndex", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"toIndex", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/substr.ok:3:1",
-				},
-				"21": &ast.Func{
-					Name:       "TrimLeft",
-					UniqueName: "21",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"cutset", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:3:1",
-				},
-				"22": &ast.Func{
-					Name:       "TrimRight",
-					UniqueName: "22",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"cutset", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:15:1",
-				},
-				"23": &ast.Func{
-					Name:       "Trim",
-					UniqueName: "23",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"cutset", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:21:1",
-				},
-				"24": &ast.Func{
-					Name:       "TrimPrefix",
-					UniqueName: "24",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"prefix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:32:1",
-				},
-				"25": &ast.Func{
-					Name:       "TrimSuffix",
-					UniqueName: "25",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"suffix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:47:1",
-				},
-				"26": &ast.Func{
 					Name:       "substrFrom",
 					UniqueName: "26",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"index", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:52:1",
-				},
-				"3": &ast.Func{
-					Name:       "Contains",
-					UniqueName: "3",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/strings/contains.ok:2:1",
-				},
-				"4": &ast.Func{
-					Name:       "HasPrefix",
-					UniqueName: "4",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"prefix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/strings/contains.ok:7:1",
-				},
-				"5": &ast.Func{
-					Name:       "HasSuffix",
-					UniqueName: "5",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"suffix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/strings/contains.ok:22:1",
-				},
-				"6": &ast.Func{
-					Name:       "Index",
-					UniqueName: "6",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:2:1",
-				},
-				"7": &ast.Func{
-					Name:       "IndexAfter",
-					UniqueName: "7",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"offset", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:17:1",
-				},
-				"8": &ast.Func{
-					Name:       "min",
-					UniqueName: "8",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"a", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"b", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:39:1",
-				},
-				"9": &ast.Func{
-					Name:       "max",
-					UniqueName: "9",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"a", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"b", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:48:1",
-				},
-				"Contains": &ast.Func{
-					Name:       "Contains",
-					UniqueName: "3",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/strings/contains.ok:2:1",
-				},
-				"HasPrefix": &ast.Func{
-					Name:       "HasPrefix",
-					UniqueName: "4",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"prefix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/strings/contains.ok:7:1",
-				},
-				"HasSuffix": &ast.Func{
-					Name:       "HasSuffix",
-					UniqueName: "5",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"suffix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 3,
-						},
-					},
-					Pos: "lib/strings/contains.ok:22:1",
-				},
-				"Index": &ast.Func{
-					Name:       "Index",
-					UniqueName: "6",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:2:1",
-				},
-				"IndexAfter": &ast.Func{
-					Name:       "IndexAfter",
-					UniqueName: "7",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"offset", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:17:1",
-				},
-				"Join": &ast.Func{
-					Name:       "Join",
-					UniqueName: "12",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"strings", &types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 7,
-							},
-						}},
-						&ast.Argument{"glue", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/join.ok:4:1",
-				},
-				"LastIndex": &ast.Func{
-					Name:       "LastIndex",
-					UniqueName: "10",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:57:1",
-				},
-				"LastIndexBefore": &ast.Func{
-					Name:       "LastIndexBefore",
-					UniqueName: "11",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"substr", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"offset", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:76:1",
-				},
-				"PadLeft": &ast.Func{
-					Name:       "PadLeft",
-					UniqueName: "13",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"pad", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"toLen", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/pad.ok:9:1",
-				},
-				"PadRight": &ast.Func{
-					Name:       "PadRight",
-					UniqueName: "14",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"pad", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"toLen", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/pad.ok:19:1",
-				},
-				"Repeat": &ast.Func{
-					Name:       "Repeat",
-					UniqueName: "16",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"str", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"times", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/repeat.ok:3:1",
-				},
-				"ReplaceAll": &ast.Func{
-					Name:       "ReplaceAll",
-					UniqueName: "17",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"find", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"replace", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/replace.ok:5:1",
-				},
-				"Reverse": &ast.Func{
-					Name:       "Reverse",
-					UniqueName: "18",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/reverse.ok:2:1",
-				},
-				"Split": &ast.Func{
-					Name:       "Split",
-					UniqueName: "19",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"delimiter", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 8,
-							Element: &types.Type{
-								Kind: 7,
-							},
-						},
-					},
-					Pos: "lib/strings/split.ok:7:1",
-				},
-				"Substr": &ast.Func{
-					Name:       "Substr",
-					UniqueName: "20",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"fromIndex", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"toIndex", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/substr.ok:3:1",
-				},
-				"ToLower": &ast.Func{
-					Name:       "ToLower",
-					UniqueName: "1",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/case.ok:4:1",
-				},
-				"ToUpper": &ast.Func{
-					Name:       "ToUpper",
-					UniqueName: "2",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/case.ok:21:1",
-				},
-				"Trim": &ast.Func{
-					Name:       "Trim",
-					UniqueName: "23",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"cutset", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:21:1",
-				},
-				"TrimLeft": &ast.Func{
-					Name:       "TrimLeft",
-					UniqueName: "21",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"cutset", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:3:1",
-				},
-				"TrimPrefix": &ast.Func{
-					Name:       "TrimPrefix",
-					UniqueName: "24",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"prefix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:32:1",
-				},
-				"TrimRight": &ast.Func{
-					Name:       "TrimRight",
-					UniqueName: "22",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"cutset", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:15:1",
-				},
-				"TrimSuffix": &ast.Func{
-					Name:       "TrimSuffix",
-					UniqueName: "25",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"suffix", &types.Type{
-							Kind: 7,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:47:1",
-				},
-				"createPad": &ast.Func{
-					Name:       "createPad",
-					UniqueName: "15",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"pad", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"toLen", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/pad.ok:27:1",
-				},
-				"max": &ast.Func{
-					Name:       "max",
-					UniqueName: "9",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"a", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"b", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:48:1",
-				},
-				"min": &ast.Func{
-					Name:       "min",
-					UniqueName: "8",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"a", &types.Type{
-							Kind: 6,
-						}},
-						&ast.Argument{"b", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 6,
-						},
-					},
-					Pos: "lib/strings/index.ok:39:1",
-				},
-				"substrFrom": &ast.Func{
-					Name:       "substrFrom",
-					UniqueName: "26",
-					Arguments: []*ast.Argument{
-						&ast.Argument{"s", &types.Type{
-							Kind: 7,
-						}},
-						&ast.Argument{"index", &types.Type{
-							Kind: 6,
-						}},
-					},
-					Returns: []*types.Type{
-						&types.Type{
-							Kind: 7,
-						},
-					},
-					Pos: "lib/strings/trim.ok:52:1",
 				},
 			},
 			Constants: nil,
@@ -9762,6 +9757,7 @@ func init() {
 						},
 					},
 				},
+				Name: "..__strings",
 			},
 		},
 	}

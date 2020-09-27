@@ -32,7 +32,6 @@ func compileExpr(
 			return nil, nil, err
 		}
 
-		file.FuncDefs[e.UniqueName] = e
 		file.Funcs[e.UniqueName] = cf
 
 		fnType := e.Type()
@@ -98,12 +97,14 @@ func compileExpr(
 					PackageName: e.Name,
 				})
 
-				return []vm.Register{packageRegister}, []*types.Type{
-					types.NewInterface(e.Name, imp),
-				}, nil
+				return []vm.Register{packageRegister}, []*types.Type{imp}, nil
 			}
 		}
 
+		// Constants (defined at the package-level) can be referenced from
+		// anywhere. This only covers the case where we are referencing a
+		// constant that belongs to the current package, as external constants
+		// would be resolved through the package import variable.
 		if c, ok := file.Constants[e.Name]; ok {
 			// We copy it locally to make sure it's value isn't changed. The
 			// compiler will prevent a constant from being modified directly.
@@ -113,7 +114,6 @@ func compileExpr(
 			literalRegister := compiledFunc.NextRegister()
 			compiledFunc.Append(&vm.Assign{
 				VariableName: literalRegister,
-				// TODO(elliot): Does not support non-scalar values.
 				Value: &ast.Literal{
 					Kind:  c.Kind,
 					Value: c.Value,
@@ -124,17 +124,17 @@ func compileExpr(
 		}
 
 		// It could also reference a package-level function.
-		if fn, ok := file.FuncDefs[e.Name]; ok {
+		if fn := file.FuncByName(e.Name); fn != nil {
 			literalRegister := compiledFunc.NextRegister()
 			compiledFunc.Append(&vm.Assign{
 				VariableName: literalRegister,
 				Value: &ast.Literal{
-					Kind:  fn.Type(),
+					Kind:  fn.Type,
 					Value: fn.UniqueName,
 				},
 			})
 
-			return []vm.Register{literalRegister}, []*types.Type{fn.Type()}, nil
+			return []vm.Register{literalRegister}, []*types.Type{fn.Type}, nil
 		}
 
 		return nil, nil, fmt.Errorf("%s undefined variable: %s",
