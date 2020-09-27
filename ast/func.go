@@ -134,17 +134,3 @@ func (f *Func) Position() string {
 func (f *Func) IsConstructor() bool {
 	return f.Name != "" && len(f.Returns) == 1 && f.Name == f.Returns[0].Name
 }
-
-// NewFuncFromPrototype is a hack for now. It should be derived directly from
-// the type itself.
-func NewFuncFromPrototype(ty *types.Type) *Func {
-	f := &Func{}
-
-	for _, a := range ty.Arguments {
-		f.Arguments = append(f.Arguments, &Argument{Name: "", Type: a})
-	}
-
-	f.Returns = ty.Returns
-
-	return f
-}

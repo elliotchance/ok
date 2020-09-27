@@ -11,14 +11,35 @@ import (
 // File is the root structure that will be serialized into the okc file.
 type File struct {
 	// Imports lists all the packages that this package relies on.
-	Imports map[string]map[string]*types.Type
+	Imports map[string]*types.Type
 
-	Funcs     map[string]*CompiledFunc
-	FuncDefs  map[string]*ast.Func
-	Tests     []*CompiledTest
+	Funcs map[string]*CompiledFunc
+	Tests []*CompiledTest
+
+	// Constants contains the package-level constants. These would also appear
+	// as values within PackageFunc, however it's not trivial for the compiler
+	// to extract these. Also, since constants cannot be modified, there's no
+	// need to create some complex logic to retrieved them at compile or
+	// runtime.
+	//
+	// It's totally fine (and probably the best choice) to have the compiler
+	// substitute these values as literals into expressions. Especially for when
+	// the compiler starts supporting simplifying expressions at compile time.
+	//
+	// Constants can only be scalars and all scalars.
 	Constants map[string]*ast.Literal
 
 	PackageFunc *CompiledFunc
+}
+
+func (f *File) FuncByName(name string) *CompiledFunc {
+	for _, fn := range f.Funcs {
+		if fn.Name == name {
+			return fn
+		}
+	}
+
+	return nil
 }
 
 // Store will create or replace the okc file for the provided package name.
@@ -63,4 +84,10 @@ func Load(packageName string) (*File, error) {
 	}
 
 	return &okcFile, nil
+}
+
+// Interface is useful when we need to lookup root elements (constants,
+// functions etc) for the package.
+func (f *File) Interface() *types.Type {
+	return f.PackageFunc.Type.Returns[0]
 }

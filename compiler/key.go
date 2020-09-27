@@ -15,30 +15,6 @@ func compileKey(
 	n *ast.Key,
 	file *vm.File,
 ) (vm.Register, *types.Type, error) {
-	// It could be an imported constant.
-	// TODO(elliot): This is hack for now, because the package name is not yet a
-	//  variable.
-	if node, ok := n.Expr.(*ast.Identifier); ok && vm.Packages[node.Name] != nil {
-		if key, ok := n.Key.(*ast.Identifier); ok {
-			if c, ok := vm.Packages[node.Name].Constants[key.Name]; ok {
-				resultRegister := compiledFunc.NextRegister()
-
-				// Copy the value in case it's modified.
-				//
-				// TODO(elliot): This does not support non-scalar values.
-				compiledFunc.Append(&vm.Assign{
-					VariableName: resultRegister,
-					Value: &ast.Literal{
-						Kind:  c.Kind,
-						Value: c.Value,
-					},
-				})
-
-				return resultRegister, c.Kind, nil
-			}
-		}
-	}
-
 	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, file)
 	if err != nil {
 		return "", nil, err
@@ -104,25 +80,18 @@ func compileKey(
 			Result: resultRegister,
 		})
 
-		if fn, ok := file.FuncDefs[arrayOrMapKind[0].Name]; ok {
-			if !fn.IsConstructor() {
+		if fn := file.FuncByName(arrayOrMapKind[0].Name); fn != nil {
+			if len(fn.Type.Returns) != 1 || arrayOrMapKind[0].Name != fn.Type.Returns[0].Name {
 				return "", nil, fmt.Errorf("%s %s is not an interface",
 					n.Position(), fn.Name)
 			}
 
-			return resultRegister, fn.Returns[0], nil
+			return resultRegister, fn.Type.Returns[0], nil
 		}
 
 		parts := strings.Split(arrayOrMapKind[0].Name, ".")
 		if len(parts) == 2 {
-			if fn, ok := vm.Packages[parts[0]].FuncDefs[parts[1]]; ok {
-				if !fn.IsConstructor() {
-					return "", nil, fmt.Errorf("%s %s is not an interface",
-						n.Position(), fn.Name)
-				}
-
-				return resultRegister, fn.Returns[0], nil
-			}
+			return resultRegister, file.Imports[parts[0]].Properties[parts[1]], nil
 		}
 
 		return "", nil, fmt.Errorf("%s unknown type: %s",

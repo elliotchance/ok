@@ -41,9 +41,9 @@ func (*Command) Run(args []string) {
 	// Create a map as a function may match more than one glob.
 	funcsToPrint := map[string]struct{}{}
 	for _, glob := range args[1:] {
-		for funcName := range pkg.FuncDefs {
-			if util.MatchesGlob(funcName, glob) {
-				funcsToPrint[funcName] = struct{}{}
+		for _, fn := range pkg.Funcs {
+			if util.MatchesGlob(fn.UniqueName, glob) || util.MatchesGlob(fn.Name, glob) {
+				funcsToPrint[fn.UniqueName] = struct{}{}
 			}
 		}
 	}
@@ -62,15 +62,18 @@ func (*Command) Run(args []string) {
 			fmt.Println()
 		}
 
-		fn, exists := pkg.FuncDefs[fnName]
-		if !exists {
+		fn := pkg.Funcs[fnName]
+		if fn == nil {
 			// TODO(elliot): This could be handled more gracefully.
 			panic("no such function: " + fnName)
 		}
 
-		fmt.Println(fn.UniqueName+":", fn.String()+":")
+		if fn.Name != "" {
+			fmt.Printf("%s: ", fn.Name)
+		}
+		fmt.Println(fn.UniqueName+":", fn.Type.String()+":")
 
-		for i, ins := range pkg.Funcs[fn.Name].Instructions {
+		for i, ins := range fn.Instructions {
 			ty := fmt.Sprintf("%T", ins)[4:]
 
 			// "-22" is chosen here because is is the longer instruction name.

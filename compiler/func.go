@@ -10,8 +10,10 @@ import (
 // number of instructions returned may be zero.
 func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
 	compiled := &vm.CompiledFunc{
-		Variables: map[string]*types.Type{},
-		Type:      fn.Type(),
+		Variables:  map[string]*types.Type{},
+		Type:       fn.Type(),
+		Name:       fn.Name,
+		UniqueName: fn.UniqueName,
 	}
 
 	// All variables in a function are stored internally as a map right now. So
