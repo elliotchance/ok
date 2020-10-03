@@ -456,6 +456,60 @@ func TestExpr(t *testing.T) {
 				Key:  &ast.Identifier{Name: "Pi"},
 			},
 		},
+		"method": {
+			str: "math.Foo()",
+			expected: &ast.Call{
+				Expr: &ast.Key{
+					Expr: &ast.Identifier{Name: "math"},
+					Key:  &ast.Identifier{Name: "Foo"},
+				},
+			},
+		},
+		"chained-key": {
+			str: "math.Foo().Bar",
+			expected: &ast.Key{ // math.Foo().Bar
+				Expr: &ast.Call{ // math.Foo()
+					Expr: &ast.Key{ // math.Foo
+						Expr: &ast.Identifier{Name: "math"},
+						Key:  &ast.Identifier{Name: "Foo"},
+					},
+				},
+				Key: &ast.Identifier{Name: "Bar"},
+			},
+		},
+		"chained-method": {
+			str: "math.Foo().Bar()",
+			expected: &ast.Call{ // math.Foo().Bar()
+				Expr: &ast.Key{ // math.Foo().Bar
+					Expr: &ast.Call{ // math.Foo()
+						Expr: &ast.Key{ // math.Foo
+							Expr: &ast.Identifier{Name: "math"},
+							Key:  &ast.Identifier{Name: "Foo"},
+						},
+					},
+					Key: &ast.Identifier{Name: "Bar"},
+				},
+			},
+		},
+		"get-index": {
+			str: `foo[0]`,
+			expected: &ast.Key{
+				Expr: &ast.Identifier{Name: "foo"},
+				Key:  asttest.NewLiteralNumber("0"),
+			},
+		},
+		"cast-string-index": {
+			str: `string foo[10]`,
+			expected: &ast.Call{
+				Expr: &ast.Identifier{Name: "string"},
+				Arguments: []ast.Node{
+					&ast.Key{
+						Expr: &ast.Identifier{Name: "foo"},
+						Key:  asttest.NewLiteralNumber("10"),
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
