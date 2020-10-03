@@ -179,12 +179,13 @@ func TestExpr(t *testing.T) {
 				Right: asttest.NewLiteralBool(false),
 			},
 		},
-		"not-bool": {
-			str: `not true`,
-			expected: &ast.Unary{
-				Op:   lexer.TokenNot,
-				Expr: asttest.NewLiteralBool(true),
-			},
+		"not-true": {
+			str:      `not true`,
+			expected: asttest.NewLiteralBool(false),
+		},
+		"not-false": {
+			str:      `not false`,
+			expected: asttest.NewLiteralBool(true),
 		},
 		"bool-equal-bool": {
 			str: `true==false`,
@@ -507,6 +508,24 @@ func TestExpr(t *testing.T) {
 						Expr: &ast.Identifier{Name: "foo"},
 						Key:  asttest.NewLiteralNumber("10"),
 					},
+				},
+			},
+		},
+		"unary-minus-call": {
+			str: `-foo()`,
+			expected: &ast.Unary{
+				Op: "-",
+				Expr: &ast.Call{
+					Expr: &ast.Identifier{Name: "foo"},
+				},
+			},
+		},
+		"unary-not-call": {
+			str: `not foo()`,
+			expected: &ast.Unary{
+				Op: "not",
+				Expr: &ast.Call{
+					Expr: &ast.Identifier{Name: "foo"},
 				},
 			},
 		},

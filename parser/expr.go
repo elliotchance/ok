@@ -3,7 +3,6 @@ package parser
 import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/lexer"
-	"github.com/elliotchance/ok/types"
 )
 
 // unlimitedTokens is just some very large amount to be used when you do not
@@ -17,7 +16,6 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 	// Consume as many subexpressions and operators as possible.
 	var parts []interface{}
 	var err error
-	didJustConsumeLiteral := false
 	for consumed := 0; offset < len(parser.tokens) && consumed < maxTokens; consumed++ {
 		tok := parser.tokens[offset]
 
@@ -31,6 +29,35 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		// Some tokens signal the end of the expression.
 		if tok.Kind == lexer.TokenColon || tok.Kind == lexer.TokenComma {
 			break
+		}
+
+		if consumed%2 == 1 {
+			switch tok.Kind {
+			case
+				// Arithmetic
+				lexer.TokenPlus, lexer.TokenMinus, lexer.TokenTimes,
+				lexer.TokenDivide, lexer.TokenRemainder,
+
+				// Logical
+				lexer.TokenAnd, lexer.TokenOr,
+
+				// Comparison
+				lexer.TokenEqual, lexer.TokenNotEqual,
+				lexer.TokenGreaterThan, lexer.TokenGreaterThanEqual,
+				lexer.TokenLessThan, lexer.TokenLessThanEqual,
+
+				// Assignment
+				lexer.TokenAssign, lexer.TokenPlusAssign, lexer.TokenMinusAssign,
+				lexer.TokenTimesAssign, lexer.TokenDivideAssign,
+				lexer.TokenRemainderAssign:
+
+				parts = append(parts, tok)
+				offset++
+				continue
+
+			default:
+				break
+			}
 		}
 
 		// Try to consume a function literal. Named function would have already
@@ -48,7 +75,6 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			}
 
 			parts = append(parts, fn)
-			didJustConsumeLiteral = true
 			continue
 		}
 
@@ -57,7 +83,6 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		literal, offset, err = consumeLiteral(parser, offset)
 		if err == nil {
 			parts = append(parts, literal)
-			didJustConsumeLiteral = true
 			continue
 		}
 
@@ -70,14 +95,11 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		}
 
 		// Array
-		if !didJustConsumeLiteral {
-			var array *ast.Array
-			array, offset, err = consumeArray(parser, offset)
-			if err == nil {
-				parts = append(parts, array)
-				didJustConsumeLiteral = false
-				continue
-			}
+		var array *ast.Array
+		array, offset, err = consumeArray(parser, offset)
+		if err == nil {
+			parts = append(parts, array)
+			continue
 		}
 
 		// Map
@@ -85,7 +107,6 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		m, offset, err = consumeMap(parser, offset)
 		if err == nil {
 			parts = append(parts, m)
-			didJustConsumeLiteral = false
 			continue
 		}
 
@@ -94,7 +115,6 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		call, offset, err = consumeTypeCast(parser, offset)
 		if err == nil {
 			parts = append(parts, call)
-			didJustConsumeLiteral = true
 			continue
 		}
 
@@ -103,68 +123,15 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		group, offset, err = consumeGroup(parser, offset)
 		if err == nil {
 			parts = append(parts, group)
-			didJustConsumeLiteral = false
 			continue
 		}
 
-		// Unary operator (can not be consumed directly after a literal).
-		if !didJustConsumeLiteral {
-			var unary *ast.Unary
-			unary, offset, err = consumeUnary(parser, offset)
-			if err == nil {
-				// A unary can be a "-" number, this can be reduced now into a
-				// number. This saves on some processing buts it's also required
-				// for assertions that only work with simple binary operations.
-				if lit, ok := unary.Expr.(*ast.Literal); ok &&
-					lit.Kind.Kind == types.KindNumber &&
-					unary.Op == lexer.TokenMinus {
-					newLit := &ast.Literal{
-						Kind:  types.Number,
-						Value: "-" + lit.Value,
-						Pos:   unary.Pos,
-					}
-					parts = append(parts, newLit)
-				} else {
-					parts = append(parts, unary)
-				}
-
-				didJustConsumeLiteral = false
-				continue
-			}
-		}
-
-		// An identifier. It's important this happens last if all else fails.
+		// A chained expression. It's important this happens last if all else
+		// fails.
 		var expr ast.Node
 		expr, offset, err = consumeChainedExpr(parser, offset)
 		if err == nil {
 			parts = append(parts, expr)
-			didJustConsumeLiteral = true
-			continue
-		}
-
-		// Otherwise it must be a a valid binary operator.
-		switch tok.Kind {
-		case
-			// Arithmetic
-			lexer.TokenPlus, lexer.TokenMinus, lexer.TokenTimes,
-			lexer.TokenDivide, lexer.TokenRemainder,
-
-			// Logical
-			lexer.TokenAnd, lexer.TokenOr,
-
-			// Comparison
-			lexer.TokenEqual, lexer.TokenNotEqual,
-			lexer.TokenGreaterThan, lexer.TokenGreaterThanEqual,
-			lexer.TokenLessThan, lexer.TokenLessThanEqual,
-
-			// Assignment
-			lexer.TokenAssign, lexer.TokenPlusAssign, lexer.TokenMinusAssign,
-			lexer.TokenTimesAssign, lexer.TokenDivideAssign,
-			lexer.TokenRemainderAssign:
-
-			parts = append(parts, tok)
-			offset++
-			didJustConsumeLiteral = false
 			continue
 		}
 
@@ -185,6 +152,15 @@ func consumeChainedExpr(parser *Parser, offset int) (ast.Node, int, error) {
 	originalOffset := offset
 	var expr ast.Node
 	var err error
+
+	// Optional unary expression.
+	var unary lexer.Token
+	unary, offset, _ = consumeOneOf(parser, offset, []string{
+		lexer.TokenNot,
+		lexer.TokenMinus,
+		lexer.TokenIncrement,
+		lexer.TokenDecrement,
+	})
 
 	expr, offset, err = consumeIdentifier(parser, offset)
 	if err != nil {
@@ -246,6 +222,16 @@ func consumeChainedExpr(parser *Parser, offset int) (ast.Node, int, error) {
 		}
 
 		break
+	}
+
+	// If there was a unary operator at the beginning, it must be applied to the
+	// final result because "-foo()" = "-(foo())" and not "(-foo)()".
+	if unary.Kind != "" {
+		expr = &ast.Unary{
+			Op:   unary.Value,
+			Expr: expr,
+			Pos:  expr.Position(),
+		}
 	}
 
 	return expr, offset, nil
