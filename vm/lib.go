@@ -207,6 +207,60 @@ func init() {
 					Pos:        "lib/math/abs.ok:2:1",
 				},
 				"10": &CompiledFunc{
+					Arguments: []string{"x"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "lib/math/rounding.ok:17:16"}, ""},
+						&Remainder{"x", "2", "3"},
+						&Assign{"frac", nil, "3"},
+						&Assign{"4", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "lib/math/rounding.ok:18:16"}, ""},
+						&EqualNumber{"frac", "4", "5"},
+						&JumpUnless{"5", 6},
+						&Return{Registers{"x"}},
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "lib/math/rounding.ok:22:12"}, ""},
+						&LessThanNumber{"x", "6", "7"},
+						&JumpUnless{"7", 13},
+						&Assign{"8", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "lib/math/rounding.ok:23:27"}, ""},
+						&Add{"frac", "8", "9"},
+						&Subtract{"x", "9", "10"},
+						&Return{Registers{"10"}},
+						&Subtract{"x", "frac", "11"},
+						&Return{Registers{"11"}},
+					},
+					Registers: 11,
+					Variables: map[string]*types.Type{
+						"frac": &types.Type{
+							Kind: 6,
+						},
+						"x": &types.Type{
+							Kind: 6,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Floor",
+					UniqueName: "10",
+					Pos:        "lib/math/rounding.ok:16:1",
+				},
+				"11": &CompiledFunc{
 					Arguments: []string{"x", "prec"},
 					Instructions: []Instruction{
 						&Assign{"3", &ast.Literal{&types.Type{
@@ -272,7 +326,7 @@ func init() {
 						},
 					},
 					Name:       "Round",
-					UniqueName: "10",
+					UniqueName: "11",
 					Pos:        "lib/math/rounding.ok:31:1",
 				},
 				"2": &CompiledFunc{
@@ -478,6 +532,25 @@ func init() {
 					Pos:        "lib/math/powers.ok:20:1",
 				},
 				"8": &CompiledFunc{
+					Instructions: []Instruction{
+						&Rand{"1"},
+						&Return{Registers{"1"}},
+					},
+					Registers: 1,
+					Variables: nil,
+					Type: &types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Rand",
+					UniqueName: "8",
+					Pos:        "lib/math/rand.ok:2:1",
+				},
+				"9": &CompiledFunc{
 					Arguments: []string{"x"},
 					Instructions: []Instruction{
 						&Assign{"2", &ast.Literal{&types.Type{
@@ -528,62 +601,8 @@ func init() {
 						},
 					},
 					Name:       "Ceil",
-					UniqueName: "8",
-					Pos:        "lib/math/rounding.ok:2:1",
-				},
-				"9": &CompiledFunc{
-					Arguments: []string{"x"},
-					Instructions: []Instruction{
-						&Assign{"2", &ast.Literal{&types.Type{
-							Kind: 6,
-						}, "1", nil, nil, "lib/math/rounding.ok:17:16"}, ""},
-						&Remainder{"x", "2", "3"},
-						&Assign{"frac", nil, "3"},
-						&Assign{"4", &ast.Literal{&types.Type{
-							Kind: 6,
-						}, "0", nil, nil, "lib/math/rounding.ok:18:16"}, ""},
-						&EqualNumber{"frac", "4", "5"},
-						&JumpUnless{"5", 6},
-						&Return{Registers{"x"}},
-						&Assign{"6", &ast.Literal{&types.Type{
-							Kind: 6,
-						}, "0", nil, nil, "lib/math/rounding.ok:22:12"}, ""},
-						&LessThanNumber{"x", "6", "7"},
-						&JumpUnless{"7", 13},
-						&Assign{"8", &ast.Literal{&types.Type{
-							Kind: 6,
-						}, "1", nil, nil, "lib/math/rounding.ok:23:27"}, ""},
-						&Add{"frac", "8", "9"},
-						&Subtract{"x", "9", "10"},
-						&Return{Registers{"10"}},
-						&Subtract{"x", "frac", "11"},
-						&Return{Registers{"11"}},
-					},
-					Registers: 11,
-					Variables: map[string]*types.Type{
-						"frac": &types.Type{
-							Kind: 6,
-						},
-						"x": &types.Type{
-							Kind: 6,
-						},
-					},
-					Type: &types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					},
-					Name:       "Floor",
 					UniqueName: "9",
-					Pos:        "lib/math/rounding.ok:16:1",
+					Pos:        "lib/math/rounding.ok:2:1",
 				},
 			},
 			Constants: map[string]*ast.Literal{
@@ -674,9 +693,6 @@ func init() {
 							&types.Type{
 								Kind: 6,
 							},
-							&types.Type{
-								Kind: 6,
-							},
 						},
 						Returns: []*types.Type{
 							&types.Type{
@@ -692,15 +708,18 @@ func init() {
 							&types.Type{
 								Kind: 6,
 							},
+							&types.Type{
+								Kind: 6,
+							},
 						},
 						Returns: []*types.Type{
 							&types.Type{
 								Kind: 6,
 							},
 						},
-					}, "2", nil, nil, ""}, ""},
+					}, "11", nil, nil, ""}, ""},
 					&ParentScope{"12"},
-					&Assign{"2", nil, "12"},
+					&Assign{"11", nil, "12"},
 					&Assign{"13", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -713,9 +732,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "3", nil, nil, ""}, ""},
+					}, "2", nil, nil, ""}, ""},
 					&ParentScope{"13"},
-					&Assign{"3", nil, "13"},
+					&Assign{"2", nil, "13"},
 					&Assign{"14", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -728,10 +747,25 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "4", nil, nil, ""}, ""},
+					}, "3", nil, nil, ""}, ""},
 					&ParentScope{"14"},
-					&Assign{"4", nil, "14"},
+					&Assign{"3", nil, "14"},
 					&Assign{"15", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "4", nil, nil, ""}, ""},
+					&ParentScope{"15"},
+					&Assign{"4", nil, "15"},
+					&Assign{"16", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
 							&types.Type{
@@ -747,23 +781,8 @@ func init() {
 							},
 						},
 					}, "5", nil, nil, ""}, ""},
-					&ParentScope{"15"},
-					&Assign{"5", nil, "15"},
-					&Assign{"16", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "6", nil, nil, ""}, ""},
 					&ParentScope{"16"},
-					&Assign{"6", nil, "16"},
+					&Assign{"5", nil, "16"},
 					&Assign{"17", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -776,9 +795,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "7", nil, nil, ""}, ""},
+					}, "6", nil, nil, ""}, ""},
 					&ParentScope{"17"},
-					&Assign{"7", nil, "17"},
+					&Assign{"6", nil, "17"},
 					&Assign{"18", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -791,24 +810,19 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "8", nil, nil, ""}, ""},
+					}, "7", nil, nil, ""}, ""},
 					&ParentScope{"18"},
-					&Assign{"8", nil, "18"},
+					&Assign{"7", nil, "18"},
 					&Assign{"19", &ast.Literal{&types.Type{
 						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
 						Returns: []*types.Type{
 							&types.Type{
 								Kind: 6,
 							},
 						},
-					}, "9", nil, nil, ""}, ""},
+					}, "8", nil, nil, ""}, ""},
 					&ParentScope{"19"},
-					&Assign{"9", nil, "19"},
+					&Assign{"8", nil, "19"},
 					&Assign{"20", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -821,9 +835,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "1", nil, nil, ""}, ""},
+					}, "9", nil, nil, ""}, ""},
 					&ParentScope{"20"},
-					&Assign{"Abs", nil, "20"},
+					&Assign{"9", nil, "20"},
 					&Assign{"21", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -836,9 +850,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "7", nil, nil, ""}, ""},
+					}, "1", nil, nil, ""}, ""},
 					&ParentScope{"21"},
-					&Assign{"Cbrt", nil, "21"},
+					&Assign{"Abs", nil, "21"},
 					&Assign{"22", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -851,9 +865,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "8", nil, nil, ""}, ""},
+					}, "7", nil, nil, ""}, ""},
 					&ParentScope{"22"},
-					&Assign{"Ceil", nil, "22"},
+					&Assign{"Cbrt", nil, "22"},
 					&Assign{"23", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -866,9 +880,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "4", nil, nil, ""}, ""},
+					}, "9", nil, nil, ""}, ""},
 					&ParentScope{"23"},
-					&Assign{"Exp", nil, "23"},
+					&Assign{"Ceil", nil, "23"},
 					&Assign{"24", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -881,9 +895,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "9", nil, nil, ""}, ""},
+					}, "4", nil, nil, ""}, ""},
 					&ParentScope{"24"},
-					&Assign{"Floor", nil, "24"},
+					&Assign{"Exp", nil, "24"},
 					&Assign{"25", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -896,9 +910,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "3", nil, nil, ""}, ""},
+					}, "10", nil, nil, ""}, ""},
 					&ParentScope{"25"},
-					&Assign{"Log10", nil, "25"},
+					&Assign{"Floor", nil, "25"},
 					&Assign{"26", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -911,15 +925,12 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "2", nil, nil, ""}, ""},
+					}, "3", nil, nil, ""}, ""},
 					&ParentScope{"26"},
-					&Assign{"LogE", nil, "26"},
+					&Assign{"Log10", nil, "26"},
 					&Assign{"27", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
 							&types.Type{
 								Kind: 6,
 							},
@@ -929,9 +940,9 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "5", nil, nil, ""}, ""},
+					}, "2", nil, nil, ""}, ""},
 					&ParentScope{"27"},
-					&Assign{"Pow", nil, "27"},
+					&Assign{"LogE", nil, "27"},
 					&Assign{"28", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -947,10 +958,38 @@ func init() {
 								Kind: 6,
 							},
 						},
-					}, "10", nil, nil, ""}, ""},
+					}, "5", nil, nil, ""}, ""},
 					&ParentScope{"28"},
-					&Assign{"Round", nil, "28"},
+					&Assign{"Pow", nil, "28"},
 					&Assign{"29", &ast.Literal{&types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "8", nil, nil, ""}, ""},
+					&ParentScope{"29"},
+					&Assign{"Rand", nil, "29"},
+					&Assign{"30", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "11", nil, nil, ""}, ""},
+					&ParentScope{"30"},
+					&Assign{"Round", nil, "30"},
+					&Assign{"31", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
 							&types.Type{
@@ -963,11 +1002,11 @@ func init() {
 							},
 						},
 					}, "6", nil, nil, ""}, ""},
-					&ParentScope{"29"},
-					&Assign{"Sqrt", nil, "29"},
+					&ParentScope{"31"},
+					&Assign{"Sqrt", nil, "31"},
 					&Return{Registers{"0"}},
 				},
-				Registers: 29,
+				Registers: 31,
 				Variables: map[string]*types.Type{
 					"1": &types.Type{
 						Kind: 10,
@@ -983,6 +1022,19 @@ func init() {
 						},
 					},
 					"10": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					"11": &types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
 							&types.Type{
@@ -1081,11 +1133,6 @@ func init() {
 					},
 					"8": &types.Type{
 						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
 						Returns: []*types.Type{
 							&types.Type{
 								Kind: 6,
@@ -1221,6 +1268,14 @@ func init() {
 								Kind: 6,
 							},
 						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					"Rand": &types.Type{
+						Kind: 10,
 						Returns: []*types.Type{
 							&types.Type{
 								Kind: 6,
@@ -1392,6 +1447,14 @@ func init() {
 											Kind: 6,
 										},
 									},
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								"Rand": &types.Type{
+									Kind: 10,
 									Returns: []*types.Type{
 										&types.Type{
 											Kind: 6,

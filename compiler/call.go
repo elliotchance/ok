@@ -24,6 +24,7 @@ var builtinFunctions = map[string]builtinFn{
 	"__now":       funcNow,
 	"__pow":       funcPow,
 	"__props":     funcProps,
+	"__rand":      funcRand,
 	"__set":       funcSet,
 	"__sleep":     funcSleep,
 	"__type":      funcType,
@@ -297,4 +298,13 @@ func funcNow(compiledFunc *vm.CompiledFunc, _ []vm.Register) (vm.Instruction, []
 		vm.Registers{year, month, day, hour, minute, second},
 		[]*types.Type{types.Number, types.Number, types.Number, types.Number, types.Number, types.Number},
 		nil
+}
+
+func funcRand(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Rand{
+		Result: result,
+	}
+
+	return ins, []vm.Register{result}, []*types.Type{types.Number}, nil
 }

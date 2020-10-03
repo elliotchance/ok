@@ -1,0 +1,4 @@
+// Rand returns a random number between 0 and 1.
+func Rand() number {
+    return __rand()
+}

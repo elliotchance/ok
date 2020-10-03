@@ -1,0 +1,5 @@
+test "Rand" {
+    assert(Rand() != Rand())
+    assert(Rand() != Rand())
+    assert(Rand() != Rand())
+}
