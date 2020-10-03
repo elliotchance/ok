@@ -1,0 +1,10 @@
+func main() {
+    c = 1.23
+    print(-c)
+
+    print(-foo())
+}
+
+func foo() number {
+    return 234
+}

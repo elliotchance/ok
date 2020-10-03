@@ -2,6 +2,7 @@ package parser
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
@@ -37,6 +38,13 @@ func consumeConstant(parser *Parser, offset int) (string, *ast.Literal, int, err
 func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 	originalOffset := offset
 
+	// Optional unary expression.
+	var unary lexer.Token
+	unary, offset, _ = consumeOneOf(parser, offset, []string{
+		lexer.TokenNot,
+		lexer.TokenMinus,
+	})
+
 	typeLiteralTokens := []string{
 		lexer.TokenBoolLiteral,
 		lexer.TokenCharLiteral,
@@ -59,8 +67,34 @@ func consumeLiteral(parser *Parser, offset int) (*ast.Literal, int, error) {
 				parser.appendError(literal, err.Error())
 			}
 
+			// Some literals can be reduced now. Other unary combinations will
+			// result in an error.
+			switch {
+			case literal.Kind.Kind == types.KindNumber &&
+				unary.Kind == lexer.TokenMinus:
+				literal.Value = "-" + literal.Value
+
+			case literal.Kind.Kind == types.KindBool &&
+				unary.Kind == lexer.TokenNot:
+				if literal.Value == "true" {
+					literal.Value = "false"
+				} else {
+					literal.Value = "true"
+				}
+
+			case unary.Kind != "":
+				return nil, originalOffset, fmt.Errorf(
+					"%s bad unary operation: %s %s",
+					literal.Position(),
+					unary.Kind, literal.Kind.String())
+			}
+
 			return literal, offset + 1, nil
 		}
+	}
+
+	if unary.Kind != "" {
+
 	}
 
 	return nil, originalOffset, errors.New("no literal found")
