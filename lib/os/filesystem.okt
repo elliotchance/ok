@@ -1,0 +1,33 @@
+import "error"
+
+test "removing a file that does not exist" {
+    assert(Remove("doesnotexist") raise error.Error)
+}
+
+test "removing a file" {
+    path = TempPath()
+    f = Open(path)
+    f.Close()
+
+    Remove(path)
+}
+
+test "renaming a file that does not exist" {
+    assert(Rename("doesnotexist", "nowhere") raise error.Error)
+}
+
+test "renaming a file" {
+    path = TempPath()
+    f = Open(path)
+    f.Close()
+
+    Rename(path, "{path}0")
+    Remove("{path}0")
+}
+
+test "creating a directory" {
+    path = TempPath()
+    CreateDirectory(path)
+    info = Info(path)
+    assert(info.IsDir == true)
+}

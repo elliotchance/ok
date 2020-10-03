@@ -1,0 +1,18 @@
+import "time"
+
+func FileInfo(
+    Name string,            // base name of the file
+    Size number,            // length in bytes for regular files; system-dependent for others
+    Mode string,            // file mode bits
+    ModifiedTime time.Time, // modification time
+    IsDir bool              // easier than decoding from Mode
+) FileInfo {}
+
+// Info returns the FileInfo for a path, or raises an error if the path does not
+// exist.
+func Info(path string) FileInfo {
+    name, size, mode, modTimeYear, modTimeMonth, modTimeDay, modTimeHour, modTimeMinute, modTimeSecond, isDir = __info(path)
+    modTime = time.Time(modTimeYear, modTimeMonth, modTimeDay, modTimeHour, modTimeMinute, modTimeSecond)
+    
+    return FileInfo(name, size, mode, modTime, isDir)
+}

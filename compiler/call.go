@@ -15,25 +15,36 @@ type builtinFn func(
 
 // TODO(elliot): These needs to check function signatures.
 var builtinFunctions = map[string]builtinFn{
-	"__call":      funcCall,
-	"__fromunix":  funcFromUnix,
-	"__get":       funcGet,
-	"__interface": funcInterface,
-	"__len":       funcLen,
-	"__log":       funcLog,
-	"__now":       funcNow,
-	"__pow":       funcPow,
-	"__props":     funcProps,
-	"__rand":      funcRand,
-	"__set":       funcSet,
-	"__sleep":     funcSleep,
-	"__type":      funcType,
-	"__unix":      funcUnix,
-	"char":        funcChar,
-	"len":         funcLen,
-	"number":      funcNumber,
-	"print":       funcPrint,
-	"string":      funcString,
+	"__call":        funcCall,
+	"__close":       funcClose,
+	"__fromunix":    funcFromUnix,
+	"__get":         funcGet,
+	"__info":        funcInfo,
+	"__interface":   funcInterface,
+	"__len":         funcLen,
+	"__log":         funcLog,
+	"__mkdir":       funcMkdir,
+	"__now":         funcNow,
+	"__open":        funcOpen,
+	"__pow":         funcPow,
+	"__props":       funcProps,
+	"__rand":        funcRand,
+	"__read_data":   funcReadData,
+	"__read_string": funcReadString,
+	"__remove":      funcRemove,
+	"__rename":      funcRename,
+	"__seek":        funcSeek,
+	"__set":         funcSet,
+	"__sleep":       funcSleep,
+	"__type":        funcType,
+	"__unix":        funcUnix,
+	"__write":       funcWrite,
+	"char":          funcChar,
+	"data":          funcData,
+	"len":           funcLen,
+	"number":        funcNumber,
+	"print":         funcPrint,
+	"string":        funcString,
 }
 
 func compileCall(
@@ -298,6 +309,135 @@ func funcNow(compiledFunc *vm.CompiledFunc, _ []vm.Register) (vm.Instruction, []
 		vm.Registers{year, month, day, hour, minute, second},
 		[]*types.Type{types.Number, types.Number, types.Number, types.Number, types.Number, types.Number},
 		nil
+}
+
+func funcRename(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Rename{
+		OldPath: args[0],
+		NewPath: args[1],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcRemove(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Remove{
+		Path: args[0],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcOpen(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Open{
+		Path:   args[0],
+		Result: result,
+	}
+
+	return ins, []vm.Register{result}, []*types.Type{types.Data}, nil
+}
+
+func funcInfo(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	name := compiledFunc.NextRegister()
+	size := compiledFunc.NextRegister()
+	mode := compiledFunc.NextRegister()
+	modTime := []vm.Register{
+		compiledFunc.NextRegister(),
+		compiledFunc.NextRegister(),
+		compiledFunc.NextRegister(),
+		compiledFunc.NextRegister(),
+		compiledFunc.NextRegister(),
+		compiledFunc.NextRegister(),
+	}
+	isDir := compiledFunc.NextRegister()
+	ins := &vm.Info{
+		Path:    args[0],
+		Name:    name,
+		Size:    size,
+		Mode:    mode,
+		ModTime: modTime,
+		IsDir:   isDir,
+	}
+
+	return ins, []vm.Register{
+			name, size, mode,
+			modTime[0], modTime[1], modTime[2], modTime[3], modTime[4], modTime[5],
+			isDir,
+		}, []*types.Type{
+			types.String, types.Number, types.String,
+			types.Number, types.Number, types.Number, types.Number, types.Number, types.Number,
+			types.Bool,
+		}, nil
+}
+
+func funcClose(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Close{
+		Fd: args[0],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcMkdir(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Mkdir{
+		Path: args[0],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcWrite(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Write{
+		Fd:   args[0],
+		Data: args[1],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcSeek(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	newOffset := compiledFunc.NextRegister()
+	ins := &vm.Seek{
+		Fd:        args[0],
+		Offset:    args[1],
+		Whence:    args[1],
+		NewOffset: newOffset,
+	}
+
+	return ins, []vm.Register{newOffset}, []*types.Type{types.Number}, nil
+}
+
+func funcReadData(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	data := compiledFunc.NextRegister()
+	ins := &vm.ReadData{
+		Fd:   args[0],
+		Size: args[1],
+		Data: data,
+	}
+
+	return ins, []vm.Register{data}, []*types.Type{types.Data}, nil
+}
+
+func funcReadString(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	str := compiledFunc.NextRegister()
+	ins := &vm.ReadString{
+		Fd:   args[0],
+		Size: args[1],
+		Str:  str,
+	}
+
+	return ins, []vm.Register{str}, []*types.Type{types.String}, nil
+}
+
+func funcData(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.CastData{
+		X:      args[0],
+		Result: result,
+	}
+
+	return ins, []vm.Register{result}, []*types.Type{types.Data}, nil
 }
 
 func funcRand(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {

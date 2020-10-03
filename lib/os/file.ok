@@ -1,0 +1,76 @@
+// File represents a file handle.
+func File(fd data) File {
+    // WriteString writes a string to the current position of the file.
+    func WriteString(s string) {
+        __write(^fd, data s)
+    }
+
+    // WriteData writes data to the current position of the file.
+    func WriteData(d data) {
+        __write(^fd, d)
+    }
+
+    // Close closes the file handle. After Close is invoked you can no longer
+    // interact with the file.
+    func Close() {
+        __close(^fd)
+    }
+
+    // Seek sets the offset for the next read or write on file to offset,
+    // interpreted according to whence:
+    //
+    // - 0 means relative to the origin of the file
+    // - 1 means relative to the current offset
+    // - 2 means relative to the end.
+    //
+    func Seek(offset, whence number) number {
+        __seek(^fd, offset, whence)
+    }
+
+    // ReadBytes will read up to `bytes` in length. The actual number of bytes
+    // read will be returned. If the number of bytes read is less than `bytes`
+    // the end of the file has been reached. Trying to call ReadBytes will
+    // always result in 0 bytes being read.
+    //
+    // It's important to understand this reads data (raw bytes) which may not be
+    // compatible with multibyte text encodings like UTF-8. For reading strings
+    // use ReadString instead.
+    func ReadData(bytes number) data {
+        return __read_data(^fd, bytes)
+    }
+
+    // ReadString follows the same rules as ReadBytes, but is designed for
+    // reading UTF-8 strings where each character may be more than one byte. The
+    // number returned will be the number of characters, not bytes.
+    func ReadString(chars number) string {
+        return __read_string(^fd, chars)
+    }
+
+    // ReadLine will read a string until a new line or carriage return is hit.
+    func ReadLine() string {
+        line = ""
+
+        for {
+            chars = __read_string(^fd, 1)
+            if len(chars) == 0 {
+                break
+            }
+
+            line += chars
+
+            if chars == "\n" {
+                break
+            }
+        }
+
+        return line
+    }
+}
+
+// Open opens a file for reading or writing. If the file does not exist it will
+// be created. If the file does exist the cursor will begin at the start of the
+// file. You may use `f.Seek(0, 2)` immediately after opening the file if you
+// wish for writes to be appended at the end.
+func Open(path string) File {
+    return File(__open(path))
+}

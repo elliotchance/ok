@@ -12,6 +12,13 @@ import (
 
 func Render(f io.Writer, x interface{}, indent string, vmPackage bool) {
 	ty := reflect.TypeOf(x)
+
+	// TODO(elliot): This is a special case for File and Reader.
+	if ty == nil {
+		fmt.Fprint(f, "nil")
+		return
+	}
+
 	switch ty.Kind() {
 	case reflect.Map:
 		renderMap(f, x, indent, vmPackage)

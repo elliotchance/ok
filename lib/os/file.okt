@@ -1,0 +1,87 @@
+func assertHelloWorldLines(path string) {
+    f = Open(path)
+    assert(f.ReadLine() == "hello\n")
+    assert(f.ReadLine() == "world")
+    assert(f.ReadLine() == "")
+    f.Close()
+}
+
+test "WriteString" {
+    path = TempPath()
+
+    f = Open(path)
+    f.WriteString("hello\nworld")
+    f.Close()
+
+    assertHelloWorldLines(path)
+}
+
+test "WriteData" {
+    path = TempPath()
+
+    f = Open(path)
+    f.WriteData(`hello\nworld`)
+    f.Close()
+
+    assertHelloWorldLines(path)
+}
+
+func createTempFile(content string) string {
+    path = TempPath()
+
+    f = Open(path)
+    f.WriteString(content)
+    f.Close()
+
+    return path
+}
+
+test "ReadData" {
+    path = createTempFile("hello\nworld")
+    f = Open(path)
+
+    bytes = f.ReadData(3)
+    assert(bytes == `hel`)
+    assert(len(bytes) == 3)
+    
+    bytes = f.ReadData(4)
+    assert(bytes == `lo\nw`)
+    assert(len(bytes) == 4)
+    
+    bytes = f.ReadData(0)
+    assert(bytes == ``)
+    assert(len(bytes) == 0)
+    
+    bytes = f.ReadData(20)
+    assert(bytes == `orld`)
+    assert(len(bytes) == 4)
+    
+    bytes = f.ReadData(10)
+    assert(bytes == ``)
+    assert(len(bytes) == 0)
+}
+
+test "ReadString" {
+    path = createTempFile("hell😀\nworld")
+    f = Open(path)
+
+    str = f.ReadString(3)
+    assert(str == "hel")
+    assert(len(str) == 3)
+    
+    str = f.ReadString(4)
+    assert(str == "l😀\nw")
+    assert(len(str) == 4)
+    
+    str = f.ReadString(0)
+    assert(str == "")
+    assert(len(str) == 0)
+    
+    str = f.ReadString(20)
+    assert(str == "orld")
+    assert(len(str) == 4)
+    
+    str = f.ReadString(10)
+    assert(str == "")
+    assert(len(str) == 0)
+}
