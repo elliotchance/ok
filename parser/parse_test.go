@@ -266,14 +266,14 @@ func TestParser_ParseString(t *testing.T) {
 		"call-identifier-without-literal": {
 			str: `func main() { print( }`,
 			errs: []error{
-				errors.New("a.ok:1:20 expecting statement"),
+				errors.New("a.ok:1:15 expecting statement"),
 				errors.New("a.ok:1:1 expecting statement"),
 			},
 		},
 		"call-identifier-missing-close": {
 			str: `func main() { print("hello" }`,
 			errs: []error{
-				errors.New("a.ok:1:20 expecting statement"),
+				errors.New("a.ok:1:15 expecting statement"),
 				errors.New("a.ok:1:1 expecting statement"),
 			},
 		},

@@ -70,12 +70,14 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 		}
 
 		// Array
-		var array *ast.Array
-		array, offset, err = consumeArray(parser, offset)
-		if err == nil {
-			parts = append(parts, array)
-			didJustConsumeLiteral = false
-			continue
+		if !didJustConsumeLiteral {
+			var array *ast.Array
+			array, offset, err = consumeArray(parser, offset)
+			if err == nil {
+				parts = append(parts, array)
+				didJustConsumeLiteral = false
+				continue
+			}
 		}
 
 		// Map
@@ -96,27 +98,13 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			continue
 		}
 
-		// Depending on whether the last token was an operator determines if "("
-		// indicates a Call or Group.
-		if len(parts) > 0 && operatorPrecedence[parser.tokens[offset-1].Kind] == 0 {
-			var call *ast.Call
-			call, offset, err = consumeCall(parser, offset)
-			if err == nil {
-				// Transform the last expression into a Call.
-				call.Expr = parts[len(parts)-1].(ast.Node)
-				parts = append(parts[:len(parts)-1], call)
-				didJustConsumeLiteral = true
-				continue
-			}
-		} else {
-			// Grouping "()"
-			var group *ast.Group
-			group, offset, err = consumeGroup(parser, offset)
-			if err == nil {
-				parts = append(parts, group)
-				didJustConsumeLiteral = false
-				continue
-			}
+		// Grouping "()"
+		var group *ast.Group
+		group, offset, err = consumeGroup(parser, offset)
+		if err == nil {
+			parts = append(parts, group)
+			didJustConsumeLiteral = false
+			continue
 		}
 
 		// Unary operator (can not be consumed directly after a literal).
@@ -145,11 +133,11 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			}
 		}
 
-		// An assignable. It's important this happens last if all else fails.
-		var assignable ast.Node
-		assignable, offset, err = consumeAssignable(parser, offset)
+		// An identifier. It's important this happens last if all else fails.
+		var expr ast.Node
+		expr, offset, err = consumeChainedExpr(parser, offset)
 		if err == nil {
-			parts = append(parts, assignable)
+			parts = append(parts, expr)
 			didJustConsumeLiteral = true
 			continue
 		}
@@ -172,10 +160,7 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 			// Assignment
 			lexer.TokenAssign, lexer.TokenPlusAssign, lexer.TokenMinusAssign,
 			lexer.TokenTimesAssign, lexer.TokenDivideAssign,
-			lexer.TokenRemainderAssign,
-
-			// Access
-			lexer.TokenDot:
+			lexer.TokenRemainderAssign:
 
 			parts = append(parts, tok)
 			offset++
@@ -194,6 +179,76 @@ func consumeExpr(parser *Parser, offset, maxTokens int) (ast.Node, int, error) {
 	}
 
 	return reduceExpr(parts), offset, nil
+}
+
+func consumeChainedExpr(parser *Parser, offset int) (ast.Node, int, error) {
+	originalOffset := offset
+	var expr ast.Node
+	var err error
+
+	expr, offset, err = consumeIdentifier(parser, offset)
+	if err != nil {
+		return nil, originalOffset, err
+	}
+
+	for offset < len(parser.tokens) {
+		tok := parser.tokens[offset]
+
+		if tok.Kind == lexer.TokenDot {
+			offset++ // skip "."
+
+			var ident *ast.Identifier
+			ident, offset, err = consumeIdentifier(parser, offset)
+			if err != nil {
+				return nil, originalOffset, err
+			}
+
+			expr = &ast.Key{
+				Expr: expr,
+				Key:  ident,
+				Pos:  ident.Pos,
+			}
+			continue
+		}
+
+		if tok.Kind == lexer.TokenSquareOpen {
+			offset++ // skip "["
+
+			var key ast.Node
+			key, offset, err = consumeExpr(parser, offset, unlimitedTokens)
+			if err != nil {
+				return nil, originalOffset, err
+			}
+
+			offset, err = consume(parser, offset, []string{lexer.TokenSquareClose})
+			if err != nil {
+				return nil, originalOffset, err
+			}
+
+			expr = &ast.Key{
+				Expr: expr,
+				Key:  key,
+				Pos:  key.Position(),
+			}
+			continue
+		}
+
+		if tok.Kind == lexer.TokenParenOpen {
+			var call *ast.Call
+			call, offset, err = consumeCall(parser, offset)
+			if err != nil {
+				return nil, originalOffset, err
+			}
+
+			call.Expr = expr
+			expr = call
+			continue
+		}
+
+		break
+	}
+
+	return expr, offset, nil
 }
 
 func consumeExprs(parser *Parser, offset int) ([]ast.Node, int, error) {

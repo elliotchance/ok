@@ -1,0 +1,9 @@
+func greeter() greeter {
+    func SayHello(name string) {
+        print("Hi", name)
+    }
+}
+
+func main() {
+    greeter().SayHello("Jane")
+}
