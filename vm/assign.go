@@ -21,7 +21,14 @@ func (ins *Assign) Execute(_ *int, vm *VM) error {
 	if ins.Value != nil {
 		vm.Set(ins.VariableName, ins.Value)
 	} else {
-		vm.Set(ins.VariableName, vm.Get(ins.Register))
+		get := vm.Get(ins.Register)
+		vm.Set(ins.VariableName, &ast.Literal{
+			Kind:  get.Kind,
+			Value: get.Value,
+			Array: get.Array,
+			Map:   get.Map,
+			Pos:   get.Pos,
+		})
 	}
 
 	return nil

@@ -1,0 +1,28 @@
+// Sub returns the duration between two time. The result will be negative if `b`
+// is before `a`, positive if `b` is after `a` and `0` if the two times are
+// equal.
+func Sub(a, b Time) Duration {
+    return Duration(Unix(a) - Unix(b))
+}
+
+// Equal returns true only if both instances represent the exact same time
+// (including fractional seconds).
+func Equal(a, b Time) bool {
+    duration = Sub(a, b)
+
+    return duration.Seconds() == 0
+}
+
+// Before returns true if `a` is before `b`.
+func Before(a, b Time) bool {
+    duration = Sub(a, b)
+    
+    return duration.Seconds() < 0
+}
+
+// After returns true if `a` is after `b`.
+func After(a, b Time) bool {
+    duration = Sub(a, b)
+    
+    return duration.Seconds() > 0
+}

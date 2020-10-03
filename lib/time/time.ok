@@ -1,0 +1,36 @@
+January = 1
+February = 2
+March = 3
+April = 4
+May = 5
+June = 6
+July = 7
+August = 8
+September = 9
+October = 10
+November = 11
+December = 12
+
+// A Time represents a single point in time. The Second may be fractional.
+func Time(Year, Month, Day, Hour, Minute, Second number) Time {
+    func String() string {
+        // TODO(elliot): This is a known bug with how out-of-scope variables are
+        //  currently handled. See the todo in compiler/expr.go for
+        //  ast.Indentifier. We need to copy the values into this scope as a
+        //  work-around for now.
+        month = ^Month
+        day = ^Day
+        hour = ^Hour
+        minute = ^Minute
+        second = ^Second
+
+        return "{^Year}-{zeroPad(month)}-{zeroPad(day)} {zeroPad(hour)}:{zeroPad(minute)}:{zeroPad(second)}"
+    }
+}
+
+// Now returns the current time.
+func Now() Time {
+    year, month, day, hour, minute, second = __now()
+
+    return Time(year, month, day, hour, minute, second)
+}

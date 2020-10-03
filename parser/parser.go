@@ -12,14 +12,21 @@ import (
 )
 
 type Parser struct {
-	errors           []error
-	funcs            map[string]*ast.Func
-	tests            []*ast.Test
-	finalizers       map[string][]*ast.Finally
-	functionNames    []string
+	errors        []error
+	funcs         map[string]*ast.Func
+	tests         []*ast.Test
+	finalizers    map[string][]*ast.Finally
+	functionNames []string
+	imports       map[string]string
+	comments      []*ast.Comment
+
+	// TODO(elliot): The anonFunctionName is a pretty hacky way to ensure
+	//  separate parsers do not issue the same anonymous function names. This is
+	//  a problem because the result from different parsers are merged together.
+	//  A better solution might be to come up with some kind of canonical naming
+	//  of anonymous functions. This would also help for not only for
+	//  determinism, but also for stack traces, I would imagine.
 	anonFunctionName int
-	imports          map[string]string
-	comments         []*ast.Comment
 
 	// Constants are variables defined at the package level. They cannot be
 	// modified and only allow literals for values.

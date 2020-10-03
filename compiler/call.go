@@ -11,19 +11,23 @@ import (
 type builtinFn func(
 	compiledFunc *vm.CompiledFunc,
 	args []vm.Register,
-) (vm.Instruction, vm.Register, *types.Type, error)
+) (vm.Instruction, []vm.Register, []*types.Type, error)
 
 // TODO(elliot): These needs to check function signatures.
 var builtinFunctions = map[string]builtinFn{
 	"__call":      funcCall,
+	"__fromunix":  funcFromUnix,
 	"__get":       funcGet,
 	"__interface": funcInterface,
 	"__len":       funcLen,
 	"__log":       funcLog,
+	"__now":       funcNow,
 	"__pow":       funcPow,
 	"__props":     funcProps,
 	"__set":       funcSet,
+	"__sleep":     funcSleep,
 	"__type":      funcType,
+	"__unix":      funcUnix,
 	"char":        funcChar,
 	"len":         funcLen,
 	"number":      funcNumber,
@@ -55,7 +59,7 @@ func compileCall(
 
 			compiledFunc.Append(ins)
 
-			return []vm.Register{result}, []*types.Type{returnType}, nil
+			return result, returnType, nil
 		}
 	}
 
@@ -95,47 +99,47 @@ func compileCall(
 	return returnRegisters, fnType[0].Returns, nil
 }
 
-func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcNumber(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastNumber{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, types.Number, nil
+	return ins, []vm.Register{result}, []*types.Type{types.Number}, nil
 }
 
-func funcString(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcString(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastString{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, types.String, nil
+	return ins, []vm.Register{result}, []*types.Type{types.String}, nil
 }
 
-func funcChar(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcChar(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.CastChar{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, types.Char, nil
+	return ins, []vm.Register{result}, []*types.Type{types.Char}, nil
 }
 
-func funcInterface(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcInterface(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Interface{
 		Value:  args[0],
 		Result: result,
 	}
 
-	return ins, result, types.String, nil
+	return ins, []vm.Register{result}, []*types.Type{types.String}, nil
 }
 
-func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Get{
 		Object: args[0],
@@ -143,10 +147,10 @@ func funcGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 		Result: result,
 	}
 
-	return ins, result, types.String, nil
+	return ins, []vm.Register{result}, []*types.Type{types.String}, nil
 }
 
-func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Set{
 		Object: args[0],
@@ -155,30 +159,30 @@ func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 		Result: result,
 	}
 
-	return ins, result, types.Bool, nil
+	return ins, []vm.Register{result}, []*types.Type{types.Bool}, nil
 }
 
-func funcProps(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcProps(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Props{
 		Object: args[0],
 		Result: result,
 	}
 
-	return ins, result, types.StringArray, nil
+	return ins, []vm.Register{result}, []*types.Type{types.StringArray}, nil
 }
 
-func funcType(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcType(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Type{
 		Value:  args[0],
 		Result: result,
 	}
 
-	return ins, result, types.String, nil
+	return ins, []vm.Register{result}, []*types.Type{types.String}, nil
 }
 
-func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 
 	// TODO(elliot): This is not a safe operation because it assumes the
@@ -190,20 +194,28 @@ func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction
 		Results:   result,
 	}
 
-	return ins, result, types.AnyArray, nil
+	return ins, []vm.Register{result}, []*types.Type{types.AnyArray}, nil
 }
 
-func funcLog(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcLog(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Log{
 		X:      args[0],
 		Result: result,
 	}
 
-	return ins, result, types.Number, nil
+	return ins, vm.Registers{result}, []*types.Type{types.Number}, nil
 }
 
-func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcSleep(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Sleep{
+		Seconds: args[0],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Power{
 		Base:   args[0],
@@ -211,23 +223,78 @@ func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 		Result: result,
 	}
 
-	return ins, result, types.Number, nil
+	return ins, []vm.Register{result}, []*types.Type{types.Number}, nil
 }
 
-func funcLen(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcLen(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Len{
 		Argument: args[0],
 		Result:   result,
 	}
 
-	return ins, result, types.Number, nil
+	return ins, vm.Registers{result}, []*types.Type{types.Number}, nil
 }
 
-func funcPrint(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, vm.Register, *types.Type, error) {
+func funcUnix(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.Unix{
+		Time:   args[0],
+		Result: result,
+	}
+
+	return ins, []vm.Register{result}, []*types.Type{types.Number}, nil
+}
+
+func funcFromUnix(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	year := compiledFunc.NextRegister()
+	month := compiledFunc.NextRegister()
+	day := compiledFunc.NextRegister()
+	hour := compiledFunc.NextRegister()
+	minute := compiledFunc.NextRegister()
+	second := compiledFunc.NextRegister()
+	ins := &vm.FromUnix{
+		Seconds: args[0],
+		Year:    year,
+		Month:   month,
+		Day:     day,
+		Hour:    hour,
+		Minute:  minute,
+		Second:  second,
+	}
+
+	return ins,
+		vm.Registers{year, month, day, hour, minute, second},
+		[]*types.Type{types.Number, types.Number, types.Number, types.Number, types.Number, types.Number},
+		nil
+}
+
+func funcPrint(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	ins := &vm.Print{
 		Arguments: args,
 	}
 
-	return ins, "", nil, nil
+	return ins, nil, nil, nil
+}
+
+func funcNow(compiledFunc *vm.CompiledFunc, _ []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	year := compiledFunc.NextRegister()
+	month := compiledFunc.NextRegister()
+	day := compiledFunc.NextRegister()
+	hour := compiledFunc.NextRegister()
+	minute := compiledFunc.NextRegister()
+	second := compiledFunc.NextRegister()
+	ins := &vm.Now{
+		Year:   year,
+		Month:  month,
+		Day:    day,
+		Hour:   hour,
+		Minute: minute,
+		Second: second,
+	}
+
+	return ins,
+		vm.Registers{year, month, day, hour, minute, second},
+		[]*types.Type{types.Number, types.Number, types.Number, types.Number, types.Number, types.Number},
+		nil
 }

@@ -1,0 +1,30 @@
+import "time"
+
+func main() {
+    now = time.Now()
+    print(now.String())
+
+    then = time.Time(2009, 11, 17, 20, 34, 58.651387237)
+    print(then.String())
+
+    print(then.Year)
+    print(then.Month)
+    print(then.Day)
+    print(then.Hour)
+    print(then.Minute)
+    print(then.Second)
+
+    print(time.Before(then, now))
+    print(time.After(then, now))
+    print(time.Equal(then, now))
+
+    diff = time.Sub(now, then)
+    print(diff.String())
+
+    print(diff.Hours())
+    print(diff.Minutes())
+    print(diff.Seconds())
+
+    print(time.Add(then, diff))
+    print(time.Add(then, time.Duration(-diff.Seconds())))
+}

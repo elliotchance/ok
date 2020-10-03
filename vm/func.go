@@ -14,8 +14,9 @@ type CompiledFunc struct {
 	Finally      [][]Instruction
 
 	// These are copied from the function definition.
-	Type             *types.Type
-	Name, UniqueName string
+	// Name and Pos are used by the VM for stack traces.
+	Type                  *types.Type
+	Name, UniqueName, Pos string
 }
 
 type FinallyBlock struct {

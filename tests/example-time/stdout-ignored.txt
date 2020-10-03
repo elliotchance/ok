@@ -1,0 +1,1 @@
+Stdout is not compared because of the dynamic output.

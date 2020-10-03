@@ -1,0 +1,58 @@
+// These constants only go to Hour because after then the durations get more
+// ambiguous.
+Nanosecond  = 0.000000001
+Microsecond = 0.000001
+Millisecond = 0.001
+Second      = 1
+Minute      = 60
+Hour        = 3600
+
+// A Duration represents a length of time.
+func Duration(seconds number) Duration {
+    func Nanoseconds() number {
+        return ^seconds / Nanosecond
+    }
+
+    func Microseconds() number {
+        return ^seconds / Microsecond
+    }
+
+    func Milliseconds() number {
+        return ^seconds / Millisecond
+    }
+
+    func Seconds() number {
+        return ^seconds
+    }
+
+    func Minutes() number {
+        return ^seconds / Minute
+    }
+
+    func Hours() number {
+        return ^seconds / Hour
+    }
+
+    func String() string {
+        s = ""
+        seconds = ^seconds
+
+        if seconds >= 3600 {
+            hours = floor(seconds / 3600)
+            seconds -= hours * 3600
+            s += "{ hours }h"
+        }
+
+        if seconds >= 60 {
+            minutes = floor(seconds / 60)
+            seconds -= minutes * 60
+            s += "{ minutes }m"
+        }
+
+        if seconds != 0 {
+            s += "{ seconds }s"
+        }
+
+        return s
+    }
+}

@@ -1,0 +1,14 @@
+// Unix returns the unix timestamp, the number of seconds elapsed since January
+// 1, 1970 UTC. The value returned may be fractional.
+func Unix(t Time) number {
+    return __unix(t)
+}
+
+// FromUnix performs the opposite operation as Unix. It receives the number of
+// seconds elapsed since January 1, 1970 UTC and returns the Time. The input
+// seconds may be fractional.
+func FromUnix(seconds number) Time {
+    year, month, day, hour, minute, second = __fromunix(seconds)
+
+    return Time(year, month, day, hour, minute, second)
+}
