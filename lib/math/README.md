@@ -18,6 +18,7 @@
 - [func Log10(x number) number](#Log10)
 - [func LogE(x number) number](#LogE)
 - [func Pow(base number, power number) number](#Pow)
+- [func Rand() number](#Rand)
 - [func Round(x number, prec number) number](#Round)
 - [func Sqrt(x number) number](#Sqrt)
 
@@ -122,6 +123,14 @@ func Pow(base number, power number) number
 ```
 
 Pow returns base to power.
+
+## Rand
+
+```
+func Rand() number
+```
+
+Rand returns a random number between 0 and 1.
 
 ## Round
 
