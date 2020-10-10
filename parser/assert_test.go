@@ -34,6 +34,29 @@ func TestAssert(t *testing.T) {
 				errors.New("a.ok:1:15 only binary expressions are permitted in assertions"),
 			},
 		},
+		"raise-type": {
+			str: "assert(foo() raise Bar)",
+			expected: &ast.AssertRaise{
+				Call: &ast.Call{
+					Expr: &ast.Identifier{Name: "foo"},
+				},
+				TypeOrValue: &ast.Identifier{Name: "Bar"},
+			},
+		},
+		"raise-value": {
+			str: `assert(foo() raise Error("uh oh"))`,
+			expected: &ast.AssertRaise{
+				Call: &ast.Call{
+					Expr: &ast.Identifier{Name: "foo"},
+				},
+				TypeOrValue: &ast.Call{
+					Expr: &ast.Identifier{Name: "Error"},
+					Arguments: []ast.Node{
+						asttest.NewLiteralString("uh oh"),
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

@@ -29,6 +29,7 @@ func cmpOptions() cmp.Options {
 	return []cmp.Option{
 		cmpopts.IgnoreFields(ast.Array{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Assert{}, "Pos"),
+		cmpopts.IgnoreFields(ast.AssertRaise{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Break{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Call{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Case{}, "Pos"),

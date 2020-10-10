@@ -1,0 +1,9 @@
+import "error"
+
+func raiseAnError() {
+    raise error.Error("oh oh")
+}
+
+test "assert raising a type" {
+    assert(raiseAnError() raise error.Error)
+}

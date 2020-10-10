@@ -49,6 +49,12 @@ func consumeStatement(parser *Parser, offset int) (_ ast.Node, _ int, hoist bool
 		return assign, offset, hoist, nil
 	}
 
+	var assertRaise *ast.AssertRaise
+	assertRaise, offset, err = consumeAssertRaise(parser, offset)
+	if err == nil {
+		return assertRaise, offset, hoist, nil
+	}
+
 	var assert *ast.Assert
 	assert, offset, err = consumeAssert(parser, offset)
 	if err == nil {

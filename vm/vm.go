@@ -399,7 +399,7 @@ func (vm *VM) LoadFile(pkgVariable string, file *File) error {
 		vm.fns[k] = v
 	}
 
-	vm.tests = file.Tests
+	vm.tests = append(vm.tests, file.Tests...)
 
 	for packageName := range file.Imports {
 		err := vm.LoadPackage(path.Base(packageName), packageName)
