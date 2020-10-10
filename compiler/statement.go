@@ -21,6 +21,9 @@ func compileStatement(compiledFunc *vm.CompiledFunc, statement ast.Node, breakIn
 	case *ast.Assert:
 		return compileAssert(compiledFunc, n, file)
 
+	case *ast.AssertRaise:
+		return compileAssertRaise(compiledFunc, n, file)
+
 	case *ast.For:
 		return compileFor(compiledFunc, n, file)
 

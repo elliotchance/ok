@@ -1,0 +1,12 @@
+import "error"
+
+test "try and catch" {
+    raised = ""
+    try {
+        raise error.Error("uh oh")
+    } on error.Error {
+        raised = err.Error
+    }
+
+    assert(raised == "uh oh")
+}
