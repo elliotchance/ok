@@ -1,0 +1,8 @@
+import "error"
+
+func foo() {
+}
+
+test "did not raise" {
+    assert(foo() raise error.Error)
+}

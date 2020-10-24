@@ -7,3 +7,7 @@ func raiseAnError() {
 test "assert raising a type" {
     assert(raiseAnError() raise error.Error)
 }
+
+test "assert raising a value" {
+    assert(raiseAnError() raise error.Error("uh oh"))
+}
