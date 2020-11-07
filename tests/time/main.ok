@@ -1,0 +1,9 @@
+import "time"
+
+func printTime(t time.Time) {
+    print(t)
+}
+
+func main() {
+    printTime(time.Time(2001, time.August, 9, 1, 46, 40.123))
+}
