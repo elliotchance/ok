@@ -19,26 +19,32 @@ var typeTokens = []string{
 
 func consumeType(parser *Parser, offset int) (ty *types.Type, _ int, _ error) {
 	originalOffset := offset
+	var defers []func()
+	defer func() {
+		for _, def := range defers {
+			def()
+		}
+	}()
 
 	for {
 		switch {
 		case parser.tokens[offset].Kind == lexer.TokenSquareOpen &&
 			parser.tokens[offset+1].Kind == lexer.TokenSquareClose:
 			offset += 2
-			defer func() {
+			defers = append(defers, func() {
 				if ty != nil {
 					ty = ty.ToArray()
 				}
-			}()
+			})
 
 		case parser.tokens[offset].Kind == lexer.TokenCurlyOpen &&
 			parser.tokens[offset+1].Kind == lexer.TokenCurlyClose:
 			offset += 2
-			defer func() {
+			defers = append(defers, func() {
 				if ty != nil {
 					ty = ty.ToMap()
 				}
-			}()
+			})
 
 		default:
 			goto done
@@ -75,6 +81,19 @@ done:
 		ident, offset, err = consumeIdentifier(parser, offset)
 		if err != nil {
 			return nil, originalOffset, err
+		}
+
+		// Also allow for imported types.
+		if parser.tokens[offset].Kind == lexer.TokenDot {
+			offset++ // skip "."
+
+			var ident2 *ast.Identifier
+			ident2, offset, err = consumeIdentifier(parser, offset)
+			if err != nil {
+				return nil, originalOffset, err
+			}
+
+			ident.Name += "." + ident2.Name
 		}
 
 		t.Kind = ident.Name

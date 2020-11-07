@@ -200,6 +200,17 @@ func TestFunc(t *testing.T) {
 				},
 			},
 		},
+		"package-argument": {
+			str: "func printTime(t time.Time) {}",
+			expected: map[string]*ast.Func{
+				"printTime": {
+					Name: "printTime",
+					Arguments: []*ast.Argument{
+						{Name: "t", Type: types.NewUnresolvedInterface("time.Time")},
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.NewParser(0)
