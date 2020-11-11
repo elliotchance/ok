@@ -65,7 +65,7 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 		}
 	}
 
-	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), file)
+	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), file, nil)
 	if err != nil {
 		return nil, []error{err}
 	}

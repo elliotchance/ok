@@ -66,7 +66,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"1"},
-					&Assign{"1", nil, "1"},
 					&Assign{"2", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -87,6 +86,7 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"2"},
+					&Assign{"1", nil, "1"},
 					&Assign{"Error", nil, "2"},
 					&Return{Registers{"0"}},
 				},
@@ -636,6 +636,316 @@ func init() {
 			},
 			PackageFunc: &CompiledFunc{
 				Instructions: []Instruction{
+					&Assign{"10", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "1", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"10"},
+					&Assign{"11", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "10", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"11"},
+					&Assign{"12", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "11", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"12"},
+					&Assign{"13", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "2", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"13"},
+					&Assign{"14", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "3", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"14"},
+					&Assign{"15", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "4", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"15"},
+					&Assign{"16", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "5", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"16"},
+					&Assign{"17", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "6", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"17"},
+					&Assign{"18", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "7", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"18"},
+					&Assign{"19", &ast.Literal{&types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "8", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"19"},
+					&Assign{"20", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "9", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"20"},
+					&Assign{"21", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "1", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"21"},
+					&Assign{"22", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "7", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"22"},
+					&Assign{"23", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "9", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"23"},
+					&Assign{"24", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "4", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"24"},
+					&Assign{"25", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "10", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"25"},
+					&Assign{"26", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "3", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"26"},
+					&Assign{"27", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "2", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"27"},
+					&Assign{"28", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "5", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"28"},
+					&Assign{"29", &ast.Literal{&types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "8", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"29"},
+					&Assign{"30", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "11", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"30"},
+					&Assign{"31", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "6", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"31"},
 					&Assign{"1", &ast.Literal{&types.Type{
 						Kind: 6,
 					}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil}, ""},
@@ -672,337 +982,27 @@ func init() {
 						Kind: 6,
 					}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil}, ""},
 					&Assign{"SqrtPi", nil, "9"},
-					&Assign{"10", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "1", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"10"},
 					&Assign{"1", nil, "10"},
-					&Assign{"11", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "10", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"11"},
 					&Assign{"10", nil, "11"},
-					&Assign{"12", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "11", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"12"},
 					&Assign{"11", nil, "12"},
-					&Assign{"13", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "2", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"13"},
 					&Assign{"2", nil, "13"},
-					&Assign{"14", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "3", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"14"},
 					&Assign{"3", nil, "14"},
-					&Assign{"15", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "4", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"15"},
 					&Assign{"4", nil, "15"},
-					&Assign{"16", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "5", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"16"},
 					&Assign{"5", nil, "16"},
-					&Assign{"17", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "6", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"17"},
 					&Assign{"6", nil, "17"},
-					&Assign{"18", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "7", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"18"},
 					&Assign{"7", nil, "18"},
-					&Assign{"19", &ast.Literal{&types.Type{
-						Kind: 10,
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "8", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"19"},
 					&Assign{"8", nil, "19"},
-					&Assign{"20", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "9", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"20"},
 					&Assign{"9", nil, "20"},
-					&Assign{"21", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "1", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"21"},
 					&Assign{"Abs", nil, "21"},
-					&Assign{"22", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "7", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"22"},
 					&Assign{"Cbrt", nil, "22"},
-					&Assign{"23", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "9", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"23"},
 					&Assign{"Ceil", nil, "23"},
-					&Assign{"24", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "4", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"24"},
 					&Assign{"Exp", nil, "24"},
-					&Assign{"25", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "10", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"25"},
 					&Assign{"Floor", nil, "25"},
-					&Assign{"26", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "3", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"26"},
 					&Assign{"Log10", nil, "26"},
-					&Assign{"27", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "2", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"27"},
 					&Assign{"LogE", nil, "27"},
-					&Assign{"28", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "5", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"28"},
 					&Assign{"Pow", nil, "28"},
-					&Assign{"29", &ast.Literal{&types.Type{
-						Kind: 10,
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "8", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"29"},
 					&Assign{"Rand", nil, "29"},
-					&Assign{"30", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "11", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"30"},
 					&Assign{"Round", nil, "30"},
-					&Assign{"31", &ast.Literal{&types.Type{
-						Kind: 10,
-						Arguments: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-						Returns: []*types.Type{
-							&types.Type{
-								Kind: 6,
-							},
-						},
-					}, "6", nil, nil, "", nil, nil}, ""},
-					&ParentScope{"31"},
 					&Assign{"Sqrt", nil, "31"},
 					&Return{Registers{"0"}},
 				},
@@ -2391,7 +2391,6 @@ func init() {
 							},
 						}, "8", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"2"},
-						&Assign{"ReadLine", nil, "2"},
 						&Assign{"3", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2406,7 +2405,6 @@ func init() {
 							},
 						}, "7", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"3"},
-						&Assign{"ReadString", nil, "3"},
 						&Assign{"4", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2421,7 +2419,6 @@ func init() {
 							},
 						}, "6", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"4"},
-						&Assign{"ReadData", nil, "4"},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2439,12 +2436,10 @@ func init() {
 							},
 						}, "5", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"5"},
-						&Assign{"Seek", nil, "5"},
 						&Assign{"6", &ast.Literal{&types.Type{
 							Kind: 10,
 						}, "4", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"6"},
-						&Assign{"Close", nil, "6"},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2454,7 +2449,6 @@ func init() {
 							},
 						}, "3", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"7"},
-						&Assign{"WriteData", nil, "7"},
 						&Assign{"8", &ast.Literal{&types.Type{
 							Kind: 10,
 							Arguments: []*types.Type{
@@ -2464,6 +2458,12 @@ func init() {
 							},
 						}, "2", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"8"},
+						&Assign{"ReadLine", nil, "2"},
+						&Assign{"ReadString", nil, "3"},
+						&Assign{"ReadData", nil, "4"},
+						&Assign{"Seek", nil, "5"},
+						&Assign{"Close", nil, "6"},
+						&Assign{"WriteData", nil, "7"},
 						&Assign{"WriteString", nil, "8"},
 						&Return{Registers{"0"}},
 					},
@@ -3587,7 +3587,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"1"},
-					&Assign{"1", nil, "1"},
 					&Assign{"2", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3597,7 +3596,6 @@ func init() {
 						},
 					}, "10", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"2"},
-					&Assign{"10", nil, "2"},
 					&Assign{"3", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3610,7 +3608,6 @@ func init() {
 						},
 					}, "11", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"3"},
-					&Assign{"11", nil, "3"},
 					&Assign{"4", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3620,7 +3617,6 @@ func init() {
 						},
 					}, "12", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"4"},
-					&Assign{"12", nil, "4"},
 					&Assign{"5", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3665,7 +3661,6 @@ func init() {
 						},
 					}, "13", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"5"},
-					&Assign{"13", nil, "5"},
 					&Assign{"6", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3698,7 +3693,6 @@ func init() {
 						},
 					}, "14", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"6"},
-					&Assign{"14", nil, "6"},
 					&Assign{"7", &ast.Literal{&types.Type{
 						Kind: 10,
 						Returns: []*types.Type{
@@ -3708,7 +3702,6 @@ func init() {
 						},
 					}, "15", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"7"},
-					&Assign{"15", nil, "7"},
 					&Assign{"8", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3795,7 +3788,6 @@ func init() {
 						},
 					}, "9", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"8"},
-					&Assign{"9", nil, "8"},
 					&Assign{"9", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3805,7 +3797,6 @@ func init() {
 						},
 					}, "12", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"9"},
-					&Assign{"CreateDirectory", nil, "9"},
 					&Assign{"10", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3892,7 +3883,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"10"},
-					&Assign{"File", nil, "10"},
 					&Assign{"11", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3937,7 +3927,6 @@ func init() {
 						},
 					}, "13", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"11"},
-					&Assign{"FileInfo", nil, "11"},
 					&Assign{"12", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -3970,7 +3959,6 @@ func init() {
 						},
 					}, "14", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"12"},
-					&Assign{"Info", nil, "12"},
 					&Assign{"13", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -4057,7 +4045,6 @@ func init() {
 						},
 					}, "9", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"13"},
-					&Assign{"Open", nil, "13"},
 					&Assign{"14", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -4067,7 +4054,6 @@ func init() {
 						},
 					}, "10", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"14"},
-					&Assign{"Remove", nil, "14"},
 					&Assign{"15", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -4080,7 +4066,6 @@ func init() {
 						},
 					}, "11", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"15"},
-					&Assign{"Rename", nil, "15"},
 					&Assign{"16", &ast.Literal{&types.Type{
 						Kind: 10,
 						Returns: []*types.Type{
@@ -4090,6 +4075,21 @@ func init() {
 						},
 					}, "15", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"16"},
+					&Assign{"1", nil, "1"},
+					&Assign{"10", nil, "2"},
+					&Assign{"11", nil, "3"},
+					&Assign{"12", nil, "4"},
+					&Assign{"13", nil, "5"},
+					&Assign{"14", nil, "6"},
+					&Assign{"15", nil, "7"},
+					&Assign{"9", nil, "8"},
+					&Assign{"CreateDirectory", nil, "9"},
+					&Assign{"File", nil, "10"},
+					&Assign{"FileInfo", nil, "11"},
+					&Assign{"Info", nil, "12"},
+					&Assign{"Open", nil, "13"},
+					&Assign{"Remove", nil, "14"},
+					&Assign{"Rename", nil, "15"},
 					&Assign{"TempPath", nil, "16"},
 					&Return{Registers{"0"}},
 				},
@@ -5418,7 +5418,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"1"},
-					&Assign{"1", nil, "1"},
 					&Assign{"2", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5436,7 +5435,6 @@ func init() {
 						},
 					}, "2", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"2"},
-					&Assign{"2", nil, "2"},
 					&Assign{"3", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5451,7 +5449,6 @@ func init() {
 						},
 					}, "3", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"3"},
-					&Assign{"3", nil, "3"},
 					&Assign{"4", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5466,7 +5463,6 @@ func init() {
 						},
 					}, "4", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"4"},
-					&Assign{"4", nil, "4"},
 					&Assign{"5", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5481,7 +5477,6 @@ func init() {
 						},
 					}, "5", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"5"},
-					&Assign{"5", nil, "5"},
 					&Assign{"6", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5499,7 +5494,6 @@ func init() {
 						},
 					}, "6", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"6"},
-					&Assign{"6", nil, "6"},
 					&Assign{"7", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5520,7 +5514,6 @@ func init() {
 						},
 					}, "7", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"7"},
-					&Assign{"7", nil, "7"},
 					&Assign{"8", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5538,7 +5531,6 @@ func init() {
 						},
 					}, "8", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"8"},
-					&Assign{"8", nil, "8"},
 					&Assign{"9", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5553,7 +5545,6 @@ func init() {
 						},
 					}, "9", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"9"},
-					&Assign{"9", nil, "9"},
 					&Assign{"10", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5577,7 +5568,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"10"},
-					&Assign{"Call", nil, "10"},
 					&Assign{"11", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5595,7 +5585,6 @@ func init() {
 						},
 					}, "2", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"11"},
-					&Assign{"Get", nil, "11"},
 					&Assign{"12", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5610,7 +5599,6 @@ func init() {
 						},
 					}, "3", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"12"},
-					&Assign{"Interface", nil, "12"},
 					&Assign{"13", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5625,7 +5613,6 @@ func init() {
 						},
 					}, "4", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"13"},
-					&Assign{"Kind", nil, "13"},
 					&Assign{"14", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5640,7 +5627,6 @@ func init() {
 						},
 					}, "5", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"14"},
-					&Assign{"Len", nil, "14"},
 					&Assign{"15", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5658,7 +5644,6 @@ func init() {
 						},
 					}, "6", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"15"},
-					&Assign{"Properties", nil, "15"},
 					&Assign{"16", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5679,7 +5664,6 @@ func init() {
 						},
 					}, "7", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"16"},
-					&Assign{"Set", nil, "16"},
 					&Assign{"17", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5694,7 +5678,6 @@ func init() {
 						},
 					}, "9", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"17"},
-					&Assign{"Type", nil, "17"},
 					&Assign{"18", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -5712,6 +5695,23 @@ func init() {
 						},
 					}, "8", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"18"},
+					&Assign{"1", nil, "1"},
+					&Assign{"2", nil, "2"},
+					&Assign{"3", nil, "3"},
+					&Assign{"4", nil, "4"},
+					&Assign{"5", nil, "5"},
+					&Assign{"6", nil, "6"},
+					&Assign{"7", nil, "7"},
+					&Assign{"8", nil, "8"},
+					&Assign{"9", nil, "9"},
+					&Assign{"Call", nil, "10"},
+					&Assign{"Get", nil, "11"},
+					&Assign{"Interface", nil, "12"},
+					&Assign{"Kind", nil, "13"},
+					&Assign{"Len", nil, "14"},
+					&Assign{"Properties", nil, "15"},
+					&Assign{"Set", nil, "16"},
+					&Assign{"Type", nil, "17"},
 					&Assign{"hasPrefix", nil, "18"},
 					&Return{Registers{"0"}},
 				},
@@ -8213,7 +8213,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"1"},
-					&Assign{"1", nil, "1"},
 					&Assign{"2", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8231,7 +8230,6 @@ func init() {
 						},
 					}, "10", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"2"},
-					&Assign{"10", nil, "2"},
 					&Assign{"3", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8252,7 +8250,6 @@ func init() {
 						},
 					}, "11", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"3"},
-					&Assign{"11", nil, "3"},
 					&Assign{"4", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8273,7 +8270,6 @@ func init() {
 						},
 					}, "12", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"4"},
-					&Assign{"12", nil, "4"},
 					&Assign{"5", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8294,7 +8290,6 @@ func init() {
 						},
 					}, "13", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"5"},
-					&Assign{"13", nil, "5"},
 					&Assign{"6", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8315,7 +8310,6 @@ func init() {
 						},
 					}, "14", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"6"},
-					&Assign{"14", nil, "6"},
 					&Assign{"7", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8333,7 +8327,6 @@ func init() {
 						},
 					}, "15", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"7"},
-					&Assign{"15", nil, "7"},
 					&Assign{"8", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8351,7 +8344,6 @@ func init() {
 						},
 					}, "16", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"8"},
-					&Assign{"16", nil, "8"},
 					&Assign{"9", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8372,7 +8364,6 @@ func init() {
 						},
 					}, "17", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"9"},
-					&Assign{"17", nil, "9"},
 					&Assign{"10", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8387,7 +8378,6 @@ func init() {
 						},
 					}, "18", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"10"},
-					&Assign{"18", nil, "10"},
 					&Assign{"11", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8408,7 +8398,6 @@ func init() {
 						},
 					}, "19", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"11"},
-					&Assign{"19", nil, "11"},
 					&Assign{"12", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8423,7 +8412,6 @@ func init() {
 						},
 					}, "2", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"12"},
-					&Assign{"2", nil, "12"},
 					&Assign{"13", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8444,7 +8432,6 @@ func init() {
 						},
 					}, "20", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"13"},
-					&Assign{"20", nil, "13"},
 					&Assign{"14", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8462,7 +8449,6 @@ func init() {
 						},
 					}, "21", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"14"},
-					&Assign{"21", nil, "14"},
 					&Assign{"15", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8480,7 +8466,6 @@ func init() {
 						},
 					}, "22", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"15"},
-					&Assign{"22", nil, "15"},
 					&Assign{"16", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8498,7 +8483,6 @@ func init() {
 						},
 					}, "23", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"16"},
-					&Assign{"23", nil, "16"},
 					&Assign{"17", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8516,7 +8500,6 @@ func init() {
 						},
 					}, "24", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"17"},
-					&Assign{"24", nil, "17"},
 					&Assign{"18", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8534,7 +8517,6 @@ func init() {
 						},
 					}, "25", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"18"},
-					&Assign{"25", nil, "18"},
 					&Assign{"19", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8552,7 +8534,6 @@ func init() {
 						},
 					}, "26", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"19"},
-					&Assign{"26", nil, "19"},
 					&Assign{"20", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8570,7 +8551,6 @@ func init() {
 						},
 					}, "3", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"20"},
-					&Assign{"3", nil, "20"},
 					&Assign{"21", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8588,7 +8568,6 @@ func init() {
 						},
 					}, "4", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"21"},
-					&Assign{"4", nil, "21"},
 					&Assign{"22", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8606,7 +8585,6 @@ func init() {
 						},
 					}, "5", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"22"},
-					&Assign{"5", nil, "22"},
 					&Assign{"23", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8624,7 +8602,6 @@ func init() {
 						},
 					}, "6", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"23"},
-					&Assign{"6", nil, "23"},
 					&Assign{"24", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8645,7 +8622,6 @@ func init() {
 						},
 					}, "7", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"24"},
-					&Assign{"7", nil, "24"},
 					&Assign{"25", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8663,7 +8639,6 @@ func init() {
 						},
 					}, "8", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"25"},
-					&Assign{"8", nil, "25"},
 					&Assign{"26", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8681,7 +8656,6 @@ func init() {
 						},
 					}, "9", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"26"},
-					&Assign{"9", nil, "26"},
 					&Assign{"27", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8699,7 +8673,6 @@ func init() {
 						},
 					}, "3", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"27"},
-					&Assign{"Contains", nil, "27"},
 					&Assign{"28", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8717,7 +8690,6 @@ func init() {
 						},
 					}, "4", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"28"},
-					&Assign{"HasPrefix", nil, "28"},
 					&Assign{"29", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8735,7 +8707,6 @@ func init() {
 						},
 					}, "5", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"29"},
-					&Assign{"HasSuffix", nil, "29"},
 					&Assign{"30", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8753,7 +8724,6 @@ func init() {
 						},
 					}, "6", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"30"},
-					&Assign{"Index", nil, "30"},
 					&Assign{"31", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8774,7 +8744,6 @@ func init() {
 						},
 					}, "7", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"31"},
-					&Assign{"IndexAfter", nil, "31"},
 					&Assign{"32", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8795,7 +8764,6 @@ func init() {
 						},
 					}, "12", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"32"},
-					&Assign{"Join", nil, "32"},
 					&Assign{"33", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8813,7 +8781,6 @@ func init() {
 						},
 					}, "10", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"33"},
-					&Assign{"LastIndex", nil, "33"},
 					&Assign{"34", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8834,7 +8801,6 @@ func init() {
 						},
 					}, "11", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"34"},
-					&Assign{"LastIndexBefore", nil, "34"},
 					&Assign{"35", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8855,7 +8821,6 @@ func init() {
 						},
 					}, "13", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"35"},
-					&Assign{"PadLeft", nil, "35"},
 					&Assign{"36", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8876,7 +8841,6 @@ func init() {
 						},
 					}, "14", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"36"},
-					&Assign{"PadRight", nil, "36"},
 					&Assign{"37", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8894,7 +8858,6 @@ func init() {
 						},
 					}, "16", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"37"},
-					&Assign{"Repeat", nil, "37"},
 					&Assign{"38", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8915,7 +8878,6 @@ func init() {
 						},
 					}, "17", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"38"},
-					&Assign{"ReplaceAll", nil, "38"},
 					&Assign{"39", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8930,7 +8892,6 @@ func init() {
 						},
 					}, "18", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"39"},
-					&Assign{"Reverse", nil, "39"},
 					&Assign{"40", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8951,7 +8912,6 @@ func init() {
 						},
 					}, "19", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"40"},
-					&Assign{"Split", nil, "40"},
 					&Assign{"41", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8972,7 +8932,6 @@ func init() {
 						},
 					}, "20", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"41"},
-					&Assign{"Substr", nil, "41"},
 					&Assign{"42", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -8987,7 +8946,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"42"},
-					&Assign{"ToLower", nil, "42"},
 					&Assign{"43", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9002,7 +8960,6 @@ func init() {
 						},
 					}, "2", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"43"},
-					&Assign{"ToUpper", nil, "43"},
 					&Assign{"44", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9020,7 +8977,6 @@ func init() {
 						},
 					}, "23", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"44"},
-					&Assign{"Trim", nil, "44"},
 					&Assign{"45", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9038,7 +8994,6 @@ func init() {
 						},
 					}, "21", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"45"},
-					&Assign{"TrimLeft", nil, "45"},
 					&Assign{"46", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9056,7 +9011,6 @@ func init() {
 						},
 					}, "24", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"46"},
-					&Assign{"TrimPrefix", nil, "46"},
 					&Assign{"47", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9074,7 +9028,6 @@ func init() {
 						},
 					}, "22", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"47"},
-					&Assign{"TrimRight", nil, "47"},
 					&Assign{"48", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9092,7 +9045,6 @@ func init() {
 						},
 					}, "25", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"48"},
-					&Assign{"TrimSuffix", nil, "48"},
 					&Assign{"49", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9110,7 +9062,6 @@ func init() {
 						},
 					}, "15", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"49"},
-					&Assign{"createPad", nil, "49"},
 					&Assign{"50", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9128,7 +9079,6 @@ func init() {
 						},
 					}, "9", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"50"},
-					&Assign{"max", nil, "50"},
 					&Assign{"51", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9146,7 +9096,6 @@ func init() {
 						},
 					}, "8", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"51"},
-					&Assign{"min", nil, "51"},
 					&Assign{"52", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -9164,6 +9113,57 @@ func init() {
 						},
 					}, "26", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"52"},
+					&Assign{"1", nil, "1"},
+					&Assign{"10", nil, "2"},
+					&Assign{"11", nil, "3"},
+					&Assign{"12", nil, "4"},
+					&Assign{"13", nil, "5"},
+					&Assign{"14", nil, "6"},
+					&Assign{"15", nil, "7"},
+					&Assign{"16", nil, "8"},
+					&Assign{"17", nil, "9"},
+					&Assign{"18", nil, "10"},
+					&Assign{"19", nil, "11"},
+					&Assign{"2", nil, "12"},
+					&Assign{"20", nil, "13"},
+					&Assign{"21", nil, "14"},
+					&Assign{"22", nil, "15"},
+					&Assign{"23", nil, "16"},
+					&Assign{"24", nil, "17"},
+					&Assign{"25", nil, "18"},
+					&Assign{"26", nil, "19"},
+					&Assign{"3", nil, "20"},
+					&Assign{"4", nil, "21"},
+					&Assign{"5", nil, "22"},
+					&Assign{"6", nil, "23"},
+					&Assign{"7", nil, "24"},
+					&Assign{"8", nil, "25"},
+					&Assign{"9", nil, "26"},
+					&Assign{"Contains", nil, "27"},
+					&Assign{"HasPrefix", nil, "28"},
+					&Assign{"HasSuffix", nil, "29"},
+					&Assign{"Index", nil, "30"},
+					&Assign{"IndexAfter", nil, "31"},
+					&Assign{"Join", nil, "32"},
+					&Assign{"LastIndex", nil, "33"},
+					&Assign{"LastIndexBefore", nil, "34"},
+					&Assign{"PadLeft", nil, "35"},
+					&Assign{"PadRight", nil, "36"},
+					&Assign{"Repeat", nil, "37"},
+					&Assign{"ReplaceAll", nil, "38"},
+					&Assign{"Reverse", nil, "39"},
+					&Assign{"Split", nil, "40"},
+					&Assign{"Substr", nil, "41"},
+					&Assign{"ToLower", nil, "42"},
+					&Assign{"ToUpper", nil, "43"},
+					&Assign{"Trim", nil, "44"},
+					&Assign{"TrimLeft", nil, "45"},
+					&Assign{"TrimPrefix", nil, "46"},
+					&Assign{"TrimRight", nil, "47"},
+					&Assign{"TrimSuffix", nil, "48"},
+					&Assign{"createPad", nil, "49"},
+					&Assign{"max", nil, "50"},
+					&Assign{"min", nil, "51"},
 					&Assign{"substrFrom", nil, "52"},
 					&Return{Registers{"0"}},
 				},
@@ -13567,7 +13567,6 @@ func init() {
 							},
 						}, "13", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"2"},
-						&Assign{"String", nil, "2"},
 						&Assign{"3", &ast.Literal{&types.Type{
 							Kind: 10,
 							Returns: []*types.Type{
@@ -13577,7 +13576,6 @@ func init() {
 							},
 						}, "12", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"3"},
-						&Assign{"Hours", nil, "3"},
 						&Assign{"4", &ast.Literal{&types.Type{
 							Kind: 10,
 							Returns: []*types.Type{
@@ -13587,7 +13585,6 @@ func init() {
 							},
 						}, "11", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"4"},
-						&Assign{"Minutes", nil, "4"},
 						&Assign{"5", &ast.Literal{&types.Type{
 							Kind: 10,
 							Returns: []*types.Type{
@@ -13597,7 +13594,6 @@ func init() {
 							},
 						}, "10", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"5"},
-						&Assign{"Seconds", nil, "5"},
 						&Assign{"6", &ast.Literal{&types.Type{
 							Kind: 10,
 							Returns: []*types.Type{
@@ -13607,7 +13603,6 @@ func init() {
 							},
 						}, "9", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"6"},
-						&Assign{"Milliseconds", nil, "6"},
 						&Assign{"7", &ast.Literal{&types.Type{
 							Kind: 10,
 							Returns: []*types.Type{
@@ -13617,7 +13612,6 @@ func init() {
 							},
 						}, "8", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"7"},
-						&Assign{"Microseconds", nil, "7"},
 						&Assign{"8", &ast.Literal{&types.Type{
 							Kind: 10,
 							Returns: []*types.Type{
@@ -13627,6 +13621,12 @@ func init() {
 							},
 						}, "7", nil, nil, "", nil, nil}, ""},
 						&ParentScope{"8"},
+						&Assign{"String", nil, "2"},
+						&Assign{"Hours", nil, "3"},
+						&Assign{"Minutes", nil, "4"},
+						&Assign{"Seconds", nil, "5"},
+						&Assign{"Milliseconds", nil, "6"},
+						&Assign{"Microseconds", nil, "7"},
 						&Assign{"Nanoseconds", nil, "8"},
 						&Return{Registers{"0"}},
 					},
@@ -13893,78 +13893,6 @@ func init() {
 			},
 			PackageFunc: &CompiledFunc{
 				Instructions: []Instruction{
-					&Assign{"1", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil}, ""},
-					&Assign{"April", nil, "1"},
-					&Assign{"2", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil}, ""},
-					&Assign{"August", nil, "2"},
-					&Assign{"3", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil}, ""},
-					&Assign{"December", nil, "3"},
-					&Assign{"4", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil}, ""},
-					&Assign{"February", nil, "4"},
-					&Assign{"5", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "3600", nil, nil, "lib/time/duration.ok:8:15", nil, nil}, ""},
-					&Assign{"Hour", nil, "5"},
-					&Assign{"6", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil}, ""},
-					&Assign{"January", nil, "6"},
-					&Assign{"7", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil}, ""},
-					&Assign{"July", nil, "7"},
-					&Assign{"8", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil}, ""},
-					&Assign{"June", nil, "8"},
-					&Assign{"9", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil}, ""},
-					&Assign{"March", nil, "9"},
-					&Assign{"10", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil}, ""},
-					&Assign{"May", nil, "10"},
-					&Assign{"11", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "0.000001", nil, nil, "lib/time/duration.ok:4:15", nil, nil}, ""},
-					&Assign{"Microsecond", nil, "11"},
-					&Assign{"12", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "0.001", nil, nil, "lib/time/duration.ok:5:15", nil, nil}, ""},
-					&Assign{"Millisecond", nil, "12"},
-					&Assign{"13", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "60", nil, nil, "lib/time/duration.ok:7:15", nil, nil}, ""},
-					&Assign{"Minute", nil, "13"},
-					&Assign{"14", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "0.000000001", nil, nil, "lib/time/duration.ok:3:15", nil, nil}, ""},
-					&Assign{"Nanosecond", nil, "14"},
-					&Assign{"15", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil}, ""},
-					&Assign{"November", nil, "15"},
-					&Assign{"16", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil}, ""},
-					&Assign{"October", nil, "16"},
-					&Assign{"17", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "1", nil, nil, "lib/time/duration.ok:6:15", nil, nil}, ""},
-					&Assign{"Second", nil, "17"},
-					&Assign{"18", &ast.Literal{&types.Type{
-						Kind: 6,
-					}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil}, ""},
-					&Assign{"September", nil, "18"},
 					&Assign{"19", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14099,7 +14027,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"19"},
-					&Assign{"1", nil, "19"},
 					&Assign{"20", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14114,7 +14041,6 @@ func init() {
 						},
 					}, "14", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"20"},
-					&Assign{"14", nil, "20"},
 					&Assign{"21", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14183,7 +14109,6 @@ func init() {
 						},
 					}, "15", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"21"},
-					&Assign{"15", nil, "21"},
 					&Assign{"22", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14242,7 +14167,6 @@ func init() {
 						},
 					}, "16", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"22"},
-					&Assign{"16", nil, "22"},
 					&Assign{"23", &ast.Literal{&types.Type{
 						Kind: 10,
 						Returns: []*types.Type{
@@ -14281,7 +14205,6 @@ func init() {
 						},
 					}, "18", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"23"},
-					&Assign{"18", nil, "23"},
 					&Assign{"24", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14325,7 +14248,6 @@ func init() {
 						},
 					}, "19", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"24"},
-					&Assign{"19", nil, "24"},
 					&Assign{"25", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14460,7 +14382,6 @@ func init() {
 						},
 					}, "2", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"25"},
-					&Assign{"2", nil, "25"},
 					&Assign{"26", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14504,7 +14425,6 @@ func init() {
 						},
 					}, "20", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"26"},
-					&Assign{"20", nil, "26"},
 					&Assign{"27", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14519,7 +14439,6 @@ func init() {
 						},
 					}, "21", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"27"},
-					&Assign{"21", nil, "27"},
 					&Assign{"28", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14595,7 +14514,6 @@ func init() {
 						},
 					}, "3", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"28"},
-					&Assign{"3", nil, "28"},
 					&Assign{"29", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14671,7 +14589,6 @@ func init() {
 						},
 					}, "4", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"29"},
-					&Assign{"4", nil, "29"},
 					&Assign{"30", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14747,7 +14664,6 @@ func init() {
 						},
 					}, "5", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"30"},
-					&Assign{"5", nil, "30"},
 					&Assign{"31", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14821,7 +14737,6 @@ func init() {
 						},
 					}, "6", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"31"},
-					&Assign{"6", nil, "31"},
 					&Assign{"32", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -14956,7 +14871,6 @@ func init() {
 						},
 					}, "1", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"32"},
-					&Assign{"Add", nil, "32"},
 					&Assign{"33", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15032,7 +14946,6 @@ func init() {
 						},
 					}, "5", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"33"},
-					&Assign{"After", nil, "33"},
 					&Assign{"34", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15108,7 +15021,6 @@ func init() {
 						},
 					}, "4", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"34"},
-					&Assign{"Before", nil, "34"},
 					&Assign{"35", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15182,7 +15094,6 @@ func init() {
 						},
 					}, "6", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"35"},
-					&Assign{"Duration", nil, "35"},
 					&Assign{"36", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15258,7 +15169,6 @@ func init() {
 						},
 					}, "3", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"36"},
-					&Assign{"Equal", nil, "36"},
 					&Assign{"37", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15302,7 +15212,6 @@ func init() {
 						},
 					}, "20", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"37"},
-					&Assign{"FromUnix", nil, "37"},
 					&Assign{"38", &ast.Literal{&types.Type{
 						Kind: 10,
 						Returns: []*types.Type{
@@ -15341,7 +15250,6 @@ func init() {
 						},
 					}, "18", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"38"},
-					&Assign{"Now", nil, "38"},
 					&Assign{"39", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15410,7 +15318,6 @@ func init() {
 						},
 					}, "15", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"39"},
-					&Assign{"Sleep", nil, "39"},
 					&Assign{"40", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15545,7 +15452,6 @@ func init() {
 						},
 					}, "2", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"40"},
-					&Assign{"Sub", nil, "40"},
 					&Assign{"41", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15604,7 +15510,6 @@ func init() {
 						},
 					}, "16", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"41"},
-					&Assign{"Time", nil, "41"},
 					&Assign{"42", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15648,7 +15553,6 @@ func init() {
 						},
 					}, "19", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"42"},
-					&Assign{"Unix", nil, "42"},
 					&Assign{"43", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15663,7 +15567,6 @@ func init() {
 						},
 					}, "14", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"43"},
-					&Assign{"floor", nil, "43"},
 					&Assign{"44", &ast.Literal{&types.Type{
 						Kind: 10,
 						Arguments: []*types.Type{
@@ -15678,6 +15581,103 @@ func init() {
 						},
 					}, "21", nil, nil, "", nil, nil}, ""},
 					&ParentScope{"44"},
+					&Assign{"1", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil}, ""},
+					&Assign{"April", nil, "1"},
+					&Assign{"2", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil}, ""},
+					&Assign{"August", nil, "2"},
+					&Assign{"3", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil}, ""},
+					&Assign{"December", nil, "3"},
+					&Assign{"4", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil}, ""},
+					&Assign{"February", nil, "4"},
+					&Assign{"5", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "3600", nil, nil, "lib/time/duration.ok:8:15", nil, nil}, ""},
+					&Assign{"Hour", nil, "5"},
+					&Assign{"6", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil}, ""},
+					&Assign{"January", nil, "6"},
+					&Assign{"7", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil}, ""},
+					&Assign{"July", nil, "7"},
+					&Assign{"8", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil}, ""},
+					&Assign{"June", nil, "8"},
+					&Assign{"9", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil}, ""},
+					&Assign{"March", nil, "9"},
+					&Assign{"10", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil}, ""},
+					&Assign{"May", nil, "10"},
+					&Assign{"11", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.000001", nil, nil, "lib/time/duration.ok:4:15", nil, nil}, ""},
+					&Assign{"Microsecond", nil, "11"},
+					&Assign{"12", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.001", nil, nil, "lib/time/duration.ok:5:15", nil, nil}, ""},
+					&Assign{"Millisecond", nil, "12"},
+					&Assign{"13", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "60", nil, nil, "lib/time/duration.ok:7:15", nil, nil}, ""},
+					&Assign{"Minute", nil, "13"},
+					&Assign{"14", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.000000001", nil, nil, "lib/time/duration.ok:3:15", nil, nil}, ""},
+					&Assign{"Nanosecond", nil, "14"},
+					&Assign{"15", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil}, ""},
+					&Assign{"November", nil, "15"},
+					&Assign{"16", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil}, ""},
+					&Assign{"October", nil, "16"},
+					&Assign{"17", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1", nil, nil, "lib/time/duration.ok:6:15", nil, nil}, ""},
+					&Assign{"Second", nil, "17"},
+					&Assign{"18", &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil}, ""},
+					&Assign{"September", nil, "18"},
+					&Assign{"1", nil, "19"},
+					&Assign{"14", nil, "20"},
+					&Assign{"15", nil, "21"},
+					&Assign{"16", nil, "22"},
+					&Assign{"18", nil, "23"},
+					&Assign{"19", nil, "24"},
+					&Assign{"2", nil, "25"},
+					&Assign{"20", nil, "26"},
+					&Assign{"21", nil, "27"},
+					&Assign{"3", nil, "28"},
+					&Assign{"4", nil, "29"},
+					&Assign{"5", nil, "30"},
+					&Assign{"6", nil, "31"},
+					&Assign{"Add", nil, "32"},
+					&Assign{"After", nil, "33"},
+					&Assign{"Before", nil, "34"},
+					&Assign{"Duration", nil, "35"},
+					&Assign{"Equal", nil, "36"},
+					&Assign{"FromUnix", nil, "37"},
+					&Assign{"Now", nil, "38"},
+					&Assign{"Sleep", nil, "39"},
+					&Assign{"Sub", nil, "40"},
+					&Assign{"Time", nil, "41"},
+					&Assign{"Unix", nil, "42"},
+					&Assign{"floor", nil, "43"},
 					&Assign{"zeroPad", nil, "44"},
 					&Return{Registers{"0"}},
 				},

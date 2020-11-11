@@ -3,6 +3,7 @@ package vm
 import (
 	"fmt"
 
+	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/types"
 )
 
@@ -17,6 +18,16 @@ type CompiledFunc struct {
 	// Name and Pos are used by the VM for stack traces.
 	Type                  *types.Type
 	Name, UniqueName, Pos string
+
+	// These are only transient for the compiler, they will be nil when
+	// serialized.
+	Parent                 *CompiledFunc
+	DeferredFuncsToCompile []DeferredFunc
+}
+
+type DeferredFunc struct {
+	Register Register
+	Func     *ast.Func
 }
 
 type FinallyBlock struct {
