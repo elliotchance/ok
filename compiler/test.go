@@ -9,10 +9,13 @@ import (
 func CompileTest(fn *ast.Test, file *vm.File) (*vm.CompiledTest, error) {
 	// Tests can be compiled as if they were functions, then wrapped in a
 	// CompiledTest.
+	//
+	// TODO(elliot): When tests can be nested the third argument for parentFunc
+	//  should not be nil.
 	compiledFunc, err := CompileFunc(&ast.Func{
 		Statements: fn.Statements,
 		Pos:        fn.Pos,
-	}, file)
+	}, file, nil)
 	if err != nil {
 		return nil, err
 	}

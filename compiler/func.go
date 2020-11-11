@@ -8,7 +8,7 @@ import (
 
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
+func CompileFunc(fn *ast.Func, file *vm.File, parentFunc *vm.CompiledFunc) (*vm.CompiledFunc, error) {
 	compiled := &vm.CompiledFunc{
 		Variables: map[string]*types.Type{},
 		Type:      fn.Type(),
@@ -17,7 +17,15 @@ func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
 		Name:       fn.Name,
 		UniqueName: fn.UniqueName,
 		Pos:        fn.Position(),
+
+		Parent: parentFunc,
 	}
+
+	// Make sure we clear state that shouldn't be serialized.
+	defer func() {
+		compiled.Parent = nil
+		compiled.DeferredFuncsToCompile = nil
+	}()
 
 	// All variables in a function are stored internally as a map right now. So
 	// the first thing we need to do is initialise the map. Whether we return it
@@ -47,5 +55,58 @@ func CompileFunc(fn *ast.Func, file *vm.File) (*vm.CompiledFunc, error) {
 		})
 	}
 
+	// Now we have finished compiling this scope (and so have discovered and
+	// resolved the type of all variables) we can no compile all the deferred
+	// function literals that might reference variables in this scope.
+	instructions := len(compiled.Instructions)
+	for _, fn := range compiled.DeferredFuncsToCompile {
+		cf, err := CompileFunc(fn.Func, file, compiled)
+		if err != nil {
+			return nil, err
+		}
+
+		file.Funcs[fn.Func.UniqueName] = cf
+		compiled.Append(&vm.Assign{
+			VariableName: fn.Register,
+			Value: &ast.Literal{
+				Kind:  fn.Func.Type(),
+				Value: fn.Func.UniqueName,
+			},
+		})
+
+		compiled.Append(&vm.ParentScope{
+			X: fn.Register,
+		})
+	}
+
+	// However... the instructions that were just appended to this scope need to
+	// be hoisted to the top otherwise the variables containing the function
+	// literals will be missing until the end.
+	compiled.Instructions = append(
+		compiled.Instructions[instructions:],
+		compiled.Instructions[:instructions]...)
+
 	return compiled, nil
+}
+
+func compileFunc(
+	compiledFunc *vm.CompiledFunc,
+	fn *ast.Func,
+) ([]vm.Register, []*types.Type, error) {
+	// We cannot compile a function literal at this point because we
+	// probably haven't finished compiling the current scope. This is
+	// important because the function literal may reference variables in
+	// this scope that haven't been discovered (or type resolved) yet.
+	//
+	// Instead we will defer the compilation of this literal to after we're
+	// finished. We can reserve the register that will hold the compiled
+	// function later so everything lines up without any post correction.
+	funcLitRegister := compiledFunc.NextRegister()
+	compiledFunc.DeferredFuncsToCompile = append(
+		compiledFunc.DeferredFuncsToCompile, vm.DeferredFunc{
+			Register: funcLitRegister,
+			Func:     fn,
+		})
+
+	return []vm.Register{funcLitRegister}, []*types.Type{fn.Type()}, nil
 }

@@ -28,8 +28,8 @@ func AssertEqual(t *testing.T, fns1, fns2 interface{}) bool {
 func cmpOptions() cmp.Options {
 	return []cmp.Option{
 		cmpopts.IgnoreFields(ast.Array{}, "Pos"),
-		cmpopts.IgnoreFields(ast.Assert{}, "Pos"),
 		cmpopts.IgnoreFields(ast.AssertRaise{}, "Pos"),
+		cmpopts.IgnoreFields(ast.Assert{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Break{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Call{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Case{}, "Pos"),
@@ -43,8 +43,8 @@ func cmpOptions() cmp.Options {
 		cmpopts.IgnoreFields(ast.Group{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Identifier{}, "Pos"),
 		cmpopts.IgnoreFields(ast.If{}, "Pos"),
-		cmpopts.IgnoreFields(ast.In{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Interpolate{}, "Pos"),
+		cmpopts.IgnoreFields(ast.In{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Key{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Literal{}, "Pos"),
 		cmpopts.IgnoreFields(ast.Map{}, "Pos"),

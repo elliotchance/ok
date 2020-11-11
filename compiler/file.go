@@ -27,7 +27,7 @@ func compile(
 	}
 
 	for _, fn := range funcs {
-		compiledFn, err := CompileFunc(fn, file)
+		compiledFn, err := CompileFunc(fn, file, nil)
 		if err != nil {
 			return nil, err
 		}
