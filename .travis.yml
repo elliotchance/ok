@@ -1,6 +1,9 @@
 language: go
 
-go: '1.14'
+# macOS traditionally has less backlog on Travis.
+os: osx
+
+go: '1.15'
 
 install:
   - wget https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc
@@ -26,4 +29,3 @@ jobs:
         on:
           repo: elliotchance/ok
           all_branches: true
-        skip_cleanup: 'true'
