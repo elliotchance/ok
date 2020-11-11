@@ -67,3 +67,23 @@ func (ins *CastChar) Execute(_ *int, vm *VM) error {
 func (ins *CastChar) String() string {
 	return fmt.Sprintf("%s = char %s", ins.Result, ins.X)
 }
+
+// CastData returns a data value of a value.
+type CastData struct {
+	X, Result Register
+}
+
+// Execute implements the Instruction interface for the VM.
+func (ins *CastData) Execute(_ *int, vm *VM) error {
+	vm.Set(ins.Result, &ast.Literal{
+		Kind:  types.Data,
+		Value: renderLiteral(vm.Get(ins.X), false),
+	})
+
+	return nil
+}
+
+// String is the human-readable description of the instruction.
+func (ins *CastData) String() string {
+	return fmt.Sprintf("%s = data %s", ins.Result, ins.X)
+}

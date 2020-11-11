@@ -1,0 +1,6 @@
+// TempPath returns an absolute path that is safe to create a new file.
+func TempPath() string {
+    // TODO(elliot): "/tmp" is not always the right choice. Also, maybe we
+    //  should incorporate the date?
+    return "/tmp/ok." + string (__rand() * 1000000000)
+}

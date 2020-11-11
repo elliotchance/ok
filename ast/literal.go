@@ -19,6 +19,15 @@ type Literal struct {
 	Map map[string]*Literal
 
 	Pos string
+
+	// Used for file handles. Even though it is always a *os.File, we need to
+	// keep it as a interface{} so that gob doesn't complain.
+	File interface{}
+
+	// We can only open one reader for a file handle as to not reset the
+	// placement. This is always a *bufio.Reader, but we need to keep it an
+	// interface{} for the same reason as File.
+	Reader interface{}
 }
 
 // Position returns the position.

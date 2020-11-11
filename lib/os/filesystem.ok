@@ -1,0 +1,15 @@
+// Remove will delete (unlink) the file located at `path`.
+func Remove(path string) {
+    __remove(path)
+}
+
+// Rename will move the file or directory located at `old` to `new`.
+func Rename(old, new string) {
+    __rename(old, new)
+}
+
+// CreateDirectory will create a directory at `path`, creating any necessary
+// directories along the way.
+func CreateDirectory(path string) {
+    __mkdir(path)
+}

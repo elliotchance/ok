@@ -1,0 +1,3 @@
+test "TempPath" {
+    assert(TempPath() != TempPath())
+}

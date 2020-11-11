@@ -1,0 +1,23 @@
+import "error"
+
+test "Info on path that does not exist" {
+    assert(Info("doesnotexist") raise error.Error)
+}
+
+test "Info on directory" {
+    info = Info(".")
+    assert(info.Name == ".")
+    assert(info.Size > 0)
+    assert(info.Mode[0] == 'd')
+    assert(time.Before(info.ModifiedTime, time.Now()) == true)
+    assert(info.IsDir == true)
+}
+
+test "Info on file" {
+    info = Info("./Makefile")
+    assert(info.Name == "Makefile")
+    assert(info.Size > 0)
+    assert(info.Mode[0] == '-')
+    assert(time.Before(info.ModifiedTime, time.Now()) == true)
+    assert(info.IsDir == false)
+}
