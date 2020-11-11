@@ -1,0 +1,17 @@
+import "strings"
+
+func foo() StackTrace {
+    return Bar()
+}
+
+func Bar() StackTrace {
+    return Stack()
+}
+
+test "StackTrace.String" {
+    stack = foo()
+    s = stack.String()
+    assert(strings.Contains(s, "1 Bar ") == true)
+    assert(strings.Contains(s, "2 foo ") == true)
+    assert(strings.Contains(s, "3 test \"StackTrace.String\" ") == true)
+}

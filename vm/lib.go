@@ -6140,6 +6140,1845 @@ func init() {
 				Pos:  "lib/reflect/type.ok:8:1",
 			},
 		},
+		"runtime": &File{
+			Imports: map[string]*types.Type{
+				"strings": &types.Type{
+					Kind: 1,
+					Name: "..__strings",
+					Properties: map[string]*types.Type{
+						"Contains": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"HasPrefix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"HasSuffix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"Index": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"IndexAfter": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"Join": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Kind: 7,
+									},
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"LastIndex": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"LastIndexBefore": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"PadLeft": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"PadRight": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Repeat": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"ReplaceAll": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Reverse": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Split": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						"Substr": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"ToLower": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"ToUpper": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Trim": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimLeft": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimPrefix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimRight": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimSuffix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+				},
+			},
+			Funcs: map[string]*CompiledFunc{
+				"1": &CompiledFunc{
+					Arguments: []string{"name"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						}, "2", nil, nil, "", nil, nil}, ""},
+						&Call{"*2", Registers{"name"}, Registers{"3", "4"}, &types.Type{
+							Kind: 2,
+						}},
+						&Assign{"value", nil, "3"},
+						&Assign{"_", nil, "4"},
+						&Return{Registers{"value"}},
+					},
+					Registers: 4,
+					Variables: map[string]*types.Type{
+						"_": &types.Type{
+							Kind: 3,
+						},
+						"name": &types.Type{
+							Kind: 7,
+						},
+						"value": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Env",
+					UniqueName: "1",
+					Pos:        "lib/runtime/env.ok:4:1",
+				},
+				"2": &CompiledFunc{
+					Arguments: []string{"name"},
+					Instructions: []Instruction{
+						&EnvGet{"name", "2", "3"},
+						&Return{Registers{"2", "3"}},
+					},
+					Registers: 3,
+					Variables: map[string]*types.Type{
+						"name": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					Name:       "LookupEnv",
+					UniqueName: "2",
+					Pos:        "lib/runtime/env.ok:13:1",
+				},
+				"3": &CompiledFunc{
+					Arguments: []string{"name", "value"},
+					Instructions: []Instruction{
+						&EnvSet{"name", "value"},
+						&Return{nil},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"name": &types.Type{
+							Kind: 7,
+						},
+						"value": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "SetEnv",
+					UniqueName: "3",
+					Pos:        "lib/runtime/env.ok:20:1",
+				},
+				"4": &CompiledFunc{
+					Arguments: []string{"name"},
+					Instructions: []Instruction{
+						&EnvUnset{"name"},
+					},
+					Registers: 1,
+					Variables: map[string]*types.Type{
+						"name": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "UnsetEnv",
+					UniqueName: "4",
+					Pos:        "lib/runtime/env.ok:26:1",
+				},
+				"5": &CompiledFunc{
+					Arguments: []string{"status"},
+					Instructions: []Instruction{
+						&Exit{"status"},
+					},
+					Registers: 1,
+					Variables: map[string]*types.Type{
+						"status": &types.Type{
+							Kind: 6,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					Name:       "Exit",
+					UniqueName: "5",
+					Pos:        "lib/runtime/exit.ok:3:1",
+				},
+				"6": &CompiledFunc{
+					Arguments: []string{"File", "LineNumber", "LineOffset", "FunctionName"},
+					Instructions: []Instruction{
+						&Return{Registers{"0"}},
+					},
+					Registers: 4,
+					Variables: map[string]*types.Type{
+						"File": &types.Type{
+							Kind: 7,
+						},
+						"FunctionName": &types.Type{
+							Kind: 7,
+						},
+						"LineNumber": &types.Type{
+							Kind: 6,
+						},
+						"LineOffset": &types.Type{
+							Kind: 6,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackElement",
+								Properties: map[string]*types.Type{
+									"File": &types.Type{
+										Kind: 7,
+									},
+									"FunctionName": &types.Type{
+										Kind: 7,
+									},
+									"LineNumber": &types.Type{
+										Kind: 6,
+									},
+									"LineOffset": &types.Type{
+										Kind: 6,
+									},
+								},
+							},
+						},
+					},
+					Name:       "StackElement",
+					UniqueName: "6",
+					Pos:        "lib/runtime/stack.ok:3:1",
+				},
+				"7": &CompiledFunc{
+					Instructions: []Instruction{
+						&Stack{"1"},
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "\n", nil, nil, "lib/runtime/stack.ok:12:41", nil, nil}, ""},
+						&LoadPackage{"3", "strings"},
+						&Assign{"4", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "Split", nil, nil, "", nil, nil}, ""},
+						&MapGet{"3", "4", "5"},
+						&Call{"*5", Registers{"1", "2"}, Registers{"6"}, &types.Type{
+							Kind: 2,
+						}},
+						&Assign{"elements", nil, "6"},
+						&Assign{"7", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "", nil, nil}, ""},
+						&ArrayAlloc{"7", "8", &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Name: "StackElement",
+							},
+						}},
+						&Assign{"stack", nil, "8"},
+						&Assign{"9", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "", nil, nil}, ""},
+						&NextArray{"elements", "9", "", "element", "10"},
+						&JumpUnless{"10", 44},
+						&Assign{"11", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "|", nil, nil, "lib/runtime/stack.ok:15:40", nil, nil}, ""},
+						&LoadPackage{"12", "strings"},
+						&Assign{"13", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "Split", nil, nil, "", nil, nil}, ""},
+						&MapGet{"12", "13", "14"},
+						&Call{"*14", Registers{"element", "11"}, Registers{"15"}, &types.Type{
+							Kind: 2,
+						}},
+						&Assign{"parts", nil, "15"},
+						&Assign{"16", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "lib/runtime/stack.ok:16:45", nil, nil}, ""},
+						&ArrayGet{"parts", "16", "17"},
+						&Assign{"18", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, ":", nil, nil, "lib/runtime/stack.ok:16:49", nil, nil}, ""},
+						&LoadPackage{"19", "strings"},
+						&Assign{"20", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "Split", nil, nil, "", nil, nil}, ""},
+						&MapGet{"19", "20", "21"},
+						&Call{"*21", Registers{"17", "18"}, Registers{"22"}, &types.Type{
+							Kind: 2,
+						}},
+						&Assign{"locationParts", nil, "22"},
+						&Assign{"23", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "", nil, nil}, ""},
+						&ArrayAlloc{"23", "24", &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Kind: 1,
+								Name: "StackElement",
+								Properties: map[string]*types.Type{
+									"File": &types.Type{
+										Kind: 7,
+									},
+									"FunctionName": &types.Type{
+										Kind: 7,
+									},
+									"LineNumber": &types.Type{
+										Kind: 6,
+									},
+									"LineOffset": &types.Type{
+										Kind: 6,
+									},
+								},
+							},
+						}},
+						&Assign{"25", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "", nil, nil}, ""},
+						&Assign{"26", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "lib/runtime/stack.ok:18:27", nil, nil}, ""},
+						&ArrayGet{"locationParts", "26", "27"},
+						&Assign{"28", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "lib/runtime/stack.ok:19:34", nil, nil}, ""},
+						&ArrayGet{"locationParts", "28", "29"},
+						&CastNumber{"29", "30"},
+						&Assign{"31", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "2", nil, nil, "lib/runtime/stack.ok:20:34", nil, nil}, ""},
+						&ArrayGet{"locationParts", "31", "32"},
+						&CastNumber{"32", "33"},
+						&Assign{"34", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "lib/runtime/stack.ok:21:19", nil, nil}, ""},
+						&ArrayGet{"parts", "34", "35"},
+						&Assign{"36", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "StackElement",
+									Properties: map[string]*types.Type{
+										"File": &types.Type{
+											Kind: 7,
+										},
+										"FunctionName": &types.Type{
+											Kind: 7,
+										},
+										"LineNumber": &types.Type{
+											Kind: 6,
+										},
+										"LineOffset": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+						}, "6", nil, nil, "", nil, nil}, ""},
+						&Call{"*36", Registers{"27", "30", "33", "35"}, Registers{"37"}, &types.Type{
+							Kind: 1,
+							Name: "StackElement",
+							Properties: map[string]*types.Type{
+								"File": &types.Type{
+									Kind: 7,
+								},
+								"FunctionName": &types.Type{
+									Kind: 7,
+								},
+								"LineNumber": &types.Type{
+									Kind: 6,
+								},
+								"LineOffset": &types.Type{
+									Kind: 6,
+								},
+							},
+						}},
+						&ArraySet{"24", "25", "37"},
+						&Append{"stack", "24", "stack"},
+						&Jump{10},
+						&Assign{"38", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Name: "StackElement",
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "StackTrace",
+									Properties: map[string]*types.Type{
+										"Elements": &types.Type{
+											Kind: 8,
+											Element: &types.Type{
+												Name: "StackElement",
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+						}, "8", nil, nil, "", nil, nil}, ""},
+						&Call{"*38", Registers{"stack"}, Registers{"39"}, &types.Type{
+							Kind: 1,
+							Name: "StackTrace",
+							Properties: map[string]*types.Type{
+								"Elements": &types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Name: "StackElement",
+									},
+								},
+								"String": &types.Type{
+									Kind: 10,
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+									},
+								},
+							},
+						}},
+						&Return{Registers{"39"}},
+					},
+					Registers: 39,
+					Variables: map[string]*types.Type{
+						"element": &types.Type{
+							Kind: 7,
+						},
+						"elements": &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Kind: 7,
+							},
+						},
+						"locationParts": &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Kind: 7,
+							},
+						},
+						"parts": &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Kind: 7,
+							},
+						},
+						"stack": &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Name: "StackElement",
+							},
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					Name:       "Stack",
+					UniqueName: "7",
+					Pos:        "lib/runtime/stack.ok:11:1",
+				},
+				"8": &CompiledFunc{
+					Arguments: []string{"Elements"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 10,
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "9", nil, nil, "", nil, nil}, ""},
+						&ParentScope{"2"},
+						&Assign{"String", nil, "2"},
+						&Return{Registers{"0"}},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"Elements": &types.Type{
+							Kind: 8,
+							Element: &types.Type{
+								Name: "StackElement",
+							},
+						},
+						"String": &types.Type{
+							Kind: 10,
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Name: "StackElement",
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					Name:       "StackTrace",
+					UniqueName: "8",
+					Pos:        "lib/runtime/stack.ok:27:1",
+				},
+				"9": &CompiledFunc{
+					Instructions: []Instruction{
+						&Assign{"1", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "", nil, nil, "lib/runtime/stack.ok:29:13", nil, nil}, ""},
+						&Assign{"s", nil, "1"},
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "lib/runtime/stack.ok:30:17", nil, nil}, ""},
+						&Assign{"i", nil, "2"},
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "0", nil, nil, "", nil, nil}, ""},
+						&NextArray{"^Elements", "3", "", "element", "4"},
+						&JumpUnless{"4", 21},
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, " ", nil, nil, "lib/runtime/stack.ok:31:22", nil, nil}, ""},
+						&Assign{"7", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "FunctionName", nil, nil, "", nil, nil}, ""},
+						&MapGet{"element", "7", "8"},
+						&Assign{"9", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, " ", nil, nil, "lib/runtime/stack.ok:31:45", nil, nil}, ""},
+						&Assign{"10", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "File", nil, nil, "", nil, nil}, ""},
+						&MapGet{"element", "10", "11"},
+						&Assign{"12", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, ":", nil, nil, "lib/runtime/stack.ok:31:60", nil, nil}, ""},
+						&Assign{"13", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "LineNumber", nil, nil, "", nil, nil}, ""},
+						&MapGet{"element", "13", "14"},
+						&Assign{"15", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "\n", nil, nil, "lib/runtime/stack.ok:31:81", nil, nil}, ""},
+						&Interpolate{"5", Registers{"i", "6", "8", "9", "11", "12", "14", "15"}},
+						&Concat{"s", "5", "s"},
+						&Assign{"16", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "", nil, nil}, ""},
+						&Add{"i", "16", "i"},
+						&Jump{4},
+						&Assign{"17", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "\n", nil, nil, "lib/runtime/stack.ok:35:37", nil, nil}, ""},
+						&LoadPackage{"18", "strings"},
+						&Assign{"19", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "TrimRight", nil, nil, "", nil, nil}, ""},
+						&MapGet{"18", "19", "20"},
+						&Call{"*20", Registers{"s", "17"}, Registers{"21"}, &types.Type{
+							Kind: 2,
+						}},
+						&Return{Registers{"21"}},
+					},
+					Registers: 21,
+					Variables: map[string]*types.Type{
+						"element": &types.Type{
+							Name: "StackElement",
+						},
+						"i": &types.Type{
+							Kind: 6,
+						},
+						"s": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "String",
+					UniqueName: "9",
+					Pos:        "lib/runtime/stack.ok:28:5",
+				},
+			},
+			Constants: nil,
+			PackageFunc: &CompiledFunc{
+				Instructions: []Instruction{
+					&Assign{"1", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "1", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"1"},
+					&Assign{"2", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					}, "2", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"2"},
+					&Assign{"3", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "3", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"3"},
+					&Assign{"4", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "4", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"4"},
+					&Assign{"5", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "5", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"5"},
+					&Assign{"6", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackElement",
+								Properties: map[string]*types.Type{
+									"File": &types.Type{
+										Kind: 7,
+									},
+									"FunctionName": &types.Type{
+										Kind: 7,
+									},
+									"LineNumber": &types.Type{
+										Kind: 6,
+									},
+									"LineOffset": &types.Type{
+										Kind: 6,
+									},
+								},
+							},
+						},
+					}, "6", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"6"},
+					&Assign{"7", &ast.Literal{&types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					}, "7", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"7"},
+					&Assign{"8", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Name: "StackElement",
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					}, "8", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"8"},
+					&Assign{"9", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "1", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"9"},
+					&Assign{"10", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					}, "5", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"10"},
+					&Assign{"11", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					}, "2", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"11"},
+					&Assign{"12", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "3", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"12"},
+					&Assign{"13", &ast.Literal{&types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					}, "7", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"13"},
+					&Assign{"14", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackElement",
+								Properties: map[string]*types.Type{
+									"File": &types.Type{
+										Kind: 7,
+									},
+									"FunctionName": &types.Type{
+										Kind: 7,
+									},
+									"LineNumber": &types.Type{
+										Kind: 6,
+									},
+									"LineOffset": &types.Type{
+										Kind: 6,
+									},
+								},
+							},
+						},
+					}, "6", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"14"},
+					&Assign{"15", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Name: "StackElement",
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					}, "8", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"15"},
+					&Assign{"16", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "4", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"16"},
+					&Assign{"1", nil, "1"},
+					&Assign{"2", nil, "2"},
+					&Assign{"3", nil, "3"},
+					&Assign{"4", nil, "4"},
+					&Assign{"5", nil, "5"},
+					&Assign{"6", nil, "6"},
+					&Assign{"7", nil, "7"},
+					&Assign{"8", nil, "8"},
+					&Assign{"Env", nil, "9"},
+					&Assign{"Exit", nil, "10"},
+					&Assign{"LookupEnv", nil, "11"},
+					&Assign{"SetEnv", nil, "12"},
+					&Assign{"Stack", nil, "13"},
+					&Assign{"StackElement", nil, "14"},
+					&Assign{"StackTrace", nil, "15"},
+					&Assign{"UnsetEnv", nil, "16"},
+					&Return{Registers{"0"}},
+				},
+				Registers: 16,
+				Variables: map[string]*types.Type{
+					"1": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"2": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					"3": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"4": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"5": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					"6": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackElement",
+								Properties: map[string]*types.Type{
+									"File": &types.Type{
+										Kind: 7,
+									},
+									"FunctionName": &types.Type{
+										Kind: 7,
+									},
+									"LineNumber": &types.Type{
+										Kind: 6,
+									},
+									"LineOffset": &types.Type{
+										Kind: 6,
+									},
+								},
+							},
+						},
+					},
+					"7": &types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"8": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Name: "StackElement",
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"Env": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"Exit": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 6,
+							},
+						},
+					},
+					"LookupEnv": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 3,
+							},
+						},
+					},
+					"SetEnv": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"Stack": &types.Type{
+						Kind: 10,
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"StackElement": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 6,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackElement",
+								Properties: map[string]*types.Type{
+									"File": &types.Type{
+										Kind: 7,
+									},
+									"FunctionName": &types.Type{
+										Kind: 7,
+									},
+									"LineNumber": &types.Type{
+										Kind: 6,
+									},
+									"LineOffset": &types.Type{
+										Kind: 6,
+									},
+								},
+							},
+						},
+					},
+					"StackTrace": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 8,
+								Element: &types.Type{
+									Name: "StackElement",
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "StackTrace",
+								Properties: map[string]*types.Type{
+									"Elements": &types.Type{
+										Kind: 8,
+										Element: &types.Type{
+											Name: "StackElement",
+										},
+									},
+									"String": &types.Type{
+										Kind: 10,
+										Returns: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"UnsetEnv": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+				},
+				Type: &types.Type{
+					Kind: 10,
+					Returns: []*types.Type{
+						&types.Type{
+							Kind: 1,
+							Name: "..__runtime",
+							Properties: map[string]*types.Type{
+								"Env": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+									},
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+									},
+								},
+								"Exit": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								"LookupEnv": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+									},
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+										&types.Type{
+											Kind: 3,
+										},
+									},
+								},
+								"SetEnv": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+										&types.Type{
+											Kind: 7,
+										},
+									},
+								},
+								"Stack": &types.Type{
+									Kind: 10,
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 1,
+											Name: "StackTrace",
+											Properties: map[string]*types.Type{
+												"Elements": &types.Type{
+													Kind: 8,
+													Element: &types.Type{
+														Name: "StackElement",
+													},
+												},
+												"String": &types.Type{
+													Kind: 10,
+													Returns: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+											},
+										},
+									},
+								},
+								"StackElement": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+										&types.Type{
+											Kind: 6,
+										},
+										&types.Type{
+											Kind: 6,
+										},
+										&types.Type{
+											Kind: 7,
+										},
+									},
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 1,
+											Name: "StackElement",
+											Properties: map[string]*types.Type{
+												"File": &types.Type{
+													Kind: 7,
+												},
+												"FunctionName": &types.Type{
+													Kind: 7,
+												},
+												"LineNumber": &types.Type{
+													Kind: 6,
+												},
+												"LineOffset": &types.Type{
+													Kind: 6,
+												},
+											},
+										},
+									},
+								},
+								"StackTrace": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 8,
+											Element: &types.Type{
+												Name: "StackElement",
+											},
+										},
+									},
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 1,
+											Name: "StackTrace",
+											Properties: map[string]*types.Type{
+												"Elements": &types.Type{
+													Kind: 8,
+													Element: &types.Type{
+														Name: "StackElement",
+													},
+												},
+												"String": &types.Type{
+													Kind: 10,
+													Returns: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+											},
+										},
+									},
+								},
+								"UnsetEnv": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				Name: "..__runtime",
+				Pos:  "lib/runtime/stack.ok:1:1",
+			},
+		},
 		"strings": &File{
 			Imports: nil,
 			Funcs: map[string]*CompiledFunc{

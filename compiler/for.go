@@ -39,7 +39,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 			compiledFunc.NewVariable(cond.Value, types.Char)
 
 		default:
-			return fmt.Errorf("%s is not iterable", arrayOrMapKind[0])
+			return fmt.Errorf("%s: %s is not iterable", n.Pos, arrayOrMapKind[0])
 		}
 
 		if cond.Key != "" {

@@ -17,6 +17,10 @@ type builtinFn func(
 var builtinFunctions = map[string]builtinFn{
 	"__call":        funcCall,
 	"__close":       funcClose,
+	"__env_get":     funcEnvGet,
+	"__env_set":     funcEnvSet,
+	"__env_unset":   funcEnvUnset,
+	"__exit":        funcExit,
 	"__fromunix":    funcFromUnix,
 	"__get":         funcGet,
 	"__info":        funcInfo,
@@ -36,6 +40,7 @@ var builtinFunctions = map[string]builtinFn{
 	"__seek":        funcSeek,
 	"__set":         funcSet,
 	"__sleep":       funcSleep,
+	"__stack":       funcStack,
 	"__type":        funcType,
 	"__unix":        funcUnix,
 	"__write":       funcWrite,
@@ -225,6 +230,23 @@ func funcSleep(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Reg
 	}
 
 	return ins, nil, nil, nil
+}
+
+func funcExit(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.Exit{
+		Status: args[0],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcStack(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	stack := compiledFunc.NextRegister()
+	ins := &vm.Stack{
+		Stack: stack,
+	}
+
+	return ins, vm.Registers{stack}, []*types.Type{types.String}, nil
 }
 
 func funcPow(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
@@ -447,4 +469,35 @@ func funcRand(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction
 	}
 
 	return ins, []vm.Register{result}, []*types.Type{types.Number}, nil
+}
+
+func funcEnvGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	value := compiledFunc.NextRegister()
+	exists := compiledFunc.NextRegister()
+	ins := &vm.EnvGet{
+		Name:   args[0],
+		Value:  value,
+		Exists: exists,
+	}
+
+	return ins,
+		vm.Registers{value, exists},
+		[]*types.Type{types.String, types.Bool}, nil
+}
+
+func funcEnvSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.EnvSet{
+		Name:  args[0],
+		Value: args[1],
+	}
+
+	return ins, nil, nil, nil
+}
+
+func funcEnvUnset(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	ins := &vm.EnvUnset{
+		Name: args[0],
+	}
+
+	return ins, nil, nil, nil
 }

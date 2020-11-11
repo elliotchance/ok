@@ -1,0 +1,5 @@
+// Exit will kill the current process and return the `status` code to the parent
+// process or system.
+func Exit(status number) {
+    __exit(status)
+}
