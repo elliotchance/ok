@@ -14,9 +14,14 @@ import (
 	"github.com/elliotchance/ok/types"
 )
 
-// StateRegister is a reserved register for holding the map of the state.
-// Effectively the instance or "this" context.
-const StateRegister = "0"
+const (
+	// StateRegister is a reserved register for holding the map of the state.
+	// Effectively the instance or "this" context.
+	StateRegister = "0"
+
+	// StackRegister holds the stack information.
+	StackRegister = "__stack"
+)
 
 // These are populated with the generated lib.go file. See Makefile.
 var Packages map[string]*File
@@ -112,7 +117,7 @@ func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
 
 func (vm *VM) appendStack(stackDescription string, parentScope map[string]*ast.Literal, returnType *types.Type) {
 	registers := map[Register]*ast.Literal{
-		Register("__stack"): asttest.NewLiteralString(stackDescription),
+		Register(StackRegister): asttest.NewLiteralString(stackDescription),
 	}
 	vm.Stack = append(vm.Stack, registers)
 
@@ -142,12 +147,8 @@ func (vm *VM) call(
 		panic("no such function: " + name)
 	}
 
-	if fn == nil {
-		fmt.Println(name, vm.fns)
-	}
-
-	stackDescription := fmt.Sprintf("%s (%s)", fn.Name, fn.Pos)
-	vm.appendStack(stackDescription, parentScope, returnType)
+	stackDesc := stackDescription(fn.Pos, fn.Name)
+	vm.appendStack(stackDesc, parentScope, returnType)
 
 	// Setup the finally blocks. Copy so they all start disabled.
 	var finallyBlocks []*FinallyBlock
@@ -220,7 +221,7 @@ func (vm *VM) dumpMemory() {
 	fmt.Printf("\nStack:\n")
 
 	for _, v := range vm.Stack {
-		fmt.Printf("  %s\n", v["__stack"].Value)
+		fmt.Printf("  %s\n", v[StackRegister].Value)
 	}
 }
 
@@ -304,11 +305,16 @@ func (vm *VM) catchUnhandledError() {
 	}
 }
 
+func stackDescription(pos, funcName string) string {
+	return fmt.Sprintf("%s|%s", pos, funcName)
+}
+
 func (vm *VM) runTest(test *CompiledTest, parentScope map[string]*ast.Literal) error {
 	vm.CurrentTestName = test.TestName
 
-	funcName := fmt.Sprintf("test \"%s\" (%s)", test.TestName, test.Pos)
-	vm.appendStack(funcName, parentScope, types.Any)
+	stackDesc := stackDescription(test.Pos,
+		fmt.Sprintf("test \"%s\"", test.TestName))
+	vm.appendStack(stackDesc, parentScope, types.Any)
 	_, err := vm.runInstructions(test.TestName, test.Instructions, false)
 
 	vm.catchUnhandledError()

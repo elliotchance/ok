@@ -1,0 +1,37 @@
+import "strings"
+
+func StackElement(
+    File string,
+    LineNumber, LineOffset number,
+    FunctionName string
+) StackElement {}
+
+// Stack returns the current stack in reverse order so that the deepest call
+// will be at the top.
+func Stack() StackTrace {
+    elements = strings.Split(__stack(), "\n")
+    stack = []StackElement []
+    for element in elements {
+        parts = strings.Split(element, "|")
+        locationParts = strings.Split(parts[0], ":")
+        stack += [StackElement(
+            locationParts[0],
+            number locationParts[1],
+            number locationParts[2],
+            parts[1])]
+    }
+
+    return StackTrace(stack)
+}
+
+func StackTrace(Elements []StackElement) StackTrace {
+    func String() string {
+        s = ""
+        for i = 1; element in ^Elements; ++i {
+            s += "{i} {element.FunctionName} {element.File}:{element.LineNumber}\n"
+        }
+
+        // Remove the final newline.
+        return strings.TrimRight(s, "\n")
+    }
+}
