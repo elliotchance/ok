@@ -35,6 +35,9 @@ func (*Command) Run(args []string) {
 	check(err)
 
 	packageName := util.PackageNameFromPath(okPath, args[0])
+	if args[0] == "." {
+		packageName = "."
+	}
 	pkg, errs := compiler.Compile(okPath, packageName, false, 0)
 	util.CheckErrorsWithExit(errs)
 

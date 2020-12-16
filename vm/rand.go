@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"math/rand"
 
 	"github.com/elliotchance/ok/ast/asttest"
 )
@@ -14,7 +13,7 @@ type Rand struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Rand) Execute(_ *int, vm *VM) error {
-	val := rand.Float64()
+	val := vm.rand.Float64()
 	vm.Set(ins.Result, asttest.NewLiteralNumber(
 		fmt.Sprintf("%f", val),
 	))
