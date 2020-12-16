@@ -46,7 +46,7 @@ func (parser *Parser) resolveInterfaces() error {
 func (parser *Parser) resolveInterface(node ast.Node, typ *types.Type) (*types.Type, error) {
 	// We may not know all the interfaces yet, so only replace those that are
 	// known. resolveInterfaces() will be called again later. If anything is
-	// still unresolved, the compile will have to handle that.
+	// still unresolved, the compiler will have to handle that.
 	if typ.Kind == types.KindUnresolvedInterface {
 		// TODO(elliot): This is a hack to get around the fact we have no linker
 		//  yet. Remove in the future.

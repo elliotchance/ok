@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"hash/crc32"
 	"io"
 	"io/ioutil"
 	"log"
@@ -25,6 +26,7 @@ func main() {
 	check(err)
 
 	pkgs := map[string]*vm.File{}
+	crc32q := crc32.MakeTable(0xD5828281)
 	for _, pathInfo := range packages {
 		pkgName := pathInfo.Name()
 
@@ -33,7 +35,12 @@ func main() {
 			continue
 		}
 
-		f, errs := compiler.Compile("lib", pkgName, false, 0)
+		// TODO(elliot): This is a pretty crude way to make sure functions
+		//  compiled from different inbuilt packages end up using predictable
+		//  but unique function numbers.
+		anonFunctionName := int(crc32.Checksum([]byte(pkgName), crc32q))
+
+		f, errs := compiler.Compile("lib", pkgName, false, anonFunctionName)
 		util.CheckErrorsWithExit(errs)
 
 		pkgs[pkgName] = f

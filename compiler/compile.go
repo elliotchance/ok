@@ -44,6 +44,32 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 		funcs[fnName] = fn
 	}
 
+	// The parser cannot resolve imported types, so we can fill those in now.
+	//
+	// TODO(elliot): This is pretty similar to the same implementation in the
+	//  parser's resolveInterfaces().
+	var err error
+	for _, fn := range funcs {
+		// Argument types
+		for _, arg := range fn.Arguments {
+			parts := strings.Split(arg.Type.Name, ".")
+			if len(parts) == 2 {
+				arg.Type = imports[parts[0]].Properties[parts[1]].Returns[0]
+			}
+		}
+
+		// Return types
+		for i := range fn.Returns {
+			parts := strings.Split(fn.Returns[i].Name, ".")
+			if len(parts) == 2 {
+				fn.Returns[i] = imports[parts[0]].Properties[parts[1]].Returns[0]
+			}
+		}
+
+		// TODO(elliot): This doesn't handle resolving in statements, see
+		//  resolveInterfacesInStatements().
+	}
+
 	okcFile, err := compile(funcs, p.Tests(), p.Constants, imports)
 	if err != nil {
 		return nil, []error{err}

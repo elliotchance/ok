@@ -1,6 +1,13 @@
 func greeter() greeter {
+    times = 0
+
     func SayHello(name string) {
         print("Hi", name)
+        ++^times
+    }
+
+    func Times() number {
+        return ^times
     }
 }
 
@@ -8,4 +15,7 @@ func main() {
     g = greeter()
     g.SayHello("Jane")
     g.SayHello("John")
+
+    times = g.Times()
+    print(times + 5)
 }

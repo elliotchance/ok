@@ -3,11 +3,13 @@ package vm
 import (
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"path"
 	"regexp"
 	"runtime/debug"
 	"sort"
+	"time"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
@@ -56,6 +58,9 @@ type VM struct {
 	FinallyBlocks [][]*FinallyBlock
 
 	packageFunctions map[string]*CompiledFunc
+
+	// Used for generating random numbers within this VM.
+	rand *rand.Rand
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
@@ -65,6 +70,7 @@ func NewVM(pkg string) *VM {
 		pkg:              pkg,
 		Stdout:           os.Stdout,
 		packageFunctions: make(map[string]*CompiledFunc),
+		rand:             rand.New(rand.NewSource(int64(time.Now().Nanosecond()))),
 	}
 }
 
@@ -165,7 +171,7 @@ func (vm *VM) call(
 		vm.Set(Register(fn.Arguments[i]), vm.get(arg, 2))
 	}
 
-	returns, err := vm.runInstructions(name, fn.Instructions, false)
+	returns, err := vm.runInstructions(fn.Name, fn.Instructions, false)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +181,7 @@ func (vm *VM) call(
 			// Ignore returns here.
 			// TODO(elliot): The compiler must disallow return
 			//  statements within a finally block.
-			_, err := vm.runInstructions(name, fb.Instructions, true)
+			_, err := vm.runInstructions(fn.Name, fb.Instructions, true)
 			if err != nil {
 				return nil, err
 			}

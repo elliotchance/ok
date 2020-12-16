@@ -48,6 +48,9 @@ func (c *Command) Run(args []string) {
 
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath(okPath, arg)
+		if arg == "." {
+			packageName = "."
+		}
 		f, errs := compiler.Compile(okPath, packageName, true, time.Now().Nanosecond())
 		util.CheckErrorsWithExit(errs)
 

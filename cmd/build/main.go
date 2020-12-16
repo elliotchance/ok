@@ -41,6 +41,9 @@ func runArg(arg string) {
 	check(err)
 
 	packageName := util.PackageNameFromPath(okPath, arg)
+	if arg == "." {
+		packageName = "."
+	}
 	file, errs := compiler.Compile(okPath, packageName, false, 0)
 	util.CheckErrorsWithExit(errs)
 

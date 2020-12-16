@@ -33,6 +33,9 @@ func (*Command) Run(args []string) {
 
 	for _, arg := range args {
 		packageName := util.PackageNameFromPath(okPath, arg)
+		if arg == "." {
+			packageName = "."
+		}
 
 		m := vm.NewVM("no-package")
 		_, errs := compiler.Compile(okPath, packageName, false, time.Now().Nanosecond())
