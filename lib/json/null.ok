@@ -1,0 +1,21 @@
+// Null provides a value and interface for JSON "null". It can be used as a
+// literal:
+//
+// ```
+// assert(json.Encode(json.Null()) == "null")
+// ```
+//
+// Or, it can be used as an interface for existing types:
+//
+// ```
+// func Person(name string) {
+//     func IsJSONNull() bool {
+//         return ^name == ""
+//     }
+// }
+// ```
+func Null() Null {
+    func IsJSONNull() bool {
+        return true
+    }
+}

@@ -1,0 +1,7 @@
+test "Encoding null" {
+    assert(Encode(Null()) == "null")
+}
+
+test "Decoding null" {
+    assert(Decode("null") == Null())
+}

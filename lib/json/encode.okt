@@ -1,0 +1,52 @@
+test "Encoding literals" {
+    // boolean
+    assert(Encode(true) == "true")
+    assert(Encode(false) == "false")
+
+    // characters
+    assert(Encode('a') == "\"a\"")
+    assert(Encode('😊') == "\"😊\"")
+    assert(Encode('"') == "\"\\\"\"")
+
+    // data
+    assert(Encode(`abc`) == "\"abc\"")
+    assert(Encode(`😊`) == "\"😊\"")
+    assert(Encode(`"hi"`) == "\"\\\"hi\\\"\"")
+
+    // numbers
+    assert(Encode(123) == "123")
+    assert(Encode(12.3) == "12.3")
+    assert(Encode(12.300) == "12.3")
+
+    // strings
+    assert(Encode("abc") == "\"abc\"")
+    assert(Encode("😊") == "\"😊\"")
+    assert(Encode("\"hi\"") == "\"\\\"hi\\\"\"")
+}
+
+func MyObj(C string, A number, b number) MyObj {
+}
+
+test "Encoding objects" {
+    assert(Encode(MyObj("hi", 12.3, 4.56)) == "\{\"A\":12.3,\"C\":\"hi\"}")
+}
+
+test "Encoding arrays" {
+    assert(Encode([]string []) == "[]")
+    assert(Encode([1.23, 4.56]) == "[1.23,4.56]")
+    assert(Encode([]any [
+        MyObj("hi", 12.3, 4.56),
+        Null(),
+        "hello"
+    ]) == "[\{\"A\":12.3,\"C\":\"hi\"},null,\"hello\"]")
+}
+
+test "Encoding maps" {
+    assert(Encode({}string {}) == "\{}")
+    assert(Encode({"c": 1.23, "a": 4.56}) == "\{\"a\":4.56,\"c\":1.23}")
+    assert(Encode({}any {
+        "foo": MyObj("hi", 12.3, 4.56),
+        "bar": Null(),
+        "baz": "hello"
+    }) == "\{\"bar\":null,\"baz\":\"hello\",\"foo\":\{\"A\":12.3,\"C\":\"hi\"}}")
+}

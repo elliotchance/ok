@@ -1,0 +1,39 @@
+func MyObject(
+    Foo string,
+    Bar number,
+    baz bool
+) MyObject {
+    func Baz() bool {
+        return ^baz
+    }
+}
+
+func assertMyObjectEqual(a, b MyObject) {
+    assert(a.Foo == b.Foo)
+    assert(a.Bar == b.Bar)
+    assert(a.Baz() == b.Baz())
+}
+
+test "DecodeObject with empty object" {
+    obj = MyObject("hello", 12.3, true)
+    DecodeObject("\{}", obj)
+    assertMyObjectEqual(obj, MyObject("hello", 12.3, true))
+}
+
+test "DecodeObject some root properties" {
+    obj = MyObject("hello", 12.3, true)
+    DecodeObject("\{\"Foo\": \"there\"}", obj)
+    assertMyObjectEqual(obj, MyObject("there", 12.3, true))
+}
+
+test "DecodeObject uses lower case name" {
+    obj = MyObject("hello", 12.3, true)
+    DecodeObject("\{\"bar\": 3.14}", obj)
+    assertMyObjectEqual(obj, MyObject("hello", 3.14, true))
+}
+
+test "DecodeObject ignores extra properties" {
+    obj = MyObject("hello", 12.3, true)
+    DecodeObject("\{\"qux\": false}", obj)
+    assertMyObjectEqual(obj, MyObject("hello", 12.3, true))
+}

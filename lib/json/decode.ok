@@ -1,0 +1,109 @@
+import "error"
+
+func Decode(json string) any {
+    tokens = tokenize(json)
+    pos = 0
+    
+    // There can only be one root element, so we should not see any more tokens.
+    next = consumeNext()
+    if pos < len(tokens) {
+        raise error.Error("invalid json")
+    }
+
+    return next
+
+    func consumeNext() any {
+        token = ^consume()
+
+        if token == "[" {
+            return ^consumeArray()
+        }
+
+        if token == "\{" {
+            return ^consumeMap()
+        }
+
+        return ^decodeToken(token)
+    }
+
+    func consumeArray() []any {
+        arr = []any []
+        for {
+            token = ^consume()
+            if token == "]" {
+                break
+            }
+
+            // TODO(elliot): This doesn't ensure that the JSON is correctly
+            //  formatted.
+            if token == "," {
+                continue
+            }
+
+            arr += []any [^decodeToken(token)]
+        }
+
+        return arr
+    }
+
+    // TODO(elliot): Cannot set return type as "{}any" without syntax
+    func consumeMap() any {
+        map = {}any {}
+        for {
+            keyToken = ^consume()
+            if keyToken == "}" {
+                break
+            }
+
+            // TODO(elliot): This doesn't ensure that the JSON is correctly
+            //  formatted.
+            if keyToken == "," {
+                continue
+            }
+
+            // TODO(elliot): This doesn't ensure that the JSON is correctly
+            //  formatted.
+            ^consume() // ignore ":"
+
+            valueToken = ^consume()
+            map[strings.Substr(keyToken, 1, len(keyToken))] = ^decodeToken(valueToken)
+        }
+
+        return map
+    }
+
+    func consume() string {
+        token = ^peek()
+        ++^pos
+
+        return token
+    }
+
+    func peek() string {
+        if ^pos >= len(^tokens) {
+            raise error.Error("invalid json")
+        }
+
+        return ^tokens[^pos]
+    }
+
+    func decodeToken(token string) any {
+        if token == "true" {
+            return true
+        }
+
+        if token == "false" {
+            return false
+        }
+
+        if strings.HasPrefix(token, "S") {
+            return strings.Substr(token, 1, len(token))
+        }
+
+        if strings.HasPrefix(token, "N") {
+            return number strings.Substr(token, 1, len(token))
+        }
+
+        return Null()
+    }
+}

@@ -1,0 +1,34 @@
+import "error"
+
+test "Decoding literals" {
+    // null
+    assert(Decode("null") == Null())
+
+    // bool
+    assert(Decode("true") == true)
+    assert(Decode("false") == false)
+
+    // strings
+    assert(Decode("\"foo\"") == "foo")
+
+    // numbers
+    assert(Decode("123") == 123)
+    assert(Decode("1.23") == 1.23)
+
+    // arrays
+    assert(Decode("[]") == []any [])
+    assert(Decode("[123,456]") == [123, 456])
+    assert(Decode("[123, 456\n]") == [123, 456])
+
+    // maps
+    assert(Decode("\{}") == {}any {})
+    assert(Decode("\{\"a\":123,\"b\":\"foo\"}") == {}any {"a": 123, "b": "foo"})
+
+    // TODO(elliot): Nested.
+    // TODO(elliot): Objects.
+
+    // invalid
+    assert(Decode("\"foo") raise error.Error("unterminated string"))
+    assert(Decode("12 foo") raise error.Error("invalid json"))
+    assert(Decode("") raise error.Error("invalid json"))
+}

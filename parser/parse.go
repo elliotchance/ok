@@ -85,8 +85,8 @@ func (parser *Parser) ParseString(s string, fileName string) {
 
 		default:
 			parser.appendErrorf(nil,
-				"found extra %s at the end of the file",
-				parser.tokens[offset])
+				"%s: found extra %s at the end of the file",
+				fileName, parser.tokens[offset])
 
 			return
 		}

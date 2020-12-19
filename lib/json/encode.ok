@@ -1,0 +1,60 @@
+import "strings"
+import "reflect"
+
+// Encode transforms a value into a JSON string.
+func Encode(value any) string {
+    if value is bool {
+        return string value
+    }
+    
+    if value is number {
+        return string value
+    }
+
+    if value is char {
+        return str(string value)
+    }
+
+    if value is data {
+        return str(string value)
+    }
+
+    if value is string {
+        return str(value)
+    }
+
+    if value is Null {
+        return "null"
+    }
+
+    if reflect.Kind(value) == "array" {
+        s = "["
+        for i = 0; i < reflect.Len(value); ++i {
+            if s != "[" {
+                s += ","
+            }
+
+            s += Encode(reflect.Get(value, i))
+        }
+
+        return s + "]"
+    }
+
+    // This code works for both objects and maps. Keys are sorted by Properties.
+    s = "\{"
+    for key in reflect.Properties(value) {
+        if s != "\{" {
+            s += ","
+        }
+
+        s += "\"{key}\":{Encode(reflect.Get(value, key))}"
+    }
+
+    return s + "}"
+}
+
+func str(s string) string {
+    escaped = strings.ReplaceAll(s, "\"", "\\\"")
+
+    return "\"{escaped}\""
+}

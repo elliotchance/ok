@@ -1,0 +1,78 @@
+import "error"
+
+func tokenize(json string) []string {
+    tokens = []string []
+    word = ""
+
+    for i = 0; i < len(json); ++i {
+        // Ignore whitespace
+        if json[i] == ' ' or json[i] == '\n' or json[i] == '\t' or json[i] == '\r' {
+            continue
+        }
+
+        // Numbers
+        if json[i] >= '0' and json[i] <= '9' {
+            // N is the token prefix that describes the type for the parser.
+            word = "N"
+
+            for i < len(json) {
+                if json[i] != '.' and (json[i] < '0' or json[i] > '9') {
+                    break
+                }
+
+                word += string json[i]
+                ++i
+            }
+
+            tokens += [word]
+            word = ""
+            --i
+            continue
+        }
+
+        // Strings
+        if json[i] == '"' {
+            ++i // skip "
+
+            // S is the token prefix that describes the type for the parser.
+            word = "S"
+
+            for {
+                if i >= len(json) {
+                    raise error.Error("unterminated string")
+                }
+
+                if json[i] == '"' {
+                    break
+                }
+
+                word += string json[i]
+                ++i
+            }
+
+            tokens += [word]
+            word = ""
+            continue
+        }
+
+        // Operators
+        // TODO(elliot): https://github.com/elliotchance/ok/issues/108
+        if json[i] == '{' or json[i] == '}' or json[i] == '[' or json[i] == ']' or json[i] == ':' or json[i] == ',' {
+            if word != "" {
+                tokens += [word]
+                word = ""
+            }
+
+            tokens += [string json[i]]
+            continue
+        }
+        
+        word += string json[i]
+    }
+
+    if word != "" {
+        tokens += [word]
+    }
+
+    return tokens
+}

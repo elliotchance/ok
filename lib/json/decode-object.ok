@@ -1,0 +1,24 @@
+import "reflect"
+import "strings"
+import "unicode"
+
+func DecodeObject(json string, dest any) {
+    map = Decode(json)
+    if map is {}any {
+        for value, key in map {
+            // We must permit the first letter being upper cased since we can
+            // only modify public properties. However, snake_case and camelCase
+            // will not work.
+            if not unicode.IsUpper(key[0]) {
+                key = string unicode.ToUpper(key[0]) + strings.Substr(key, 1, len(key))
+            }
+
+            print(reflect.Properties(dest))
+            reflect.Set(dest, key, value)
+        }
+
+        return
+    }
+
+    //raise error.Error("json is not an object")
+}

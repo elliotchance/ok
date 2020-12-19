@@ -188,7 +188,7 @@ func TestParser_ParseString(t *testing.T) {
 			str:      "func main() {\n} (",
 			expected: newFunc(),
 			errs: []error{
-				errors.New("found extra '(' at the end of the file"),
+				errors.New("a.ok: found extra '(' at the end of the file"),
 			},
 		},
 		"only-comment": {

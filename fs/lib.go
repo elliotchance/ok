@@ -17,6 +17,305 @@ func init() {
 		""))
 	Filesystem.Mount(fs, "/error")
 	fs = memfs.Create()
+	f, _ = fs.OpenFile("decode-object.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("import \"reflect\"\n" +
+		"\n" +
+		"func DecodeObject(json string, dest any) {\n" +
+		"    map = Decode(json)\n" +
+		"    if map is {}any {\n" +
+		"        for value, key in map {\n" +
+		"            // We must permit the first letter being upper cased since we can\n" +
+		"            // only modify public properties. However, snake_case and camelCase\n" +
+		"            // will not work.\n" +
+		"            if key[0]\n" +
+		"\n" +
+		"            reflect.Set(dest, key, value)\n" +
+		"        }\n" +
+		"\n" +
+		"        return\n" +
+		"    }\n" +
+		"\n" +
+		"    //raise error.Error(\"json is not an object\")\n" +
+		"}\n" +
+		""))
+	f, _ = fs.OpenFile("decode.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("import \"error\"\n" +
+		"\n" +
+		"func Decode(json string) any {\n" +
+		"    tokens = tokenize(json)\n" +
+		"    pos = 0\n" +
+		"    \n" +
+		"    // There can only be one root element, so we should not see any more tokens.\n" +
+		"    next = consumeNext()\n" +
+		"    if pos < len(tokens) {\n" +
+		"        raise error.Error(\"invalid json\")\n" +
+		"    }\n" +
+		"\n" +
+		"    return next\n" +
+		"\n" +
+		"    func consumeNext() any {\n" +
+		"        token = ^consume()\n" +
+		"\n" +
+		"        if token == \"[\" {\n" +
+		"            return ^consumeArray()\n" +
+		"        }\n" +
+		"\n" +
+		"        if token == \"\\{\" {\n" +
+		"            return ^consumeMap()\n" +
+		"        }\n" +
+		"\n" +
+		"        return ^decodeToken(token)\n" +
+		"    }\n" +
+		"\n" +
+		"    func consumeArray() []any {\n" +
+		"        arr = []any []\n" +
+		"        for {\n" +
+		"            token = ^consume()\n" +
+		"            if token == \"]\" {\n" +
+		"                break\n" +
+		"            }\n" +
+		"\n" +
+		"            // TODO(elliot): This doesn't ensure that the JSON is correctly\n" +
+		"            //  formatted.\n" +
+		"            if token == \",\" {\n" +
+		"                continue\n" +
+		"            }\n" +
+		"\n" +
+		"            arr += []any [^decodeToken(token)]\n" +
+		"        }\n" +
+		"\n" +
+		"        return arr\n" +
+		"    }\n" +
+		"\n" +
+		"    // TODO(elliot): Cannot set return type as \"{}any\" without syntax\n" +
+		"    func consumeMap() any {\n" +
+		"        map = {}any {}\n" +
+		"        for {\n" +
+		"            keyToken = ^consume()\n" +
+		"            if keyToken == \"}\" {\n" +
+		"                break\n" +
+		"            }\n" +
+		"\n" +
+		"            // TODO(elliot): This doesn't ensure that the JSON is correctly\n" +
+		"            //  formatted.\n" +
+		"            if keyToken == \",\" {\n" +
+		"                continue\n" +
+		"            }\n" +
+		"\n" +
+		"            // TODO(elliot): This doesn't ensure that the JSON is correctly\n" +
+		"            //  formatted.\n" +
+		"            ^consume() // ignore \":\"\n" +
+		"\n" +
+		"            valueToken = ^consume()\n" +
+		"            map[strings.Substr(keyToken, 1, len(keyToken))] = ^decodeToken(valueToken)\n" +
+		"        }\n" +
+		"\n" +
+		"        return map\n" +
+		"    }\n" +
+		"\n" +
+		"    func consume() string {\n" +
+		"        token = ^peek()\n" +
+		"        ++^pos\n" +
+		"\n" +
+		"        return token\n" +
+		"    }\n" +
+		"\n" +
+		"    func peek() string {\n" +
+		"        if ^pos >= len(^tokens) {\n" +
+		"            raise error.Error(\"invalid json\")\n" +
+		"        }\n" +
+		"\n" +
+		"        return ^tokens[^pos]\n" +
+		"    }\n" +
+		"\n" +
+		"    func decodeToken(token string) any {\n" +
+		"        if token == \"true\" {\n" +
+		"            return true\n" +
+		"        }\n" +
+		"\n" +
+		"        if token == \"false\" {\n" +
+		"            return false\n" +
+		"        }\n" +
+		"\n" +
+		"        if strings.HasPrefix(token, \"S\") {\n" +
+		"            return strings.Substr(token, 1, len(token))\n" +
+		"        }\n" +
+		"\n" +
+		"        if strings.HasPrefix(token, \"N\") {\n" +
+		"            return number strings.Substr(token, 1, len(token))\n" +
+		"        }\n" +
+		"\n" +
+		"        return Null()\n" +
+		"    }\n" +
+		"}\n" +
+		""))
+	f, _ = fs.OpenFile("encode.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("import \"strings\"\n" +
+		"import \"reflect\"\n" +
+		"\n" +
+		"// Encode transforms a value into a JSON string.\n" +
+		"func Encode(value any) string {\n" +
+		"    if value is bool {\n" +
+		"        return string value\n" +
+		"    }\n" +
+		"    \n" +
+		"    if value is number {\n" +
+		"        return string value\n" +
+		"    }\n" +
+		"\n" +
+		"    if value is char {\n" +
+		"        return str(string value)\n" +
+		"    }\n" +
+		"\n" +
+		"    if value is data {\n" +
+		"        return str(string value)\n" +
+		"    }\n" +
+		"\n" +
+		"    if value is string {\n" +
+		"        return str(value)\n" +
+		"    }\n" +
+		"\n" +
+		"    if value is Null {\n" +
+		"        return \"null\"\n" +
+		"    }\n" +
+		"\n" +
+		"    if reflect.Kind(value) == \"array\" {\n" +
+		"        s = \"[\"\n" +
+		"        for i = 0; i < reflect.Len(value); ++i {\n" +
+		"            if s != \"[\" {\n" +
+		"                s += \",\"\n" +
+		"            }\n" +
+		"\n" +
+		"            s += Encode(reflect.Get(value, i))\n" +
+		"        }\n" +
+		"\n" +
+		"        return s + \"]\"\n" +
+		"    }\n" +
+		"\n" +
+		"    // This code works for both objects and maps. Keys are sorted by Properties.\n" +
+		"    s = \"\\{\"\n" +
+		"    for key in reflect.Properties(value) {\n" +
+		"        if s != \"\\{\" {\n" +
+		"            s += \",\"\n" +
+		"        }\n" +
+		"\n" +
+		"        s += \"\\\"{key}\\\":{Encode(reflect.Get(value, key))}\"\n" +
+		"    }\n" +
+		"\n" +
+		"    return s + \"}\"\n" +
+		"}\n" +
+		"\n" +
+		"func str(s string) string {\n" +
+		"    escaped = strings.ReplaceAll(s, \"\\\"\", \"\\\\\\\"\")\n" +
+		"\n" +
+		"    return \"\\\"{escaped}\\\"\"\n" +
+		"}\n" +
+		""))
+	f, _ = fs.OpenFile("null.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("// Null provides a value and interface for JSON \"null\". It can be used as a\n" +
+		"// literal:\n" +
+		"//\n" +
+		"// ```\n" +
+		"// assert(json.Encode(json.Null()) == \"null\")\n" +
+		"// ```\n" +
+		"//\n" +
+		"// Or, it can be used as an interface for existing types:\n" +
+		"//\n" +
+		"// ```\n" +
+		"// func Person(name string) {\n" +
+		"//     func IsJSONNull() bool {\n" +
+		"//         return ^name == \"\"\n" +
+		"//     }\n" +
+		"// }\n" +
+		"// ```\n" +
+		"func Null() Null {\n" +
+		"    func IsJSONNull() bool {\n" +
+		"        return true\n" +
+		"    }\n" +
+		"}\n" +
+		""))
+	f, _ = fs.OpenFile("tokenize.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("import \"error\"\n" +
+		"\n" +
+		"func tokenize(json string) []string {\n" +
+		"    tokens = []string []\n" +
+		"    word = \"\"\n" +
+		"\n" +
+		"    for i = 0; i < len(json); ++i {\n" +
+		"        // Ignore whitespace\n" +
+		"        if json[i] == ' ' or json[i] == '\\n' or json[i] == '\\t' or json[i] == '\\r' {\n" +
+		"            continue\n" +
+		"        }\n" +
+		"\n" +
+		"        // Numbers\n" +
+		"        if json[i] >= '0' and json[i] <= '9' {\n" +
+		"            // N is the token prefix that describes the type for the parser.\n" +
+		"            word = \"N\"\n" +
+		"\n" +
+		"            for i < len(json) {\n" +
+		"                if json[i] != '.' and (json[i] < '0' or json[i] > '9') {\n" +
+		"                    break\n" +
+		"                }\n" +
+		"\n" +
+		"                word += string json[i]\n" +
+		"                ++i\n" +
+		"            }\n" +
+		"\n" +
+		"            tokens += [word]\n" +
+		"            word = \"\"\n" +
+		"            --i\n" +
+		"            continue\n" +
+		"        }\n" +
+		"\n" +
+		"        // Strings\n" +
+		"        if json[i] == '\"' {\n" +
+		"            ++i // skip \"\n" +
+		"\n" +
+		"            // S is the token prefix that describes the type for the parser.\n" +
+		"            word = \"S\"\n" +
+		"\n" +
+		"            for {\n" +
+		"                if i >= len(json) {\n" +
+		"                    raise error.Error(\"unterminated string\")\n" +
+		"                }\n" +
+		"\n" +
+		"                if json[i] == '\"' {\n" +
+		"                    break\n" +
+		"                }\n" +
+		"\n" +
+		"                word += string json[i]\n" +
+		"                ++i\n" +
+		"            }\n" +
+		"\n" +
+		"            tokens += [word]\n" +
+		"            word = \"\"\n" +
+		"            continue\n" +
+		"        }\n" +
+		"\n" +
+		"        // Operators\n" +
+		"        // TODO(elliot): https://github.com/elliotchance/ok/issues/108\n" +
+		"        if json[i] == '{' or json[i] == '}' or json[i] == '[' or json[i] == ']' or json[i] == ':' or json[i] == ',' {\n" +
+		"            if word != \"\" {\n" +
+		"                tokens += [word]\n" +
+		"                word = \"\"\n" +
+		"            }\n" +
+		"\n" +
+		"            tokens += [string json[i]]\n" +
+		"            continue\n" +
+		"        }\n" +
+		"        \n" +
+		"        word += string json[i]\n" +
+		"    }\n" +
+		"\n" +
+		"    if word != \"\" {\n" +
+		"        tokens += [word]\n" +
+		"    }\n" +
+		"\n" +
+		"    return tokens\n" +
+		"}\n" +
+		""))
+	Filesystem.Mount(fs, "/json")
+	fs = memfs.Create()
 	f, _ = fs.OpenFile("log.ok", os.O_RDWR|os.O_CREATE, 0777)
 	f.Write([]byte("import \"runtime\"\n" +
 		"import \"strings\"\n" +

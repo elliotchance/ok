@@ -351,8 +351,16 @@ func (vm *VM) printStack() {
 	reverse(vm.ErrStack)
 
 	fmt.Printf("%s: %v\n", vm.ErrType, vm.ErrValue.Map["Error"])
-	stackLen := len(vm.ErrStack[:len(vm.ErrStack)-2])
-	for i, s := range vm.ErrStack[:len(vm.ErrStack)-2] {
+
+	// If the error originated from within the VM, it may not have a stack trace
+	// as deep. I'm not sure if this is a bug or not yet.
+	trim := len(vm.ErrStack) - 2
+	if trim < 0 {
+		trim = 0
+	}
+
+	stackLen := len(vm.ErrStack[:trim])
+	for i, s := range vm.ErrStack[:trim] {
 		parts := strings.Split(strings.TrimPrefix(s, wd), "|")
 		fmt.Println("", "", stackLen-i, parts[1]+"()", "at", parts[0])
 	}
@@ -394,8 +402,6 @@ func (vm *VM) runTest(
 		vm.ErrType = nil
 		vm.CurrentTestPassed = false
 	}
-
-	vm.catchUnhandledError()
 
 	// Make sure we roll the stack back after each test. This is normally
 	// handled in Call for functions that are not tests.
