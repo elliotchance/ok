@@ -165,6 +165,2372 @@ func init() {
 				Pos:  "lib/error/error.ok:2:1",
 			},
 		},
+		"log": &File{
+			Imports: map[string]*types.Type{
+				"runtime": &types.Type{
+					Kind: 1,
+					Name: "..__runtime",
+					Properties: map[string]*types.Type{
+						"Env": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Exit": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"LookupEnv": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"SetEnv": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Stack": &types.Type{
+							Kind: 10,
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "StackTrace",
+									Properties: map[string]*types.Type{
+										"Elements": &types.Type{
+											Kind: 8,
+											Element: &types.Type{
+												Name: "StackElement",
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"StackElement": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "StackElement",
+									Properties: map[string]*types.Type{
+										"File": &types.Type{
+											Kind: 7,
+										},
+										"FunctionName": &types.Type{
+											Kind: 7,
+										},
+										"LineNumber": &types.Type{
+											Kind: 6,
+										},
+										"LineOffset": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+						},
+						"StackTrace": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Name: "StackElement",
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "StackTrace",
+									Properties: map[string]*types.Type{
+										"Elements": &types.Type{
+											Kind: 8,
+											Element: &types.Type{
+												Name: "StackElement",
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"UnsetEnv": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+				},
+				"strings": &types.Type{
+					Kind: 1,
+					Name: "..__strings",
+					Properties: map[string]*types.Type{
+						"Contains": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"HasPrefix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"HasSuffix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"Index": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"IndexAfter": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"Join": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Kind: 7,
+									},
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"LastIndex": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"LastIndexBefore": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+						"PadLeft": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"PadRight": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Repeat": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"ReplaceAll": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Reverse": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Split": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 8,
+									Element: &types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						"Substr": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"ToLower": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"ToUpper": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Trim": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimLeft": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimPrefix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimRight": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"TrimSuffix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+				},
+				"time": &types.Type{
+					Kind: 1,
+					Name: "..__time",
+					Properties: map[string]*types.Type{
+						"Add": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								&types.Type{
+									Kind: 1,
+									Name: "Duration",
+									Properties: map[string]*types.Type{
+										"Hours": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Microseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Milliseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Minutes": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Nanoseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Seconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+						},
+						"After": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"April": &types.Type{
+							Kind: 6,
+						},
+						"August": &types.Type{
+							Kind: 6,
+						},
+						"Before": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"December": &types.Type{
+							Kind: 6,
+						},
+						"Duration": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Duration",
+									Properties: map[string]*types.Type{
+										"Hours": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Microseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Milliseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Minutes": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Nanoseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Seconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"Equal": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 3,
+								},
+							},
+						},
+						"February": &types.Type{
+							Kind: 6,
+						},
+						"FromUnix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+						},
+						"Hour": &types.Type{
+							Kind: 6,
+						},
+						"January": &types.Type{
+							Kind: 6,
+						},
+						"July": &types.Type{
+							Kind: 6,
+						},
+						"June": &types.Type{
+							Kind: 6,
+						},
+						"March": &types.Type{
+							Kind: 6,
+						},
+						"May": &types.Type{
+							Kind: 6,
+						},
+						"Microsecond": &types.Type{
+							Kind: 6,
+						},
+						"Millisecond": &types.Type{
+							Kind: 6,
+						},
+						"Minute": &types.Type{
+							Kind: 6,
+						},
+						"Nanosecond": &types.Type{
+							Kind: 6,
+						},
+						"November": &types.Type{
+							Kind: 6,
+						},
+						"Now": &types.Type{
+							Kind: 10,
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+						},
+						"October": &types.Type{
+							Kind: 6,
+						},
+						"Second": &types.Type{
+							Kind: 6,
+						},
+						"September": &types.Type{
+							Kind: 6,
+						},
+						"Sleep": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Duration",
+									Properties: map[string]*types.Type{
+										"Hours": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Microseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Milliseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Minutes": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Nanoseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Seconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"Sub": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Duration",
+									Properties: map[string]*types.Type{
+										"Hours": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Microseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Milliseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Minutes": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Nanoseconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"Seconds": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 6,
+												},
+											},
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+						"Time": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+								&types.Type{
+									Kind: 6,
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+						},
+						"Unix": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 1,
+									Name: "Time",
+									Properties: map[string]*types.Type{
+										"Day": &types.Type{
+											Kind: 6,
+										},
+										"Hour": &types.Type{
+											Kind: 6,
+										},
+										"Minute": &types.Type{
+											Kind: 6,
+										},
+										"Month": &types.Type{
+											Kind: 6,
+										},
+										"Second": &types.Type{
+											Kind: 6,
+										},
+										"String": &types.Type{
+											Kind: 10,
+											Returns: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+										"Year": &types.Type{
+											Kind: 6,
+										},
+									},
+								},
+							},
+							Returns: []*types.Type{
+								&types.Type{
+									Kind: 6,
+								},
+							},
+						},
+					},
+				},
+			},
+			Funcs: map[string]*CompiledFunc{
+				"3624248081": &CompiledFunc{
+					Arguments: []string{"Log"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "3624248086", nil, nil, "", nil, nil}, ""},
+						&ParentScope{"2"},
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "3624248085", nil, nil, "", nil, nil}, ""},
+						&ParentScope{"3"},
+						&Assign{"4", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "3624248084", nil, nil, "", nil, nil}, ""},
+						&ParentScope{"4"},
+						&Assign{"5", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "3624248083", nil, nil, "", nil, nil}, ""},
+						&ParentScope{"5"},
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						}, "3624248082", nil, nil, "", nil, nil}, ""},
+						&ParentScope{"6"},
+						&Assign{"Fatal", nil, "2"},
+						&Assign{"Error", nil, "3"},
+						&Assign{"Warn", nil, "4"},
+						&Assign{"Info", nil, "5"},
+						&Assign{"Debug", nil, "6"},
+						&Return{Registers{"0"}},
+					},
+					Registers: 6,
+					Variables: map[string]*types.Type{
+						"Debug": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Error": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Fatal": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Info": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Log": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+						"Warn": &types.Type{
+							Kind: 10,
+							Arguments: []*types.Type{
+								&types.Type{
+									Kind: 7,
+								},
+							},
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 10,
+								Arguments: []*types.Type{
+									&types.Type{
+										Kind: 7,
+									},
+									&types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Logger",
+								Properties: map[string]*types.Type{
+									"Debug": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Error": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Fatal": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Info": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Log": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Warn": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					Name:       "Logger",
+					UniqueName: "3624248081",
+					Pos:        "lib/log/log.ok:19:1",
+				},
+				"3624248082": &CompiledFunc{
+					Arguments: []string{"message"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "DEBUG", nil, nil, "", nil, nil}, ""},
+						&Call{"*^Log", Registers{"2", "message"}, nil, &types.Type{
+							Kind: 2,
+						}},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"message": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Debug",
+					UniqueName: "3624248082",
+					Pos:        "lib/log/log.ok:23:5",
+				},
+				"3624248083": &CompiledFunc{
+					Arguments: []string{"message"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "INFO", nil, nil, "", nil, nil}, ""},
+						&Call{"*^Log", Registers{"2", "message"}, nil, &types.Type{
+							Kind: 2,
+						}},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"message": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Info",
+					UniqueName: "3624248083",
+					Pos:        "lib/log/log.ok:29:5",
+				},
+				"3624248084": &CompiledFunc{
+					Arguments: []string{"message"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "WARN", nil, nil, "", nil, nil}, ""},
+						&Call{"*^Log", Registers{"2", "message"}, nil, &types.Type{
+							Kind: 2,
+						}},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"message": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Warn",
+					UniqueName: "3624248084",
+					Pos:        "lib/log/log.ok:36:5",
+				},
+				"3624248085": &CompiledFunc{
+					Arguments: []string{"message"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "ERROR", nil, nil, "", nil, nil}, ""},
+						&Call{"*^Log", Registers{"2", "message"}, nil, &types.Type{
+							Kind: 2,
+						}},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"message": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Error",
+					UniqueName: "3624248085",
+					Pos:        "lib/log/log.ok:42:5",
+				},
+				"3624248086": &CompiledFunc{
+					Arguments: []string{"message"},
+					Instructions: []Instruction{
+						&Assign{"2", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "FATAL", nil, nil, "", nil, nil}, ""},
+						&Call{"*^Log", Registers{"2", "message"}, nil, &types.Type{
+							Kind: 2,
+						}},
+					},
+					Registers: 2,
+					Variables: map[string]*types.Type{
+						"message": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Fatal",
+					UniqueName: "3624248086",
+					Pos:        "lib/log/log.ok:49:5",
+				},
+				"3624248087": &CompiledFunc{
+					Arguments: []string{"level", "message"},
+					Instructions: []Instruction{
+						&Assign{"3", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, " ", nil, nil, "lib/log/log.ok:58:36", nil, nil}, ""},
+						&Assign{"4", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "5", nil, nil, "lib/log/log.ok:58:41", nil, nil}, ""},
+						&LoadPackage{"5", "strings"},
+						&Assign{"6", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "PadLeft", nil, nil, "", nil, nil}, ""},
+						&MapGet{"5", "6", "7"},
+						&Call{"*7", Registers{"level", "3", "4"}, Registers{"8"}, &types.Type{
+							Kind: 2,
+						}},
+						&Assign{"level", nil, "8"},
+						&LoadPackage{"10", "time"},
+						&Assign{"11", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "Now", nil, nil, "", nil, nil}, ""},
+						&MapGet{"10", "11", "12"},
+						&Call{"*12", nil, Registers{"13"}, &types.Type{
+							Kind: 1,
+							Name: "Time",
+							Properties: map[string]*types.Type{
+								"Day": &types.Type{
+									Kind: 6,
+								},
+								"Hour": &types.Type{
+									Kind: 6,
+								},
+								"Minute": &types.Type{
+									Kind: 6,
+								},
+								"Month": &types.Type{
+									Kind: 6,
+								},
+								"Second": &types.Type{
+									Kind: 6,
+								},
+								"String": &types.Type{
+									Kind: 10,
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+									},
+								},
+								"Year": &types.Type{
+									Kind: 6,
+								},
+							},
+						}},
+						&Assign{"14", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "String", nil, nil, "", nil, nil}, ""},
+						&MapGet{"13", "14", "15"},
+						&Call{"*15", nil, Registers{"16"}, &types.Type{
+							Kind: 2,
+						}},
+						&Assign{"17", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, " ", nil, nil, "lib/log/log.ok:59:33", nil, nil}, ""},
+						&Assign{"18", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, " ", nil, nil, "lib/log/log.ok:59:41", nil, nil}, ""},
+						&Interpolate{"9", Registers{"16", "17", "level", "18", "message"}},
+						&Print{Registers{"9"}},
+						&Assign{"19", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "FATAL", nil, nil, "", nil, nil}, ""},
+						&Equal{"level", "19", "20"},
+						&JumpUnless{"20", 25},
+						&Assign{"21", &ast.Literal{&types.Type{
+							Kind: 6,
+						}, "1", nil, nil, "lib/log/log.ok:62:22", nil, nil}, ""},
+						&LoadPackage{"22", "runtime"},
+						&Assign{"23", &ast.Literal{&types.Type{
+							Kind: 7,
+						}, "Exit", nil, nil, "", nil, nil}, ""},
+						&MapGet{"22", "23", "24"},
+						&Call{"*24", Registers{"21"}, nil, &types.Type{
+							Kind: 2,
+						}},
+					},
+					Registers: 24,
+					Variables: map[string]*types.Type{
+						"level": &types.Type{
+							Kind: 7,
+						},
+						"message": &types.Type{
+							Kind: 7,
+						},
+					},
+					Type: &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					Name:       "Log",
+					UniqueName: "3624248087",
+					Pos:        "lib/log/log.ok:56:1",
+				},
+			},
+			Constants: map[string]*ast.Literal{
+				"LevelDebug": &ast.Literal{&types.Type{
+					Kind: 7,
+				}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+				"LevelError": &ast.Literal{&types.Type{
+					Kind: 7,
+				}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+				"LevelFatal": &ast.Literal{&types.Type{
+					Kind: 7,
+				}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+				"LevelInfo": &ast.Literal{&types.Type{
+					Kind: 7,
+				}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+				"LevelWarn": &ast.Literal{&types.Type{
+					Kind: 7,
+				}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+			},
+			PackageFunc: &CompiledFunc{
+				Instructions: []Instruction{
+					&Assign{"6", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 10,
+								Arguments: []*types.Type{
+									&types.Type{
+										Kind: 7,
+									},
+									&types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Logger",
+								Properties: map[string]*types.Type{
+									"Debug": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Error": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Fatal": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Info": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Log": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Warn": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					}, "3624248081", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"6"},
+					&Assign{"7", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "3624248087", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"7"},
+					&Assign{"8", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					}, "3624248087", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"8"},
+					&Assign{"9", &ast.Literal{&types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 10,
+								Arguments: []*types.Type{
+									&types.Type{
+										Kind: 7,
+									},
+									&types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Logger",
+								Properties: map[string]*types.Type{
+									"Debug": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Error": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Fatal": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Info": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Log": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Warn": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					}, "3624248081", nil, nil, "", nil, nil}, ""},
+					&ParentScope{"9"},
+					&Assign{"1", &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil}, ""},
+					&Assign{"LevelDebug", nil, "1"},
+					&Assign{"2", &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil}, ""},
+					&Assign{"LevelError", nil, "2"},
+					&Assign{"3", &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil}, ""},
+					&Assign{"LevelFatal", nil, "3"},
+					&Assign{"4", &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil}, ""},
+					&Assign{"LevelInfo", nil, "4"},
+					&Assign{"5", &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil}, ""},
+					&Assign{"LevelWarn", nil, "5"},
+					&Assign{"3624248081", nil, "6"},
+					&Assign{"3624248087", nil, "7"},
+					&Assign{"Log", nil, "8"},
+					&Assign{"Logger", nil, "9"},
+					&Return{Registers{"0"}},
+				},
+				Registers: 9,
+				Variables: map[string]*types.Type{
+					"3624248081": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 10,
+								Arguments: []*types.Type{
+									&types.Type{
+										Kind: 7,
+									},
+									&types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Logger",
+								Properties: map[string]*types.Type{
+									"Debug": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Error": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Fatal": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Info": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Log": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Warn": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+					"3624248087": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"LevelDebug": &types.Type{
+						Kind: 7,
+					},
+					"LevelError": &types.Type{
+						Kind: 7,
+					},
+					"LevelFatal": &types.Type{
+						Kind: 7,
+					},
+					"LevelInfo": &types.Type{
+						Kind: 7,
+					},
+					"LevelWarn": &types.Type{
+						Kind: 7,
+					},
+					"Log": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 7,
+							},
+							&types.Type{
+								Kind: 7,
+							},
+						},
+					},
+					"Logger": &types.Type{
+						Kind: 10,
+						Arguments: []*types.Type{
+							&types.Type{
+								Kind: 10,
+								Arguments: []*types.Type{
+									&types.Type{
+										Kind: 7,
+									},
+									&types.Type{
+										Kind: 7,
+									},
+								},
+							},
+						},
+						Returns: []*types.Type{
+							&types.Type{
+								Kind: 1,
+								Name: "Logger",
+								Properties: map[string]*types.Type{
+									"Debug": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Error": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Fatal": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Info": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Log": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+									"Warn": &types.Type{
+										Kind: 10,
+										Arguments: []*types.Type{
+											&types.Type{
+												Kind: 7,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				Type: &types.Type{
+					Kind: 10,
+					Returns: []*types.Type{
+						&types.Type{
+							Kind: 1,
+							Name: "..__log",
+							Properties: map[string]*types.Type{
+								"LevelDebug": &types.Type{
+									Kind: 7,
+								},
+								"LevelError": &types.Type{
+									Kind: 7,
+								},
+								"LevelFatal": &types.Type{
+									Kind: 7,
+								},
+								"LevelInfo": &types.Type{
+									Kind: 7,
+								},
+								"LevelWarn": &types.Type{
+									Kind: 7,
+								},
+								"Log": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 7,
+										},
+										&types.Type{
+											Kind: 7,
+										},
+									},
+								},
+								"Logger": &types.Type{
+									Kind: 10,
+									Arguments: []*types.Type{
+										&types.Type{
+											Kind: 10,
+											Arguments: []*types.Type{
+												&types.Type{
+													Kind: 7,
+												},
+												&types.Type{
+													Kind: 7,
+												},
+											},
+										},
+									},
+									Returns: []*types.Type{
+										&types.Type{
+											Kind: 1,
+											Name: "Logger",
+											Properties: map[string]*types.Type{
+												"Debug": &types.Type{
+													Kind: 10,
+													Arguments: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+												"Error": &types.Type{
+													Kind: 10,
+													Arguments: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+												"Fatal": &types.Type{
+													Kind: 10,
+													Arguments: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+												"Info": &types.Type{
+													Kind: 10,
+													Arguments: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+												"Log": &types.Type{
+													Kind: 10,
+													Arguments: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+												"Warn": &types.Type{
+													Kind: 10,
+													Arguments: []*types.Type{
+														&types.Type{
+															Kind: 7,
+														},
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+				Name: "..__log",
+				Pos:  "lib/log/log.ok:1:1",
+			},
+		},
 		"math": &File{
 			Imports: nil,
 			Funcs: map[string]*CompiledFunc{
