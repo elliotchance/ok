@@ -57,6 +57,14 @@ func (ins *Equal) String() string {
 }
 
 func compareValue(a, b *ast.Literal) bool {
+	// This is also used when comparing any values so we have to test for type
+	// here to be sure. Ideally, all of the types will have custom equality -
+	// like EqualNumber - or, at least notify if an any is being used to avoid
+	// this runtime check.
+	if a.Kind.Kind != b.Kind.Kind {
+		return false
+	}
+
 	switch a.Kind.Kind {
 	case types.KindArray:
 		if len(a.Array) == len(b.Array) {

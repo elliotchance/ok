@@ -1,0 +1,21 @@
+func compareValue(x any) string {
+    if x == true {
+        return "bool(true)"
+    }
+
+    if 123 == x {
+        return "number(123)"
+    }
+
+    return "unknown"
+}
+
+test "any comparison" {
+    assert(compareValue(true) == "bool(true)")
+    assert(compareValue(false) == "unknown")
+    assert(compareValue(123) == "number(123)")
+    assert(compareValue(123.00) == "number(123)")
+    assert(compareValue(123.01) == "unknown")
+    assert(compareValue("hi") == "unknown")
+    assert(compareValue([]string []) == "unknown")
+}
