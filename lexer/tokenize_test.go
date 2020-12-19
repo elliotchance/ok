@@ -1283,6 +1283,13 @@ func TestTokenizeString(t *testing.T) {
 			str: `'\'`,
 			err: errors.New("a.ok:1:1 invalid escape '\\''"),
 		},
+		"is": {
+			str: `is`,
+			expected: []lexer.Token{
+				{lexer.TokenIs, "is", false, pos(1)},
+				{lexer.TokenEOF, "", false, pos(3)},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{

@@ -37,6 +37,7 @@ func init() {
 	gob.Register(&Info{})
 	gob.Register(&Interface{})
 	gob.Register(&Interpolate{})
+	gob.Register(&Is{})
 	gob.Register(&JumpUnless{})
 	gob.Register(&Jump{})
 	gob.Register(&Len{})

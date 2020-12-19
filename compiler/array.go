@@ -13,6 +13,7 @@ func compileArray(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Array,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) (vm.Register, *types.Type, error) {
 	if len(n.Elements) == 0 && n.Kind == nil {
 		err := fmt.Errorf("%s empty array needs to specify a type",
@@ -43,7 +44,7 @@ func compileArray(
 		})
 
 		// TODO(elliot): Check all elements are the same kind.
-		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, file)
+		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, file, scopeOverrides)
 		if arrayAlloc.Kind == nil {
 			arrayAlloc.Kind = valueKind[0].ToArray()
 		}

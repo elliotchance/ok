@@ -14,8 +14,10 @@ func compileKey(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Key,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) (vm.Register, *types.Type, error) {
-	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc, n.Expr, file)
+	arrayOrMapRegisters, arrayOrMapKind, err := compileExpr(compiledFunc,
+		n.Expr, file, scopeOverrides)
 	if err != nil {
 		return "", nil, err
 	}
@@ -34,7 +36,7 @@ func compileKey(
 	}
 
 	// TODO(elliot): Check key is the correct type.
-	keyRegisters, _, err := compileExpr(compiledFunc, key, file)
+	keyRegisters, _, err := compileExpr(compiledFunc, key, file, scopeOverrides)
 	if err != nil {
 		return "", nil, err
 	}

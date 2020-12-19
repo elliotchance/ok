@@ -1,0 +1,27 @@
+test "is for type check" {
+    a = 123
+    matches = 0
+
+    if a is number {
+        ++matches
+    }
+
+    if a is string {
+        assert(false == true)
+    } else {
+        ++matches
+    }
+
+    assert(matches == 2)
+}
+
+test "compiler understands type" {
+    x = any "foo"
+    x = 12.3
+    
+    if x is number {
+        x += 3.4
+    }
+
+    assert(x == 15.7)
+}

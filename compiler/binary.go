@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
@@ -17,7 +18,9 @@ func getBinaryInstruction(
 	result vm.Register,
 ) (vm.Instruction, *types.Type) {
 	if strings.HasPrefix(op, "any == ") ||
-		strings.HasSuffix(op, " == any") {
+		strings.HasSuffix(op, " == any") ||
+		strings.HasPrefix(op, "any != ") ||
+		strings.HasSuffix(op, " != any") {
 		return &vm.Equal{Left: left, Right: right, Result: result}, types.Bool
 	}
 
@@ -163,7 +166,34 @@ func compileBinary(
 	compiledFunc *vm.CompiledFunc,
 	node *ast.Binary,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) (vm.Register, *types.Type, error) {
+	// Type check.
+	if node.Op == lexer.TokenIs {
+		left, _, err := compileExpr(compiledFunc, node.Left, file,
+			scopeOverrides)
+		if err != nil {
+			return "", nil, err
+		}
+
+		typeRegister := compiledFunc.NextRegister()
+		tyName := asttest.NewLiteralString(node.Right.(*ast.Identifier).Name)
+		compiledFunc.Append(&vm.Assign{
+			Value:        tyName,
+			VariableName: typeRegister,
+		})
+
+		resultRegister := compiledFunc.NextRegister()
+
+		compiledFunc.Append(&vm.Is{
+			Value:  left[0],
+			Type:   typeRegister,
+			Result: resultRegister,
+		})
+
+		return resultRegister, types.Bool, nil
+	}
+
 	// TokenAssign is not possible here because that is handled by an Assign
 	// operation.
 	if node.Op == lexer.TokenPlusAssign ||
@@ -171,8 +201,8 @@ func compileBinary(
 		node.Op == lexer.TokenTimesAssign ||
 		node.Op == lexer.TokenDivideAssign ||
 		node.Op == lexer.TokenRemainderAssign {
-
-		right, rightKind, err := compileExpr(compiledFunc, node.Right, file)
+		right, rightKind, err := compileExpr(compiledFunc, node.Right, file,
+			scopeOverrides)
 		if err != nil {
 			return "", nil, err
 		}
@@ -180,13 +210,14 @@ func compileBinary(
 		// TODO(elliot): Check +=, etc.
 		if key, ok := node.Left.(*ast.Key); ok {
 			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
-				key.Expr, file)
+				key.Expr, file, scopeOverrides)
 			if err != nil {
 				return "", nil, err
 			}
 
 			// TODO(elliot): Check this is a sane operation.
-			keyResults, _, err := compileExpr(compiledFunc, key.Key, file)
+			keyResults, _, err := compileExpr(compiledFunc, key.Key, file,
+				scopeOverrides)
 			if err != nil {
 				return "", nil, err
 			}
@@ -218,8 +249,7 @@ func compileBinary(
 		}
 
 		// Make sure we do not assign the wrong type to an existing variable.
-		if v, ok := compiledFunc.Variables[variable.Name]; ok &&
-			rightKind[0].String() != v.String() {
+		if v, ok := compiledFunc.GetTypeForVariable(variable.Name, scopeOverrides); ok && rightKind[0].String() != v.String() {
 			return "", nil, fmt.Errorf(
 				"%s cannot assign %s to variable %s (expecting %s)",
 				variable.Position(), rightKind[0], variable.Name, v)
@@ -289,7 +319,8 @@ func compileBinary(
 		return vm.Register(variable.Name), rightKind[0], nil
 	}
 
-	_, _, returns, returnKind, err := compileComparison(compiledFunc, node, file)
+	_, _, returns, returnKind, err := compileComparison(compiledFunc, node,
+		file, scopeOverrides)
 
 	return returns, returnKind, err
 }
@@ -298,13 +329,16 @@ func compileComparison(
 	compiledFunc *vm.CompiledFunc,
 	node *ast.Binary,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) (vm.Register, vm.Register, vm.Register, *types.Type, error) {
-	left, leftKind, err := compileExpr(compiledFunc, node.Left, file)
+	left, leftKind, err := compileExpr(compiledFunc, node.Left, file,
+		scopeOverrides)
 	if err != nil {
 		return "", "", "", nil, err
 	}
 
-	right, rightKind, err := compileExpr(compiledFunc, node.Right, file)
+	right, rightKind, err := compileExpr(compiledFunc, node.Right, file,
+		scopeOverrides)
 	if err != nil {
 		return "", "", "", nil, err
 	}

@@ -385,7 +385,7 @@ func tokenWord(word string, pos Pos) Token {
 		"and", "not", "or",
 
 		// Control flow
-		"break", "case", "continue", "else", "if", "for", "switch", "in",
+		"break", "case", "continue", "else", "if", "for", "switch", "in", "is",
 
 		// Testing
 		"test", "assert",

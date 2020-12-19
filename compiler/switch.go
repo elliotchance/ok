@@ -17,13 +17,15 @@ func compileCase(
 	breakIns,
 	continueIns vm.Instruction,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) error {
 	// TODO(elliot): This is a poor solution. It simply expands the conditions
 	//  out as if they were individual case statements. This duplicates
 	//  statements and uses more memory.
 
 	for _, condition := range n.Conditions {
-		conditionResults, conditionKinds, err := compileExpr(compiledFunc, condition, file)
+		conditionResults, conditionKinds, err := compileExpr(compiledFunc,
+			condition, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -52,7 +54,8 @@ func compileCase(
 		}
 		compiledFunc.Append(ins)
 
-		err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns, file)
+		err = compileBlock(compiledFunc, n.Statements, breakIns, continueIns,
+			file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -67,7 +70,14 @@ func compileCase(
 	return nil
 }
 
-func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, continueIns vm.Instruction, file *vm.File) error {
+func compileSwitch(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.Switch,
+	breakIns,
+	continueIns vm.Instruction,
+	file *vm.File,
+	scopeOverrides map[string]*types.Type,
+) error {
 	afterMatch := &vm.Jump{
 		To: -1, // Corrected later.
 	}
@@ -78,7 +88,8 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 	valueRegisters := []vm.Register{""}
 	if n.Expr != nil {
 		var err error
-		valueRegisters, expectedConditionKinds, err = compileExpr(compiledFunc, n.Expr, file)
+		valueRegisters, expectedConditionKinds, err = compileExpr(compiledFunc,
+			n.Expr, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -86,13 +97,15 @@ func compileSwitch(compiledFunc *vm.CompiledFunc, n *ast.Switch, breakIns, conti
 
 	for _, caseStmt := range n.Cases {
 		err := compileCase(compiledFunc, caseStmt, valueRegisters[0],
-			expectedConditionKinds[0], afterMatch, breakIns, continueIns, file)
+			expectedConditionKinds[0], afterMatch, breakIns, continueIns, file,
+			scopeOverrides)
 		if err != nil {
 			return err
 		}
 	}
 
-	err := compileBlock(compiledFunc, n.Else, breakIns, continueIns, file)
+	err := compileBlock(compiledFunc, n.Else, breakIns, continueIns, file,
+		scopeOverrides)
 	if err != nil {
 		return err
 	}

@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -9,6 +10,7 @@ func compileErrorScope(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.ErrorScope,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) error {
 	// Only activate the finally clause if there is one.
 	if n.Finally != nil {
@@ -19,7 +21,8 @@ func compileErrorScope(
 	}
 
 	// Try section.
-	err := compileBlock(compiledFunc, n.Statements, nil, nil, file)
+	err := compileBlock(compiledFunc, n.Statements, nil, nil,
+		file, scopeOverrides)
 	if err != nil {
 		return err
 	}
@@ -44,7 +47,8 @@ func compileErrorScope(
 		// On instruction above.
 		compiledFunc.NewVariable("err", on.Type)
 
-		err := compileBlock(compiledFunc, on.Statements, nil, nil, file)
+		err := compileBlock(compiledFunc, on.Statements, nil,
+			nil, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -73,7 +77,8 @@ func compileErrorScope(
 		})
 
 		// Finally section.
-		err := compileBlock(compiledFunc, n.Finally.Statements, nil, nil, file)
+		err := compileBlock(compiledFunc, n.Finally.Statements, nil,
+			nil, file, scopeOverrides)
 		if err != nil {
 			return err
 		}

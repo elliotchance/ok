@@ -133,7 +133,7 @@ func renderPtr(f io.Writer, x interface{}, indent string, vmPackage bool) {
 	fmt.Fprintf(f, "&%s{\n", localType(x, vmPackage)[1:])
 	for i := 0; i < v.NumField(); i++ {
 		field := v.Field(i)
-		if !field.IsZero() {
+		if !field.IsZero() && field.CanInterface() {
 			fmt.Fprintf(f, "%s\t%s: ", indent, ty.Field(i).Name)
 			Render(f, field.Interface(), indent+"\t", vmPackage)
 			fmt.Fprintf(f, ",\n")
