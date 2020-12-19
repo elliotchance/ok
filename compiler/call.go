@@ -190,7 +190,7 @@ func funcSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction,
 func funcProps(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Props{
-		Object: args[0],
+		Value:  args[0],
 		Result: result,
 	}
 
