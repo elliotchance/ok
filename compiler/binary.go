@@ -137,25 +137,25 @@ func getBinaryInstruction(
 	case "number > number":
 		return &vm.GreaterThanNumber{Left: left, Right: right, Result: result}, types.Bool
 
-	case "string > string":
+	case "string > string", "char > char":
 		return &vm.GreaterThanString{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number < number":
 		return &vm.LessThanNumber{Left: left, Right: right, Result: result}, types.Bool
 
-	case "string < string":
+	case "string < string", "char < char":
 		return &vm.LessThanString{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number >= number":
 		return &vm.GreaterThanEqualNumber{Left: left, Right: right, Result: result}, types.Bool
 
-	case "string >= string":
+	case "string >= string", "char >= char":
 		return &vm.GreaterThanEqualString{Left: left, Right: right, Result: result}, types.Bool
 
 	case "number <= number":
 		return &vm.LessThanEqualNumber{Left: left, Right: right, Result: result}, types.Bool
 
-	case "string <= string":
+	case "string <= string", "char <= char":
 		return &vm.LessThanEqualString{Left: left, Right: right, Result: result}, types.Bool
 	}
 
