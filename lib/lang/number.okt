@@ -1,4 +1,16 @@
+import "error"
+
 test "casting a character to a number" {
     assert(number 'a' == 97)
     assert(number '😃' == 128515)
+}
+
+test "casting a string to a number" {
+    assert(number "123" == 123)
+
+    assert(badNumberCast() raise error.Error("not a number: 123a"))
+}
+
+func badNumberCast() {
+    number "123a"
 }

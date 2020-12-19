@@ -2,6 +2,7 @@ package vm
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
@@ -35,9 +36,27 @@ type CastNumber struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *CastNumber) Execute(_ *int, vm *VM) error {
+	x := vm.Get(ins.X)
+	var value string
+
+	switch x.Kind.Kind {
+	case types.KindChar:
+		value = fmt.Sprintf("%d", int([]rune(x.Value)[0]))
+
+	case types.KindString:
+		_, err := strconv.ParseFloat(x.Value, 64)
+		if err != nil {
+			vm.Raise(fmt.Sprintf("not a number: %s", x.Value))
+
+			return nil
+		}
+
+		value = x.Value
+	}
+
 	vm.Set(ins.Result, &ast.Literal{
 		Kind:  types.Number,
-		Value: fmt.Sprintf("%d", int([]rune(vm.Get(ins.X).Value)[0])),
+		Value: value,
 	})
 
 	return nil
