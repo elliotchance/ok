@@ -2,3 +2,29 @@ test "casting a number to a character" {
     assert(char 97 == 'a')
     assert(char 128515 == '😃')
 }
+
+test "comparing character literals" {
+    assert(('B' == 'A') == false)
+    assert(('A' == 'A') == true)
+    assert(('A' == 'B') == false)
+
+    assert(('B' != 'A') == true)
+    assert(('A' != 'A') == false)
+    assert(('A' != 'B') == true)
+    
+    assert(('B' > 'A') == true)
+    assert(('A' > 'A') == false)
+    assert(('A' > 'B') == false)
+
+    assert(('B' >= 'A') == true)
+    assert(('A' >= 'A') == true)
+    assert(('A' >= 'B') == false)
+    
+    assert(('B' < 'A') == false)
+    assert(('A' < 'A') == false)
+    assert(('A' < 'B') == true)
+
+    assert(('B' <= 'A') == false)
+    assert(('A' <= 'A') == true)
+    assert(('A' <= 'B') == true)
+}
