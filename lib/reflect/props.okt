@@ -1,6 +1,11 @@
-test "Properties" {
+test "Properties on an object" {
     o = SomeObject()
     assert(Properties(o) == ["Baz", "Foo"])
 
     // TODO(elliot): Test for failure conditions.
+}
+
+test "Properties on a map" {
+    assert(Properties({}number {}) == []string [])
+    assert(Properties({}string {"c": "foo", "a": "bar"}) == ["a", "c"])
 }

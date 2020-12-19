@@ -92,8 +92,9 @@ array or map then an error is raised.
 func Properties(obj any) []string
 ```
 
-Properties returns the public properties of an object. If the input is not an
-object, an error is raised. The properties will be sorted.
+Properties returns the public properties of an object, or the keys in a map.
+If the input is not an object or map, an error is raised. The values returned
+will be sorted in either case.
 
 ## Set
 
