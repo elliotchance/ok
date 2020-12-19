@@ -18,11 +18,12 @@ func compileAssign(
 	compiledFunc *vm.CompiledFunc,
 	node *ast.Assign,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) error {
 	// First evaluate all the right expressions.
 	var rightResults []resultKindPair
 	for _, r := range node.Rights {
-		right, rightKind, err := compileExpr(compiledFunc, r, file)
+		right, rightKind, err := compileExpr(compiledFunc, r, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -45,8 +46,7 @@ func compileAssign(
 			variableName := l.Name
 
 			// Make sure we do not assign the wrong type to an existing variable.
-			if v, ok := compiledFunc.Variables[variableName]; ok &&
-				rightResults[0].kind.String() != v.String() {
+			if v, ok := compiledFunc.GetTypeForVariable(variableName, scopeOverrides); ok && v.String() != "any" && rightResults[0].kind.String() != v.String() {
 				return fmt.Errorf(
 					"%s cannot assign %s to variable %s (expecting %s)",
 					node.Position(), rightResults[0].kind, variableName, v)
@@ -61,7 +61,7 @@ func compileAssign(
 
 		case *ast.Key:
 			arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
-				l.Expr, file)
+				l.Expr, file, scopeOverrides)
 			if err != nil {
 				return err
 			}
@@ -71,7 +71,7 @@ func compileAssign(
 			if e, ok := key.(*ast.Identifier); ok {
 				key = asttest.NewLiteralString(e.Name)
 			}
-			keyResults, _, err := compileExpr(compiledFunc, key, file)
+			keyResults, _, err := compileExpr(compiledFunc, key, file, scopeOverrides)
 			if err != nil {
 				return err
 			}

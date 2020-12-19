@@ -97,6 +97,36 @@ func TestIf(t *testing.T) {
 				},
 			},
 		},
+		"if-is-1": {
+			str: "if a is number { }",
+			expected: &ast.If{
+				Condition: &ast.Binary{
+					Left:  &ast.Identifier{Name: "a"},
+					Op:    lexer.TokenIs,
+					Right: &ast.Identifier{Name: "number"},
+				},
+			},
+		},
+		"if-is-2": {
+			str: "if foo is [] string { }",
+			expected: &ast.If{
+				Condition: &ast.Binary{
+					Left:  &ast.Identifier{Name: "foo"},
+					Op:    lexer.TokenIs,
+					Right: &ast.Identifier{Name: "[]string"},
+				},
+			},
+		},
+		"if-is-3": {
+			str: "if bar is {}bool { }",
+			expected: &ast.If{
+				Condition: &ast.Binary{
+					Left:  &ast.Identifier{Name: "bar"},
+					Op:    lexer.TokenIs,
+					Right: &ast.Identifier{Name: "{}bool"},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)

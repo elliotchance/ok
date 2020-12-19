@@ -13,8 +13,10 @@ func compileUnary(
 	compiledFunc *vm.CompiledFunc,
 	e *ast.Unary,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) (vm.Register, *types.Type, error) {
-	returns1, kinds, err := compileExpr(compiledFunc, e.Expr, file)
+	returns1, kinds, err := compileExpr(compiledFunc, e.Expr, file,
+		scopeOverrides)
 	if err != nil {
 		return "", nil, err
 	}

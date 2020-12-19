@@ -9,11 +9,16 @@ import (
 	"github.com/elliotchance/ok/vm"
 )
 
-func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error {
+func compileFor(
+	compiledFunc *vm.CompiledFunc,
+	n *ast.For,
+	file *vm.File,
+	scopeOverrides map[string]*types.Type,
+) error {
 	// There's nothing special about Init here. It just executes once before the
 	// loop.
 	if n.Init != nil {
-		_, _, err := compileExpr(compiledFunc, n.Init, file)
+		_, _, err := compileExpr(compiledFunc, n.Init, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -23,10 +28,12 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 	switch cond := n.Condition.(type) {
 	case nil:
 		// Error here should not be possible.
-		conditionResults, _, _ = compileExpr(compiledFunc, asttest.NewLiteralBool(true), file)
+		conditionResults, _, _ = compileExpr(compiledFunc,
+			asttest.NewLiteralBool(true), file, scopeOverrides)
 
 	case *ast.In:
-		arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc, cond.Expr, file)
+		arrayOrMapResults, arrayOrMapKind, err := compileExpr(compiledFunc,
+			cond.Expr, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -94,7 +101,8 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 	default:
 		var conditionKinds []*types.Type
 		var err error
-		conditionResults, conditionKinds, err = compileExpr(compiledFunc, n.Condition, file)
+		conditionResults, conditionKinds, err = compileExpr(compiledFunc,
+			n.Condition, file, scopeOverrides)
 		if err != nil {
 			return err
 		}
@@ -122,7 +130,8 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 	continueIns := &vm.Jump{
 		To: 0, // This is corrected later on.
 	}
-	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns, file)
+	err := compileBlock(compiledFunc, n.Statements, breakIns, continueIns, file,
+		scopeOverrides)
 	if err != nil {
 		return err
 	}
@@ -135,7 +144,7 @@ func compileFor(compiledFunc *vm.CompiledFunc, n *ast.For, file *vm.File) error 
 		// next iteration.
 		continueIns.To = len(compiledFunc.Instructions) - 1
 
-		_, _, err := compileExpr(compiledFunc, n.Next, file)
+		_, _, err := compileExpr(compiledFunc, n.Next, file, scopeOverrides)
 		if err != nil {
 			return err
 		}

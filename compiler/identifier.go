@@ -13,9 +13,15 @@ func compileIdentifier(
 	compiledFunc *vm.CompiledFunc,
 	e *ast.Identifier,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) ([]vm.Register, []*types.Type, error) {
 	if e.Name[0] == '^' {
-		if compiledFunc.Parent == nil || compiledFunc.Parent.Variables[e.Name[1:]] == nil {
+		if compiledFunc.Parent == nil {
+			return nil, nil, fmt.Errorf("%s does not exist in the parent scope", e.Name[1:])
+		}
+
+		parentVar, ok := compiledFunc.Parent.GetTypeForVariable(e.Name[1:], scopeOverrides)
+		if !ok {
 			return nil, nil, fmt.Errorf("%s does not exist in the parent scope", e.Name[1:])
 		}
 
@@ -28,12 +34,11 @@ func compileIdentifier(
 		//  to indicate this. Without this change code like "padZero(^foo)"
 		//  will not work because the scope will be incorrect by the time
 		//  ^foo is accessed.
-		return []vm.Register{vm.Register(e.Name)}, []*types.Type{
-			compiledFunc.Parent.Variables[e.Name[1:]],
-		}, nil
+		return []vm.Register{vm.Register(e.Name)},
+			[]*types.Type{parentVar}, nil
 	}
 
-	if v, ok := compiledFunc.Variables[e.Name]; ok {
+	if v, ok := compiledFunc.GetTypeForVariable(e.Name, scopeOverrides); ok {
 		return []vm.Register{vm.Register(e.Name)}, []*types.Type{v}, nil
 	}
 

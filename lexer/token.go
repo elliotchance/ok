@@ -34,6 +34,7 @@ const (
 	TokenIf       = "if"
 	TokenImport   = "import"
 	TokenIn       = "in"
+	TokenIs       = "is"
 	TokenNot      = "not"
 	TokenNumber   = "number"
 	TokenOn       = "on"

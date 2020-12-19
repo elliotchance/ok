@@ -11,10 +11,11 @@ func compileExpr(
 	compiledFunc *vm.CompiledFunc,
 	expr ast.Node,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) ([]vm.Register, []*types.Type, error) {
 	switch e := expr.(type) {
 	case *ast.Assign:
-		err := compileAssign(compiledFunc, e, file)
+		err := compileAssign(compiledFunc, e, file, scopeOverrides)
 
 		return nil, nil, err
 
@@ -27,7 +28,7 @@ func compileExpr(
 		return compileFunc(compiledFunc, e)
 
 	case *ast.Array:
-		returns, kind, err := compileArray(compiledFunc, e, file)
+		returns, kind, err := compileArray(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -35,7 +36,7 @@ func compileExpr(
 		return []vm.Register{returns}, []*types.Type{kind}, nil
 
 	case *ast.Map:
-		returns, kind, err := compileMap(compiledFunc, e, file)
+		returns, kind, err := compileMap(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -43,7 +44,7 @@ func compileExpr(
 		return []vm.Register{returns}, []*types.Type{kind}, nil
 
 	case *ast.Call:
-		results, resultKinds, err := compileCall(compiledFunc, e, file)
+		results, resultKinds, err := compileCall(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -52,10 +53,10 @@ func compileExpr(
 		return results, resultKinds, nil
 
 	case *ast.Identifier:
-		return compileIdentifier(compiledFunc, e, file)
+		return compileIdentifier(compiledFunc, e, file, scopeOverrides)
 
 	case *ast.Binary:
-		result, ty, err := compileBinary(compiledFunc, e, file)
+		result, ty, err := compileBinary(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -63,10 +64,10 @@ func compileExpr(
 		return []vm.Register{result}, []*types.Type{ty}, nil
 
 	case *ast.Group:
-		return compileExpr(compiledFunc, e.Expr, file)
+		return compileExpr(compiledFunc, e.Expr, file, scopeOverrides)
 
 	case *ast.Unary:
-		result, ty, err := compileUnary(compiledFunc, e, file)
+		result, ty, err := compileUnary(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -74,7 +75,7 @@ func compileExpr(
 		return []vm.Register{result}, []*types.Type{ty}, nil
 
 	case *ast.Key:
-		result, ty, err := compileKey(compiledFunc, e, file)
+		result, ty, err := compileKey(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -82,7 +83,7 @@ func compileExpr(
 		return []vm.Register{result}, []*types.Type{ty}, nil
 
 	case *ast.Interpolate:
-		result, err := compileInterpolate(compiledFunc, e, file)
+		result, err := compileInterpolate(compiledFunc, e, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}

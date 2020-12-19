@@ -13,8 +13,10 @@ func compileAssert(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.Assert,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) error {
-	left, right, returns, returnKind, err := compileComparison(compiledFunc, n.Expr, file)
+	left, right, returns, returnKind, err := compileComparison(compiledFunc,
+		n.Expr, file, scopeOverrides)
 	if err != nil {
 		return err
 	}
@@ -38,6 +40,7 @@ func compileAssertRaise(
 	compiledFunc *vm.CompiledFunc,
 	n *ast.AssertRaise,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) error {
 	// assert(<call> raise <type>) is just syntactic sugar for:
 	//
@@ -55,7 +58,7 @@ func compileAssertRaise(
 	err := compileAssign(compiledFunc, &ast.Assign{
 		Lefts:  []ast.Node{&ast.Identifier{Name: raisedVariable}},
 		Rights: []ast.Node{asttest.NewLiteralBool(false)},
-	}, file)
+	}, file, scopeOverrides)
 	if err != nil {
 		return err
 	}
@@ -75,7 +78,7 @@ func compileAssertRaise(
 			},
 		},
 		Pos: n.Position(),
-	}, file)
+	}, file, scopeOverrides)
 	if err != nil {
 		return err
 	}
@@ -87,7 +90,7 @@ func compileAssertRaise(
 			Right: asttest.NewLiteralBool(true),
 		},
 		Pos: n.Position(),
-	}, file)
+	}, file, scopeOverrides)
 	if err != nil {
 		return err
 	}

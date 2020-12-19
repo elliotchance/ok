@@ -218,6 +218,48 @@ func TestIf(t *testing.T) {
 				},
 			},
 		},
+		"if-is-1": {
+			nodes: []ast.Node{
+				&ast.Assign{
+					Lefts: []ast.Node{
+						&ast.Identifier{Name: "a"},
+					},
+					Rights: []ast.Node{
+						asttest.NewLiteralNumber("0"),
+					},
+				},
+				&ast.If{
+					Condition: &ast.Binary{
+						Left:  &ast.Identifier{Name: "a"},
+						Op:    lexer.TokenIs,
+						Right: &ast.Identifier{Name: "number"},
+					},
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.Assign{
+					VariableName: "1",
+					Value:        asttest.NewLiteralNumber("0"),
+				},
+				&vm.Assign{
+					VariableName: "a",
+					Register:     "1",
+				},
+				&vm.Assign{
+					VariableName: "2",
+					Value:        asttest.NewLiteralString("number"),
+				},
+				&vm.Is{
+					Value:  "a",
+					Type:   "2",
+					Result: "3",
+				},
+				&vm.JumpUnless{
+					Condition: "3",
+					To:        4,
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),

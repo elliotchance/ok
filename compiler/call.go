@@ -44,22 +44,24 @@ var builtinFunctions = map[string]builtinFn{
 	"__type":        funcType,
 	"__unix":        funcUnix,
 	"__write":       funcWrite,
-	"char":          funcChar,
-	"data":          funcData,
-	"len":           funcLen,
-	"number":        funcNumber,
-	"print":         funcPrint,
-	"string":        funcString,
+
+	"char":   funcChar,
+	"data":   funcData,
+	"len":    funcLen,
+	"number": funcNumber,
+	"print":  funcPrint,
+	"string": funcString,
 }
 
 func compileCall(
 	compiledFunc *vm.CompiledFunc,
 	call *ast.Call,
 	file *vm.File,
+	scopeOverrides map[string]*types.Type,
 ) ([]vm.Register, []*types.Type, error) {
 	var argResults []vm.Register
 	for _, arg := range call.Arguments {
-		argResult, _, err := compileExpr(compiledFunc, arg, file)
+		argResult, _, err := compileExpr(compiledFunc, arg, file, scopeOverrides)
 		if err != nil {
 			return nil, nil, err
 		}
@@ -68,6 +70,12 @@ func compileCall(
 	}
 
 	if name, ok := call.Expr.(*ast.Identifier); ok {
+		// Casting to "any" doesn't require any conversion, just changing the
+		// type.
+		if name.Name == "any" {
+			return []vm.Register{argResults[0]}, []*types.Type{types.Any}, nil
+		}
+
 		if fn, ok := builtinFunctions[name.Name]; ok {
 			ins, result, returnType, err := fn(compiledFunc, argResults)
 			if err != nil {
@@ -80,7 +88,7 @@ func compileCall(
 		}
 	}
 
-	fnResult, fnType, err := compileExpr(compiledFunc, call.Expr, file)
+	fnResult, fnType, err := compileExpr(compiledFunc, call.Expr, file, scopeOverrides)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -240,7 +248,7 @@ func funcExit(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Regi
 	return ins, nil, nil, nil
 }
 
-func funcStack(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+func funcStack(compiledFunc *vm.CompiledFunc, _ []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	stack := compiledFunc.NextRegister()
 	ins := &vm.Stack{
 		Stack: stack,
@@ -462,7 +470,7 @@ func funcData(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction
 	return ins, []vm.Register{result}, []*types.Type{types.Data}, nil
 }
 
-func funcRand(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+func funcRand(compiledFunc *vm.CompiledFunc, _ []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	result := compiledFunc.NextRegister()
 	ins := &vm.Rand{
 		Result: result,
@@ -485,7 +493,7 @@ func funcEnvGet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instructi
 		[]*types.Type{types.String, types.Bool}, nil
 }
 
-func funcEnvSet(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
+func funcEnvSet(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.Register, []*types.Type, error) {
 	ins := &vm.EnvSet{
 		Name:  args[0],
 		Value: args[1],

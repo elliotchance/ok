@@ -159,5 +159,9 @@ func NewParser(anonFunctionName int) *Parser {
 
 // pos returns the rendered position of a token.
 func (parser *Parser) pos(offset int) string {
+	if offset >= len(parser.tokens) {
+		return "unknown pos"
+	}
+
 	return parser.tokens[offset].Pos.String()
 }

@@ -11,7 +11,7 @@ type CompiledFunc struct {
 	Arguments    []string
 	Instructions []Instruction
 	Registers    int
-	Variables    map[string]*types.Type // name: type
+	variables    map[string]*types.Type // name: type
 	Finally      [][]Instruction
 
 	// These are copied from the function definition.
@@ -23,6 +23,20 @@ type CompiledFunc struct {
 	// serialized.
 	Parent                 *CompiledFunc
 	DeferredFuncsToCompile []DeferredFunc
+}
+
+func NewCompiledFunc(fn *ast.Func, parentFunc *CompiledFunc) *CompiledFunc {
+	return &CompiledFunc{
+		variables: map[string]*types.Type{},
+		Type:      fn.Type(),
+
+		// Name and Pos are used by the VM for stack traces.
+		Name:       fn.Name,
+		UniqueName: fn.UniqueName,
+		Pos:        fn.Position(),
+
+		Parent: parentFunc,
+	}
 }
 
 type DeferredFunc struct {
@@ -47,5 +61,18 @@ func (c *CompiledFunc) Append(instruction Instruction) {
 
 func (c *CompiledFunc) NewVariable(variableName string, kind *types.Type) {
 	// TODO(elliot): Check already registered variables.
-	c.Variables[variableName] = kind
+	c.variables[variableName] = kind
+}
+
+func (c *CompiledFunc) GetTypeForVariable(
+	variableName string,
+	scopeOverrides map[string]*types.Type,
+) (*types.Type, bool) {
+	if ty, ok := scopeOverrides[variableName]; ok {
+		return ty, true
+	}
+
+	ty, ok := c.variables[variableName]
+
+	return ty, ok
 }

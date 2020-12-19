@@ -8,18 +8,12 @@ import (
 
 // CompileFunc translates a single function into a set of instructions. The
 // number of instructions returned may be zero.
-func CompileFunc(fn *ast.Func, file *vm.File, parentFunc *vm.CompiledFunc) (*vm.CompiledFunc, error) {
-	compiled := &vm.CompiledFunc{
-		Variables: map[string]*types.Type{},
-		Type:      fn.Type(),
-
-		// Name and Pos are used by the VM for stack traces.
-		Name:       fn.Name,
-		UniqueName: fn.UniqueName,
-		Pos:        fn.Position(),
-
-		Parent: parentFunc,
-	}
+func CompileFunc(
+	fn *ast.Func,
+	file *vm.File,
+	parentFunc *vm.CompiledFunc,
+) (*vm.CompiledFunc, error) {
+	compiled := vm.NewCompiledFunc(fn, parentFunc)
 
 	// Make sure we clear state that shouldn't be serialized.
 	defer func() {
@@ -43,7 +37,8 @@ func CompileFunc(fn *ast.Func, file *vm.File, parentFunc *vm.CompiledFunc) (*vm.
 		compiled.Arguments = append(compiled.Arguments, arg.Name)
 	}
 
-	err := compileBlock(compiled, fn.Statements, nil, nil, file)
+	err := compileBlock(compiled, fn.Statements, nil, nil,
+		file, nil)
 	if err != nil {
 		return nil, err
 	}

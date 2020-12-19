@@ -143,6 +143,20 @@ func TestCall(t *testing.T) {
 				},
 			},
 		},
+		"any-string": {
+			nodes: []ast.Node{
+				&ast.Call{
+					Expr:      &ast.Identifier{Name: "any"},
+					Arguments: []ast.Node{asttest.NewLiteralString("foo")},
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.Assign{
+					VariableName: "1",
+					Value:        asttest.NewLiteralString("foo"),
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),

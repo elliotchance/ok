@@ -72,6 +72,20 @@ func TestType(t *testing.T) {
 			str:      "[]func() (Foo,bar) []",
 			expected: &ast.Array{Kind: types.TypeFromString("[]func() (Foo, bar)")},
 		},
+		"any-string": {
+			str: `any "foo"`,
+			expected: &ast.Call{
+				Expr:      &ast.Identifier{Name: "any"},
+				Arguments: []ast.Node{asttest.NewLiteralString("foo")},
+			},
+		},
+		"any-number": {
+			str: `any 12.3`,
+			expected: &ast.Call{
+				Expr:      &ast.Identifier{Name: "any"},
+				Arguments: []ast.Node{asttest.NewLiteralNumber("12.3")},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
