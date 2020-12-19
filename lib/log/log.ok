@@ -1,0 +1,64 @@
+import "runtime"
+import "strings"
+import "time"
+
+// These log levels are described in similarly named methods of the Logger
+// interface.
+LevelDebug = "DEBUG"
+LevelInfo = "INFO"
+LevelWarn = "WARN"
+LevelError = "ERROR"
+LevelFatal = "FATAL"
+
+// Logger provides the interface for a standard logger. You can use the Log
+// function provided to create a simple logger:
+//
+// ```
+// logger = log.Logger(log.Log)
+// ```
+func Logger(Log func(string, string)) Logger {
+    // Debug messages in this level contain extensive contextual information.
+    // They are mostly used for problem diagnosis. Information on this Level are
+    // for Developers and not for the Users.
+    func Debug(message string) {
+        ^Log(LevelDebug, message)
+    }
+
+    // Info messages contain some contextual information to help trace execution
+    // (at a coarse-grained level) in a production environment.
+    func Info(message string) {
+        ^Log(LevelInfo, message)
+    }
+
+    // Warn messages indicate a potential problem in the system. The System is
+    // able to handle the problem by themself or to proccede with this problem
+    // anyway.
+    func Warn(message string) {
+        ^Log(LevelWarn, message)
+    }
+
+    // Error messages indicate a serious problem in the system. The problem is
+    // usually non-recoverable and requires manual intervention.
+    func Error(message string) {
+        ^Log(LevelError, message)
+    }
+
+    // Fatal indicates that the entire system is unhealthy and must exit now.
+    // Fatal is different from other levels in that after outputting its log
+    // message it will exit the process with a non-success status code.
+    func Fatal(message string) {
+        ^Log(LevelFatal, message)
+    }
+}
+
+// Log is a very simple implementation for Logger. You may call this directly
+// for dynamic log levels, but it is recommened to put this into a Logger first.
+func Log(level, message string) {
+    // https://github.com/elliotchance/ok/issues/99
+    level = strings.PadLeft(level, " ", 5)
+    print("{time.Now().String()} {level} {message}")
+
+    if level == LevelFatal {
+        runtime.Exit(1)
+    }
+}

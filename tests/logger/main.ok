@@ -1,0 +1,14 @@
+import "log"
+import "strings"
+
+func main() {
+    logger = log.Logger(func (level, message string) {
+        level = strings.PadLeft(level, " ", 5)
+        print("{level} {message}")
+    })
+    logger.Debug("debug message")
+    logger.Info("info message")
+    logger.Warn("warning message")
+    logger.Error("error message")
+    logger.Fatal("fatal message")
+}

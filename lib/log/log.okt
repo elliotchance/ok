@@ -1,0 +1,19 @@
+test "Logger" {
+    output = []string []
+    logger = Logger(func (level, message string) {
+        ^output += ["{level} {message}"]
+    })
+    logger.Debug("debug message")
+    logger.Info("info message")
+    logger.Warn("warning message")
+    logger.Error("error message")
+    logger.Fatal("fatal message")
+
+    assert(output == [
+        "DEBUG debug message",
+        "INFO info message",
+        "WARN warning message",
+        "ERROR error message",
+        "FATAL fatal message"
+    ])
+}
