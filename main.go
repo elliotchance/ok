@@ -9,6 +9,7 @@ import (
 
 	"github.com/elliotchance/ok/cmd/asm"
 	"github.com/elliotchance/ok/cmd/build"
+	"github.com/elliotchance/ok/cmd/compile"
 	"github.com/elliotchance/ok/cmd/doc"
 	"github.com/elliotchance/ok/cmd/run"
 	"github.com/elliotchance/ok/cmd/test"
@@ -23,6 +24,7 @@ type command interface {
 var commands = map[string]command{
 	"asm":     &asm.Command{},
 	"build":   &build.Command{},
+	"compile": &compile.Command{},
 	"doc":     &doc.Command{},
 	"run":     &run.Command{},
 	"test":    &test.Command{},

@@ -12,9 +12,9 @@ import (
 // File is the root structure that will be serialized into the okc file.
 type File struct {
 	// Imports lists all the packages that this package relies on.
-	Imports map[string]*types.Type
+	Imports map[string]*types.Type `json:",omitempty"`
 
-	Tests []*CompiledTest
+	Tests []*CompiledTest          `json:",omitempty"`
 
 	// Constants contains the package-level constants. These would also appear
 	// as values within PackageFunc, however it's not trivial for the compiler
@@ -27,16 +27,16 @@ type File struct {
 	// the compiler starts supporting simplifying expressions at compile time.
 	//
 	// Constants can only be scalars and all scalars.
-	Constants map[string]*ast.Literal
+	Constants map[string]*ast.Literal `json:",omitempty"`
 
-	PackageFunc *CompiledFunc
+	PackageFunc *CompiledFunc `json:",omitempty"`
 
 	// Types contains the type descriptions that can be referenced by some
 	// instructions at runtime.
-	Types map[TypeRegister]*types.Type
+	Types map[TypeRegister]*types.Type `json:",omitempty"`
 
 	// Symbols contains literal values that can be referenced by instructions.
-	Symbols map[SymbolRegister]*Symbol
+	Symbols map[SymbolRegister]*Symbol `json:",omitempty"`
 }
 
 func (f *File) FuncByName(name string) *CompiledFunc {

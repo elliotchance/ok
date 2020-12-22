@@ -13,7 +13,12 @@ import (
 
 // Compile will return the compiled file. If there are any dependent packages
 // they will also be compiled.
-func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) (*vm.File, []error) {
+func Compile(
+	rootPath,
+	pkgPath string,
+	includeTests bool,
+	anonFunctionName int,
+) (*vm.File, []error) {
 	p := parser.NewParser(anonFunctionName)
 	p.ParseDirectory(path.Join(rootPath, pkgPath), includeTests)
 	if errs := p.Errors(); len(errs) > 0 {
