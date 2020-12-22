@@ -1,4 +1,9 @@
-# math
+# Package math
+
+The `math` package contains mathematical functions.
+
+
+## Index
 
 - [E number](#constants)
 - [Ln10 number](#constants)
@@ -22,7 +27,7 @@
 - [func Round(x number, prec number) number](#Round)
 - [func Sqrt(x number) number](#Sqrt)
 
-## Constants
+### Constants
 
 ```
 E = 2.71828182845904523536028747135266249775724709369995957496696763
@@ -60,7 +65,7 @@ SqrtPhi = 1.27201964951406896425242246173749149171560804184009624861664038
 SqrtPi = 1.77245385090551602729816748334114518279754945612238712821380779
 ```
 
-## Abs
+### Abs
 
 ```
 func Abs(x number) number
@@ -68,7 +73,7 @@ func Abs(x number) number
 
 Abs returns the absolute (positive number).
 
-## Cbrt
+### Cbrt
 
 ```
 func Cbrt(x number) number
@@ -76,7 +81,7 @@ func Cbrt(x number) number
 
 Cbrt returns the cube root of x.
 
-## Ceil
+### Ceil
 
 ```
 func Ceil(x number) number
@@ -84,7 +89,7 @@ func Ceil(x number) number
 
 Ceil will round x up to the nearest integer.
 
-## Exp
+### Exp
 
 ```
 func Exp(x number) number
@@ -92,7 +97,7 @@ func Exp(x number) number
 
 Exp returns e to the power of x.
 
-## Floor
+### Floor
 
 ```
 func Floor(x number) number
@@ -100,7 +105,7 @@ func Floor(x number) number
 
 Floor will round x down to the nearest integer.
 
-## Log10
+### Log10
 
 ```
 func Log10(x number) number
@@ -108,7 +113,7 @@ func Log10(x number) number
 
 Log10 is a logarithm with base 10.
 
-## LogE
+### LogE
 
 ```
 func LogE(x number) number
@@ -116,7 +121,7 @@ func LogE(x number) number
 
 LogE is the natural logarithm (base e).
 
-## Pow
+### Pow
 
 ```
 func Pow(base number, power number) number
@@ -124,7 +129,7 @@ func Pow(base number, power number) number
 
 Pow returns base to power.
 
-## Rand
+### Rand
 
 ```
 func Rand() number
@@ -132,7 +137,7 @@ func Rand() number
 
 Rand returns a random number between 0 and 1.
 
-## Round
+### Round
 
 ```
 func Round(x number, prec number) number
@@ -141,7 +146,7 @@ func Round(x number, prec number) number
 Round will return a new number rounded to prec number of digits after the
 decimal point. Prec must be at least 0.
 
-## Sqrt
+### Sqrt
 
 ```
 func Sqrt(x number) number

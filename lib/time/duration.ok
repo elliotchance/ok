@@ -1,3 +1,5 @@
+import "math"
+
 // These constants only go to Hour because after then the durations get more
 // ambiguous.
 Nanosecond  = 0.000000001
@@ -38,13 +40,13 @@ func Duration(seconds number) Duration {
         seconds = ^seconds
 
         if seconds >= 3600 {
-            hours = floor(seconds / 3600)
+            hours = math.Floor(seconds / 3600)
             seconds -= hours * 3600
             s += "{ hours }h"
         }
 
         if seconds >= 60 {
-            minutes = floor(seconds / 60)
+            minutes = math.Floor(seconds / 60)
             seconds -= minutes * 60
             s += "{ minutes }m"
         }

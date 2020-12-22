@@ -1,4 +1,20 @@
-# time
+# Package time
+
+The `time` package contains time and date functions.
+
+### Current Time
+
+```
+import "time"
+
+func main() {
+    // eg. "2020-08-09 01:46:40.123"
+    print(time.Now().String())
+}
+```
+
+
+## Index
 
 - [April number](#constants)
 - [August number](#constants)
@@ -31,7 +47,7 @@
 - [func Time(Year number, Month number, Day number, Hour number, Minute number, Second number) Time](#Time)
 - [func Unix(t Time) number](#Unix)
 
-## Constants
+### Constants
 
 ```
 April = 4
@@ -105,7 +121,7 @@ Second = 1
 September = 9
 ```
 
-## Add
+### Add
 
 ```
 func Add(t Time, duration Duration) Time
@@ -114,7 +130,7 @@ func Add(t Time, duration Duration) Time
 Add returns a new time after applying a duration. You may use a negative
 duration to subtract.
 
-## After
+### After
 
 ```
 func After(a Time, b Time) bool
@@ -122,7 +138,7 @@ func After(a Time, b Time) bool
 
 After returns true if `a` is after `b`.
 
-## Before
+### Before
 
 ```
 func Before(a Time, b Time) bool
@@ -130,7 +146,7 @@ func Before(a Time, b Time) bool
 
 Before returns true if `a` is before `b`.
 
-## Duration
+### Duration
 
 ```
 func Duration(seconds number) Duration
@@ -138,7 +154,7 @@ func Duration(seconds number) Duration
 
 A Duration represents a length of time.
 
-## Equal
+### Equal
 
 ```
 func Equal(a Time, b Time) bool
@@ -147,7 +163,7 @@ func Equal(a Time, b Time) bool
 Equal returns true only if both instances represent the exact same time
 (including fractional seconds).
 
-## FromUnix
+### FromUnix
 
 ```
 func FromUnix(seconds number) Time
@@ -157,7 +173,7 @@ FromUnix performs the opposite operation as Unix. It receives the number of
 seconds elapsed since January 1, 1970 UTC and returns the Time. The input
 seconds may be fractional.
 
-## Now
+### Now
 
 ```
 func Now() Time
@@ -165,7 +181,7 @@ func Now() Time
 
 Now returns the current time.
 
-## Sleep
+### Sleep
 
 ```
 func Sleep(duration Duration)
@@ -173,7 +189,7 @@ func Sleep(duration Duration)
 
 Sleep will pause the execution for a specific duration of time.
 
-## Sub
+### Sub
 
 ```
 func Sub(a Time, b Time) Duration
@@ -183,7 +199,7 @@ Sub returns the duration between two time. The result will be negative if `b`
 is before `a`, positive if `b` is after `a` and `0` if the two times are
 equal.
 
-## Time
+### Time
 
 ```
 func Time(Year number, Month number, Day number, Hour number, Minute number, Second number) Time
@@ -191,7 +207,7 @@ func Time(Year number, Month number, Day number, Hour number, Minute number, Sec
 
 A Time represents a single point in time. The Second may be fractional.
 
-## Unix
+### Unix
 
 ```
 func Unix(t Time) number
