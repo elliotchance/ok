@@ -1,4 +1,41 @@
-# reflect
+# Package reflect
+
+The `reflect` package contains runtime checking and manipulating of types and
+values.
+
+### Objects
+
+```
+import "reflect"
+
+func MyObject(Foo, Bar number) MyObject {}
+
+func main() {
+    obj = MyObject(123, 456)
+
+    reflect.Set(obj, "Bar", 789)
+    reflect.Get(obj, "Bar")       // 789
+
+    reflect.Properties(obj)       // ["Bar", "Foo"]
+}
+```
+
+### Iterating Arrays or Maps
+
+`Properties` works the same way with arrays or maps, but the key type will be a
+`number` for array and `string` for a map.
+
+```
+import "reflect"
+
+func iterateMap(x any) {
+    for key in reflect.Properties(x) {
+        print("{key} = {reflect.Get(x, key)}")
+    }
+}
+```
+
+## Index
 
 - [func Call(fn any, args []any) []any](#Call)
 - [func Get(obj any, prop any) any](#Get)
@@ -9,7 +46,7 @@
 - [func Set(obj any, prop any, value any) any](#Set)
 - [func Type(value any) string](#Type)
 
-## Call
+### Call
 
 ```
 func Call(fn any, args []any) []any
@@ -31,7 +68,7 @@ return a + b
 print(reflect.Call(fn, []any [1.2, 3.4]))
 ```
 
-## Get
+### Get
 
 ```
 func Get(obj any, prop any) any
@@ -52,7 +89,7 @@ error.
 
 Any other type will always result in an error.
 
-## Interface
+### Interface
 
 ```
 func Interface(value any) string
@@ -68,7 +105,7 @@ Examples:
 { Greet(string) bool; Name string }
 ```
 
-## Kind
+### Kind
 
 ```
 func Kind(value any) string
@@ -77,7 +114,7 @@ func Kind(value any) string
 Kind returns the runtime type of a value. One of; "bool", "char", "data",
 "number", "string", "array", "map" or "func".
 
-## Len
+### Len
 
 ```
 func Len(value any) number
@@ -86,7 +123,7 @@ func Len(value any) number
 Len returns the number of elements in an array or map. If the value is not an
 array or map then an error is raised.
 
-## Properties
+### Properties
 
 ```
 func Properties(obj any) []string
@@ -96,7 +133,7 @@ Properties returns the public properties of an object, or the keys in a map.
 If the input is not an object or map, an error is raised. The values returned
 will be sorted in either case.
 
-## Set
+### Set
 
 ```
 func Set(obj any, prop any, value any) any
@@ -118,7 +155,7 @@ error.
 
 Any other type will always result in an error.
 
-## Type
+### Type
 
 ```
 func Type(value any) string

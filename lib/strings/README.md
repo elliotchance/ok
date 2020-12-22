@@ -1,4 +1,9 @@
-# strings
+# Package strings
+
+The `strings` package contains common string checking and manipulation.
+
+
+## Index
 
 - [func Contains(s string, substr string) bool](#Contains)
 - [func HasPrefix(s string, prefix string) bool](#HasPrefix)
@@ -23,7 +28,7 @@
 - [func TrimRight(s string, cutset string) string](#TrimRight)
 - [func TrimSuffix(s string, suffix string) string](#TrimSuffix)
 
-## Contains
+### Contains
 
 ```
 func Contains(s string, substr string) bool
@@ -31,7 +36,7 @@ func Contains(s string, substr string) bool
 
 Contains checks whether substr exists in s.
 
-## HasPrefix
+### HasPrefix
 
 ```
 func HasPrefix(s string, prefix string) bool
@@ -39,7 +44,7 @@ func HasPrefix(s string, prefix string) bool
 
 HasPrefix will return true if s starts with prefix.
 
-## HasSuffix
+### HasSuffix
 
 ```
 func HasSuffix(s string, suffix string) bool
@@ -47,7 +52,7 @@ func HasSuffix(s string, suffix string) bool
 
 HasSuffix will return true if s ends with suffix.
 
-## Index
+### Index
 
 ```
 func Index(s string, substr string) number
@@ -55,7 +60,7 @@ func Index(s string, substr string) number
 
 Index returns the index of the first occurance of substr; or -1 if not found.
 
-## IndexAfter
+### IndexAfter
 
 ```
 func IndexAfter(s string, substr string, offset number) number
@@ -73,7 +78,7 @@ print(i)
 }
 
 
-## Join
+### Join
 
 ```
 func Join(strings []string, glue string) string
@@ -83,7 +88,7 @@ Join returns a string containing all elements joined with glue. The glue will
 only appear between elements, even if those elements are empty strings
 themselves. Glue is allowed to be empty.
 
-## LastIndex
+### LastIndex
 
 ```
 func LastIndex(s string, substr string) number
@@ -91,7 +96,7 @@ func LastIndex(s string, substr string) number
 
 LastIndex returns the start of the last occurence of substr in s.
 
-## LastIndexBefore
+### LastIndexBefore
 
 ```
 func LastIndexBefore(s string, substr string, offset number) number
@@ -108,7 +113,7 @@ print(i)
 }
 
 
-## PadLeft
+### PadLeft
 
 ```
 func PadLeft(s string, pad string, toLen number) string
@@ -123,7 +128,7 @@ occurrence.
 
 If `pad` is empty, the original string will always be returned.
 
-## PadRight
+### PadRight
 
 ```
 func PadRight(s string, pad string, toLen number) string
@@ -132,7 +137,7 @@ func PadRight(s string, pad string, toLen number) string
 PadRight follows all the same rules as PadLeft, but will place padding (if
 any) on the right side of the string.
 
-## Repeat
+### Repeat
 
 ```
 func Repeat(str string, times number) string
@@ -141,7 +146,7 @@ func Repeat(str string, times number) string
 Repeat returns str repeated times. Any values for times that is 0 or below
 will result in an empty string.
 
-## ReplaceAll
+### ReplaceAll
 
 ```
 func ReplaceAll(s string, find string, replace string) string
@@ -152,7 +157,7 @@ ReplaceAll return a string with each of find substituted with replace.
 If `find` is empty, then `replace` will be inserted between every character.
 It will not be insert before the first character or after the last.
 
-## Reverse
+### Reverse
 
 ```
 func Reverse(s string) string
@@ -160,7 +165,7 @@ func Reverse(s string) string
 
 Reverse creates a string with all characters in the opposite order.
 
-## Split
+### Split
 
 ```
 func Split(s string, delimiter string) []string
@@ -173,7 +178,7 @@ TODO(elliot): This is a horribly inefficient algorithm. This was very early
 on in the language when there we're barely any features, please clean this
 up if you see it.
 
-## Substr
+### Substr
 
 ```
 func Substr(s string, fromIndex number, toIndex number) string
@@ -182,7 +187,7 @@ func Substr(s string, fromIndex number, toIndex number) string
 Substr returns a portion of the string. The `fromIndex` and `toIndex` must be
 within the bounds of the string.
 
-## ToLower
+### ToLower
 
 ```
 func ToLower(s string) string
@@ -192,7 +197,7 @@ ToLower returns a lower case version of s.
 
 TODO(elliot): This only works for ASCII characters.
 
-## ToUpper
+### ToUpper
 
 ```
 func ToUpper(s string) string
@@ -202,7 +207,7 @@ ToUpper returns a upper case version of s.
 
 TODO(elliot): This only works for ASCII characters.
 
-## Trim
+### Trim
 
 ```
 func Trim(s string, cutset string) string
@@ -211,7 +216,7 @@ func Trim(s string, cutset string) string
 Trim returns string with any of the cutset characters removed from the left
 (start) and right (end).
 
-## TrimLeft
+### TrimLeft
 
 ```
 func TrimLeft(s string, cutset string) string
@@ -220,7 +225,7 @@ func TrimLeft(s string, cutset string) string
 TrimLeft returns string with any of the cutset characters removed from the
 left (start).
 
-## TrimPrefix
+### TrimPrefix
 
 ```
 func TrimPrefix(s string, prefix string) string
@@ -234,7 +239,7 @@ prefix will be removed.
 
 If prefix is equal to s then an empty result will be returned.
 
-## TrimRight
+### TrimRight
 
 ```
 func TrimRight(s string, cutset string) string
@@ -243,7 +248,7 @@ func TrimRight(s string, cutset string) string
 TrimRight returns string with any of the cutset characters removed from the
 right (end).
 
-## TrimSuffix
+### TrimSuffix
 
 ```
 func TrimSuffix(s string, suffix string) string

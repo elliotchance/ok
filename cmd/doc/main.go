@@ -2,6 +2,9 @@ package doc
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path"
 	"sort"
 	"strconv"
 
@@ -62,7 +65,21 @@ func (*Command) Run(args []string) {
 		})
 		sort.Strings(constantNames)
 
-		fmt.Println("#", packageName)
+		fmt.Println("# Package", packageName)
+		fmt.Println()
+
+		// Include the package.md
+		packageMD, err := ioutil.ReadFile(path.Join(arg, "package.md"))
+		if err != nil && !os.IsNotExist(err) {
+			panic(err)
+		}
+
+		if len(packageMD) > 0 {
+			fmt.Println(string(packageMD))
+			fmt.Println()
+		}
+
+		fmt.Println("## Index")
 		fmt.Println()
 
 		// Constants should appear at the top (before functions).
@@ -88,7 +105,7 @@ func (*Command) Run(args []string) {
 		fmt.Println()
 
 		if len(constants) > 0 {
-			fmt.Println("## Constants")
+			fmt.Println("### Constants")
 			fmt.Println()
 
 			for _, name := range constantNames {
@@ -108,7 +125,7 @@ func (*Command) Run(args []string) {
 				continue
 			}
 
-			fmt.Println("##", fn.Name)
+			fmt.Println("###", fn.Name)
 			fmt.Println()
 
 			fmt.Println("```")

@@ -1,5 +1,3 @@
-# Package error
-
 The `errors` package contains standard interfaces for basic error handling.
 
 ### Example
@@ -15,17 +13,3 @@ func divide(a, b number) number {
     return a / b
 }
 ```
-
-
-## Index
-
-- [func Error(Error string) Error](#Error)
-
-### Error
-
-```
-func Error(Error string) Error
-```
-
-Error is a basic type to carry an error message.
-
