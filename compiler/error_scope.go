@@ -39,8 +39,9 @@ func compileErrorScope(
 
 	// Each of the On clauses.
 	for _, on := range n.On {
+		typeRegister := file.AddType(on.Type)
 		compiledFunc.Append(&vm.On{
-			Type: on.Type,
+			Type: typeRegister,
 		})
 
 		// Provide the err variable. The runtime value will be provided by the
@@ -58,7 +59,7 @@ func compileErrorScope(
 
 	// An On with an empty Type signals to a VM trying to recover from an error
 	// that there is no handler. It will pass the error up to the caller.
-	compiledFunc.Append(&vm.On{Type: nil})
+	compiledFunc.Append(&vm.On{Type: vm.NoTypeRegister})
 
 	// Correct the jump after the error has been handled. The "-1" is to
 	// correct for the "+1" that would happen after every instruction.

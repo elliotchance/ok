@@ -112,11 +112,12 @@ func compileCall(
 		objType = fnType[0].Returns[0]
 	}
 
+	typeRegister := file.AddType(objType)
 	ins := &vm.Call{
 		FunctionName: fmt.Sprintf("*%s", string(fnResult[0])),
 		Arguments:    argResults,
 		Results:      returnRegisters,
-		Type:         objType,
+		Type:         typeRegister,
 	}
 
 	compiledFunc.Append(ins)

@@ -36,7 +36,7 @@ func TestArray(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 			},
 		},
@@ -57,7 +57,7 @@ func TestArray(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 
 				// set 0
@@ -128,7 +128,7 @@ func TestArray(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 
 				// set 0
@@ -159,7 +159,9 @@ func TestArray(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &vm.File{}, nil)
+			}, &vm.File{
+				Types: map[vm.TypeRegister]*types.Type{},
+			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

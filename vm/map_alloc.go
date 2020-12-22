@@ -5,12 +5,11 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
-	"github.com/elliotchance/ok/types"
 )
 
 // MapAlloc allocates a map of fixed size.
 type MapAlloc struct {
-	Kind         *types.Type
+	Kind         TypeRegister
 	Size, Result Register
 }
 
@@ -19,7 +18,7 @@ func (ins *MapAlloc) Execute(_ *int, vm *VM) error {
 	size := number.Int64(number.NewNumber(vm.Get(ins.Size).Value))
 
 	vm.Set(ins.Result, &ast.Literal{
-		Kind: ins.Kind,
+		Kind: vm.Types[ins.Kind],
 
 		// Array must also be allocated because it will contain the keys for the
 		// map.

@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/types"
 )
 
 // Call tells the VM to jump to another function.
@@ -15,7 +14,7 @@ type Call struct {
 
 	// Type is the resolved interface when calling constructors. In any other
 	// case this should be types.Any.
-	Type *types.Type
+	Type TypeRegister
 }
 
 // Execute implements the Instruction interface for the VM.
@@ -29,7 +28,8 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 		parentScope = funcLit.Map
 	}
 
-	results, err := vm.call(funcName, ins.Arguments, parentScope, ins.Type)
+	ty := vm.Types[ins.Type]
+	results, err := vm.call(funcName, ins.Arguments, parentScope, ty)
 	if err != nil {
 		return err
 	}

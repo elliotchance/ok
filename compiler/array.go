@@ -32,7 +32,7 @@ func compileArray(
 	arrayAlloc := &vm.ArrayAlloc{
 		Size:   sizeRegister,
 		Result: arrayRegister,
-		Kind:   n.Kind,
+		// We'll fix the Type later, see below.
 	}
 	compiledFunc.Append(arrayAlloc)
 
@@ -45,8 +45,8 @@ func compileArray(
 
 		// TODO(elliot): Check all elements are the same kind.
 		valueRegisters, valueKind, _ := compileExpr(compiledFunc, value, file, scopeOverrides)
-		if arrayAlloc.Kind == nil {
-			arrayAlloc.Kind = valueKind[0].ToArray()
+		if n.Kind == nil {
+			n.Kind = valueKind[0].ToArray()
 		}
 
 		compiledFunc.Append(&vm.ArraySet{
@@ -56,5 +56,8 @@ func compileArray(
 		})
 	}
 
-	return arrayRegister, arrayAlloc.Kind, nil
+	typeRegister := file.AddType(n.Kind)
+	arrayAlloc.Kind = typeRegister
+
+	return arrayRegister, n.Kind, nil
 }

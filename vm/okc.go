@@ -30,6 +30,10 @@ type File struct {
 	Constants map[string]*ast.Literal
 
 	PackageFunc *CompiledFunc
+
+	// Types contains the type descriptions that can be referenced by some
+	// instructions at runtime.
+	Types map[TypeRegister]*types.Type
 }
 
 func (f *File) FuncByName(name string) *CompiledFunc {
@@ -90,4 +94,16 @@ func Load(packageName string) (*File, error) {
 // functions etc) for the package.
 func (f *File) Interface() *types.Type {
 	return f.PackageFunc.Type.Returns[0]
+}
+
+func (f *File) AddType(kind *types.Type) TypeRegister {
+	if kind == nil {
+		return NoTypeRegister
+	}
+
+	// TODO(elliot): Dedup types here.
+	key := TypeRegister(kind.String())
+	f.Types[key] = kind
+
+	return key
 }

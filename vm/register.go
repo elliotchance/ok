@@ -11,6 +11,8 @@ import (
 // these can be refactored into an int.
 type Register string
 
+type TypeRegister string
+
 // String returns either "rX" or the name of the variable. See Register for
 // details.
 func (r Register) String() string {
