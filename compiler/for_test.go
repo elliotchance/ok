@@ -45,7 +45,7 @@ func TestFor(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 
 				// set 2 elements
@@ -130,7 +130,7 @@ func TestFor(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 
 				// set 2 elements
@@ -212,7 +212,7 @@ func TestFor(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAlloc{
-					Kind:   types.NumberMap,
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
@@ -297,7 +297,7 @@ func TestFor(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("2"),
 				},
 				&vm.MapAlloc{
-					Kind:   types.NumberMap,
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
@@ -860,7 +860,9 @@ func TestFor(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Types: map[vm.TypeRegister]*types.Type{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

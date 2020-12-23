@@ -29,7 +29,7 @@ func TestMap(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("0"),
 				},
 				&vm.MapAlloc{
-					Kind:   types.NumberMap,
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
@@ -59,7 +59,7 @@ func TestMap(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("3"),
 				},
 				&vm.MapAlloc{
-					Kind:   types.NumberMap,
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
@@ -133,7 +133,7 @@ func TestMap(t *testing.T) {
 					Value:        asttest.NewLiteralNumber("1"),
 				},
 				&vm.MapAlloc{
-					Kind:   types.NumberMap,
+					Kind:   "{}number",
 					Size:   "1",
 					Result: "2",
 				},
@@ -166,7 +166,9 @@ func TestMap(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &vm.File{}, nil)
+			}, &vm.File{
+				Types: map[vm.TypeRegister]*types.Type{},
+			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

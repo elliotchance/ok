@@ -28,7 +28,6 @@ func compileMap(
 	mapAlloc := &vm.MapAlloc{
 		Size:   sizeRegister,
 		Result: mapRegister,
-		Kind:   n.Kind,
 	}
 	compiledFunc.Append(mapAlloc)
 
@@ -44,8 +43,8 @@ func compileMap(
 		// TODO(elliot): Check all elements are the same kind.
 		valueRegisters, valueKind, _ := compileExpr(compiledFunc, element.Value,
 			file, scopeOverrides)
-		if mapAlloc.Kind == nil {
-			mapAlloc.Kind = valueKind[0].ToMap()
+		if n.Kind == nil {
+			n.Kind = valueKind[0].ToMap()
 		}
 
 		compiledFunc.Append(&vm.MapSet{
@@ -55,5 +54,8 @@ func compileMap(
 		})
 	}
 
-	return mapRegister, mapAlloc.Kind, nil
+	typeRegister := file.AddType(n.Kind)
+	mapAlloc.Kind = typeRegister
+
+	return mapRegister, n.Kind, nil
 }

@@ -46,7 +46,7 @@ func TestCall(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 				&vm.Len{
 					Argument: "2",
@@ -160,7 +160,9 @@ func TestCall(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Types: map[vm.TypeRegister]*types.Type{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

@@ -81,6 +81,7 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 		Funcs:     map[string]*vm.CompiledFunc{},
 		Constants: p.Constants,
 		Imports:   imports,
+		Types:     map[vm.TypeRegister]*types.Type{},
 	}
 
 	for _, fn := range funcs {

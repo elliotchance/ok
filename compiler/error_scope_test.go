@@ -27,7 +27,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: nil,
+					Type: vm.NoTypeRegister,
 				},
 			},
 		},
@@ -48,7 +48,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: nil,
+					Type: vm.NoTypeRegister,
 				},
 			},
 		},
@@ -74,14 +74,14 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: types.NewInterface("SomeError", nil),
+					Type: "SomeError",
 				},
 				&vm.Jump{
 					To: 4,
 				},
 
 				&vm.On{
-					Type: nil,
+					Type: vm.NoTypeRegister,
 				},
 			},
 		},
@@ -115,14 +115,14 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: types.NewInterface("SomeError", nil),
+					Type: "SomeError",
 				},
 				&vm.Jump{
 					To: 7,
 				},
 
 				&vm.On{
-					Type: types.NewInterface("SomethingElse", nil),
+					Type: "SomethingElse",
 				},
 				&vm.Print{},
 				&vm.Jump{
@@ -130,7 +130,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: nil,
+					Type: vm.NoTypeRegister,
 				},
 			},
 		},
@@ -164,7 +164,7 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: nil,
+					Type: vm.NoTypeRegister,
 				},
 
 				// If we enter the finally block we need to disable it, this
@@ -179,7 +179,9 @@ func TestErrorScope(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Types: map[vm.TypeRegister]*types.Type{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

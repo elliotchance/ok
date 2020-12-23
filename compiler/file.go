@@ -16,6 +16,7 @@ func compile(
 		Funcs:     map[string]*vm.CompiledFunc{},
 		Constants: constants,
 		Imports:   imports,
+		Types:     map[vm.TypeRegister]*types.Type{},
 	}
 
 	for _, fn := range funcs {

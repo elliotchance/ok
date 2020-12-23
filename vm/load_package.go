@@ -15,10 +15,16 @@ type LoadPackage struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *LoadPackage) Execute(_ *int, vm *VM) error {
 	vm.fns["__load_package"] = vm.packageFunctions[ins.PackageName]
+
+	// TODO(elliot): This is pretty hacky. The types should be register before
+	//  we get to this point.
+	typeRegister := TypeRegister(fmt.Sprintf("%d", len(vm.Types)))
+	vm.Types[typeRegister] = vm.packageFunctions[ins.PackageName].Type
+
 	call := &Call{
 		FunctionName: "__load_package",
 		Results:      Registers{"__pkg"},
-		Type:         vm.packageFunctions[ins.PackageName].Type,
+		Type:         typeRegister,
 	}
 	err := call.Execute(nil, vm)
 	if err != nil {

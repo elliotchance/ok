@@ -35,6 +35,10 @@ func (ins *DynamicCall) Execute(_ *int, vm *VM) error {
 		i++
 	}
 
+	// TODO(elliot): This is pretty hacky.
+	typeRegister := TypeRegister(fmt.Sprintf("%d", len(vm.Types)))
+	vm.Types[typeRegister] = types.Any
+
 	realCall := &Call{
 		FunctionName: "*" + string(ins.Variable),
 		Arguments:    args,
@@ -42,7 +46,7 @@ func (ins *DynamicCall) Execute(_ *int, vm *VM) error {
 
 		// TODO(elliot): This should be the correct return type, otherwise the
 		//  reflect won't work.
-		Type: types.Any,
+		Type: typeRegister,
 	}
 
 	err := realCall.Execute(nil, vm)

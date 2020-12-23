@@ -5,21 +5,21 @@ import (
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/number"
-	"github.com/elliotchance/ok/types"
 )
 
 // ArrayAlloc allocates an array of fixed size.
 type ArrayAlloc struct {
 	Size, Result Register
-	Kind         *types.Type
+	Kind         TypeRegister
 }
 
 // Execute implements the Instruction interface for the VM.
 func (ins *ArrayAlloc) Execute(_ *int, vm *VM) error {
 	size := number.Int64(number.NewNumber(vm.Get(ins.Size).Value))
+	kind := vm.Types[ins.Kind]
 
 	vm.Set(ins.Result, &ast.Literal{
-		Kind:  ins.Kind,
+		Kind:  kind,
 		Array: make([]*ast.Literal, size),
 	})
 

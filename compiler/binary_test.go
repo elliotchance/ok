@@ -1095,7 +1095,7 @@ func TestBinary(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 				&vm.Assign{
 					VariableName: "i",
@@ -1110,7 +1110,7 @@ func TestBinary(t *testing.T) {
 				&vm.ArrayAlloc{
 					Size:   "3",
 					Result: "4",
-					Kind:   types.NumberArray,
+					Kind:   "[]number",
 				},
 
 				// +=
@@ -1124,7 +1124,9 @@ func TestBinary(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Types: map[vm.TypeRegister]*types.Type{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

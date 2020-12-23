@@ -22,9 +22,10 @@ func compileRaise(
 		return err
 	}
 
+	typeRegister := file.AddType(resultKind[0])
 	compiledFunc.Append(&vm.Raise{
 		Err:  result[0],
-		Type: resultKind[0],
+		Type: typeRegister,
 	})
 
 	return nil

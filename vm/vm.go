@@ -61,6 +61,9 @@ type VM struct {
 
 	// Used for generating random numbers within this VM.
 	rand *rand.Rand
+
+	// Types can be referenced by instructions.
+	Types map[TypeRegister]*types.Type
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
@@ -71,6 +74,7 @@ func NewVM(pkg string) *VM {
 		Stdout:           os.Stdout,
 		packageFunctions: make(map[string]*CompiledFunc),
 		rand:             rand.New(rand.NewSource(int64(time.Now().Nanosecond()))),
+		Types:            map[TypeRegister]*types.Type{},
 	}
 }
 
@@ -263,7 +267,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 		//  to the first (or each) of the handlers, ideally.
 		if vm.ErrType != nil && !inFinally {
 			if on, ok := ins.(*On); ok {
-				if on.Type == nil {
+				if on.Type == NoTypeRegister {
 					// An empty type signals the end of the error handlers.
 					// Making it to here means none of the error handlers worked
 					// for us. We need to return now and let the parent scope
@@ -271,7 +275,7 @@ func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool
 					return nil, nil
 				}
 
-				switch on.Type.Name {
+				switch vm.Types[on.Type].Name {
 				case vm.ErrType.Name,
 					// TODO(elliot): This is a stupid hack for now. This was
 					//  created before interfaces could determine this properly.
@@ -409,6 +413,10 @@ func (vm *VM) LoadPackage(pkgVariable, packageName string) error {
 func (vm *VM) LoadFile(pkgVariable string, file *File) error {
 	for k, v := range file.Funcs {
 		vm.fns[k] = v
+	}
+
+	for k, v := range file.Types {
+		vm.Types[k] = v
 	}
 
 	vm.tests = append(vm.tests, file.Tests...)
