@@ -9,10 +9,10 @@ import (
 
 type CompiledFunc struct {
 	Arguments    []string
-	Instructions []Instruction
+	Instructions *Instructions
 	Registers    int
 	variables    map[string]*types.Type // name: type
-	Finally      [][]Instruction
+	Finally      []*Instructions
 
 	// These are copied from the function definition.
 	// Name and Pos are used by the VM for stack traces.
@@ -27,8 +27,9 @@ type CompiledFunc struct {
 
 func NewCompiledFunc(fn *ast.Func, parentFunc *CompiledFunc) *CompiledFunc {
 	return &CompiledFunc{
-		variables: map[string]*types.Type{},
-		Type:      fn.Type(),
+		variables:    map[string]*types.Type{},
+		Type:         fn.Type(),
+		Instructions: new(Instructions),
 
 		// Name and Pos are used by the VM for stack traces.
 		Name:       fn.Name,
@@ -46,7 +47,7 @@ type DeferredFunc struct {
 
 type FinallyBlock struct {
 	Run          bool
-	Instructions []Instruction
+	Instructions *Instructions
 }
 
 func (c *CompiledFunc) NextRegister() Register {
@@ -56,7 +57,7 @@ func (c *CompiledFunc) NextRegister() Register {
 }
 
 func (c *CompiledFunc) Append(instruction Instruction) {
-	c.Instructions = append(c.Instructions, instruction)
+	c.Instructions.Instructions = append(c.Instructions.Instructions, instruction)
 }
 
 func (c *CompiledFunc) NewVariable(variableName string, kind *types.Type) {

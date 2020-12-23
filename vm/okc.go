@@ -1,7 +1,8 @@
 package vm
 
 import (
-	"encoding/gob"
+	"encoding/json"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -61,9 +62,14 @@ func Store(file *File, packageName string) error {
 	if err != nil {
 		return err
 	}
+	defer f.Close()
 
-	encoder := gob.NewEncoder(f)
-	err = encoder.Encode(file)
+	jsonData, err := json.MarshalIndent(file, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	_, err = f.Write(jsonData)
 	if err != nil {
 		return err
 	}
@@ -78,19 +84,18 @@ func Load(packageName string) (*File, error) {
 	}
 
 	filePath := PathForPackage(packageName)
-	f, err := os.Open(filePath)
+	jsonData, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
 
-	decoder := gob.NewDecoder(f)
-	var okcFile File
-	err = decoder.Decode(&okcFile)
+	var okcFile *File
+	err = json.Unmarshal(jsonData, &okcFile)
 	if err != nil {
 		return nil, err
 	}
 
-	return &okcFile, nil
+	return okcFile, nil
 }
 
 // Interface is useful when we need to lookup root elements (constants,

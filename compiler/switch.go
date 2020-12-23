@@ -64,7 +64,7 @@ func compileCase(
 
 		// Correct case jump. This is the jump to the next case statement. Or,
 		// if it's the last case it will jump to outside the switch.
-		ins.To = len(compiledFunc.Instructions) - 1
+		ins.To = len(compiledFunc.Instructions.Instructions) - 1
 	}
 
 	return nil
@@ -110,7 +110,7 @@ func compileSwitch(
 		return err
 	}
 
-	afterMatch.To = len(compiledFunc.Instructions) - 1
+	afterMatch.To = len(compiledFunc.Instructions.Instructions) - 1
 
 	return nil
 }

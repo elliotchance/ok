@@ -69,7 +69,7 @@ func TestInterpolate(t *testing.T) {
 				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 			}, nil)
 			require.NoError(t, err)
-			assert.Equal(t, test.expected, compiledFunc.Instructions)
+			assert.Equal(t, test.expected, compiledFunc.Instructions.Instructions)
 		})
 	}
 }

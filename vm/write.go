@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"os"
 )
 
 // Write writes data to a file.
@@ -12,7 +11,7 @@ type Write struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Write) Execute(_ *int, vm *VM) error {
-	f := vm.Get(ins.Fd).File.(*os.File)
+	f := vm.Get(ins.Fd).File
 	_, err := f.WriteString(vm.Get(ins.Data).Value)
 	if err != nil {
 		vm.Raise(err.Error())

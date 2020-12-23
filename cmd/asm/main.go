@@ -79,7 +79,7 @@ func (*Command) Run(args []string) {
 		}
 		fmt.Println(fn.Func.UniqueName+":", fn.Type+":")
 
-		for i, ins := range fn.Func.Instructions {
+		for i, ins := range fn.Func.Instructions.Instructions {
 			ty := fmt.Sprintf("%T", ins)[4:]
 
 			// "-22" is chosen here because is is the longer instruction name.

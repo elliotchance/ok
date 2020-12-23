@@ -56,7 +56,7 @@ func compileIf(
 		}
 		compiledFunc.Append(elseIns)
 
-		ins.To = len(compiledFunc.Instructions) - 1
+		ins.To = len(compiledFunc.Instructions.Instructions) - 1
 
 		err = compileBlock(compiledFunc, n.False, breakIns, continueIns, file,
 			scopeOverrides)
@@ -66,11 +66,11 @@ func compileIf(
 
 		// Correct else jump. The "-1" is to correct for the "+1" that would
 		// happen after every instruction.
-		elseIns.To = len(compiledFunc.Instructions) - 1
+		elseIns.To = len(compiledFunc.Instructions.Instructions) - 1
 	} else {
 		// Correct condition jump. The "-1" is to correct for the "+1" that would
 		// happen after every instruction.
-		ins.To = len(compiledFunc.Instructions) - 1
+		ins.To = len(compiledFunc.Instructions.Instructions) - 1
 	}
 
 	return nil

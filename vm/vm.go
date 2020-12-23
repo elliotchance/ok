@@ -239,12 +239,12 @@ func (vm *VM) dumpMemory() {
 	}
 }
 
-func (vm *VM) recoverPanic(funcName string, ins []Instruction, i *int) func() {
+func (vm *VM) recoverPanic(funcName string, ins *Instructions, i *int) func() {
 	return func() {
 		if r := recover(); r != nil {
 			// i+1 because the first instruction shown in "ok asm" is #1.
 			fmt.Printf("VM panicked in function %s at instruction #%d: %s\n\n",
-				funcName, *i+1, ins[*i].String())
+				funcName, *i+1, ins.Instructions[*i].String())
 			vm.dumpMemory()
 
 			fmt.Println()
@@ -255,13 +255,17 @@ func (vm *VM) recoverPanic(funcName string, ins []Instruction, i *int) func() {
 	}
 }
 
-func (vm *VM) runInstructions(funcName string, ins []Instruction, inFinally bool) ([]Register, error) {
+func (vm *VM) runInstructions(
+	funcName string,
+	ins *Instructions,
+	inFinally bool,
+) ([]Register, error) {
 	i := 0
 	defer vm.recoverPanic(funcName, ins, &i)()
 
-	totalInstructions := len(ins)
+	totalInstructions := len(ins.Instructions)
 	for ; i < totalInstructions; i++ {
-		ins := ins[i]
+		ins := ins.Instructions[i]
 
 		// If we are in an error state, we keep moving forward until we find an
 		// appropriate error handler.
