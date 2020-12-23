@@ -2,7 +2,10 @@ package vm
 
 import (
 	"encoding/json"
+	"fmt"
 	"reflect"
+	"strconv"
+	"strings"
 )
 
 type Instructions struct {
@@ -16,21 +19,9 @@ func NewInstructions(instructions ...Instruction) *Instructions {
 }
 
 func (ins *Instructions) MarshalJSON() ([]byte, error) {
-	out := make([]map[string]interface{}, len(ins.Instructions))
+	out := make([]string, len(ins.Instructions))
 	for i := range ins.Instructions {
-		mapData, err := json.Marshal(ins.Instructions[i])
-		if err != nil {
-			panic(err)
-		}
-
-		var m map[string]interface{}
-		err = json.Unmarshal(mapData, &m)
-		if err != nil {
-			panic(err)
-		}
-
-		m["Instruction"] = reflect.TypeOf(ins.Instructions[i]).Elem().Name()
-		out[i] = m
+		out[i] = marshalInstruction(ins.Instructions[i])
 	}
 
 	return json.Marshal(out)
@@ -122,32 +113,97 @@ var decodeTypes = []interface{}{
 }
 
 func (ins *Instructions) UnmarshalJSON(data []byte) error {
-	var raw []map[string]interface{}
+	var raw []string
 	err := json.Unmarshal(data, &raw)
 	if err != nil {
 		return err
 	}
 
 	for i := range raw {
-		// TODO(elliot): Horrible, I know. Just temporary.
-		for j := range decodeTypes {
-			ty := reflect.TypeOf(decodeTypes[j])
-			if ty.Name() == raw[i]["Instruction"] {
-				insData, err := json.Marshal(raw[i])
-				if err != nil {
-					return err
-				}
-
-				dest := reflect.New(ty).Interface()
-				err = json.Unmarshal(insData, dest)
-				if err != nil {
-					return err
-				}
-
-				ins.Instructions = append(ins.Instructions, dest.(Instruction))
-			}
-		}
+		instruction := unmarshalInstruction(raw[i])
+		ins.Instructions = append(ins.Instructions, instruction)
 	}
 
 	return nil
+}
+
+func marshalInstruction(ins Instruction) string {
+	ty := reflect.TypeOf(ins).Elem()
+	val := reflect.ValueOf(ins).Elem()
+	parts := make([]string, 1+ty.NumField())
+	parts[0] = ty.Name()
+
+	for i := 0; i < ty.NumField(); i++ {
+		parts[i+1] = argString(val.Field(i).Interface())
+	}
+
+	return strings.Join(parts, " ")
+}
+
+func argString(x interface{}) string {
+	switch a := x.(type) {
+	case Register:
+		return string(a)
+	case TypeRegister:
+		return string(a)
+	case SymbolRegister:
+		return string(a)
+	case Registers:
+		registers := make([]string, len(a))
+		for i := range a {
+			registers[i] = string(a[i])
+		}
+
+		return strings.Join(registers, ",")
+	}
+
+	return fmt.Sprintf("%v", x)
+}
+
+func unmarshalInstruction(ins string) Instruction {
+	parts := strings.Split(ins, " ")
+
+	for j := range decodeTypes {
+		ty := reflect.TypeOf(decodeTypes[j])
+		if ty.Name() == parts[0] {
+			dest := reflect.New(ty).Elem()
+			for i := 0; i < ty.NumField(); i++ {
+				f := dest.Field(i)
+				switch f.Type().Name() {
+				case "Register":
+					f.Set(reflect.ValueOf(Register(parts[i+1])))
+				case "TypeRegister":
+					f.Set(reflect.ValueOf(TypeRegister(parts[i+1])))
+				case "SymbolRegister":
+					f.Set(reflect.ValueOf(SymbolRegister(parts[i+1])))
+
+				case "Registers":
+					if parts[i+1] != "" {
+						var registers Registers
+						for _, register := range strings.Split(parts[i+1], ",") {
+							registers = append(registers, Register(register))
+						}
+						f.Set(reflect.ValueOf(registers))
+					}
+
+				case "int":
+					intVal, err := strconv.Atoi(parts[i+1])
+					if err != nil {
+						panic(err)
+					}
+					f.Set(reflect.ValueOf(intVal))
+
+				case "bool":
+					f.Set(reflect.ValueOf(parts[i+1] == "true"))
+
+				default:
+					f.Set(reflect.ValueOf(parts[i+1]))
+				}
+			}
+
+			return dest.Addr().Interface().(Instruction)
+		}
+	}
+
+	panic(ins)
 }

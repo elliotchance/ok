@@ -264,7 +264,7 @@ func TestSwitch(t *testing.T) {
 				// print("NO MATCH")
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "stringNO MATCH",
+					Symbol: "stringNO~~~MATCH",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"8"},
@@ -354,7 +354,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "stringONE OR TWO",
+					Symbol: "stringONE~~~OR~~~TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -381,7 +381,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringONE OR TWO",
+					Symbol: "stringONE~~~OR~~~TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -516,7 +516,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "stringONE OR TWO",
+					Symbol: "stringONE~~~OR~~~TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -543,7 +543,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringONE OR TWO",
+					Symbol: "stringONE~~~OR~~~TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},

@@ -34,7 +34,7 @@ func TestInterpolate(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringhi ",
+					Symbol: "stringhi~~~",
 				},
 				&vm.AssignSymbol{
 					Result: "3",
@@ -51,7 +51,7 @@ func TestInterpolate(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "string there",
+					Symbol: "string~~~there",
 				},
 				&vm.Interpolate{
 					Result: "1",

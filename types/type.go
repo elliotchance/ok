@@ -9,16 +9,16 @@ type Type struct {
 	Kind Kind
 
 	// Name is used as the descriptive name for the object.
-	Name string
+	Name string `json:",omitempty"`
 
 	// Element is used when Kind is an Array or Map.
-	Element *Type
+	Element *Type `json:",omitempty"`
 
 	// Argument and Returns are used when Kind is a Func. Either may be nil.
-	Arguments, Returns []*Type
+	Arguments, Returns []*Type `json:",omitempty"`
 
 	// Properties is used for KindInterface
-	Properties map[string]*Type
+	Properties map[string]*Type `json:",omitempty"`
 }
 
 // ToArray creates an array type using this element type.

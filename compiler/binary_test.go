@@ -936,7 +936,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringtotal is",
+					Symbol: "stringtotal~~~is",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
