@@ -34,17 +34,17 @@ func TestUnary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.Add{
 					Left:   "i",
@@ -69,17 +69,17 @@ func TestUnary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.Subtract{
 					Left:   "i",
@@ -96,9 +96,9 @@ func TestUnary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
 				&vm.Not{
 					Left:   "1",
@@ -114,9 +114,9 @@ func TestUnary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(false),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "boolfalse",
 				},
 				&vm.Not{
 					Left:   "1",
@@ -127,7 +127,9 @@ func TestUnary(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

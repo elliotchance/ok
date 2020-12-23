@@ -38,9 +38,9 @@ func TestFor(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc array
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number2",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
@@ -49,26 +49,26 @@ func TestFor(t *testing.T) {
 				},
 
 				// set 2 elements
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number0",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number1.5",
 				},
 				&vm.ArraySet{
 					Array: "2",
 					Index: "3",
 					Value: "4",
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number1",
 				},
-				&vm.Assign{
-					VariableName: "6",
-					Value:        asttest.NewLiteralNumber("2.3"),
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "number2.3",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -78,14 +78,14 @@ func TestFor(t *testing.T) {
 
 				// assign foo
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "2",
+					Result:   "foo",
+					Register: "2",
 				},
 
 				// for in
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "number0",
 				},
 				&vm.NextArray{
 					Array:       "foo",
@@ -123,9 +123,9 @@ func TestFor(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc array
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number2",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
@@ -134,26 +134,26 @@ func TestFor(t *testing.T) {
 				},
 
 				// set 2 elements
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number0",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number1.5",
 				},
 				&vm.ArraySet{
 					Array: "2",
 					Index: "3",
 					Value: "4",
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number1",
 				},
-				&vm.Assign{
-					VariableName: "6",
-					Value:        asttest.NewLiteralNumber("2.3"),
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "number2.3",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -163,14 +163,14 @@ func TestFor(t *testing.T) {
 
 				// assign foo
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "2",
+					Result:   "foo",
+					Register: "2",
 				},
 
 				// for in
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "number0",
 				},
 				&vm.NextArray{
 					Array:       "foo",
@@ -207,9 +207,9 @@ func TestFor(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc array
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number2",
 				},
 				&vm.MapAlloc{
 					Kind:   "{}number",
@@ -218,26 +218,26 @@ func TestFor(t *testing.T) {
 				},
 
 				// set 2 elements
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "stringbar",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("2.3"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number2.3",
 				},
 				&vm.MapSet{
 					Map:   "2",
 					Key:   "3",
 					Value: "4",
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "stringfoo",
 				},
-				&vm.Assign{
-					VariableName: "6",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "number1.5",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -247,14 +247,14 @@ func TestFor(t *testing.T) {
 
 				// assign foo
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "2",
+					Result:   "foo",
+					Register: "2",
 				},
 
 				// for in
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "number0",
 				},
 				&vm.NextMap{
 					Map:         "foo",
@@ -292,9 +292,9 @@ func TestFor(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc array
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number2",
 				},
 				&vm.MapAlloc{
 					Kind:   "{}number",
@@ -303,26 +303,26 @@ func TestFor(t *testing.T) {
 				},
 
 				// set 2 elements
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "stringbar",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("2.3"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number2.3",
 				},
 				&vm.MapSet{
 					Map:   "2",
 					Key:   "3",
 					Value: "4",
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "stringfoo",
 				},
-				&vm.Assign{
-					VariableName: "6",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "number1.5",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -332,14 +332,14 @@ func TestFor(t *testing.T) {
 
 				// assign foo
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "2",
+					Result:   "foo",
+					Register: "2",
 				},
 
 				// for in
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "number0",
 				},
 				&vm.NextMap{
 					Map:         "foo",
@@ -389,19 +389,19 @@ func TestFor(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 
 				// a < 10
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("10"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number10",
 				},
 				&vm.LessThanNumber{
 					Left:   "a",
@@ -419,9 +419,9 @@ func TestFor(t *testing.T) {
 				},
 
 				// ++a
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number1",
 				},
 				&vm.Add{
 					Left:   "a",
@@ -460,19 +460,19 @@ func TestFor(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 
 				// a < 10
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("10"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number10",
 				},
 				&vm.LessThanNumber{
 					Left:   "a",
@@ -490,9 +490,9 @@ func TestFor(t *testing.T) {
 				},
 
 				// ++a
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number1",
 				},
 				&vm.Add{
 					Left:   "a",
@@ -509,9 +509,9 @@ func TestFor(t *testing.T) {
 				&ast.For{},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
 				&vm.JumpUnless{
 					Condition: "1",
@@ -562,48 +562,48 @@ func TestFor(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1",
 				},
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "1",
+					Result:   "foo",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.JumpUnless{
 					Condition: "2",
 					To:        8,
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number2",
 				},
 				&vm.Assign{
-					VariableName: "bar",
-					Register:     "3",
+					Result:   "bar",
+					Register: "3",
+				},
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number3",
 				},
 				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("3"),
-				},
-				&vm.Assign{
-					VariableName: "baz",
-					Register:     "4",
+					Result:   "baz",
+					Register: "4",
 				},
 				&vm.Jump{
 					To: 1,
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("4"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number4",
 				},
 				&vm.Assign{
-					VariableName: "qux",
-					Register:     "5",
+					Result:   "qux",
+					Register: "5",
 				},
 			},
 		},
@@ -640,17 +640,17 @@ func TestFor(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("10"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number10",
 				},
 				&vm.LessThanNumber{
 					Left:   "i",
@@ -661,9 +661,9 @@ func TestFor(t *testing.T) {
 					Condition: "3",
 					To:        8,
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number1",
 				},
 				&vm.Add{
 					Left:   "i",
@@ -671,8 +671,8 @@ func TestFor(t *testing.T) {
 					Result: "5",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "5",
+					Result:   "i",
+					Register: "5",
 				},
 				&vm.Jump{
 					To: 2,
@@ -720,51 +720,51 @@ func TestFor(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.JumpUnless{
 					Condition: "2",
 					To:        9,
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number1",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result:   "i",
+					Register: "3",
 				},
 				&vm.Jump{
 					To: 9,
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number2",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "4",
+					Result:   "i",
+					Register: "4",
 				},
 				&vm.Jump{
 					To: 1,
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number3",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "5",
+					Result:   "i",
+					Register: "5",
 				},
 			},
 		},
@@ -809,51 +809,51 @@ func TestFor(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.JumpUnless{
 					Condition: "2",
 					To:        9,
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number1",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "3",
+					Result:   "i",
+					Register: "3",
 				},
 				&vm.Jump{
 					To: 1,
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number2",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "4",
+					Result:   "i",
+					Register: "4",
 				},
 				&vm.Jump{
 					To: 1,
 				},
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number3",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "5",
+					Result:   "i",
+					Register: "5",
 				},
 			},
 		},
@@ -861,7 +861,8 @@ func TestFor(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
-					Types: map[vm.TypeRegister]*types.Type{},
+					Types:   map[vm.TypeRegister]*types.Type{},
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())

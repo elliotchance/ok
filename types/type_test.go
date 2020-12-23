@@ -53,6 +53,53 @@ func TestTypeFromString(t *testing.T) {
 				Name: "fooBar",
 			},
 		},
+
+		// Nested types
+		"func(number, func() number, func(bool, number), func () (string, number)) Geometry": {
+			Kind: types.KindFunc,
+			Arguments: []*types.Type{
+				{Kind: types.KindNumber},
+				{
+					Kind:    types.KindFunc,
+					Returns: []*types.Type{types.Number},
+				},
+				{
+					Kind:      types.KindFunc,
+					Arguments: []*types.Type{types.Bool, types.Number},
+				},
+				{
+					Kind:    types.KindFunc,
+					Returns: []*types.Type{types.String, types.Number},
+				},
+			},
+			Returns: []*types.Type{
+				{Kind: types.KindUnresolvedInterface, Name: "Geometry"},
+			},
+		},
+		"func ([]func({}number, string)) []func()": {
+			Kind: types.KindFunc,
+			Arguments: []*types.Type{
+				{
+					Kind: types.KindArray,
+					Element: &types.Type{
+						Kind: types.KindFunc,
+						Arguments: []*types.Type{
+							{
+								Kind:    types.KindMap,
+								Element: types.Number,
+							},
+							types.String,
+						},
+					},
+				},
+			},
+			Returns: []*types.Type{
+				{
+					Kind:    types.KindArray,
+					Element: types.NewFunc(nil, nil),
+				},
+			},
+		},
 	} {
 		t.Run(typeString, func(t *testing.T) {
 			assert.Equal(t, tt, types.TypeFromString(typeString))

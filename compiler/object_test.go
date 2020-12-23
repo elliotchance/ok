@@ -47,13 +47,13 @@ func TestObject(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// bar = 123
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("123"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number123",
 				},
 				&vm.Assign{
-					VariableName: "bar",
-					Register:     "1",
+					Result:   "bar",
+					Register: "1",
 				},
 
 				// return instance
@@ -65,7 +65,9 @@ func TestObject(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.node,
-				&vm.File{}, nil)
+				&vm.File{
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

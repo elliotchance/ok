@@ -38,13 +38,13 @@ func TestAssert(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number2",
 				},
 				&vm.EqualNumber{
 					Left:   "1",
@@ -65,7 +65,9 @@ func TestAssert(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &vm.File{}, nil)
+			}, &vm.File{
+				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

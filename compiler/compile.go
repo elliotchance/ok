@@ -82,6 +82,7 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 		Constants: p.Constants,
 		Imports:   imports,
 		Types:     map[vm.TypeRegister]*types.Type{},
+		Symbols:   okcFile.Symbols,
 	}
 
 	for _, fn := range funcs {

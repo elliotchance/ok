@@ -13,6 +13,8 @@ type Register string
 
 type TypeRegister string
 
+type SymbolRegister string
+
 // String returns either "rX" or the name of the variable. See Register for
 // details.
 func (r Register) String() string {

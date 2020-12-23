@@ -32,26 +32,26 @@ func TestInterpolate(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("hi "),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "stringhi ",
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number1",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number2",
 				},
 				&vm.Add{
 					Left:   "3",
 					Right:  "4",
 					Result: "5",
 				},
-				&vm.Assign{
-					VariableName: "6",
-					Value:        asttest.NewLiteralString(" there"),
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "string there",
 				},
 				&vm.Interpolate{
 					Result: "1",
@@ -65,7 +65,9 @@ func TestInterpolate(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &vm.File{}, nil)
+			}, &vm.File{
+				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+			}, nil)
 			require.NoError(t, err)
 			assert.Equal(t, test.expected, compiledFunc.Instructions)
 		})

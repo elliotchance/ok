@@ -30,9 +30,9 @@ func TestReturn(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("123"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number123",
 				},
 				&vm.Return{
 					Results: []vm.Register{"1"},
@@ -47,13 +47,13 @@ func TestReturn(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("123"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number123",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "stringfoo",
 				},
 				&vm.Return{
 					Results: []vm.Register{"1", "2"},
@@ -66,7 +66,9 @@ func TestReturn(t *testing.T) {
 				Statements: []ast.Node{
 					test.node,
 				},
-			}, &vm.File{}, nil)
+			}, &vm.File{
+				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

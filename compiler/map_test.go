@@ -24,9 +24,9 @@ func TestMap(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.MapAlloc{
 					Kind:   "{}number",
@@ -54,9 +54,9 @@ func TestMap(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number3",
 				},
 				&vm.MapAlloc{
 					Kind:   "{}number",
@@ -65,13 +65,13 @@ func TestMap(t *testing.T) {
 				},
 
 				// "a": 2
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralString("a"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "stringa",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -80,13 +80,13 @@ func TestMap(t *testing.T) {
 				},
 
 				// "b": 5
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralString("b"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "stringb",
 				},
-				&vm.Assign{
-					VariableName: "6",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "number5",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -95,13 +95,13 @@ func TestMap(t *testing.T) {
 				},
 
 				// "c": 13
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralString("c"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "stringc",
 				},
-				&vm.Assign{
-					VariableName: "8",
-					Value:        asttest.NewLiteralNumber("13"),
+				&vm.AssignSymbol{
+					Result: "8",
+					Symbol: "number13",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -128,9 +128,9 @@ func TestMap(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// alloc
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1",
 				},
 				&vm.MapAlloc{
 					Kind:   "{}number",
@@ -139,13 +139,13 @@ func TestMap(t *testing.T) {
 				},
 
 				// "b": 123
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralString("b"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "stringb",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("123"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number123",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -155,8 +155,8 @@ func TestMap(t *testing.T) {
 
 				// assign a
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "2",
+					Result:   "a",
+					Register: "2",
 				},
 			},
 		},
@@ -167,7 +167,8 @@ func TestMap(t *testing.T) {
 					test.node,
 				},
 			}, &vm.File{
-				Types: map[vm.TypeRegister]*types.Type{},
+				Types:   map[vm.TypeRegister]*types.Type{},
+				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 			}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())

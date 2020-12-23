@@ -64,6 +64,9 @@ type VM struct {
 
 	// Types can be referenced by instructions.
 	Types map[TypeRegister]*types.Type
+
+	// Symbols contain literals that can be referenced by AssignSymbol.
+	Symbols map[SymbolRegister]*ast.Literal
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
@@ -75,6 +78,7 @@ func NewVM(pkg string) *VM {
 		packageFunctions: make(map[string]*CompiledFunc),
 		rand:             rand.New(rand.NewSource(int64(time.Now().Nanosecond()))),
 		Types:            map[TypeRegister]*types.Type{},
+		Symbols:          map[SymbolRegister]*ast.Literal{},
 	}
 }
 
@@ -417,6 +421,10 @@ func (vm *VM) LoadFile(pkgVariable string, file *File) error {
 
 	for k, v := range file.Types {
 		vm.Types[k] = v
+	}
+
+	for k, v := range file.Symbols {
+		vm.Symbols[k] = v.Literal()
 	}
 
 	vm.tests = append(vm.tests, file.Tests...)

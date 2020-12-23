@@ -20,7 +20,7 @@ func compileExpr(
 		return nil, nil, err
 
 	case *ast.Literal:
-		returns, kind := compileLiteral(compiledFunc, e)
+		returns, kind := compileLiteral(compiledFunc, e, file)
 
 		return []vm.Register{returns}, []*types.Type{kind}, nil
 

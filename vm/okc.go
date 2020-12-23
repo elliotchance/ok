@@ -3,6 +3,7 @@ package vm
 import (
 	"encoding/gob"
 	"os"
+	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/types"
@@ -34,6 +35,9 @@ type File struct {
 	// Types contains the type descriptions that can be referenced by some
 	// instructions at runtime.
 	Types map[TypeRegister]*types.Type
+
+	// Symbols contains literal values that can be referenced by instructions.
+	Symbols map[SymbolRegister]*Symbol
 }
 
 func (f *File) FuncByName(name string) *CompiledFunc {
@@ -104,6 +108,27 @@ func (f *File) AddType(kind *types.Type) TypeRegister {
 	// TODO(elliot): Dedup types here.
 	key := TypeRegister(kind.String())
 	f.Types[key] = kind
+
+	return key
+}
+
+func (f *File) AddSymbolLiteral(lit *ast.Literal) SymbolRegister {
+	// TODO(elliot): Dedup symbols here.
+	// TODO(elliot): Remove the newline replace. This is just so the value
+	//  doesn't cause libgen to produce mangled code.
+	key := SymbolRegister(strings.ReplaceAll(lit.Kind.String()+lit.Value, "\n", "\\n"))
+
+	// TODO(elliot): This is a nasty hack to get around some rounding that's
+	//  happening at ultra high precisions, like the constants in the math
+	//  library. Remove this code to see the failure.
+	//if lit.Kind.Kind == types.KindNumber && len(key) > 20 {
+	//	key = key[:20]
+	//}
+
+	f.Symbols[key] = &Symbol{
+		Type:  lit.Kind.String(),
+		Value: lit.Value,
+	}
 
 	return key
 }

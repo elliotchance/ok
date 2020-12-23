@@ -75,19 +75,19 @@ func TestSwitch(t *testing.T) {
 			),
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 
 				// a == 1
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -100,9 +100,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("ONE")
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralString("ONE"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "stringONE",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -112,9 +112,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// a == 2
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number2",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -127,9 +127,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("TWO")
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralString("TWO"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "stringTWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -198,19 +198,19 @@ func TestSwitch(t *testing.T) {
 			),
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 
 				// a == 1
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -223,9 +223,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("ONE")
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralString("ONE"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "stringONE",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -235,9 +235,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// a == 2
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number2",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -250,9 +250,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("TWO")
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralString("TWO"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "stringTWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -262,9 +262,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("NO MATCH")
-				&vm.Assign{
-					VariableName: "8",
-					Value:        asttest.NewLiteralString("NO MATCH"),
+				&vm.AssignSymbol{
+					Result: "8",
+					Symbol: "stringNO MATCH",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"8"},
@@ -327,19 +327,19 @@ func TestSwitch(t *testing.T) {
 			),
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 
 				// a == 1
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -352,9 +352,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("ONE OR TWO")
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralString("ONE OR TWO"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "stringONE OR TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -364,9 +364,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// a == 2
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number2",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -379,9 +379,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("ONE OR TWO")
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralString("ONE OR TWO"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "stringONE OR TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -391,9 +391,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// a == 3
-				&vm.Assign{
-					VariableName: "8",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "8",
+					Symbol: "number3",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -406,9 +406,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("THREE")
-				&vm.Assign{
-					VariableName: "10",
-					Value:        asttest.NewLiteralString("THREE"),
+				&vm.AssignSymbol{
+					Result: "10",
+					Symbol: "stringTHREE",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"10"},
@@ -434,13 +434,13 @@ func TestSwitch(t *testing.T) {
 			),
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 			},
 		},
@@ -489,19 +489,19 @@ func TestSwitch(t *testing.T) {
 			),
 			expected: []vm.Instruction{
 				// a = 0
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "a",
-					Register:     "1",
+					Result:   "a",
+					Register: "1",
 				},
 
 				// case 1
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -514,9 +514,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("ONE OR TWO")
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralString("ONE OR TWO"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "stringONE OR TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -526,9 +526,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// case 2
-				&vm.Assign{
-					VariableName: "5",
-					Value:        asttest.NewLiteralNumber("2"),
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "number2",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -541,9 +541,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("ONE OR TWO")
-				&vm.Assign{
-					VariableName: "7",
-					Value:        asttest.NewLiteralString("ONE OR TWO"),
+				&vm.AssignSymbol{
+					Result: "7",
+					Symbol: "stringONE OR TWO",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -553,9 +553,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// case 3
-				&vm.Assign{
-					VariableName: "8",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "8",
+					Symbol: "number3",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -568,9 +568,9 @@ func TestSwitch(t *testing.T) {
 				},
 
 				// print("THREE")
-				&vm.Assign{
-					VariableName: "10",
-					Value:        asttest.NewLiteralString("THREE"),
+				&vm.AssignSymbol{
+					Result: "10",
+					Symbol: "stringTHREE",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"10"},
@@ -583,7 +583,9 @@ func TestSwitch(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,
-				&vm.File{}, nil)
+				&vm.File{
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
