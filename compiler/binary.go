@@ -178,9 +178,9 @@ func compileBinary(
 
 		typeRegister := compiledFunc.NextRegister()
 		tyName := asttest.NewLiteralString(node.Right.(*ast.Identifier).Name)
-		compiledFunc.Append(&vm.Assign{
-			Value:        tyName,
-			VariableName: typeRegister,
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: typeRegister,
+			Symbol: file.AddSymbolLiteral(tyName),
 		})
 
 		resultRegister := compiledFunc.NextRegister()

@@ -17,6 +17,7 @@ func compile(
 		Constants: constants,
 		Imports:   imports,
 		Types:     map[vm.TypeRegister]*types.Type{},
+		Symbols:   map[vm.SymbolRegister]*vm.Symbol{},
 	}
 
 	for _, fn := range funcs {

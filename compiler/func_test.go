@@ -57,9 +57,9 @@ func TestFunc(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				&vm.Print{},
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("hello"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "stringhello",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"1"},
@@ -69,50 +69,42 @@ func TestFunc(t *testing.T) {
 		"oos-exists-arg": {
 			fn: parseFunc("func foo(baz number) { func bar() number { return ^baz } }"),
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "2",
-					Value: &ast.Literal{
-						Kind:  types.NewFunc(nil, []*types.Type{types.Number}),
-						Value: "2",
-					},
+				&vm.AssignFunc{
+					Result:     "2",
+					Type:       "func() number",
+					UniqueName: "2",
 				},
 				&vm.ParentScope{
 					X: "2",
 				},
 				&vm.Assign{
-					VariableName: "bar",
-					Register:     "2",
+					Result:   "bar",
+					Register: "2",
 				},
 			},
 		},
 		"oos-exists-var": {
 			fn: parseFunc("func foo() { baz = 0\n func bar() number { return ^baz } }"),
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value: &ast.Literal{
-						Kind:  types.NewFunc(nil, []*types.Type{types.Number}),
-						Value: "2",
-					},
+				&vm.AssignFunc{
+					Result:     "1",
+					Type:       "func() number",
+					UniqueName: "2",
 				},
 				&vm.ParentScope{
 					X: "1",
 				},
 				&vm.Assign{
-					VariableName: "bar",
-					Register:     "1",
+					Result:   "bar",
+					Register: "1",
+				},
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "2",
-					Value: &ast.Literal{
-						Kind:  types.Number,
-						Value: "0",
-						Pos:   "a.ok:1:20",
-					},
-				},
-				&vm.Assign{
-					VariableName: "baz",
-					Register:     "2",
+					Result:   "baz",
+					Register: "2",
 				},
 			},
 		},
@@ -127,7 +119,11 @@ func TestFunc(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,
-				&vm.File{Funcs: map[string]*vm.CompiledFunc{}}, nil)
+				&vm.File{
+					Funcs:   map[string]*vm.CompiledFunc{},
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+					Types:   map[vm.TypeRegister]*types.Type{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

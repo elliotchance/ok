@@ -55,8 +55,8 @@ func compileAssign(
 			compiledFunc.NewVariable(variableName, rr.kind)
 
 			compiledFunc.Append(&vm.Assign{
-				VariableName: vm.Register(variableName),
-				Register:     rr.result,
+				Result:   vm.Register(variableName),
+				Register: rr.result,
 			})
 
 		case *ast.Key:

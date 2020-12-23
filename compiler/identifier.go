@@ -67,12 +67,12 @@ func compileIdentifier(
 		// TODO(elliot): The compiler needs to raise an error when trying to
 		//  modify a constant.
 		literalRegister := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: literalRegister,
-			Value: &ast.Literal{
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: literalRegister,
+			Symbol: file.AddSymbolLiteral(&ast.Literal{
 				Kind:  c.Kind,
 				Value: c.Value,
-			},
+			}),
 		})
 
 		return []vm.Register{literalRegister}, []*types.Type{c.Kind}, nil
@@ -81,12 +81,12 @@ func compileIdentifier(
 	// It could also reference a package-level function.
 	if fn := file.FuncByName(e.Name); fn != nil {
 		literalRegister := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: literalRegister,
-			Value: &ast.Literal{
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: literalRegister,
+			Symbol: file.AddSymbolLiteral(&ast.Literal{
 				Kind:  fn.Type,
 				Value: fn.UniqueName,
-			},
+			}),
 		})
 
 		return []vm.Register{literalRegister}, []*types.Type{fn.Type}, nil

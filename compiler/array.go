@@ -23,9 +23,9 @@ func compileArray(
 	}
 
 	sizeRegister := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.Assign{
-		VariableName: sizeRegister,
-		Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
+	compiledFunc.Append(&vm.AssignSymbol{
+		Result: sizeRegister,
+		Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements)))),
 	})
 
 	arrayRegister := compiledFunc.NextRegister()
@@ -38,9 +38,9 @@ func compileArray(
 
 	for index, value := range n.Elements {
 		indexRegister := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: indexRegister,
-			Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", index)),
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: indexRegister,
+			Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber(fmt.Sprintf("%d", index))),
 		})
 
 		// TODO(elliot): Check all elements are the same kind.

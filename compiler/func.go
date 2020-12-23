@@ -25,7 +25,7 @@ func CompileFunc(
 	// the first thing we need to do is initialise the map. Whether we return it
 	// at the end will depend on the return type.
 	//
-	// It is important that we always use a map (even if its not returns)
+	// It is important that we always use a map (even if it's not returned)
 	// because we may need it for a subscope (closure).
 	isObject := len(fn.Returns) == 1 && fn.Returns[0].Name == fn.Name
 
@@ -61,12 +61,10 @@ func CompileFunc(
 		}
 
 		file.Funcs[fn.Func.UniqueName] = cf
-		compiled.Append(&vm.Assign{
-			VariableName: fn.Register,
-			Value: &ast.Literal{
-				Kind:  fn.Func.Type(),
-				Value: fn.Func.UniqueName,
-			},
+		compiled.Append(&vm.AssignFunc{
+			Result:     fn.Register,
+			Type:       file.AddType(fn.Func.Type()),
+			UniqueName: fn.Func.UniqueName,
 		})
 
 		compiled.Append(&vm.ParentScope{

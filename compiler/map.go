@@ -19,9 +19,9 @@ func compileMap(
 	// TODO(elliot): Maps with duplicate keys should be an error.
 
 	sizeRegister := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.Assign{
-		VariableName: sizeRegister,
-		Value:        asttest.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements))),
+	compiledFunc.Append(&vm.AssignSymbol{
+		Result: sizeRegister,
+		Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber(fmt.Sprintf("%d", len(n.Elements)))),
 	})
 
 	mapRegister := compiledFunc.NextRegister()

@@ -34,22 +34,22 @@ func TestExpr(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number3",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("4"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number4",
 				},
 				&vm.Add{
 					Left:   "1",
 					Right:  "2",
 					Result: "3",
 				},
-				&vm.Assign{
-					VariableName: "4",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "number5",
 				},
 				&vm.Multiply{
 					Left:   "3",
@@ -73,17 +73,17 @@ func TestExpr(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number5",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("4"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number4",
 				},
 				&vm.Add{
 					Left:   "2",
@@ -112,13 +112,13 @@ func TestExpr(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number5",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
 				&vm.Add{
 					Left:   "1",
@@ -136,9 +136,9 @@ func TestExpr(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number5",
 				},
 			},
 		},
@@ -151,7 +151,9 @@ func TestExpr(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

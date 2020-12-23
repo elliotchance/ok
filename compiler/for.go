@@ -63,9 +63,9 @@ func compileFor(
 		}
 
 		cursorRegister := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: cursorRegister,
-			Value:        asttest.NewLiteralNumber("0"),
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: cursorRegister,
+			Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber("0")),
 		})
 
 		conditionResults = []vm.Register{compiledFunc.NextRegister()}

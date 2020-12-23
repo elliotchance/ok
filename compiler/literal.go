@@ -9,11 +9,12 @@ import (
 func compileLiteral(
 	compiledFunc *vm.CompiledFunc,
 	e *ast.Literal,
+	file *vm.File,
 ) (vm.Register, *types.Type) {
 	returns := compiledFunc.NextRegister()
-	compiledFunc.Append(&vm.Assign{
-		VariableName: returns,
-		Value:        e,
+	compiledFunc.Append(&vm.AssignSymbol{
+		Result: returns,
+		Symbol: file.AddSymbolLiteral(e),
 	})
 
 	return returns, e.Kind

@@ -11,6 +11,8 @@ func init() {
 	gob.Register(&ArraySet{})
 	gob.Register(&Assert{})
 	gob.Register(&Assign{})
+	gob.Register(&AssignFunc{})
+	gob.Register(&AssignSymbol{})
 	gob.Register(&Call{})
 	gob.Register(&CastChar{})
 	gob.Register(&CastData{})

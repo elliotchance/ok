@@ -1,7 +1,6 @@
 package types
 
 import (
-	"regexp"
 	"strings"
 )
 
@@ -108,57 +107,10 @@ func NewFunc(args, returns []*Type) *Type {
 
 // TypeFromString decodes a syntactically-valid type from a string.
 func TypeFromString(s string) *Type {
-	s = strings.TrimSpace(s)
+	tokens := tokenize(s)
+	ty, _ := parseType(tokens, 0)
 
-	if strings.HasPrefix(s, "func") {
-		ty := &Type{
-			Kind: KindFunc,
-		}
-
-		// TODO(elliot): This is a bad solution. It doesn't work with nested
-		//  func types. For that we will need to use a mini parser.
-		parts := regexp.MustCompile(`\((.*?)\)\s*(\(?.*\)?)`).
-			FindStringSubmatch(s)
-
-		if strings.TrimSpace(parts[1]) != "" {
-			for _, a := range StringSliceMap(strings.Split(parts[1], ","), strings.TrimSpace) {
-				ty.Arguments = append(ty.Arguments, TypeFromString(a))
-			}
-		}
-
-		parts[2] = strings.Trim(parts[2], "()")
-		if strings.TrimSpace(parts[2]) != "" {
-			for _, a := range StringSliceMap(strings.Split(parts[2], ","), strings.TrimSpace) {
-				ty.Returns = append(ty.Returns, TypeFromString(a))
-			}
-		}
-
-		return ty
-	}
-
-	if strings.HasPrefix(s, "[]") {
-		return &Type{
-			Kind:    KindArray,
-			Element: TypeFromString(s[2:]),
-		}
-	}
-
-	if strings.HasPrefix(s, "{}") {
-		return &Type{
-			Kind:    KindMap,
-			Element: TypeFromString(s[2:]),
-		}
-	}
-
-	t := &Type{
-		Kind: kindFromString(s),
-	}
-
-	if t.Kind == KindUnresolvedInterface {
-		t.Name = s
-	}
-
-	return t
+	return ty
 }
 
 func NewUnresolvedInterface(name string) *Type {

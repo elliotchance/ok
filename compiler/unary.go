@@ -39,9 +39,9 @@ func compileUnary(
 		}
 
 		zeroAt := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: zeroAt,
-			Value:        asttest.NewLiteralNumber("0"),
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: zeroAt,
+			Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber("0")),
 		})
 
 		returns2 := compiledFunc.NextRegister()
@@ -56,9 +56,9 @@ func compileUnary(
 
 	case "++":
 		oneAt := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: oneAt,
-			Value:        asttest.NewLiteralNumber("1"),
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: oneAt,
+			Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber("1")),
 		})
 
 		ins = &vm.Add{
@@ -72,9 +72,9 @@ func compileUnary(
 
 	case "--":
 		oneAt := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.Assign{
-			VariableName: oneAt,
-			Value:        asttest.NewLiteralNumber("1"),
+		compiledFunc.Append(&vm.AssignSymbol{
+			Result: oneAt,
+			Symbol: file.AddSymbolLiteral(asttest.NewLiteralNumber("1")),
 		})
 
 		ins = &vm.Subtract{

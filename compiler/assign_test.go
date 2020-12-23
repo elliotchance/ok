@@ -29,13 +29,13 @@ func TestAssign(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.5",
 				},
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "1",
+					Result:   "foo",
+					Register: "1",
 				},
 			},
 		},
@@ -53,21 +53,21 @@ func TestAssign(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.5",
+				},
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3.0",
 				},
 				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3.0"),
+					Result:   "foo",
+					Register: "1",
 				},
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "1",
-				},
-				&vm.Assign{
-					VariableName: "bar",
-					Register:     "2",
+					Result:   "bar",
+					Register: "2",
 				},
 			},
 		},
@@ -96,21 +96,21 @@ func TestAssign(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.5",
 				},
 				&vm.Assign{
-					VariableName: "foo",
-					Register:     "1",
+					Result:   "foo",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1.5",
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "stringbar",
 				},
 				&vm.MapSet{
 					Map:   "foo",
@@ -122,7 +122,9 @@ func TestAssign(t *testing.T) {
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
-				&vm.File{}, nil)
+				&vm.File{
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
+				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

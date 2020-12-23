@@ -37,17 +37,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralData([]byte("foo")),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "datafoo",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralData([]byte("bar")),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "databar",
 				},
 				&vm.Combine{
 					Left:   "i",
@@ -73,17 +73,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "stringfoo",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "stringbar",
 				},
 				&vm.Concat{
 					Left:   "i",
@@ -109,17 +109,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
 				&vm.Add{
 					Left:   "i",
@@ -145,17 +145,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
 				&vm.Subtract{
 					Left:   "i",
@@ -181,17 +181,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
 				&vm.Multiply{
 					Left:   "i",
@@ -217,17 +217,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
 				&vm.Divide{
 					Left:   "i",
@@ -253,17 +253,17 @@ func TestBinary(t *testing.T) {
 				},
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "1",
+					Result:   "i",
+					Register: "1",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("3"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number3",
 				},
 				&vm.Remainder{
 					Left:   "i",
@@ -302,13 +302,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralData([]byte("foo")),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "datafoo",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralData([]byte("bar")),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "databar",
 				},
 				&vm.Combine{
 					Left:   "1",
@@ -326,13 +326,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.20"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.20",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number5",
 				},
 				&vm.Add{
 					Left:   "1",
@@ -350,13 +350,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "stringfoo",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "stringbar",
 				},
 				&vm.Concat{
 					Left:   "1",
@@ -374,13 +374,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.20"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.20",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number5",
 				},
 				&vm.Subtract{
 					Left:   "1",
@@ -398,13 +398,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.20"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.20",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number5",
 				},
 				&vm.Multiply{
 					Left:   "1",
@@ -422,13 +422,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.20"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.20",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number5",
 				},
 				&vm.Divide{
 					Left:   "1",
@@ -446,13 +446,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("5"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number5",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1.20"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1.20",
 				},
 				&vm.Remainder{
 					Left:   "1",
@@ -501,13 +501,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -525,13 +525,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralChar('a'),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "chara",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralChar('B'),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "charB",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -549,13 +549,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralData([]byte("a")),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "dataa",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralData([]byte("B")),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "dataB",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -573,13 +573,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.EqualNumber{
 					Left:   "1",
@@ -597,13 +597,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "stringfoo",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "stringbar",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -621,13 +621,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -645,13 +645,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralChar('a'),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "chara",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralChar('B'),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "charB",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -669,13 +669,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralData([]byte("a")),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "dataa",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralData([]byte("B")),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "dataB",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -693,13 +693,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.NotEqualNumber{
 					Left:   "1",
@@ -717,13 +717,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("foo"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "stringfoo",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("bar"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "stringbar",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -741,13 +741,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.GreaterThanNumber{
 					Left:   "1",
@@ -765,13 +765,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.GreaterThanEqualNumber{
 					Left:   "1",
@@ -789,13 +789,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.LessThanNumber{
 					Left:   "1",
@@ -813,13 +813,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1",
 				},
 				&vm.LessThanEqualNumber{
 					Left:   "1",
@@ -837,13 +837,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "string1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "string1",
 				},
 				&vm.GreaterThanString{
 					Left:   "1",
@@ -861,13 +861,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "string1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "string1",
 				},
 				&vm.GreaterThanEqualString{
 					Left:   "1",
@@ -885,13 +885,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "string1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "string1",
 				},
 				&vm.LessThanString{
 					Left:   "1",
@@ -909,13 +909,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("1.0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "string1.0",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralString("1"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "string1",
 				},
 				&vm.LessThanEqualString{
 					Left:   "1",
@@ -934,17 +934,17 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralString("total is"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "stringtotal is",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralNumber("1.5"),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "number1.5",
 				},
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("0.8"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number0.8",
 				},
 				&vm.Add{
 					Left:   "2",
@@ -962,13 +962,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.And{
 					Left:   "1",
@@ -986,13 +986,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(false),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "boolfalse",
 				},
 				&vm.And{
 					Left:   "1",
@@ -1010,13 +1010,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "booltrue",
 				},
 				&vm.Or{
 					Left:   "1",
@@ -1034,13 +1034,13 @@ func TestBinary(t *testing.T) {
 				),
 			},
 			expected: []vm.Instruction{
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralBool(true),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "booltrue",
 				},
-				&vm.Assign{
-					VariableName: "2",
-					Value:        asttest.NewLiteralBool(false),
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "boolfalse",
 				},
 				&vm.Or{
 					Left:   "1",
@@ -1088,9 +1088,9 @@ func TestBinary(t *testing.T) {
 			},
 			expected: []vm.Instruction{
 				// first array
-				&vm.Assign{
-					VariableName: "1",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "number0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
@@ -1098,14 +1098,14 @@ func TestBinary(t *testing.T) {
 					Kind:   "[]number",
 				},
 				&vm.Assign{
-					VariableName: "i",
-					Register:     "2",
+					Result:   "i",
+					Register: "2",
 				},
 
 				// second array
-				&vm.Assign{
-					VariableName: "3",
-					Value:        asttest.NewLiteralNumber("0"),
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "number0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "3",
@@ -1125,7 +1125,8 @@ func TestBinary(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
-					Types: map[vm.TypeRegister]*types.Type{},
+					Types:   map[vm.TypeRegister]*types.Type{},
+					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 				}, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
