@@ -120,7 +120,6 @@ func TestFunc(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,
 				&vm.File{
-					Funcs:   map[string]*vm.CompiledFunc{},
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 					Types:   map[vm.TypeRegister]*types.Type{},
 				}, nil)

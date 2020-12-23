@@ -7,6 +7,7 @@ import (
 
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/util"
+	"github.com/elliotchance/ok/vm"
 )
 
 type Command struct{}
@@ -44,9 +45,11 @@ func (*Command) Run(args []string) {
 	// Create a map as a function may match more than one glob.
 	funcsToPrint := map[string]struct{}{}
 	for _, glob := range args[1:] {
-		for _, fn := range pkg.Funcs {
-			if util.MatchesGlob(fn.UniqueName, glob) || util.MatchesGlob(fn.Name, glob) {
-				funcsToPrint[fn.UniqueName] = struct{}{}
+		for _, fn := range pkg.Symbols {
+			if fn.Func != nil &&
+				(util.MatchesGlob(fn.Func.UniqueName, glob) ||
+					util.MatchesGlob(fn.Func.Name, glob)) {
+				funcsToPrint[fn.Func.UniqueName] = struct{}{}
 			}
 		}
 	}
@@ -65,18 +68,18 @@ func (*Command) Run(args []string) {
 			fmt.Println()
 		}
 
-		fn := pkg.Funcs[fnName]
+		fn := pkg.Symbols[vm.SymbolRegister(fnName)]
 		if fn == nil {
 			// TODO(elliot): This could be handled more gracefully.
 			panic("no such function: " + fnName)
 		}
 
-		if fn.Name != "" {
-			fmt.Printf("%s: ", fn.Name)
+		if fn.Func.Name != "" {
+			fmt.Printf("%s: ", fn.Func.Name)
 		}
-		fmt.Println(fn.UniqueName+":", fn.Type.String()+":")
+		fmt.Println(fn.Func.UniqueName+":", fn.Type+":")
 
-		for i, ins := range fn.Instructions {
+		for i, ins := range fn.Func.Instructions {
 			ty := fmt.Sprintf("%T", ins)[4:]
 
 			// "-22" is chosen here because is is the longer instruction name.

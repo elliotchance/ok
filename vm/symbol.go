@@ -9,21 +9,12 @@ import (
 type Symbol struct {
 	Type  string
 	Value string
+	Func  *CompiledFunc
 }
 
 func (s *Symbol) Literal() *ast.Literal {
-	ty := types.TypeFromString(s.Type)
-	//if ty.Kind == types.KindMap ||
-	//	ty.Kind == types.KindResolvedInterface ||
-	//	ty.Kind == types.KindUnresolvedInterface {
-	//	return &ast.Literal{
-	//		Kind: ty,
-	//		Map:  map[string]*ast.Literal{},
-	//	}
-	//}
-
 	return &ast.Literal{
-		Kind:  ty,
+		Kind:  types.TypeFromString(s.Type),
 		Value: s.Value,
 	}
 }
