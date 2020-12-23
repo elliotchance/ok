@@ -129,7 +129,7 @@ func TestAssign(t *testing.T) {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
 				require.NoError(t, err)
-				assert.Equal(t, test.expected, compiledFunc.Instructions)
+				assert.Equal(t, test.expected, compiledFunc.Instructions.Instructions)
 			}
 		})
 	}

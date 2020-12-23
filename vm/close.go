@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"os"
 )
 
 // Close closes a file handle.
@@ -12,7 +11,7 @@ type Close struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Close) Execute(_ *int, vm *VM) error {
-	f := vm.Get(ins.Fd).File.(*os.File)
+	f := vm.Get(ins.Fd).File
 	err := f.Close()
 	if err != nil {
 		vm.Raise(err.Error())

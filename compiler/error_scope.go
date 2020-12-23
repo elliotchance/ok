@@ -63,14 +63,14 @@ func compileErrorScope(
 
 	// Correct the jump after the error has been handled. The "-1" is to
 	// correct for the "+1" that would happen after every instruction.
-	done.To = len(compiledFunc.Instructions) - 1
+	done.To = len(compiledFunc.Instructions.Instructions) - 1
 
 	// The optional finally clause exists as unrelated code after all the
 	// clauses. On success the finally will run here, otherwise the block was
 	// activated as soon as the try was entered and the VM will ensure it is run
 	// before any return.
 	if n.Finally != nil {
-		beforeLen := len(compiledFunc.Instructions)
+		beforeLen := len(compiledFunc.Instructions.Instructions)
 
 		compiledFunc.Append(&vm.Finally{
 			Index: n.Finally.Index,
@@ -84,8 +84,9 @@ func compileErrorScope(
 			return err
 		}
 
-		finallyInstructions := compiledFunc.Instructions[beforeLen:]
-		compiledFunc.Finally = append(compiledFunc.Finally, finallyInstructions)
+		finallyInstructions := compiledFunc.Instructions.Instructions[beforeLen:]
+		compiledFunc.Finally = append(compiledFunc.Finally,
+			vm.NewInstructions(finallyInstructions...))
 	}
 
 	return nil

@@ -53,7 +53,7 @@ func CompileFunc(
 	// Now we have finished compiling this scope (and so have discovered and
 	// resolved the type of all variables) we can no compile all the deferred
 	// function literals that might reference variables in this scope.
-	instructions := len(compiled.Instructions)
+	instructions := len(compiled.Instructions.Instructions)
 	for _, fn := range compiled.DeferredFuncsToCompile {
 		cf, err := CompileFunc(fn.Func, file, compiled)
 		if err != nil {
@@ -79,9 +79,9 @@ func CompileFunc(
 	// However... the instructions that were just appended to this scope need to
 	// be hoisted to the top otherwise the variables containing the function
 	// literals will be missing until the end.
-	compiled.Instructions = append(
-		compiled.Instructions[instructions:],
-		compiled.Instructions[:instructions]...)
+	compiled.Instructions.Instructions = append(
+		compiled.Instructions.Instructions[instructions:],
+		compiled.Instructions.Instructions[:instructions]...)
 
 	return compiled, nil
 }

@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"io"
-	"os"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
@@ -24,7 +23,7 @@ func (ins *ReadData) Execute(_ *int, vm *VM) error {
 
 	size := number.Int64(number.NewNumber(vm.Get(ins.Size).Value))
 	buf := make([]byte, size)
-	n, err := f.Reader.(*bufio.Reader).Read(buf)
+	n, err := f.Reader.Read(buf)
 	if err != nil && err != io.EOF {
 		vm.Raise(err.Error())
 		return nil
@@ -48,7 +47,7 @@ type ReadString struct {
 
 func initReader(fd *ast.Literal) {
 	if fd.Reader == nil {
-		fd.Reader = bufio.NewReader(fd.File.(*os.File))
+		fd.Reader = bufio.NewReader(fd.File)
 	}
 }
 
@@ -62,7 +61,7 @@ func (ins *ReadString) Execute(_ *int, vm *VM) error {
 	buf := make([]rune, size)
 	charsRead := int64(0)
 	for ; charsRead < size; charsRead++ {
-		ch, _, err := f.Reader.(*bufio.Reader).ReadRune()
+		ch, _, err := f.Reader.ReadRune()
 		if err == io.EOF {
 			break
 		}

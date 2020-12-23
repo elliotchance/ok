@@ -2,7 +2,6 @@ package vm
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/elliotchance/ok/ast/asttest"
@@ -17,7 +16,7 @@ type Seek struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Seek) Execute(_ *int, vm *VM) error {
-	f := vm.Get(ins.Fd).File.(*os.File)
+	f := vm.Get(ins.Fd).File
 	offset := number.Int64(number.NewNumber(vm.Get(ins.Offset).Value))
 	whence := number.Int(number.NewNumber(vm.Get(ins.Whence).Value))
 	pos, err := f.Seek(offset, whence)

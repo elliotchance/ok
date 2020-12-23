@@ -116,7 +116,7 @@ func compileFor(
 
 	// "-2" because we need to jump before the previous instruction + we
 	// need to offset the +1 that will always occur after an instruction.
-	conditionPosition := len(compiledFunc.Instructions) - 2
+	conditionPosition := len(compiledFunc.Instructions.Instructions) - 2
 
 	ins := &vm.JumpUnless{
 		Condition: conditionResults[0],
@@ -142,7 +142,7 @@ func compileFor(
 		// Since there is a Next we need the continue to jump to the end of the
 		// iteration where the Next is before it jumps back to the start of the
 		// next iteration.
-		continueIns.To = len(compiledFunc.Instructions) - 1
+		continueIns.To = len(compiledFunc.Instructions.Instructions) - 1
 
 		_, _, err := compileExpr(compiledFunc, n.Next, file, scopeOverrides)
 		if err != nil {
@@ -161,10 +161,10 @@ func compileFor(
 
 	// Correct condition jump. The "-1" is to correct for the "+1" that would
 	// happen after every instruction.
-	ins.To = len(compiledFunc.Instructions) - 1
+	ins.To = len(compiledFunc.Instructions.Instructions) - 1
 
 	// Correct the break instruction.
-	breakIns.To = len(compiledFunc.Instructions) - 1
+	breakIns.To = len(compiledFunc.Instructions.Instructions) - 1
 
 	return nil
 }
