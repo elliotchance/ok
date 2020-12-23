@@ -60,7 +60,11 @@ func CompileFunc(
 			return nil, err
 		}
 
-		file.Funcs[fn.Func.UniqueName] = cf
+		if fn.Func.UniqueName != cf.UniqueName {
+			panic("damn")
+		}
+		file.AddSymbolFunc(cf)
+
 		compiled.Append(&vm.AssignFunc{
 			Result:     fn.Register,
 			Type:       file.AddType(fn.Func.Type()),

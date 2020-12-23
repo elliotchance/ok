@@ -415,16 +415,16 @@ func (vm *VM) LoadPackage(pkgVariable, packageName string) error {
 }
 
 func (vm *VM) LoadFile(pkgVariable string, file *File) error {
-	for k, v := range file.Funcs {
-		vm.fns[k] = v
-	}
-
 	for k, v := range file.Types {
 		vm.Types[k] = v
 	}
 
 	for k, v := range file.Symbols {
-		vm.Symbols[k] = v.Literal()
+		if v.Func != nil {
+			vm.fns[v.Func.UniqueName] = v.Func
+		} else {
+			vm.Symbols[k] = v.Literal()
+		}
 	}
 
 	vm.tests = append(vm.tests, file.Tests...)

@@ -14,7 +14,6 @@ type File struct {
 	// Imports lists all the packages that this package relies on.
 	Imports map[string]*types.Type
 
-	Funcs map[string]*CompiledFunc
 	Tests []*CompiledTest
 
 	// Constants contains the package-level constants. These would also appear
@@ -41,9 +40,9 @@ type File struct {
 }
 
 func (f *File) FuncByName(name string) *CompiledFunc {
-	for _, fn := range f.Funcs {
-		if fn.Name == name {
-			return fn
+	for _, fn := range f.Symbols {
+		if fn.Func != nil && fn.Func.Name == name {
+			return fn.Func
 		}
 	}
 
@@ -131,4 +130,11 @@ func (f *File) AddSymbolLiteral(lit *ast.Literal) SymbolRegister {
 	}
 
 	return key
+}
+
+func (f *File) AddSymbolFunc(fn *CompiledFunc) {
+	f.Symbols[SymbolRegister(fn.UniqueName)] = &Symbol{
+		Type: fn.Type.String(),
+		Func: fn,
+	}
 }

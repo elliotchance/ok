@@ -13,7 +13,6 @@ func compile(
 	imports map[string]*types.Type,
 ) (*vm.File, error) {
 	file := &vm.File{
-		Funcs:     map[string]*vm.CompiledFunc{},
 		Constants: constants,
 		Imports:   imports,
 		Types:     map[vm.TypeRegister]*types.Type{},
@@ -21,11 +20,11 @@ func compile(
 	}
 
 	for _, fn := range funcs {
-		file.Funcs[fn.UniqueName] = &vm.CompiledFunc{
+		file.AddSymbolFunc(&vm.CompiledFunc{
 			Type:       fn.Type(),
 			Name:       fn.Name,
 			UniqueName: fn.UniqueName,
-		}
+		})
 	}
 
 	for _, fn := range funcs {
@@ -34,7 +33,7 @@ func compile(
 			return nil, err
 		}
 
-		file.Funcs[fn.UniqueName] = compiledFn
+		file.AddSymbolFunc(compiledFn)
 	}
 
 	for _, fn := range tests {

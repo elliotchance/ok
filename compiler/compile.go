@@ -78,7 +78,6 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 	packageAlias := strings.ReplaceAll(packageName, "/", "__")
 
 	file := &vm.File{
-		Funcs:     map[string]*vm.CompiledFunc{},
 		Constants: p.Constants,
 		Imports:   imports,
 		Types:     map[vm.TypeRegister]*types.Type{},
@@ -86,11 +85,11 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 	}
 
 	for _, fn := range funcs {
-		file.Funcs[fn.UniqueName] = &vm.CompiledFunc{
+		file.AddSymbolFunc(&vm.CompiledFunc{
 			Type:       fn.Type(),
 			Name:       fn.Name,
 			UniqueName: fn.UniqueName,
-		}
+		})
 	}
 
 	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), file, nil)
