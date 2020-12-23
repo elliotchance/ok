@@ -13,9 +13,9 @@ import (
 // File is the root structure that will be serialized into the okc file.
 type File struct {
 	// Imports lists all the packages that this package relies on.
-	Imports map[string]*types.Type
+	Imports map[string]*types.Type `json:",omitempty"`
 
-	Tests []*CompiledTest
+	Tests []*CompiledTest `json:",omitempty"`
 
 	// Constants contains the package-level constants. These would also appear
 	// as values within PackageFunc, however it's not trivial for the compiler
@@ -28,16 +28,16 @@ type File struct {
 	// the compiler starts supporting simplifying expressions at compile time.
 	//
 	// Constants can only be scalars and all scalars.
-	Constants map[string]*ast.Literal
+	Constants map[string]*ast.Literal `json:",omitempty"`
 
-	PackageFunc *CompiledFunc
+	PackageFunc *CompiledFunc `json:",omitempty"`
 
 	// Types contains the type descriptions that can be referenced by some
 	// instructions at runtime.
-	Types map[TypeRegister]*types.Type
+	Types map[TypeRegister]*types.Type `json:",omitempty"`
 
 	// Symbols contains literal values that can be referenced by instructions.
-	Symbols map[SymbolRegister]*Symbol
+	Symbols map[SymbolRegister]*Symbol `json:",omitempty"`
 }
 
 func (f *File) FuncByName(name string) *CompiledFunc {
@@ -110,7 +110,7 @@ func (f *File) AddType(kind *types.Type) TypeRegister {
 	}
 
 	// TODO(elliot): Dedup types here.
-	key := TypeRegister(kind.String())
+	key := TypeRegister(strings.ReplaceAll(kind.String(), " ", "-"))
 	f.Types[key] = kind
 
 	return key
@@ -120,14 +120,9 @@ func (f *File) AddSymbolLiteral(lit *ast.Literal) SymbolRegister {
 	// TODO(elliot): Dedup symbols here.
 	// TODO(elliot): Remove the newline replace. This is just so the value
 	//  doesn't cause libgen to produce mangled code.
-	key := SymbolRegister(strings.ReplaceAll(lit.Kind.String()+lit.Value, "\n", "\\n"))
-
-	// TODO(elliot): This is a nasty hack to get around some rounding that's
-	//  happening at ultra high precisions, like the constants in the math
-	//  library. Remove this code to see the failure.
-	//if lit.Kind.Kind == types.KindNumber && len(key) > 20 {
-	//	key = key[:20]
-	//}
+	key := SymbolRegister(strings.ReplaceAll(
+		strings.ReplaceAll(lit.Kind.String()+lit.Value, "\n", "\\n"),
+		" ", "~~~"))
 
 	f.Symbols[key] = &Symbol{
 		Type:  lit.Kind.String(),

@@ -8,8 +8,8 @@ import (
 // A Symbol contains a literal value that can be referenced by instructions.
 type Symbol struct {
 	Type  string
-	Value string
-	Func  *CompiledFunc
+	Value string        `json:",omitempty"`
+	Func  *CompiledFunc `json:",omitempty"`
 }
 
 func (s *Symbol) Literal() *ast.Literal {

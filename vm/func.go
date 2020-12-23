@@ -8,21 +8,21 @@ import (
 )
 
 type CompiledFunc struct {
-	Arguments    []string
-	Instructions *Instructions
+	Arguments    []string      `json:",omitempty"`
+	Instructions *Instructions `json:",omitempty"`
 	Registers    int
 	variables    map[string]*types.Type // name: type
-	Finally      []*Instructions
+	Finally      []*Instructions        `json:",omitempty"`
 
 	// These are copied from the function definition.
 	// Name and Pos are used by the VM for stack traces.
-	Type                  *types.Type
-	Name, UniqueName, Pos string
+	Type                  *types.Type `json:",omitempty"`
+	Name, UniqueName, Pos string      `json:",omitempty"`
 
 	// These are only transient for the compiler, they will be nil when
 	// serialized.
-	Parent                 *CompiledFunc
-	DeferredFuncsToCompile []DeferredFunc
+	Parent                 *CompiledFunc  `json:",omitempty"`
+	DeferredFuncsToCompile []DeferredFunc `json:",omitempty"`
 }
 
 func NewCompiledFunc(fn *ast.Func, parentFunc *CompiledFunc) *CompiledFunc {

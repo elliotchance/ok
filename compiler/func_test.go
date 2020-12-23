@@ -71,7 +71,7 @@ func TestFunc(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignFunc{
 					Result:     "2",
-					Type:       "func() number",
+					Type:       "func()-number",
 					UniqueName: "2",
 				},
 				&vm.ParentScope{
@@ -88,7 +88,7 @@ func TestFunc(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignFunc{
 					Result:     "1",
-					Type:       "func() number",
+					Type:       "func()-number",
 					UniqueName: "2",
 				},
 				&vm.ParentScope{
