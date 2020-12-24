@@ -1,6 +1,8 @@
 package compiler
 
 import (
+	"strings"
+
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
@@ -39,16 +41,31 @@ func compileErrorScope(
 
 	// Each of the On clauses.
 	for _, on := range n.On {
-		typeRegister := file.AddType(on.Type)
+		// TODO(elliot): Check that the type is actually an interface.
+		// TODO(elliot): Handle missing/invalid types more gracefully.
+
+		parts := strings.Split(on.Type, ".")
+		var typeRegister string
+		if len(parts) == 2 {
+			interfaceType := compiledFunc.Constants[parts[0]].Kind.Properties[parts[1]].Returns[0]
+			typeRegister, err = file.Types.Add(interfaceType)
+		} else {
+			typeRegister, err = file.Types.Add(compiledFunc.Constants[on.Type].Kind.Returns[0])
+		}
+
+		if err != nil {
+			panic(err)
+		}
+
 		compiledFunc.Append(&vm.On{
-			Type: typeRegister,
+			Type: vm.TypeRegister(typeRegister),
 		})
 
 		// Provide the err variable. The runtime value will be provided by the
 		// On instruction above.
-		compiledFunc.NewVariable("err", on.Type)
+		compiledFunc.NewVariable("err", file.Types.Get(typeRegister))
 
-		err := compileBlock(compiledFunc, on.Statements, nil,
+		err = compileBlock(compiledFunc, on.Statements, nil,
 			nil, file, scopeOverrides)
 		if err != nil {
 			return err
@@ -59,7 +76,17 @@ func compileErrorScope(
 
 	// An On with an empty Type signals to a VM trying to recover from an error
 	// that there is no handler. It will pass the error up to the caller.
-	compiledFunc.Append(&vm.On{Type: vm.NoTypeRegister})
+	anyRegister, err := file.Types.Add(types.Any)
+	if err != nil {
+		return err
+	}
+	compiledFunc.Append(&vm.On{
+		Finished: true,
+
+		// This isn't actually used when Finished - true, but we must provide a
+		// valid type for all TypeRegisters.
+		Type: vm.TypeRegister(anyRegister),
+	})
 
 	// Correct the jump after the error has been handled. The "-1" is to
 	// correct for the "+1" that would happen after every instruction.

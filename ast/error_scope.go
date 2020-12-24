@@ -1,11 +1,9 @@
 package ast
 
-import "github.com/elliotchance/ok/types"
-
 // On a error handler for an ErrorScope.
 type On struct {
-	// Type is the type name, like "MyError".
-	Type *types.Type
+	// Type is the type name, like "MyError" or "error.Error".
+	Type string
 
 	// Statement may be nil.
 	Statements []Node

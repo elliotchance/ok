@@ -49,7 +49,6 @@ func compileExpr(
 			return nil, nil, err
 		}
 
-		// TODO(elliot): Doesn't return kind.
 		return results, resultKinds, nil
 
 	case *ast.Identifier:

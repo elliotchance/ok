@@ -38,12 +38,7 @@ type AssignSymbol struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *AssignSymbol) Execute(_ *int, vm *VM) error {
-	//fmt.Println("assign", ins.Result, ins.Symbol, vm.Symbols)
 	symbol := vm.Symbols[ins.Symbol]
-	if symbol == nil {
-		fmt.Println(vm.Symbols)
-		panic(ins.Symbol)
-	}
 	vm.Set(ins.Result, symbol)
 
 	return nil

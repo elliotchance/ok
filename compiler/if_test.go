@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -39,7 +40,7 @@ func TestIf(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -47,7 +48,7 @@ func TestIf(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -95,7 +96,7 @@ func TestIf(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -103,7 +104,7 @@ func TestIf(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -116,7 +117,7 @@ func TestIf(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -124,7 +125,7 @@ func TestIf(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.Add{
 					Left:   "a",
@@ -171,7 +172,7 @@ func TestIf(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -181,7 +182,7 @@ func TestIf(t *testing.T) {
 				// if a == 3
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -196,7 +197,7 @@ func TestIf(t *testing.T) {
 				// a = 1
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -209,7 +210,7 @@ func TestIf(t *testing.T) {
 				// ++a
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.Add{
 					Left:   "a",
@@ -239,7 +240,7 @@ func TestIf(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -247,7 +248,7 @@ func TestIf(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringnumber",
+					Symbol: "1",
 				},
 				&vm.Is{
 					Value:  "a",
@@ -265,7 +266,8 @@ func TestIf(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

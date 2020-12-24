@@ -6,6 +6,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -31,7 +32,7 @@ func TestAssign(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.5",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -55,11 +56,11 @@ func TestAssign(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.5",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3.0",
+					Symbol: "1",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -98,7 +99,7 @@ func TestAssign(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.5",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -106,11 +107,11 @@ func TestAssign(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1.5",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringbar",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "foo",
@@ -124,7 +125,8 @@ func TestAssign(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

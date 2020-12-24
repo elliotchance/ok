@@ -7,17 +7,20 @@ import (
 
 // A Symbol contains a literal value that can be referenced by instructions.
 type Symbol struct {
-	Type  string
+	Type TypeRegister
+
+	// Value can only be used when Func is nil.
 	Value string `json:",omitempty"`
 
+	Func *CompiledFunc `json:",omitempty"`
+
 	// Interface will only be set when Func is provided.
-	Interface string        `json:",omitempty"`
-	Func      *CompiledFunc `json:",omitempty"`
+	Interface string `json:",omitempty"`
 }
 
-func (s *Symbol) Literal() *ast.Literal {
+func (s *Symbol) Literal(registry types.Registry) *ast.Literal {
 	return &ast.Literal{
-		Kind:  types.TypeFromString(s.Type),
+		Kind:  registry.Get(string(s.Type)),
 		Value: s.Value,
 	}
 }

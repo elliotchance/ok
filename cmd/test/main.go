@@ -51,12 +51,14 @@ func (c *Command) Run(args []string) {
 		if arg == "." {
 			packageName = "."
 		}
-		f, errs := compiler.Compile(okPath, packageName, true, time.Now().Nanosecond())
+		anonFunctionName := 0
+		f, _, errs := compiler.Compile(okPath, packageName, true,
+			&anonFunctionName, false)
 		util.CheckErrorsWithExit(errs)
 
 		m := vm.NewVM("no-package")
 		startTime := time.Now()
-		check(m.LoadFile("", f))
+		check(m.LoadFile(f))
 		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter))
 		elapsed := time.Since(startTime).Milliseconds()
 		check(err)

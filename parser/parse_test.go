@@ -19,7 +19,7 @@ func TestParser_Funcs(t *testing.T) {
 		require.Nil(t, p.Errors())
 
 		asttest.AssertEqual(t, map[string]*ast.Func{
-			"main": {
+			"1": {
 				Name: "main",
 				Pos:  "a.ok:1:1",
 			},
@@ -33,11 +33,11 @@ func TestParser_Funcs(t *testing.T) {
 		require.Nil(t, p.Errors())
 
 		asttest.AssertEqual(t, map[string]*ast.Func{
-			"main": {
+			"1": {
 				Name: "main",
 				Pos:  "a.ok:1:1",
 			},
-			"foo": {
+			"2": {
 				Name: "foo",
 				Pos:  "a.ok:1:1",
 			},
@@ -53,7 +53,7 @@ func TestParser_Funcs(t *testing.T) {
 			Kind:      types.KindFunc,
 			Arguments: []*types.Type{types.Number, types.Number},
 			Returns:   []*types.Type{types.String},
-		}, p.Funcs()["main"].Type())
+		}, p.Funcs()["1"].Type())
 	})
 
 	t.Run("constructor function", func(t *testing.T) {
@@ -87,55 +87,7 @@ func Person(Foo, bar, Baz number) Person {
 					},
 				},
 			},
-		}, p.Funcs()["Person"].Type())
-	})
-
-	t.Run("resolve interfaces in return types", func(t *testing.T) {
-		p := parser.NewParser(0)
-		p.ParseString(`
-func Person(Foo, Bar number) Person { }
-func getPerson() (number, Person) { }
-`, "a.ok")
-		require.Nil(t, p.Errors())
-
-		assert.Equal(t, &types.Type{
-			Kind: types.KindFunc,
-			Returns: []*types.Type{
-				types.Number,
-				{
-					Kind: types.KindResolvedInterface,
-					Name: "Person",
-					Properties: map[string]*types.Type{
-						"Foo": {Kind: types.KindNumber},
-						"Bar": {Kind: types.KindNumber},
-					},
-				},
-			},
-		}, p.Funcs()["getPerson"].Type())
-	})
-
-	t.Run("resolve interfaces in arguments", func(t *testing.T) {
-		p := parser.NewParser(0)
-		p.ParseString(`
-func Person(Foo, Bar number) Person { }
-func greetPerson(p Person, n number) { }
-`, "a.ok")
-		require.Nil(t, p.Errors())
-
-		assert.Equal(t, &types.Type{
-			Kind: types.KindFunc,
-			Arguments: []*types.Type{
-				{
-					Kind: types.KindResolvedInterface,
-					Name: "Person",
-					Properties: map[string]*types.Type{
-						"Foo": {Kind: types.KindNumber},
-						"Bar": {Kind: types.KindNumber},
-					},
-				},
-				types.Number,
-			},
-		}, p.Funcs()["greetPerson"].Type())
+		}, p.Funcs()["1"].Type())
 	})
 }
 
@@ -354,7 +306,7 @@ func TestParser_ParseString(t *testing.T) {
 				asttest.AssertEqual(t, map[string]*ast.Func{}, p.Funcs())
 			} else {
 				asttest.AssertEqual(t, map[string]*ast.Func{
-					"main": test.expected,
+					"1": test.expected,
 				}, p.Funcs())
 			}
 			assert.Equal(t, test.comments, p.Comments())

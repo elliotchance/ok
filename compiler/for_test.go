@@ -40,22 +40,22 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// set 2 elements
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1.5",
+					Symbol: "2",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -64,11 +64,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number2.3",
+					Symbol: "4",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -85,7 +85,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number0",
+					Symbol: "5",
 				},
 				&vm.NextArray{
 					Array:       "foo",
@@ -125,22 +125,22 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// set 2 elements
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1.5",
+					Symbol: "2",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -149,11 +149,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number2.3",
+					Symbol: "4",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -170,7 +170,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number0",
+					Symbol: "5",
 				},
 				&vm.NextArray{
 					Array:       "foo",
@@ -209,10 +209,10 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -220,11 +220,11 @@ func TestFor(t *testing.T) {
 				// set 2 elements
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringbar",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number2.3",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -233,11 +233,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "stringfoo",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number1.5",
+					Symbol: "4",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -254,7 +254,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number0",
+					Symbol: "5",
 				},
 				&vm.NextMap{
 					Map:         "foo",
@@ -294,10 +294,10 @@ func TestFor(t *testing.T) {
 				// alloc array
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -305,11 +305,11 @@ func TestFor(t *testing.T) {
 				// set 2 elements
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringbar",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number2.3",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -318,11 +318,11 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "stringfoo",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number1.5",
+					Symbol: "4",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -339,7 +339,7 @@ func TestFor(t *testing.T) {
 				// for in
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number0",
+					Symbol: "5",
 				},
 				&vm.NextMap{
 					Map:         "foo",
@@ -391,7 +391,7 @@ func TestFor(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -401,7 +401,7 @@ func TestFor(t *testing.T) {
 				// a < 10
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number10",
+					Symbol: "1",
 				},
 				&vm.LessThanNumber{
 					Left:   "a",
@@ -421,7 +421,7 @@ func TestFor(t *testing.T) {
 				// ++a
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Add{
 					Left:   "a",
@@ -462,7 +462,7 @@ func TestFor(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -472,7 +472,7 @@ func TestFor(t *testing.T) {
 				// a < 10
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number10",
+					Symbol: "1",
 				},
 				&vm.LessThanNumber{
 					Left:   "a",
@@ -492,7 +492,7 @@ func TestFor(t *testing.T) {
 				// ++a
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Add{
 					Left:   "a",
@@ -511,7 +511,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.JumpUnless{
 					Condition: "1",
@@ -564,7 +564,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -572,7 +572,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.JumpUnless{
 					Condition: "2",
@@ -580,7 +580,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number2",
+					Symbol: "2",
 				},
 				&vm.Assign{
 					Result:   "bar",
@@ -588,7 +588,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number3",
+					Symbol: "3",
 				},
 				&vm.Assign{
 					Result:   "baz",
@@ -599,7 +599,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number4",
+					Symbol: "4",
 				},
 				&vm.Assign{
 					Result:   "qux",
@@ -642,7 +642,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -650,7 +650,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number10",
+					Symbol: "1",
 				},
 				&vm.LessThanNumber{
 					Left:   "i",
@@ -663,7 +663,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Add{
 					Left:   "i",
@@ -722,7 +722,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -730,7 +730,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.JumpUnless{
 					Condition: "2",
@@ -738,7 +738,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -749,7 +749,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number2",
+					Symbol: "3",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -760,7 +760,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number3",
+					Symbol: "4",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -811,7 +811,7 @@ func TestFor(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -819,7 +819,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.JumpUnless{
 					Condition: "2",
@@ -827,7 +827,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -838,7 +838,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number2",
+					Symbol: "3",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -849,7 +849,7 @@ func TestFor(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number3",
+					Symbol: "4",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -861,9 +861,9 @@ func TestFor(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
-					Types:   map[vm.TypeRegister]*types.Type{},
+					Types:   types.Registry{},
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

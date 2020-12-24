@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -36,7 +37,7 @@ func TestUnary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -44,7 +45,7 @@ func TestUnary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.Add{
 					Left:   "i",
@@ -71,7 +72,7 @@ func TestUnary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -79,7 +80,7 @@ func TestUnary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.Subtract{
 					Left:   "i",
@@ -98,7 +99,7 @@ func TestUnary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.Not{
 					Left:   "1",
@@ -116,7 +117,7 @@ func TestUnary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "boolfalse",
+					Symbol: "0",
 				},
 				&vm.Not{
 					Left:   "1",
@@ -129,7 +130,8 @@ func TestUnary(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

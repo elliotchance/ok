@@ -2,21 +2,16 @@ package parser
 
 import (
 	"io/ioutil"
+	"os"
 
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/fs"
 	"github.com/elliotchance/ok/lexer"
 )
 
 // ParseString parses source code from a string. The fileName is used in error
 // messages, the file does not have to exist.
 func (parser *Parser) ParseString(s string, fileName string) {
-	defer func() {
-		err := parser.resolveInterfaces()
-		if err != nil {
-			parser.appendErrorAt("", err.Error())
-		}
-	}()
-
 	var err error
 	options := lexer.Options{
 		IncludeComments: false,
@@ -62,11 +57,6 @@ func (parser *Parser) ParseString(s string, fileName string) {
 
 				goto done
 			}
-
-			// TODO(elliot): Remove this. We need to index by real name for
-			//  resolving types. But this also means that types can't exist
-			//  beyond the root level.
-			parser.funcs[fn.Name] = fn
 
 			parser.funcs[fn.UniqueName] = fn
 
@@ -128,7 +118,13 @@ func consume(p *Parser, offset int, expected []string) (int, error) {
 // ParseFile will read and parse the file. If the file cannot be read the error
 // will be appended to the parser errors.
 func (parser *Parser) ParseFile(fileName string) {
-	data, err := ioutil.ReadFile(fileName)
+	f, err := fs.Filesystem.OpenFile(fileName, os.O_RDONLY, 0777)
+	if err != nil {
+		parser.appendError(nil, err.Error())
+		return
+	}
+
+	data, err := ioutil.ReadAll(f)
 	if err != nil {
 		parser.appendError(nil, err.Error())
 		return

@@ -27,7 +27,8 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: vm.NoTypeRegister,
+					Finished: true,
+					Type:     "1",
 				},
 			},
 		},
@@ -48,7 +49,8 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: vm.NoTypeRegister,
+					Finished: true,
+					Type:     "1",
 				},
 			},
 		},
@@ -62,7 +64,7 @@ func TestErrorScope(t *testing.T) {
 					},
 					On: []*ast.On{
 						{
-							Type: types.NewInterface("SomeError", nil),
+							Type: "SomeError",
 						},
 					},
 				},
@@ -74,14 +76,15 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "SomeError",
+					Type: "1",
 				},
 				&vm.Jump{
 					To: 4,
 				},
 
 				&vm.On{
-					Type: vm.NoTypeRegister,
+					Finished: true,
+					Type:     "2",
 				},
 			},
 		},
@@ -95,10 +98,10 @@ func TestErrorScope(t *testing.T) {
 					},
 					On: []*ast.On{
 						{
-							Type: types.NewInterface("SomeError", nil),
+							Type: "SomeError",
 						},
 						{
-							Type: types.NewInterface("SomethingElse", nil),
+							Type: "SomethingElse",
 							Statements: []ast.Node{
 								&ast.Call{
 									Expr: &ast.Identifier{Name: "print"},
@@ -115,14 +118,14 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: "SomeError",
+					Type: "1",
 				},
 				&vm.Jump{
 					To: 7,
 				},
 
 				&vm.On{
-					Type: "SomethingElse",
+					Type: "2",
 				},
 				&vm.Print{},
 				&vm.Jump{
@@ -130,7 +133,8 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: vm.NoTypeRegister,
+					Finished: true,
+					Type:     "3",
 				},
 			},
 		},
@@ -164,7 +168,8 @@ func TestErrorScope(t *testing.T) {
 				},
 
 				&vm.On{
-					Type: vm.NoTypeRegister,
+					Finished: true,
+					Type:     "1",
 				},
 
 				// If we enter the finally block we need to disable it, this
@@ -180,7 +185,14 @@ func TestErrorScope(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
-					Types: map[vm.TypeRegister]*types.Type{},
+					Types: types.Registry{},
+				}, nil, map[string]*ast.Literal{
+					"SomeError": {
+						Kind: types.NewFunc(nil, []*types.Type{types.String}),
+					},
+					"SomethingElse": {
+						Kind: types.NewFunc(nil, []*types.Type{types.Number}),
+					},
 				}, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())

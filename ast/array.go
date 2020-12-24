@@ -1,6 +1,8 @@
 package ast
 
-import "github.com/elliotchance/ok/types"
+import (
+	"github.com/elliotchance/ok/types"
+)
 
 // Array is zero or more elements.
 type Array struct {

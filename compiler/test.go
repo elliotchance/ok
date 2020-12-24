@@ -2,6 +2,7 @@ package compiler
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
 
@@ -10,6 +11,7 @@ func CompileTest(
 	fn *ast.Test,
 	file *vm.File,
 	constants map[string]*ast.Literal,
+	imports map[string]*types.Type,
 ) (*vm.CompiledTest, error) {
 	// Tests can be compiled as if they were functions, then wrapped in a
 	// CompiledTest.
@@ -19,7 +21,7 @@ func CompileTest(
 	compiledFunc, err := CompileFunc(&ast.Func{
 		Statements: fn.Statements,
 		Pos:        fn.Pos,
-	}, file, nil, constants)
+	}, file, nil, constants, imports, map[string]*types.Type{})
 	if err != nil {
 		return nil, err
 	}

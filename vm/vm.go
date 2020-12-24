@@ -5,7 +5,6 @@ import (
 	"io"
 	"math/rand"
 	"os"
-	"path"
 	"regexp"
 	"runtime/debug"
 	"sort"
@@ -25,9 +24,6 @@ const (
 	StackRegister = "__stack"
 )
 
-// These are populated with the generated lib.go file. See Makefile.
-var Packages map[string]*File
-
 // CompiledTest is a runnable test.
 type CompiledTest struct {
 	*CompiledFunc
@@ -36,7 +32,9 @@ type CompiledTest struct {
 
 // VM is an instance of a virtual machine to run ok instructions.
 type VM struct {
-	fns    map[string]*CompiledFunc
+	// fns is indexed by UniqueName
+	fns map[string]*CompiledFunc
+
 	Return []Register
 	Stack  []map[Register]*ast.Literal
 	tests  []*CompiledTest
@@ -57,8 +55,6 @@ type VM struct {
 	// FinallyBlocks are stacked with stack.
 	FinallyBlocks [][]*FinallyBlock
 
-	packageFunctions map[string]*CompiledFunc
-
 	// Used for generating random numbers within this VM.
 	rand *rand.Rand
 
@@ -67,18 +63,21 @@ type VM struct {
 
 	// Symbols contain literals that can be referenced by AssignSymbol.
 	Symbols map[SymbolRegister]*ast.Literal
+
+	Globals       map[string]*ast.Literal
+	GlobalsToLoad map[string]string
 }
 
 // NewVM will create a new VM ready to run the provided instructions.
 func NewVM(pkg string) *VM {
 	return &VM{
-		fns:              make(map[string]*CompiledFunc),
-		pkg:              pkg,
-		Stdout:           os.Stdout,
-		packageFunctions: make(map[string]*CompiledFunc),
-		rand:             rand.New(rand.NewSource(int64(time.Now().Nanosecond()))),
-		Types:            map[TypeRegister]*types.Type{},
-		Symbols:          map[SymbolRegister]*ast.Literal{},
+		fns:     make(map[string]*CompiledFunc),
+		pkg:     pkg,
+		Stdout:  os.Stdout,
+		rand:    rand.New(rand.NewSource(int64(time.Now().Nanosecond()))),
+		Types:   map[TypeRegister]*types.Type{},
+		Symbols: map[SymbolRegister]*ast.Literal{},
+		Globals: map[string]*ast.Literal{},
 	}
 }
 
@@ -88,16 +87,25 @@ func NewVM(pkg string) *VM {
 // TODO(elliot): Change missing main into an error in the future. It was done
 //  this way so I could use "ok run" like an "ok compile" (that didn't exist at
 //  the time) for compiling the standard libraries.
-func (vm *VM) Run() error {
-	for uniqueName, fn := range vm.fns {
-		if fn.Name == "main" {
-			_, err := vm.call(uniqueName, nil, map[string]*ast.Literal{}, types.Any)
-
-			vm.catchUnhandledError()
-
+func (vm *VM) Run(mainPackage string) error {
+	for name, uniqueName := range vm.GlobalsToLoad {
+		registers, err := vm.call(uniqueName, nil, map[string]*ast.Literal{}, types.Any)
+		if err != nil {
 			return err
 		}
+		vm.catchUnhandledError()
+		vm.Return = nil
+
+		vm.Set(Register(name), vm.Get(registers[0]))
 	}
+
+	// Now we can call the main() function.
+	mainFunction := vm.Globals[mainPackage].Map["main"].Value
+	_, err := vm.call(mainFunction, nil, map[string]*ast.Literal{}, types.Any)
+	if err != nil {
+		return err
+	}
+	vm.catchUnhandledError()
 
 	return nil
 }
@@ -148,17 +156,15 @@ func (vm *VM) appendStack(stackDescription string, parentScope map[string]*ast.L
 }
 
 func (vm *VM) call(
-	name string,
+	uniqueName string,
 	arguments []Register,
 	parentScope map[string]*ast.Literal,
 	returnType *types.Type,
 ) ([]Register, error) {
-	// TODO(elliot): Check function exists, especially main.
-
 	// Copy the registers of this context into the new call context.
-	fn := vm.fns[name]
+	fn := vm.fns[uniqueName]
 	if fn == nil {
-		panic("no such function: " + name)
+		panic("no such function: " + uniqueName)
 	}
 
 	stackDesc := stackDescription(fn.Pos, fn.Name)
@@ -179,7 +185,9 @@ func (vm *VM) call(
 		vm.Set(Register(fn.Arguments[i]), vm.get(arg, 2))
 	}
 
-	returns, err := vm.runInstructions(fn.Name, fn.Instructions, false)
+	fnName := fmt.Sprintf("%s (%s)", fn.Name, fn.UniqueName)
+
+	returns, err := vm.runInstructions(fnName, fn.Instructions, false)
 	if err != nil {
 		return nil, err
 	}
@@ -189,7 +197,7 @@ func (vm *VM) call(
 			// Ignore returns here.
 			// TODO(elliot): The compiler must disallow return
 			//  statements within a finally block.
-			_, err := vm.runInstructions(fn.Name, fb.Instructions, true)
+			_, err := vm.runInstructions(fnName, fb.Instructions, true)
 			if err != nil {
 				return nil, err
 			}
@@ -275,7 +283,7 @@ func (vm *VM) runInstructions(
 		//  to the first (or each) of the handlers, ideally.
 		if vm.ErrType != nil && !inFinally {
 			if on, ok := ins.(*On); ok {
-				if on.Type == NoTypeRegister {
+				if on.Finished {
 					// An empty type signals the end of the error handlers.
 					// Making it to here means none of the error handlers worked
 					// for us. We need to return now and let the parent scope
@@ -370,6 +378,9 @@ func (vm *VM) set(register Register, val *ast.Literal, offset int) {
 		parentScope := vm.Stack[len(vm.Stack)-1][StateRegister].Map[StateRegister].Map
 		parentScope[string(register[1:])] = val
 
+	case register[0] == '$':
+		vm.Globals[string(register)] = val
+
 	case isRegister(register):
 		vm.Stack[len(vm.Stack)-offset][register] = val
 
@@ -384,6 +395,10 @@ func (vm *VM) get(register Register, offset int) (lit *ast.Literal) {
 		parentScope := vm.Stack[len(vm.Stack)-1][StateRegister].Map[StateRegister].Map
 
 		return parentScope[string(register[1:])]
+	}
+
+	if register[0] == '$' {
+		return vm.Globals[string(register)]
 	}
 
 	if isRegister(register) {
@@ -409,38 +424,30 @@ func (vm *VM) Raise(message string) {
 	}
 }
 
-func (vm *VM) LoadPackage(pkgVariable, packageName string) error {
+func (vm *VM) LoadPackage(packageName string) error {
 	file, err := Load(packageName)
 	if err != nil {
 		return err
 	}
 
-	return vm.LoadFile(pkgVariable, file)
+	return vm.LoadFile(file)
 }
 
-func (vm *VM) LoadFile(pkgVariable string, file *File) error {
-	for k, v := range file.Types {
-		vm.Types[k] = v
+func (vm *VM) LoadFile(file *File) error {
+	for k := range file.Types {
+		vm.Types[TypeRegister(k)] = file.Types.Get(k)
 	}
 
 	for k, v := range file.Symbols {
 		if v.Func != nil {
 			vm.fns[v.Func.UniqueName] = v.Func
 		} else {
-			vm.Symbols[k] = v.Literal()
+			vm.Symbols[k] = v.Literal(file.Types)
 		}
 	}
 
 	vm.tests = append(vm.tests, file.Tests...)
-
-	for packageName := range file.Imports {
-		err := vm.LoadPackage(path.Base(packageName), packageName)
-		if err != nil {
-			return err
-		}
-	}
-
-	vm.packageFunctions[pkgVariable] = file.PackageFunc
+	vm.GlobalsToLoad = file.Globals
 
 	return nil
 }

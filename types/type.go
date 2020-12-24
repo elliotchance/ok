@@ -7,7 +7,8 @@ import (
 
 // Type represents a data type.
 type Type struct {
-	Kind Kind
+	// Kind will not be set when Ref is supplied.
+	Kind Kind `json:",omitempty"`
 
 	// Name is used as the descriptive name for the object.
 	Name string `json:",omitempty"`
@@ -20,6 +21,10 @@ type Type struct {
 
 	// Properties is used for KindInterface
 	Properties map[string]*Type `json:",omitempty"`
+
+	// Ref is used when types are flattened for a Registry. It will point to an
+	// index of another type in the registry.
+	Ref string `json:",omitempty"`
 }
 
 // ToArray creates an array type using this element type.
@@ -36,6 +41,38 @@ func (t *Type) ToMap() *Type {
 		Kind:    KindMap,
 		Element: t,
 	}
+}
+
+func (t *Type) Copy() *Type {
+	// This is so we don't have to check for nils on all the callers.
+	if t == nil {
+		return nil
+	}
+
+	ty := &Type{
+		Kind:    t.Kind,
+		Name:    t.Name,
+		Ref:     t.Ref,
+		Element: t.Element.Copy(),
+	}
+
+	for _, v := range t.Arguments {
+		ty.Arguments = append(ty.Arguments, v.Copy())
+	}
+
+	for _, v := range t.Returns {
+		ty.Returns = append(ty.Returns, v.Copy())
+	}
+
+	if len(t.Properties) > 0 {
+		ty.Properties = map[string]*Type{}
+
+		for k, v := range t.Properties {
+			ty.Properties[k] = v.Copy()
+		}
+	}
+
+	return ty
 }
 
 func (t *Type) String() string {
@@ -98,6 +135,26 @@ func (t *Type) String() string {
 	return t.Name
 }
 
+func NewArray(element *Type) *Type {
+	return &Type{
+		Kind:    KindArray,
+		Element: element,
+	}
+}
+
+func NewMap(element *Type) *Type {
+	return &Type{
+		Kind:    KindMap,
+		Element: element,
+	}
+}
+
+func NewRef(ref string) *Type {
+	return &Type{
+		Ref: ref,
+	}
+}
+
 func NewFunc(args, returns []*Type) *Type {
 	return &Type{
 		Kind:      KindFunc,
@@ -130,15 +187,8 @@ func NewInterface(name string, properties map[string]*Type) *Type {
 }
 
 func (t *Type) Interface() string {
-	var keys []string
-	for key := range t.Properties {
-		keys = append(keys, key)
-	}
-
-	sort.Strings(keys)
-
 	s := "{ "
-	for i, key := range keys {
+	for i, key := range t.SortedPropertyNames() {
 		if i > 0 {
 			s += "; "
 		}
@@ -155,4 +205,21 @@ func (t *Type) Interface() string {
 	}
 
 	return s + " }"
+}
+
+func (t *Type) SortedPropertyNames() []string {
+	// Avoid allocation in most cases.
+	if len(t.Properties) == 0 {
+		return nil
+	}
+
+	names := make([]string, len(t.Properties))
+	i := 0
+	for name := range t.Properties {
+		names[i] = name
+		i++
+	}
+	sort.Strings(names)
+
+	return names
 }

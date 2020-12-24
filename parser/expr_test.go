@@ -540,7 +540,7 @@ func TestExpr(t *testing.T) {
 				asttest.AssertEqual(t, map[string]*ast.Func{}, p.Funcs())
 			} else {
 				asttest.AssertEqual(t, map[string]*ast.Func{
-					"main": {
+					"1": {
 						Name:       "main",
 						Statements: []ast.Node{test.expected},
 					},

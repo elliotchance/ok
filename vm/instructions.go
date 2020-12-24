@@ -72,7 +72,6 @@ var decodeTypes = []interface{}{
 	LessThanEqualString{},
 	LessThanNumber{},
 	LessThanString{},
-	LoadPackage{},
 	Log{},
 	MapAlloc{},
 	MapGet{},

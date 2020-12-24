@@ -16,27 +16,25 @@ type CompiledFunc struct {
 
 	// These are copied from the function definition.
 	// Name and Pos are used by the VM for stack traces.
-	Type                  *types.Type `json:",omitempty"`
-	Name, UniqueName, Pos string      `json:",omitempty"`
-
-	// These are only transient for the compiler, they will be nil when
-	// serialized.
-	Parent                 *CompiledFunc  `json:",omitempty"`
-	DeferredFuncsToCompile []DeferredFunc `json:",omitempty"`
+	Type                  TypeRegister `json:",omitempty"`
+	Name, UniqueName, Pos string       `json:",omitempty"`
 
 	// These are only transient for the compiler.
-	Constants map[string]*ast.Literal `json:"-"`
+	Parent                 *CompiledFunc           `json:"-"`
+	DeferredFuncsToCompile []DeferredFunc          `json:"-"`
+	Constants              map[string]*ast.Literal `json:"-"`
 }
 
 func NewCompiledFunc(
 	fn *ast.Func,
 	parentFunc *CompiledFunc,
 	constants map[string]*ast.Literal,
+	file *File,
 ) *CompiledFunc {
 	return &CompiledFunc{
 		variables:    map[string]*types.Type{},
 		Constants:    constants,
-		Type:         fn.Type(),
+		Type:         file.AddType(fn.Type()),
 		Instructions: new(Instructions),
 
 		// Name and Pos are used by the VM for stack traces.

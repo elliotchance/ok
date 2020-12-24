@@ -1,7 +1,6 @@
 package asttest
 
 import (
-	"strconv"
 	"testing"
 
 	"github.com/elliotchance/ok/ast"
@@ -11,17 +10,6 @@ import (
 )
 
 func AssertEqual(t *testing.T, fns1, fns2 interface{}) bool {
-	// TODO(elliot): This just ignores some transient data that will be removed
-	//  in the future. Remove this code to see what breaks (and fix it).
-	if m, ok := fns2.(map[string]*ast.Func); ok {
-		delete(m, "")
-		for k := range m {
-			if _, err := strconv.Atoi(k); err == nil {
-				delete(m, k)
-			}
-		}
-	}
-
 	return assert.Empty(t, cmp.Diff(fns1, fns2, cmpOptions()))
 }
 

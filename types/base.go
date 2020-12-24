@@ -8,14 +8,14 @@ var (
 	Number = TypeFromString("number")
 	String = TypeFromString("string")
 
-	AnyArray    = TypeFromString("[]any")
-	BoolArray   = TypeFromString("[]bool")
-	NumberArray = TypeFromString("[]number")
-	StringArray = TypeFromString("[]string")
+	AnyArray    = NewArray(Any)
+	BoolArray   = NewArray(Bool)
+	NumberArray = NewArray(Number)
+	StringArray = NewArray(String)
 
-	AnyMap    = TypeFromString("{}any")
-	NumberMap = TypeFromString("{}number")
-	StringMap = TypeFromString("{}string")
+	AnyMap    = NewMap(Any)
+	NumberMap = NewMap(Number)
+	StringMap = NewMap(String)
 
 	ErrorInterface = NewInterface("error.Error", map[string]*Type{
 		"Error": String,

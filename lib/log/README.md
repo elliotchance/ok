@@ -79,7 +79,8 @@ func Log(level string, message string)
 ```
 
 Log is a very simple implementation for Logger. You may call this directly
-for dynamic log levels, but it is recommened to put this into a Logger first.
+for dynamic log levels, but it is recommended to put this into a Logger
+first.
 
 ### Logger
 

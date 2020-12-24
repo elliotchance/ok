@@ -54,7 +54,7 @@ func TestRaise(t *testing.T) {
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			asttest.AssertEqual(t, map[string]*ast.Func{
-				"main": newFunc(test.expected),
+				"1": newFunc(test.expected),
 			}, p.Funcs())
 		})
 	}

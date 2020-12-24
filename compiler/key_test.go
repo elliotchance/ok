@@ -42,22 +42,22 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// set 0
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number123",
+					Symbol: "2",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -68,11 +68,11 @@ func TestKey(t *testing.T) {
 				// set 1
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number456",
+					Symbol: "4",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -89,7 +89,7 @@ func TestKey(t *testing.T) {
 				// get 1
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number1",
+					Symbol: "5",
 				},
 				&vm.ArrayGet{
 					Array:  "foo",
@@ -128,10 +128,10 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -139,11 +139,11 @@ func TestKey(t *testing.T) {
 				// "a": 123
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringa",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number123",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -154,11 +154,11 @@ func TestKey(t *testing.T) {
 				// "b": 456
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "stringb",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number456",
+					Symbol: "4",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -175,7 +175,7 @@ func TestKey(t *testing.T) {
 				// get "b"
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringb",
+					Symbol: "5",
 				},
 				&vm.MapGet{
 					Map:    "foo",
@@ -216,10 +216,10 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -227,11 +227,11 @@ func TestKey(t *testing.T) {
 				// "a": 123
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringa",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number123",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -242,11 +242,11 @@ func TestKey(t *testing.T) {
 				// "b": 456
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "stringb",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number456",
+					Symbol: "4",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -263,7 +263,7 @@ func TestKey(t *testing.T) {
 				// get "b"
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringb",
+					Symbol: "5",
 				},
 				&vm.MapGet{
 					Map:    "foo",
@@ -303,22 +303,22 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// set 0
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number123",
+					Symbol: "2",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -329,11 +329,11 @@ func TestKey(t *testing.T) {
 				// set 1
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number456",
+					Symbol: "4",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -350,11 +350,11 @@ func TestKey(t *testing.T) {
 				// foo[1] = 2
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number2",
+					Symbol: "5",
 				},
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "number1",
+					Symbol: "6",
 				},
 				&vm.ArraySet{
 					Array: "foo",
@@ -400,10 +400,10 @@ func TestKey(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number2",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -411,11 +411,11 @@ func TestKey(t *testing.T) {
 				// "a": 123
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringa",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number123",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -426,11 +426,11 @@ func TestKey(t *testing.T) {
 				// "b": 456
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "stringb",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number456",
+					Symbol: "4",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -447,11 +447,11 @@ func TestKey(t *testing.T) {
 				// foo["b"] = 2
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number2",
+					Symbol: "5",
 				},
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "stringb",
+					Symbol: "6",
 				},
 				&vm.MapSet{
 					Map:   "foo",
@@ -478,7 +478,7 @@ func TestKey(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringbar",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -488,7 +488,7 @@ func TestKey(t *testing.T) {
 				// foo[1]
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.StringIndex{
 					Str:    "foo",
@@ -502,9 +502,9 @@ func TestKey(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(&ast.Func{
 				Statements: test.nodes,
 			}, &vm.File{
-				Types:   map[vm.TypeRegister]*types.Type{},
+				Types:   types.Registry{},
 				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-			}, nil, nil)
+			}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

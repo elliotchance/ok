@@ -1,8 +1,6 @@
 package compiler
 
 import (
-	"fmt"
-
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/types"
@@ -34,10 +32,6 @@ func compileUnary(
 		return returns2, kinds[0], nil
 
 	case "-":
-		if len(returns1) == 0 {
-			fmt.Println(e.Expr, kinds)
-		}
-
 		zeroAt := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.AssignSymbol{
 			Result: zeroAt,

@@ -94,7 +94,7 @@ func TestType(t *testing.T) {
 
 			require.Empty(t, p.Errors().String(), str)
 			asttest.AssertEqual(t, map[string]*ast.Func{
-				"main": newFunc(test.expected),
+				"1": newFunc(test.expected),
 			}, p.Funcs())
 			assert.Nil(t, p.Comments())
 		})

@@ -96,12 +96,21 @@ func (parser *Parser) Package(packageAlias string) *ast.Func {
 
 	var statements []ast.Node
 	for _, name := range constantNames {
+		if name[0] == '_' {
+			continue
+		}
+
 		c := parser.Constants[name]
 		properties[name] = c.Kind
-		statements = append(statements, &ast.Assign{
-			Lefts:  []ast.Node{&ast.Identifier{Name: name}},
-			Rights: []ast.Node{c},
-		})
+
+		// Globals are skipped because they don't need to exist in local scope.
+		// Globals holds the initialized packages.
+		if !c.IsGlobal {
+			statements = append(statements, &ast.Assign{
+				Lefts:  []ast.Node{&ast.Identifier{Name: name}},
+				Rights: []ast.Node{c},
+			})
+		}
 	}
 
 	var funcNames []string
@@ -126,11 +135,29 @@ func (parser *Parser) Package(packageAlias string) *ast.Func {
 		},
 		Statements: statements,
 		Pos:        parser.pos(0),
+		UniqueName: parser.nextFunctionName(),
 	}
 }
 
 func (parser *Parser) Funcs() map[string]*ast.Func {
 	return parser.funcs
+}
+
+func (parser *Parser) SortedFuncNames() []string {
+	// Avoid allocation in most cases.
+	if len(parser.funcs) == 0 {
+		return nil
+	}
+
+	names := make([]string, len(parser.funcs))
+	i := 0
+	for name := range parser.funcs {
+		names[i] = name
+		i++
+	}
+	sort.Strings(names)
+
+	return names
 }
 
 func (parser *Parser) Tests() []*ast.Test {
