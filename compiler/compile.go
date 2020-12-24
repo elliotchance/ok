@@ -78,10 +78,9 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 	packageAlias := strings.ReplaceAll(packageName, "/", "__")
 
 	file := &vm.File{
-		Constants: p.Constants,
-		Imports:   imports,
-		Types:     map[vm.TypeRegister]*types.Type{},
-		Symbols:   okcFile.Symbols,
+		Imports: imports,
+		Types:   map[vm.TypeRegister]*types.Type{},
+		Symbols: okcFile.Symbols,
 	}
 
 	for _, fn := range funcs {
@@ -92,7 +91,8 @@ func Compile(rootPath, pkgPath string, includeTests bool, anonFunctionName int) 
 		})
 	}
 
-	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), file, nil)
+	compiledPackageFn, err := CompileFunc(p.Package(packageAlias), file,
+		nil, p.Constants)
 	if err != nil {
 		return nil, []error{err}
 	}

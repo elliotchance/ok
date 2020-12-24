@@ -12,8 +12,9 @@ func CompileFunc(
 	fn *ast.Func,
 	file *vm.File,
 	parentFunc *vm.CompiledFunc,
+	constants map[string]*ast.Literal,
 ) (*vm.CompiledFunc, error) {
-	compiled := vm.NewCompiledFunc(fn, parentFunc)
+	compiled := vm.NewCompiledFunc(fn, parentFunc, constants)
 
 	// Make sure we clear state that shouldn't be serialized.
 	defer func() {
@@ -55,7 +56,7 @@ func CompileFunc(
 	// function literals that might reference variables in this scope.
 	instructions := len(compiled.Instructions.Instructions)
 	for _, fn := range compiled.DeferredFuncsToCompile {
-		cf, err := CompileFunc(fn.Func, file, compiled)
+		cf, err := CompileFunc(fn.Func, file, compiled, constants)
 		if err != nil {
 			return nil, err
 		}

@@ -1127,7 +1127,7 @@ func TestBinary(t *testing.T) {
 				&vm.File{
 					Types:   map[vm.TypeRegister]*types.Type{},
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil)
+				}, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

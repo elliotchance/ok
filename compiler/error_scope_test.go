@@ -181,7 +181,7 @@ func TestErrorScope(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
 					Types: map[vm.TypeRegister]*types.Type{},
-				}, nil)
+				}, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

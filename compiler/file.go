@@ -13,10 +13,9 @@ func compile(
 	imports map[string]*types.Type,
 ) (*vm.File, error) {
 	file := &vm.File{
-		Constants: constants,
-		Imports:   imports,
-		Types:     map[vm.TypeRegister]*types.Type{},
-		Symbols:   map[vm.SymbolRegister]*vm.Symbol{},
+		Imports: imports,
+		Types:   map[vm.TypeRegister]*types.Type{},
+		Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 	}
 
 	for _, fn := range funcs {
@@ -28,7 +27,7 @@ func compile(
 	}
 
 	for _, fn := range funcs {
-		compiledFn, err := CompileFunc(fn, file, nil)
+		compiledFn, err := CompileFunc(fn, file, nil, constants)
 		if err != nil {
 			return nil, err
 		}
@@ -37,7 +36,7 @@ func compile(
 	}
 
 	for _, fn := range tests {
-		compiledFn, err := CompileTest(fn, file)
+		compiledFn, err := CompileTest(fn, file, constants)
 		if err != nil {
 			return nil, err
 		}
