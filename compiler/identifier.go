@@ -60,7 +60,7 @@ func compileIdentifier(
 	// anywhere. This only covers the case where we are referencing a
 	// constant that belongs to the current package, as external constants
 	// would be resolved through the package import variable.
-	if c, ok := file.Constants[e.Name]; ok {
+	if c, ok := compiledFunc.Constants[e.Name]; ok {
 		// We copy it locally to make sure it's value isn't changed. The
 		// compiler will prevent a constant from being modified directly.
 		//
@@ -69,10 +69,7 @@ func compileIdentifier(
 		literalRegister := compiledFunc.NextRegister()
 		compiledFunc.Append(&vm.AssignSymbol{
 			Result: literalRegister,
-			Symbol: file.AddSymbolLiteral(&ast.Literal{
-				Kind:  c.Kind,
-				Value: c.Value,
-			}),
+			Symbol: file.AddSymbolLiteral(c),
 		})
 
 		return []vm.Register{literalRegister}, []*types.Type{c.Kind}, nil

@@ -6,7 +6,11 @@ import (
 )
 
 // CompileTest will compile a test.
-func CompileTest(fn *ast.Test, file *vm.File) (*vm.CompiledTest, error) {
+func CompileTest(
+	fn *ast.Test,
+	file *vm.File,
+	constants map[string]*ast.Literal,
+) (*vm.CompiledTest, error) {
 	// Tests can be compiled as if they were functions, then wrapped in a
 	// CompiledTest.
 	//
@@ -15,7 +19,7 @@ func CompileTest(fn *ast.Test, file *vm.File) (*vm.CompiledTest, error) {
 	compiledFunc, err := CompileFunc(&ast.Func{
 		Statements: fn.Statements,
 		Pos:        fn.Pos,
-	}, file, nil)
+	}, file, nil, constants)
 	if err != nil {
 		return nil, err
 	}

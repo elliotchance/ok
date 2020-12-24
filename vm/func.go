@@ -23,11 +23,19 @@ type CompiledFunc struct {
 	// serialized.
 	Parent                 *CompiledFunc  `json:",omitempty"`
 	DeferredFuncsToCompile []DeferredFunc `json:",omitempty"`
+
+	// These are only transient for the compiler.
+	Constants map[string]*ast.Literal `json:"-"`
 }
 
-func NewCompiledFunc(fn *ast.Func, parentFunc *CompiledFunc) *CompiledFunc {
+func NewCompiledFunc(
+	fn *ast.Func,
+	parentFunc *CompiledFunc,
+	constants map[string]*ast.Literal,
+) *CompiledFunc {
 	return &CompiledFunc{
 		variables:    map[string]*types.Type{},
+		Constants:    constants,
 		Type:         fn.Type(),
 		Instructions: new(Instructions),
 

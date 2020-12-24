@@ -6,8 +6,7 @@ import "github.com/elliotchance/ok/types"
 func init() {
 	Packages = map[string]*File{
 		"error": &File{
-			Imports:   nil,
-			Constants: nil,
+			Imports: nil,
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -51,8 +50,9 @@ func init() {
 						},
 					},
 				},
-				Name: "..__error",
-				Pos:  "lib/error/error.ok:2:1",
+				Name:      "..__error",
+				Pos:       "lib/error/error.ok:2:1",
+				Constants: nil,
 			},
 			Types: nil,
 			Symbols: map[SymbolRegister]*Symbol{
@@ -88,6 +88,7 @@ func init() {
 						Name:       "Error",
 						UniqueName: "1657625601",
 						Pos:        "lib/error/error.ok:2:1",
+						Constants:  nil,
 					},
 				},
 			},
@@ -1490,23 +1491,6 @@ func init() {
 					},
 				},
 			},
-			Constants: map[string]*ast.Literal{
-				"LevelDebug": &ast.Literal{&types.Type{
-					Kind: 7,
-				}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
-				"LevelError": &ast.Literal{&types.Type{
-					Kind: 7,
-				}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
-				"LevelFatal": &ast.Literal{&types.Type{
-					Kind: 7,
-				}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
-				"LevelInfo": &ast.Literal{&types.Type{
-					Kind: 7,
-				}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
-				"LevelWarn": &ast.Literal{&types.Type{
-					Kind: 7,
-				}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
-			},
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -1650,6 +1634,23 @@ func init() {
 				},
 				Name: "..__log",
 				Pos:  "lib/log/log.ok:1:1",
+				Constants: map[string]*ast.Literal{
+					"LevelDebug": &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+					"LevelError": &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+					"LevelFatal": &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+					"LevelInfo": &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+					"LevelWarn": &ast.Literal{&types.Type{
+						Kind: 7,
+					}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+				},
 			},
 			Types: map[TypeRegister]*types.Type{
 				"Time": &types.Type{
@@ -1800,6 +1801,23 @@ func init() {
 						Name:       "Logger",
 						UniqueName: "3624248081",
 						Pos:        "lib/log/log.ok:19:1",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3624248082": &Symbol{
@@ -1824,6 +1842,23 @@ func init() {
 						Name:       "Debug",
 						UniqueName: "3624248082",
 						Pos:        "lib/log/log.ok:23:5",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3624248083": &Symbol{
@@ -1848,6 +1883,23 @@ func init() {
 						Name:       "Info",
 						UniqueName: "3624248083",
 						Pos:        "lib/log/log.ok:29:5",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3624248084": &Symbol{
@@ -1872,6 +1924,23 @@ func init() {
 						Name:       "Warn",
 						UniqueName: "3624248084",
 						Pos:        "lib/log/log.ok:36:5",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3624248085": &Symbol{
@@ -1896,6 +1965,23 @@ func init() {
 						Name:       "Error",
 						UniqueName: "3624248085",
 						Pos:        "lib/log/log.ok:42:5",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3624248086": &Symbol{
@@ -1920,6 +2006,23 @@ func init() {
 						Name:       "Fatal",
 						UniqueName: "3624248086",
 						Pos:        "lib/log/log.ok:49:5",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3624248087": &Symbol{
@@ -1971,6 +2074,23 @@ func init() {
 						Name:       "Log",
 						UniqueName: "3624248087",
 						Pos:        "lib/log/log.ok:56:1",
+						Constants: map[string]*ast.Literal{
+							"LevelDebug": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "DEBUG", nil, nil, "lib/log/log.ok:7:14", nil, nil},
+							"LevelError": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "ERROR", nil, nil, "lib/log/log.ok:10:14", nil, nil},
+							"LevelFatal": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "FATAL", nil, nil, "lib/log/log.ok:11:14", nil, nil},
+							"LevelInfo": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "INFO", nil, nil, "lib/log/log.ok:8:13", nil, nil},
+							"LevelWarn": &ast.Literal{&types.Type{
+								Kind: 7,
+							}, "WARN", nil, nil, "lib/log/log.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"number1": &Symbol{
@@ -2025,35 +2145,6 @@ func init() {
 		},
 		"math": &File{
 			Imports: nil,
-			Constants: map[string]*ast.Literal{
-				"E": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
-				"Ln10": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
-				"Ln2": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
-				"Phi": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
-				"Pi": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
-				"Sqrt2": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
-				"SqrtE": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
-				"SqrtPhi": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
-				"SqrtPi": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
-			},
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -2329,6 +2420,35 @@ func init() {
 				},
 				Name: "..__math",
 				Pos:  "lib/math/rounding.ok:2:1",
+				Constants: map[string]*ast.Literal{
+					"E": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+					"Ln10": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+					"Ln2": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+					"Phi": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+					"Pi": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+					"Sqrt2": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+					"SqrtE": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+					"SqrtPhi": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+					"SqrtPi": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+				},
 			},
 			Types: nil,
 			Symbols: map[SymbolRegister]*Symbol{
@@ -2364,6 +2484,35 @@ func init() {
 						Name:       "Abs",
 						UniqueName: "1725484959",
 						Pos:        "lib/math/abs.ok:2:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484960": &Symbol{
@@ -2393,6 +2542,35 @@ func init() {
 						Name:       "LogE",
 						UniqueName: "1725484960",
 						Pos:        "lib/math/log.ok:2:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484961": &Symbol{
@@ -2425,6 +2603,35 @@ func init() {
 						Name:       "Log10",
 						UniqueName: "1725484961",
 						Pos:        "lib/math/log.ok:7:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484962": &Symbol{
@@ -2455,6 +2662,35 @@ func init() {
 						Name:       "Exp",
 						UniqueName: "1725484962",
 						Pos:        "lib/math/powers.ok:2:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484963": &Symbol{
@@ -2487,6 +2723,35 @@ func init() {
 						Name:       "Pow",
 						UniqueName: "1725484963",
 						Pos:        "lib/math/powers.ok:7:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484964": &Symbol{
@@ -2517,6 +2782,35 @@ func init() {
 						Name:       "Sqrt",
 						UniqueName: "1725484964",
 						Pos:        "lib/math/powers.ok:12:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484965": &Symbol{
@@ -2549,6 +2843,35 @@ func init() {
 						Name:       "Cbrt",
 						UniqueName: "1725484965",
 						Pos:        "lib/math/powers.ok:17:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484966": &Symbol{
@@ -2572,6 +2895,35 @@ func init() {
 						Name:       "Rand",
 						UniqueName: "1725484966",
 						Pos:        "lib/math/rand.ok:2:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484967": &Symbol{
@@ -2615,6 +2967,35 @@ func init() {
 						Name:       "Ceil",
 						UniqueName: "1725484967",
 						Pos:        "lib/math/rounding.ok:2:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484968": &Symbol{
@@ -2658,6 +3039,35 @@ func init() {
 						Name:       "Floor",
 						UniqueName: "1725484968",
 						Pos:        "lib/math/rounding.ok:16:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"1725484969": &Symbol{
@@ -2707,6 +3117,35 @@ func init() {
 						Name:       "Round",
 						UniqueName: "1725484969",
 						Pos:        "lib/math/rounding.ok:31:1",
+						Constants: map[string]*ast.Literal{
+							"E": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.71828182845904523536028747135266249775724709369995957496696763", nil, nil, "lib/math/constants.ok:1:7", nil, nil},
+							"Ln10": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2.30258509299404568401799145468436420760110148862877297603332790", nil, nil, "lib/math/constants.ok:11:8", nil, nil},
+							"Ln2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.693147180559945309417232121458176568075500134360255254120680009", nil, nil, "lib/math/constants.ok:10:8", nil, nil},
+							"Phi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.61803398874989484820458683436563811772030917980576286213544862", nil, nil, "lib/math/constants.ok:3:7", nil, nil},
+							"Pi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3.14159265358979323846264338327950288419716939937510582097494459", nil, nil, "lib/math/constants.ok:2:7", nil, nil},
+							"Sqrt2": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.41421356237309504880168872420969807856967187537694807317667974", nil, nil, "lib/math/constants.ok:5:11", nil, nil},
+							"SqrtE": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.64872127070012814684865078781416357165377610071014801157507931", nil, nil, "lib/math/constants.ok:6:11", nil, nil},
+							"SqrtPhi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.27201964951406896425242246173749149171560804184009624861664038", nil, nil, "lib/math/constants.ok:8:11", nil, nil},
+							"SqrtPi": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1.77245385090551602729816748334114518279754945612238712821380779", nil, nil, "lib/math/constants.ok:7:11", nil, nil},
+						},
 					},
 				},
 				"number0": &Symbol{
@@ -3635,7 +4074,6 @@ func init() {
 					},
 				},
 			},
-			Constants: nil,
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -4039,8 +4477,9 @@ func init() {
 						},
 					},
 				},
-				Name: "..__os",
-				Pos:  "lib/os/temp.ok:2:1",
+				Name:      "..__os",
+				Pos:       "lib/os/temp.ok:2:1",
+				Constants: nil,
 			},
 			Types: map[TypeRegister]*types.Type{
 				"File": &types.Type{
@@ -4390,6 +4829,7 @@ func init() {
 						Name:       "File",
 						UniqueName: "3819329014",
 						Pos:        "lib/os/file.ok:2:1",
+						Constants:  nil,
 					},
 				},
 				"3819329015": &Symbol{
@@ -4414,6 +4854,7 @@ func init() {
 						Name:       "WriteString",
 						UniqueName: "3819329015",
 						Pos:        "lib/os/file.ok:4:5",
+						Constants:  nil,
 					},
 				},
 				"3819329016": &Symbol{
@@ -4437,6 +4878,7 @@ func init() {
 						Name:       "WriteData",
 						UniqueName: "3819329016",
 						Pos:        "lib/os/file.ok:9:5",
+						Constants:  nil,
 					},
 				},
 				"3819329017": &Symbol{
@@ -4453,6 +4895,7 @@ func init() {
 						Name:       "Close",
 						UniqueName: "3819329017",
 						Pos:        "lib/os/file.ok:15:5",
+						Constants:  nil,
 					},
 				},
 				"3819329018": &Symbol{
@@ -4484,6 +4927,7 @@ func init() {
 						Name:       "Seek",
 						UniqueName: "3819329018",
 						Pos:        "lib/os/file.ok:26:5",
+						Constants:  nil,
 					},
 				},
 				"3819329019": &Symbol{
@@ -4513,6 +4957,7 @@ func init() {
 						Name:       "ReadData",
 						UniqueName: "3819329019",
 						Pos:        "lib/os/file.ok:38:5",
+						Constants:  nil,
 					},
 				},
 				"3819329020": &Symbol{
@@ -4542,6 +4987,7 @@ func init() {
 						Name:       "ReadString",
 						UniqueName: "3819329020",
 						Pos:        "lib/os/file.ok:45:5",
+						Constants:  nil,
 					},
 				},
 				"3819329021": &Symbol{
@@ -4582,6 +5028,7 @@ func init() {
 						Name:       "ReadLine",
 						UniqueName: "3819329021",
 						Pos:        "lib/os/file.ok:50:5",
+						Constants:  nil,
 					},
 				},
 				"3819329022": &Symbol{
@@ -4685,6 +5132,7 @@ func init() {
 						Name:       "Open",
 						UniqueName: "3819329022",
 						Pos:        "lib/os/file.ok:74:1",
+						Constants:  nil,
 					},
 				},
 				"3819329023": &Symbol{
@@ -4708,6 +5156,7 @@ func init() {
 						Name:       "Remove",
 						UniqueName: "3819329023",
 						Pos:        "lib/os/filesystem.ok:2:1",
+						Constants:  nil,
 					},
 				},
 				"3819329024": &Symbol{
@@ -4734,6 +5183,7 @@ func init() {
 						Name:       "Rename",
 						UniqueName: "3819329024",
 						Pos:        "lib/os/filesystem.ok:7:1",
+						Constants:  nil,
 					},
 				},
 				"3819329025": &Symbol{
@@ -4757,6 +5207,7 @@ func init() {
 						Name:       "CreateDirectory",
 						UniqueName: "3819329025",
 						Pos:        "lib/os/filesystem.ok:13:1",
+						Constants:  nil,
 					},
 				},
 				"3819329026": &Symbol{
@@ -4873,6 +5324,7 @@ func init() {
 						Name:       "FileInfo",
 						UniqueName: "3819329026",
 						Pos:        "lib/os/info.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"3819329027": &Symbol{
@@ -4944,6 +5396,7 @@ func init() {
 						Name:       "Info",
 						UniqueName: "3819329027",
 						Pos:        "lib/os/info.ok:13:1",
+						Constants:  nil,
 					},
 				},
 				"3819329028": &Symbol{
@@ -4972,6 +5425,7 @@ func init() {
 						Name:       "TempPath",
 						UniqueName: "3819329028",
 						Pos:        "lib/os/temp.ok:2:1",
+						Constants:  nil,
 					},
 				},
 				"booltrue": &Symbol{
@@ -5391,7 +5845,6 @@ func init() {
 					},
 				},
 			},
-			Constants: nil,
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -5583,8 +6036,9 @@ func init() {
 						},
 					},
 				},
-				Name: "..__reflect",
-				Pos:  "lib/reflect/type.ok:8:1",
+				Name:      "..__reflect",
+				Pos:       "lib/reflect/type.ok:8:1",
+				Constants: nil,
 			},
 			Types: map[TypeRegister]*types.Type{
 				"any": &types.Type{
@@ -5628,6 +6082,7 @@ func init() {
 						Name:       "Call",
 						UniqueName: "1100080403",
 						Pos:        "lib/reflect/call.ok:16:1",
+						Constants:  nil,
 					},
 				},
 				"1100080404": &Symbol{
@@ -5660,6 +6115,7 @@ func init() {
 						Name:       "Get",
 						UniqueName: "1100080404",
 						Pos:        "lib/reflect/get.ok:15:1",
+						Constants:  nil,
 					},
 				},
 				"1100080405": &Symbol{
@@ -5689,6 +6145,7 @@ func init() {
 						Name:       "Interface",
 						UniqueName: "1100080405",
 						Pos:        "lib/reflect/interface.ok:10:1",
+						Constants:  nil,
 					},
 				},
 				"1100080406": &Symbol{
@@ -5748,6 +6205,7 @@ func init() {
 						Name:       "Kind",
 						UniqueName: "1100080406",
 						Pos:        "lib/reflect/kind.ok:5:1",
+						Constants:  nil,
 					},
 				},
 				"1100080407": &Symbol{
@@ -5777,6 +6235,7 @@ func init() {
 						Name:       "Len",
 						UniqueName: "1100080407",
 						Pos:        "lib/reflect/len.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"1100080408": &Symbol{
@@ -5809,6 +6268,7 @@ func init() {
 						Name:       "Properties",
 						UniqueName: "1100080408",
 						Pos:        "lib/reflect/props.ok:4:1",
+						Constants:  nil,
 					},
 				},
 				"1100080409": &Symbol{
@@ -5844,6 +6304,7 @@ func init() {
 						Name:       "Set",
 						UniqueName: "1100080409",
 						Pos:        "lib/reflect/set.ok:16:1",
+						Constants:  nil,
 					},
 				},
 				"1100080410": &Symbol{
@@ -5873,6 +6334,7 @@ func init() {
 						Name:       "Type",
 						UniqueName: "1100080410",
 						Pos:        "lib/reflect/type.ok:8:1",
+						Constants:  nil,
 					},
 				},
 				"func(any)~~~string1100080410": &Symbol{
@@ -6285,7 +6747,6 @@ func init() {
 					},
 				},
 			},
-			Constants: nil,
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -6503,8 +6964,9 @@ func init() {
 						},
 					},
 				},
-				Name: "..__runtime",
-				Pos:  "lib/runtime/stack.ok:1:1",
+				Name:      "..__runtime",
+				Pos:       "lib/runtime/stack.ok:1:1",
+				Constants: nil,
 			},
 			Types: map[TypeRegister]*types.Type{
 				"StackElement": &types.Type{
@@ -6609,6 +7071,7 @@ func init() {
 						Name:       "Env",
 						UniqueName: "3243469102",
 						Pos:        "lib/runtime/env.ok:4:1",
+						Constants:  nil,
 					},
 				},
 				"3243469103": &Symbol{
@@ -6641,6 +7104,7 @@ func init() {
 						Name:       "LookupEnv",
 						UniqueName: "3243469103",
 						Pos:        "lib/runtime/env.ok:13:1",
+						Constants:  nil,
 					},
 				},
 				"3243469104": &Symbol{
@@ -6668,6 +7132,7 @@ func init() {
 						Name:       "SetEnv",
 						UniqueName: "3243469104",
 						Pos:        "lib/runtime/env.ok:20:1",
+						Constants:  nil,
 					},
 				},
 				"3243469105": &Symbol{
@@ -6691,6 +7156,7 @@ func init() {
 						Name:       "UnsetEnv",
 						UniqueName: "3243469105",
 						Pos:        "lib/runtime/env.ok:26:1",
+						Constants:  nil,
 					},
 				},
 				"3243469106": &Symbol{
@@ -6714,6 +7180,7 @@ func init() {
 						Name:       "Exit",
 						UniqueName: "3243469106",
 						Pos:        "lib/runtime/exit.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"3243469107": &Symbol{
@@ -6766,6 +7233,7 @@ func init() {
 						Name:       "StackElement",
 						UniqueName: "3243469107",
 						Pos:        "lib/runtime/stack.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"3243469108": &Symbol{
@@ -6852,6 +7320,7 @@ func init() {
 						Name:       "Stack",
 						UniqueName: "3243469108",
 						Pos:        "lib/runtime/stack.ok:11:1",
+						Constants:  nil,
 					},
 				},
 				"3243469109": &Symbol{
@@ -6903,6 +7372,7 @@ func init() {
 						Name:       "StackTrace",
 						UniqueName: "3243469109",
 						Pos:        "lib/runtime/stack.ok:27:1",
+						Constants:  nil,
 					},
 				},
 				"3243469110": &Symbol{
@@ -6952,6 +7422,7 @@ func init() {
 						Name:       "String",
 						UniqueName: "3243469110",
 						Pos:        "lib/runtime/stack.ok:28:5",
+						Constants:  nil,
 					},
 				},
 				"func([]StackElement)~~~StackTrace3243469109": &Symbol{
@@ -7020,8 +7491,7 @@ func init() {
 			},
 		},
 		"strings": &File{
-			Imports:   nil,
-			Constants: nil,
+			Imports: nil,
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
 					Instructions: []Instruction{
@@ -7563,8 +8033,9 @@ func init() {
 						},
 					},
 				},
-				Name: "..__strings",
-				Pos:  "lib/strings/trim.ok:3:1",
+				Name:      "..__strings",
+				Pos:       "lib/strings/trim.ok:3:1",
+				Constants: nil,
 			},
 			Types: map[TypeRegister]*types.Type{
 				"[]string": &types.Type{
@@ -7628,6 +8099,7 @@ func init() {
 						Name:       "ToLower",
 						UniqueName: "601598823",
 						Pos:        "lib/strings/case.ok:4:1",
+						Constants:  nil,
 					},
 				},
 				"601598824": &Symbol{
@@ -7680,6 +8152,7 @@ func init() {
 						Name:       "ToUpper",
 						UniqueName: "601598824",
 						Pos:        "lib/strings/case.ok:21:1",
+						Constants:  nil,
 					},
 				},
 				"601598825": &Symbol{
@@ -7715,6 +8188,7 @@ func init() {
 						Name:       "Contains",
 						UniqueName: "601598825",
 						Pos:        "lib/strings/contains.ok:2:1",
+						Constants:  nil,
 					},
 				},
 				"601598826": &Symbol{
@@ -7767,6 +8241,7 @@ func init() {
 						Name:       "HasPrefix",
 						UniqueName: "601598826",
 						Pos:        "lib/strings/contains.ok:7:1",
+						Constants:  nil,
 					},
 				},
 				"601598827": &Symbol{
@@ -7827,6 +8302,7 @@ func init() {
 						Name:       "HasSuffix",
 						UniqueName: "601598827",
 						Pos:        "lib/strings/contains.ok:22:1",
+						Constants:  nil,
 					},
 				},
 				"601598828": &Symbol{
@@ -7861,6 +8337,7 @@ func init() {
 						Name:       "Index",
 						UniqueName: "601598828",
 						Pos:        "lib/strings/index.ok:2:1",
+						Constants:  nil,
 					},
 				},
 				"601598829": &Symbol{
@@ -7931,6 +8408,7 @@ func init() {
 						Name:       "IndexAfter",
 						UniqueName: "601598829",
 						Pos:        "lib/strings/index.ok:17:1",
+						Constants:  nil,
 					},
 				},
 				"601598830": &Symbol{
@@ -7965,6 +8443,7 @@ func init() {
 						Name:       "min",
 						UniqueName: "601598830",
 						Pos:        "lib/strings/index.ok:39:1",
+						Constants:  nil,
 					},
 				},
 				"601598831": &Symbol{
@@ -7999,6 +8478,7 @@ func init() {
 						Name:       "max",
 						UniqueName: "601598831",
 						Pos:        "lib/strings/index.ok:48:1",
+						Constants:  nil,
 					},
 				},
 				"601598832": &Symbol{
@@ -8046,6 +8526,7 @@ func init() {
 						Name:       "LastIndex",
 						UniqueName: "601598832",
 						Pos:        "lib/strings/index.ok:57:1",
+						Constants:  nil,
 					},
 				},
 				"601598833": &Symbol{
@@ -8104,6 +8585,7 @@ func init() {
 						Name:       "LastIndexBefore",
 						UniqueName: "601598833",
 						Pos:        "lib/strings/index.ok:76:1",
+						Constants:  nil,
 					},
 				},
 				"601598834": &Symbol{
@@ -8149,6 +8631,7 @@ func init() {
 						Name:       "Join",
 						UniqueName: "601598834",
 						Pos:        "lib/strings/join.ok:4:1",
+						Constants:  nil,
 					},
 				},
 				"601598835": &Symbol{
@@ -8195,6 +8678,7 @@ func init() {
 						Name:       "PadLeft",
 						UniqueName: "601598835",
 						Pos:        "lib/strings/pad.ok:9:1",
+						Constants:  nil,
 					},
 				},
 				"601598836": &Symbol{
@@ -8241,6 +8725,7 @@ func init() {
 						Name:       "PadRight",
 						UniqueName: "601598836",
 						Pos:        "lib/strings/pad.ok:19:1",
+						Constants:  nil,
 					},
 				},
 				"601598837": &Symbol{
@@ -8279,6 +8764,7 @@ func init() {
 						Name:       "createPad",
 						UniqueName: "601598837",
 						Pos:        "lib/strings/pad.ok:27:1",
+						Constants:  nil,
 					},
 				},
 				"601598838": &Symbol{
@@ -8320,6 +8806,7 @@ func init() {
 						Name:       "Repeat",
 						UniqueName: "601598838",
 						Pos:        "lib/strings/repeat.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"601598839": &Symbol{
@@ -8358,6 +8845,7 @@ func init() {
 						Name:       "ReplaceAll",
 						UniqueName: "601598839",
 						Pos:        "lib/strings/replace.ok:5:1",
+						Constants:  nil,
 					},
 				},
 				"601598840": &Symbol{
@@ -8401,6 +8889,7 @@ func init() {
 						Name:       "Reverse",
 						UniqueName: "601598840",
 						Pos:        "lib/strings/reverse.ok:2:1",
+						Constants:  nil,
 					},
 				},
 				"601598841": &Symbol{
@@ -8495,6 +8984,7 @@ func init() {
 						Name:       "Split",
 						UniqueName: "601598841",
 						Pos:        "lib/strings/split.ok:7:1",
+						Constants:  nil,
 					},
 				},
 				"601598842": &Symbol{
@@ -8540,6 +9030,7 @@ func init() {
 						Name:       "Substr",
 						UniqueName: "601598842",
 						Pos:        "lib/strings/substr.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"601598843": &Symbol{
@@ -8589,6 +9080,7 @@ func init() {
 						Name:       "TrimLeft",
 						UniqueName: "601598843",
 						Pos:        "lib/strings/trim.ok:3:1",
+						Constants:  nil,
 					},
 				},
 				"601598844": &Symbol{
@@ -8626,6 +9118,7 @@ func init() {
 						Name:       "TrimRight",
 						UniqueName: "601598844",
 						Pos:        "lib/strings/trim.ok:15:1",
+						Constants:  nil,
 					},
 				},
 				"601598845": &Symbol{
@@ -8661,6 +9154,7 @@ func init() {
 						Name:       "Trim",
 						UniqueName: "601598845",
 						Pos:        "lib/strings/trim.ok:21:1",
+						Constants:  nil,
 					},
 				},
 				"601598846": &Symbol{
@@ -8699,6 +9193,7 @@ func init() {
 						Name:       "TrimPrefix",
 						UniqueName: "601598846",
 						Pos:        "lib/strings/trim.ok:32:1",
+						Constants:  nil,
 					},
 				},
 				"601598847": &Symbol{
@@ -8738,6 +9233,7 @@ func init() {
 						Name:       "TrimSuffix",
 						UniqueName: "601598847",
 						Pos:        "lib/strings/trim.ok:47:1",
+						Constants:  nil,
 					},
 				},
 				"601598848": &Symbol{
@@ -8780,6 +9276,7 @@ func init() {
 						Name:       "substrFrom",
 						UniqueName: "601598848",
 						Pos:        "lib/strings/trim.ok:52:1",
+						Constants:  nil,
 					},
 				},
 				"boolfalse": &Symbol{
@@ -9066,62 +9563,6 @@ func init() {
 						},
 					},
 				},
-			},
-			Constants: map[string]*ast.Literal{
-				"April": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
-				"August": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
-				"December": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
-				"February": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
-				"Hour": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
-				"January": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
-				"July": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
-				"June": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
-				"March": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
-				"May": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
-				"Microsecond": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
-				"Millisecond": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
-				"Minute": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
-				"Nanosecond": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
-				"November": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
-				"October": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
-				"Second": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
-				"September": &ast.Literal{&types.Type{
-					Kind: 6,
-				}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
 			},
 			PackageFunc: &CompiledFunc{
 				Instructions: &Instructions{
@@ -10110,6 +10551,62 @@ func init() {
 				},
 				Name: "..__time",
 				Pos:  "lib/time/util.ok:1:1",
+				Constants: map[string]*ast.Literal{
+					"April": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+					"August": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+					"December": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+					"February": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+					"Hour": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+					"January": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+					"July": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+					"June": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+					"March": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+					"May": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+					"Microsecond": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+					"Millisecond": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+					"Minute": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+					"Nanosecond": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+					"November": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+					"October": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+					"Second": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+					"September": &ast.Literal{&types.Type{
+						Kind: 6,
+					}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+				},
 			},
 			Types: map[TypeRegister]*types.Type{
 				"Duration": &types.Type{
@@ -10381,6 +10878,62 @@ func init() {
 						Name:       "Add",
 						UniqueName: "3492229393",
 						Pos:        "lib/time/add.ok:3:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229394": &Symbol{
@@ -10536,6 +11089,62 @@ func init() {
 						Name:       "Sub",
 						UniqueName: "3492229394",
 						Pos:        "lib/time/compare.ok:4:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229395": &Symbol{
@@ -10633,6 +11242,62 @@ func init() {
 						Name:       "Equal",
 						UniqueName: "3492229395",
 						Pos:        "lib/time/compare.ok:10:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229396": &Symbol{
@@ -10730,6 +11395,62 @@ func init() {
 						Name:       "Before",
 						UniqueName: "3492229396",
 						Pos:        "lib/time/compare.ok:17:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229397": &Symbol{
@@ -10827,6 +11548,62 @@ func init() {
 						Name:       "After",
 						UniqueName: "3492229397",
 						Pos:        "lib/time/compare.ok:24:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229398": &Symbol{
@@ -10935,6 +11712,62 @@ func init() {
 						Name:       "Duration",
 						UniqueName: "3492229398",
 						Pos:        "lib/time/duration.ok:13:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229399": &Symbol{
@@ -10959,6 +11792,62 @@ func init() {
 						Name:       "Nanoseconds",
 						UniqueName: "3492229399",
 						Pos:        "lib/time/duration.ok:14:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229400": &Symbol{
@@ -10983,6 +11872,62 @@ func init() {
 						Name:       "Microseconds",
 						UniqueName: "3492229400",
 						Pos:        "lib/time/duration.ok:18:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229401": &Symbol{
@@ -11007,6 +11952,62 @@ func init() {
 						Name:       "Milliseconds",
 						UniqueName: "3492229401",
 						Pos:        "lib/time/duration.ok:22:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229402": &Symbol{
@@ -11028,6 +12029,62 @@ func init() {
 						Name:       "Seconds",
 						UniqueName: "3492229402",
 						Pos:        "lib/time/duration.ok:26:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229403": &Symbol{
@@ -11052,6 +12109,62 @@ func init() {
 						Name:       "Minutes",
 						UniqueName: "3492229403",
 						Pos:        "lib/time/duration.ok:30:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229404": &Symbol{
@@ -11076,6 +12189,62 @@ func init() {
 						Name:       "Hours",
 						UniqueName: "3492229404",
 						Pos:        "lib/time/duration.ok:34:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229405": &Symbol{
@@ -11139,6 +12308,62 @@ func init() {
 						Name:       "String",
 						UniqueName: "3492229405",
 						Pos:        "lib/time/duration.ok:38:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229406": &Symbol{
@@ -11224,6 +12449,62 @@ func init() {
 						Name:       "Sleep",
 						UniqueName: "3492229406",
 						Pos:        "lib/time/sleep.ok:2:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229407": &Symbol{
@@ -11299,6 +12580,62 @@ func init() {
 						Name:       "Time",
 						UniqueName: "3492229407",
 						Pos:        "lib/time/time.ok:15:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229408": &Symbol{
@@ -11342,6 +12679,62 @@ func init() {
 						Name:       "String",
 						UniqueName: "3492229408",
 						Pos:        "lib/time/time.ok:16:5",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229409": &Symbol{
@@ -11402,6 +12795,62 @@ func init() {
 						Name:       "Now",
 						UniqueName: "3492229409",
 						Pos:        "lib/time/time.ok:32:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229410": &Symbol{
@@ -11460,6 +12909,62 @@ func init() {
 						Name:       "Unix",
 						UniqueName: "3492229410",
 						Pos:        "lib/time/unix.ok:3:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229411": &Symbol{
@@ -11526,6 +13031,62 @@ func init() {
 						Name:       "FromUnix",
 						UniqueName: "3492229411",
 						Pos:        "lib/time/unix.ok:10:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"3492229412": &Symbol{
@@ -11562,6 +13123,62 @@ func init() {
 						Name:       "zeroPad",
 						UniqueName: "3492229412",
 						Pos:        "lib/time/util.ok:1:1",
+						Constants: map[string]*ast.Literal{
+							"April": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "4", nil, nil, "lib/time/time.ok:4:9", nil, nil},
+							"August": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "8", nil, nil, "lib/time/time.ok:8:10", nil, nil},
+							"December": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "12", nil, nil, "lib/time/time.ok:12:12", nil, nil},
+							"February": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "2", nil, nil, "lib/time/time.ok:2:12", nil, nil},
+							"Hour": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3600", nil, nil, "lib/time/duration.ok:10:15", nil, nil},
+							"January": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/time.ok:1:11", nil, nil},
+							"July": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "7", nil, nil, "lib/time/time.ok:7:8", nil, nil},
+							"June": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "6", nil, nil, "lib/time/time.ok:6:8", nil, nil},
+							"March": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "3", nil, nil, "lib/time/time.ok:3:9", nil, nil},
+							"May": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "5", nil, nil, "lib/time/time.ok:5:7", nil, nil},
+							"Microsecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000001", nil, nil, "lib/time/duration.ok:6:15", nil, nil},
+							"Millisecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.001", nil, nil, "lib/time/duration.ok:7:15", nil, nil},
+							"Minute": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "60", nil, nil, "lib/time/duration.ok:9:15", nil, nil},
+							"Nanosecond": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "0.000000001", nil, nil, "lib/time/duration.ok:5:15", nil, nil},
+							"November": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "11", nil, nil, "lib/time/time.ok:11:12", nil, nil},
+							"October": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "10", nil, nil, "lib/time/time.ok:10:11", nil, nil},
+							"Second": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "1", nil, nil, "lib/time/duration.ok:8:15", nil, nil},
+							"September": &ast.Literal{&types.Type{
+								Kind: 6,
+							}, "9", nil, nil, "lib/time/time.ok:9:13", nil, nil},
+						},
 					},
 				},
 				"func(Time)~~~number3492229410": &Symbol{

@@ -129,7 +129,7 @@ func TestUnary(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil)
+				}, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

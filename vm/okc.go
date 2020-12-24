@@ -17,19 +17,6 @@ type File struct {
 
 	Tests []*CompiledTest `json:",omitempty"`
 
-	// Constants contains the package-level constants. These would also appear
-	// as values within PackageFunc, however it's not trivial for the compiler
-	// to extract these. Also, since constants cannot be modified, there's no
-	// need to create some complex logic to retrieved them at compile or
-	// runtime.
-	//
-	// It's totally fine (and probably the best choice) to have the compiler
-	// substitute these values as literals into expressions. Especially for when
-	// the compiler starts supporting simplifying expressions at compile time.
-	//
-	// Constants can only be scalars and all scalars.
-	Constants map[string]*ast.Literal `json:",omitempty"`
-
 	PackageFunc *CompiledFunc `json:",omitempty"`
 
 	// Types contains the type descriptions that can be referenced by some

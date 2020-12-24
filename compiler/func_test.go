@@ -122,7 +122,7 @@ func TestFunc(t *testing.T) {
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
 					Types:   map[vm.TypeRegister]*types.Type{},
-				}, nil)
+				}, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {
