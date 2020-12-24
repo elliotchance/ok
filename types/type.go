@@ -1,6 +1,7 @@
 package types
 
 import (
+	"sort"
 	"strings"
 )
 
@@ -126,4 +127,32 @@ func NewInterface(name string, properties map[string]*Type) *Type {
 		Name:       name,
 		Properties: properties,
 	}
+}
+
+func (t *Type) Interface() string {
+	var keys []string
+	for key := range t.Properties {
+		keys = append(keys, key)
+	}
+
+	sort.Strings(keys)
+
+	s := "{ "
+	for i, key := range keys {
+		if i > 0 {
+			s += "; "
+		}
+
+		if t.Properties[key].Kind == KindFunc {
+			s += key + strings.TrimPrefix(t.Properties[key].String(), "func")
+		} else {
+			s += key + " " + t.Properties[key].String()
+		}
+	}
+
+	if s == "{ " {
+		return "{}"
+	}
+
+	return s + " }"
 }
