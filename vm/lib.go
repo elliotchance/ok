@@ -57,7 +57,8 @@ func init() {
 			Types: nil,
 			Symbols: map[SymbolRegister]*Symbol{
 				"1657625601": &Symbol{
-					Type: "func(string) Error",
+					Type:      "func(string) Error",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"Error"},
 						Instructions: &Instructions{
@@ -1699,7 +1700,8 @@ func init() {
 			},
 			Symbols: map[SymbolRegister]*Symbol{
 				"3624248081": &Symbol{
-					Type: "func(func(string, string)) Logger",
+					Type:      "func(func(string, string)) Logger",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"Log"},
 						Instructions: &Instructions{
@@ -1821,7 +1823,8 @@ func init() {
 					},
 				},
 				"3624248082": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"message"},
 						Instructions: &Instructions{
@@ -1862,7 +1865,8 @@ func init() {
 					},
 				},
 				"3624248083": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"message"},
 						Instructions: &Instructions{
@@ -1903,7 +1907,8 @@ func init() {
 					},
 				},
 				"3624248084": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"message"},
 						Instructions: &Instructions{
@@ -1944,7 +1949,8 @@ func init() {
 					},
 				},
 				"3624248085": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"message"},
 						Instructions: &Instructions{
@@ -1985,7 +1991,8 @@ func init() {
 					},
 				},
 				"3624248086": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"message"},
 						Instructions: &Instructions{
@@ -2026,7 +2033,8 @@ func init() {
 					},
 				},
 				"3624248087": &Symbol{
-					Type: "func(string, string)",
+					Type:      "func(string, string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"level", "message"},
 						Instructions: &Instructions{
@@ -2453,7 +2461,8 @@ func init() {
 			Types: nil,
 			Symbols: map[SymbolRegister]*Symbol{
 				"1725484959": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2516,7 +2525,8 @@ func init() {
 					},
 				},
 				"1725484960": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2574,7 +2584,8 @@ func init() {
 					},
 				},
 				"1725484961": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2635,7 +2646,8 @@ func init() {
 					},
 				},
 				"1725484962": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2694,7 +2706,8 @@ func init() {
 					},
 				},
 				"1725484963": &Symbol{
-					Type: "func(number, number) number",
+					Type:      "func(number, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"base", "power"},
 						Instructions: &Instructions{
@@ -2755,7 +2768,8 @@ func init() {
 					},
 				},
 				"1725484964": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2814,7 +2828,8 @@ func init() {
 					},
 				},
 				"1725484965": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2875,7 +2890,8 @@ func init() {
 					},
 				},
 				"1725484966": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -2927,7 +2943,8 @@ func init() {
 					},
 				},
 				"1725484967": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -2999,7 +3016,8 @@ func init() {
 					},
 				},
 				"1725484968": &Symbol{
-					Type: "func(number) number",
+					Type:      "func(number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x"},
 						Instructions: &Instructions{
@@ -3071,7 +3089,8 @@ func init() {
 					},
 				},
 				"1725484969": &Symbol{
-					Type: "func(number, number) number",
+					Type:      "func(number, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"x", "prec"},
 						Instructions: &Instructions{
@@ -4711,7 +4730,8 @@ func init() {
 			},
 			Symbols: map[SymbolRegister]*Symbol{
 				"3819329014": &Symbol{
-					Type: "func(data) File",
+					Type:      "func(data) File",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"fd"},
 						Instructions: &Instructions{
@@ -4833,7 +4853,8 @@ func init() {
 					},
 				},
 				"3819329015": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s"},
 						Instructions: &Instructions{
@@ -4858,7 +4879,8 @@ func init() {
 					},
 				},
 				"3819329016": &Symbol{
-					Type: "func(data)",
+					Type:      "func(data)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"d"},
 						Instructions: &Instructions{
@@ -4882,7 +4904,8 @@ func init() {
 					},
 				},
 				"3819329017": &Symbol{
-					Type: "func()",
+					Type:      "func()",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -4899,7 +4922,8 @@ func init() {
 					},
 				},
 				"3819329018": &Symbol{
-					Type: "func(number, number) number",
+					Type:      "func(number, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"offset", "whence"},
 						Instructions: &Instructions{
@@ -4931,7 +4955,8 @@ func init() {
 					},
 				},
 				"3819329019": &Symbol{
-					Type: "func(number) data",
+					Type:      "func(number) data",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"bytes"},
 						Instructions: &Instructions{
@@ -4961,7 +4986,8 @@ func init() {
 					},
 				},
 				"3819329020": &Symbol{
-					Type: "func(number) string",
+					Type:      "func(number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"chars"},
 						Instructions: &Instructions{
@@ -4991,7 +5017,8 @@ func init() {
 					},
 				},
 				"3819329021": &Symbol{
-					Type: "func() string",
+					Type:      "func() string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -5032,7 +5059,8 @@ func init() {
 					},
 				},
 				"3819329022": &Symbol{
-					Type: "func(string) File",
+					Type:      "func(string) File",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"path"},
 						Instructions: &Instructions{
@@ -5136,7 +5164,8 @@ func init() {
 					},
 				},
 				"3819329023": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"path"},
 						Instructions: &Instructions{
@@ -5160,7 +5189,8 @@ func init() {
 					},
 				},
 				"3819329024": &Symbol{
-					Type: "func(string, string)",
+					Type:      "func(string, string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"old", "new"},
 						Instructions: &Instructions{
@@ -5187,7 +5217,8 @@ func init() {
 					},
 				},
 				"3819329025": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"path"},
 						Instructions: &Instructions{
@@ -5211,7 +5242,8 @@ func init() {
 					},
 				},
 				"3819329026": &Symbol{
-					Type: "func(string, number, string, Time, bool) FileInfo",
+					Type:      "func(string, number, string, Time, bool) FileInfo",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"Name", "Size", "Mode", "ModifiedTime", "IsDir"},
 						Instructions: &Instructions{
@@ -5328,7 +5360,8 @@ func init() {
 					},
 				},
 				"3819329027": &Symbol{
-					Type: "func(string) FileInfo",
+					Type:      "func(string) FileInfo",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"path"},
 						Instructions: &Instructions{
@@ -5400,7 +5433,8 @@ func init() {
 					},
 				},
 				"3819329028": &Symbol{
-					Type: "func() string",
+					Type:      "func() string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -6047,7 +6081,8 @@ func init() {
 			},
 			Symbols: map[SymbolRegister]*Symbol{
 				"1100080403": &Symbol{
-					Type: "func(any, []any) []any",
+					Type:      "func(any, []any) []any",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"fn", "args"},
 						Instructions: &Instructions{
@@ -6086,7 +6121,8 @@ func init() {
 					},
 				},
 				"1100080404": &Symbol{
-					Type: "func(any, any) any",
+					Type:      "func(any, any) any",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"obj", "prop"},
 						Instructions: &Instructions{
@@ -6119,7 +6155,8 @@ func init() {
 					},
 				},
 				"1100080405": &Symbol{
-					Type: "func(any) string",
+					Type:      "func(any) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"value"},
 						Instructions: &Instructions{
@@ -6149,7 +6186,8 @@ func init() {
 					},
 				},
 				"1100080406": &Symbol{
-					Type: "func(any) string",
+					Type:      "func(any) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"value"},
 						Instructions: &Instructions{
@@ -6209,7 +6247,8 @@ func init() {
 					},
 				},
 				"1100080407": &Symbol{
-					Type: "func(any) number",
+					Type:      "func(any) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"value"},
 						Instructions: &Instructions{
@@ -6239,7 +6278,8 @@ func init() {
 					},
 				},
 				"1100080408": &Symbol{
-					Type: "func(any) []string",
+					Type:      "func(any) []string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"obj"},
 						Instructions: &Instructions{
@@ -6272,7 +6312,8 @@ func init() {
 					},
 				},
 				"1100080409": &Symbol{
-					Type: "func(any, any, any) any",
+					Type:      "func(any, any, any) any",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"obj", "prop", "value"},
 						Instructions: &Instructions{
@@ -6308,7 +6349,8 @@ func init() {
 					},
 				},
 				"1100080410": &Symbol{
-					Type: "func(any) string",
+					Type:      "func(any) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"value"},
 						Instructions: &Instructions{
@@ -7042,7 +7084,8 @@ func init() {
 			},
 			Symbols: map[SymbolRegister]*Symbol{
 				"3243469102": &Symbol{
-					Type: "func(string) string",
+					Type:      "func(string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"name"},
 						Instructions: &Instructions{
@@ -7075,7 +7118,8 @@ func init() {
 					},
 				},
 				"3243469103": &Symbol{
-					Type: "func(string) (string, bool)",
+					Type:      "func(string) (string, bool)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"name"},
 						Instructions: &Instructions{
@@ -7108,7 +7152,8 @@ func init() {
 					},
 				},
 				"3243469104": &Symbol{
-					Type: "func(string, string)",
+					Type:      "func(string, string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"name", "value"},
 						Instructions: &Instructions{
@@ -7136,7 +7181,8 @@ func init() {
 					},
 				},
 				"3243469105": &Symbol{
-					Type: "func(string)",
+					Type:      "func(string)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"name"},
 						Instructions: &Instructions{
@@ -7160,7 +7206,8 @@ func init() {
 					},
 				},
 				"3243469106": &Symbol{
-					Type: "func(number)",
+					Type:      "func(number)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"status"},
 						Instructions: &Instructions{
@@ -7184,7 +7231,8 @@ func init() {
 					},
 				},
 				"3243469107": &Symbol{
-					Type: "func(string, number, number, string) StackElement",
+					Type:      "func(string, number, number, string) StackElement",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"File", "LineNumber", "LineOffset", "FunctionName"},
 						Instructions: &Instructions{
@@ -7237,7 +7285,8 @@ func init() {
 					},
 				},
 				"3243469108": &Symbol{
-					Type: "func() StackTrace",
+					Type:      "func() StackTrace",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -7324,7 +7373,8 @@ func init() {
 					},
 				},
 				"3243469109": &Symbol{
-					Type: "func([]StackElement) StackTrace",
+					Type:      "func([]StackElement) StackTrace",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"Elements"},
 						Instructions: &Instructions{
@@ -7376,7 +7426,8 @@ func init() {
 					},
 				},
 				"3243469110": &Symbol{
-					Type: "func() string",
+					Type:      "func() string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -8050,7 +8101,8 @@ func init() {
 			},
 			Symbols: map[SymbolRegister]*Symbol{
 				"601598823": &Symbol{
-					Type: "func(string) string",
+					Type:      "func(string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s"},
 						Instructions: &Instructions{
@@ -8103,7 +8155,8 @@ func init() {
 					},
 				},
 				"601598824": &Symbol{
-					Type: "func(string) string",
+					Type:      "func(string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s"},
 						Instructions: &Instructions{
@@ -8156,7 +8209,8 @@ func init() {
 					},
 				},
 				"601598825": &Symbol{
-					Type: "func(string, string) bool",
+					Type:      "func(string, string) bool",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "substr"},
 						Instructions: &Instructions{
@@ -8192,7 +8246,8 @@ func init() {
 					},
 				},
 				"601598826": &Symbol{
-					Type: "func(string, string) bool",
+					Type:      "func(string, string) bool",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "prefix"},
 						Instructions: &Instructions{
@@ -8245,7 +8300,8 @@ func init() {
 					},
 				},
 				"601598827": &Symbol{
-					Type: "func(string, string) bool",
+					Type:      "func(string, string) bool",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "suffix"},
 						Instructions: &Instructions{
@@ -8306,7 +8362,8 @@ func init() {
 					},
 				},
 				"601598828": &Symbol{
-					Type: "func(string, string) number",
+					Type:      "func(string, string) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "substr"},
 						Instructions: &Instructions{
@@ -8341,7 +8398,8 @@ func init() {
 					},
 				},
 				"601598829": &Symbol{
-					Type: "func(string, string, number) number",
+					Type:      "func(string, string, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "substr", "offset"},
 						Instructions: &Instructions{
@@ -8412,7 +8470,8 @@ func init() {
 					},
 				},
 				"601598830": &Symbol{
-					Type: "func(number, number) number",
+					Type:      "func(number, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"a", "b"},
 						Instructions: &Instructions{
@@ -8447,7 +8506,8 @@ func init() {
 					},
 				},
 				"601598831": &Symbol{
-					Type: "func(number, number) number",
+					Type:      "func(number, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"a", "b"},
 						Instructions: &Instructions{
@@ -8482,7 +8542,8 @@ func init() {
 					},
 				},
 				"601598832": &Symbol{
-					Type: "func(string, string) number",
+					Type:      "func(string, string) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "substr"},
 						Instructions: &Instructions{
@@ -8530,7 +8591,8 @@ func init() {
 					},
 				},
 				"601598833": &Symbol{
-					Type: "func(string, string, number) number",
+					Type:      "func(string, string, number) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "substr", "offset"},
 						Instructions: &Instructions{
@@ -8589,7 +8651,8 @@ func init() {
 					},
 				},
 				"601598834": &Symbol{
-					Type: "func([]string, string) string",
+					Type:      "func([]string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"strings", "glue"},
 						Instructions: &Instructions{
@@ -8635,7 +8698,8 @@ func init() {
 					},
 				},
 				"601598835": &Symbol{
-					Type: "func(string, string, number) string",
+					Type:      "func(string, string, number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "pad", "toLen"},
 						Instructions: &Instructions{
@@ -8682,7 +8746,8 @@ func init() {
 					},
 				},
 				"601598836": &Symbol{
-					Type: "func(string, string, number) string",
+					Type:      "func(string, string, number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "pad", "toLen"},
 						Instructions: &Instructions{
@@ -8729,7 +8794,8 @@ func init() {
 					},
 				},
 				"601598837": &Symbol{
-					Type: "func(string, number) string",
+					Type:      "func(string, number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"pad", "toLen"},
 						Instructions: &Instructions{
@@ -8768,7 +8834,8 @@ func init() {
 					},
 				},
 				"601598838": &Symbol{
-					Type: "func(string, number) string",
+					Type:      "func(string, number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"str", "times"},
 						Instructions: &Instructions{
@@ -8810,7 +8877,8 @@ func init() {
 					},
 				},
 				"601598839": &Symbol{
-					Type: "func(string, string, string) string",
+					Type:      "func(string, string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "find", "replace"},
 						Instructions: &Instructions{
@@ -8849,7 +8917,8 @@ func init() {
 					},
 				},
 				"601598840": &Symbol{
-					Type: "func(string) string",
+					Type:      "func(string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s"},
 						Instructions: &Instructions{
@@ -8893,7 +8962,8 @@ func init() {
 					},
 				},
 				"601598841": &Symbol{
-					Type: "func(string, string) []string",
+					Type:      "func(string, string) []string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "delimiter"},
 						Instructions: &Instructions{
@@ -8988,7 +9058,8 @@ func init() {
 					},
 				},
 				"601598842": &Symbol{
-					Type: "func(string, number, number) string",
+					Type:      "func(string, number, number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "fromIndex", "toIndex"},
 						Instructions: &Instructions{
@@ -9034,7 +9105,8 @@ func init() {
 					},
 				},
 				"601598843": &Symbol{
-					Type: "func(string, string) string",
+					Type:      "func(string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "cutset"},
 						Instructions: &Instructions{
@@ -9084,7 +9156,8 @@ func init() {
 					},
 				},
 				"601598844": &Symbol{
-					Type: "func(string, string) string",
+					Type:      "func(string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "cutset"},
 						Instructions: &Instructions{
@@ -9122,7 +9195,8 @@ func init() {
 					},
 				},
 				"601598845": &Symbol{
-					Type: "func(string, string) string",
+					Type:      "func(string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "cutset"},
 						Instructions: &Instructions{
@@ -9158,7 +9232,8 @@ func init() {
 					},
 				},
 				"601598846": &Symbol{
-					Type: "func(string, string) string",
+					Type:      "func(string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "prefix"},
 						Instructions: &Instructions{
@@ -9197,7 +9272,8 @@ func init() {
 					},
 				},
 				"601598847": &Symbol{
-					Type: "func(string, string) string",
+					Type:      "func(string, string) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "suffix"},
 						Instructions: &Instructions{
@@ -9237,7 +9313,8 @@ func init() {
 					},
 				},
 				"601598848": &Symbol{
-					Type: "func(string, number) string",
+					Type:      "func(string, number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"s", "index"},
 						Instructions: &Instructions{
@@ -10725,7 +10802,8 @@ func init() {
 			},
 			Symbols: map[SymbolRegister]*Symbol{
 				"3492229393": &Symbol{
-					Type: "func(Time, Duration) Time",
+					Type:      "func(Time, Duration) Time",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"t", "duration"},
 						Instructions: &Instructions{
@@ -10937,7 +11015,8 @@ func init() {
 					},
 				},
 				"3492229394": &Symbol{
-					Type: "func(Time, Time) Duration",
+					Type:      "func(Time, Time) Duration",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"a", "b"},
 						Instructions: &Instructions{
@@ -11148,7 +11227,8 @@ func init() {
 					},
 				},
 				"3492229395": &Symbol{
-					Type: "func(Time, Time) bool",
+					Type:      "func(Time, Time) bool",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"a", "b"},
 						Instructions: &Instructions{
@@ -11301,7 +11381,8 @@ func init() {
 					},
 				},
 				"3492229396": &Symbol{
-					Type: "func(Time, Time) bool",
+					Type:      "func(Time, Time) bool",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"a", "b"},
 						Instructions: &Instructions{
@@ -11454,7 +11535,8 @@ func init() {
 					},
 				},
 				"3492229397": &Symbol{
-					Type: "func(Time, Time) bool",
+					Type:      "func(Time, Time) bool",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"a", "b"},
 						Instructions: &Instructions{
@@ -11607,7 +11689,8 @@ func init() {
 					},
 				},
 				"3492229398": &Symbol{
-					Type: "func(number) Duration",
+					Type:      "func(number) Duration",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"seconds"},
 						Instructions: &Instructions{
@@ -11771,7 +11854,8 @@ func init() {
 					},
 				},
 				"3492229399": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -11851,7 +11935,8 @@ func init() {
 					},
 				},
 				"3492229400": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -11931,7 +12016,8 @@ func init() {
 					},
 				},
 				"3492229401": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12011,7 +12097,8 @@ func init() {
 					},
 				},
 				"3492229402": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12088,7 +12175,8 @@ func init() {
 					},
 				},
 				"3492229403": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12168,7 +12256,8 @@ func init() {
 					},
 				},
 				"3492229404": &Symbol{
-					Type: "func() number",
+					Type:      "func() number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12248,7 +12337,8 @@ func init() {
 					},
 				},
 				"3492229405": &Symbol{
-					Type: "func() string",
+					Type:      "func() string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12367,7 +12457,8 @@ func init() {
 					},
 				},
 				"3492229406": &Symbol{
-					Type: "func(Duration)",
+					Type:      "func(Duration)",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"duration"},
 						Instructions: &Instructions{
@@ -12508,7 +12599,8 @@ func init() {
 					},
 				},
 				"3492229407": &Symbol{
-					Type: "func(number, number, number, number, number, number) Time",
+					Type:      "func(number, number, number, number, number, number) Time",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"Year", "Month", "Day", "Hour", "Minute", "Second"},
 						Instructions: &Instructions{
@@ -12639,7 +12731,8 @@ func init() {
 					},
 				},
 				"3492229408": &Symbol{
-					Type: "func() string",
+					Type:      "func() string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12738,7 +12831,8 @@ func init() {
 					},
 				},
 				"3492229409": &Symbol{
-					Type: "func() Time",
+					Type:      "func() Time",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Instructions: &Instructions{
 							Instructions: []Instruction{
@@ -12854,7 +12948,8 @@ func init() {
 					},
 				},
 				"3492229410": &Symbol{
-					Type: "func(Time) number",
+					Type:      "func(Time) number",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"t"},
 						Instructions: &Instructions{
@@ -12968,7 +13063,8 @@ func init() {
 					},
 				},
 				"3492229411": &Symbol{
-					Type: "func(number) Time",
+					Type:      "func(number) Time",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"seconds"},
 						Instructions: &Instructions{
@@ -13090,7 +13186,8 @@ func init() {
 					},
 				},
 				"3492229412": &Symbol{
-					Type: "func(number) string",
+					Type:      "func(number) string",
+					Interface: "{}",
 					Func: &CompiledFunc{
 						Arguments: []string{"n"},
 						Instructions: &Instructions{

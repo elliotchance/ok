@@ -121,7 +121,8 @@ func (f *File) AddSymbolLiteral(lit *ast.Literal) SymbolRegister {
 
 func (f *File) AddSymbolFunc(fn *CompiledFunc) {
 	f.Symbols[SymbolRegister(fn.UniqueName)] = &Symbol{
-		Type: fn.Type.String(),
-		Func: fn,
+		Type:      fn.Type.String(),
+		Interface: fn.Type.Interface(),
+		Func:      fn,
 	}
 }

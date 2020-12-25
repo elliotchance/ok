@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast/asttest"
-	"github.com/elliotchance/ok/util"
 )
 
 // Interface assigns the runtime interface of a value to a string destination.
@@ -14,7 +13,7 @@ type Interface struct {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Interface) Execute(_ *int, vm *VM) error {
-	i := util.Interface(vm.Get(ins.Value).Kind.Properties)
+	i := vm.Get(ins.Value).Kind.Interface()
 	vm.Set(ins.Result, asttest.NewLiteralString(i))
 
 	return nil
