@@ -31,12 +31,12 @@ func TestArray(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 			},
 		},
@@ -52,22 +52,22 @@ func TestArray(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number3",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// set 0
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number2",
+					Symbol: "2",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -78,11 +78,11 @@ func TestArray(t *testing.T) {
 				// set 1
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number1",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number5",
+					Symbol: "4",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -93,11 +93,11 @@ func TestArray(t *testing.T) {
 				// set 2
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "number2",
+					Symbol: "5",
 				},
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "number13",
+					Symbol: "6",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -123,22 +123,22 @@ func TestArray(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// set 0
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number1",
+					Symbol: "2",
 				},
 				&vm.ArraySet{
 					Array: "2",
@@ -160,9 +160,9 @@ func TestArray(t *testing.T) {
 					test.node,
 				},
 			}, &vm.File{
-				Types:   map[vm.TypeRegister]*types.Type{},
+				Types:   types.Registry{},
 				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-			}, nil, nil)
+			}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

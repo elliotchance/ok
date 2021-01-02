@@ -49,7 +49,7 @@ func TestObject(t *testing.T) {
 				// bar = 123
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number123",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "bar",
@@ -67,7 +67,8 @@ func TestObject(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.node,
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

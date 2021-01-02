@@ -8,6 +8,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -36,11 +37,11 @@ func TestExpr(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number3",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number4",
+					Symbol: "1",
 				},
 				&vm.Add{
 					Left:   "1",
@@ -49,7 +50,7 @@ func TestExpr(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number5",
+					Symbol: "2",
 				},
 				&vm.Multiply{
 					Left:   "3",
@@ -75,15 +76,15 @@ func TestExpr(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number5",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number4",
+					Symbol: "2",
 				},
 				&vm.Add{
 					Left:   "2",
@@ -114,11 +115,11 @@ func TestExpr(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number5",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.Add{
 					Left:   "1",
@@ -138,7 +139,7 @@ func TestExpr(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number5",
+					Symbol: "0",
 				},
 			},
 		},
@@ -153,7 +154,8 @@ func TestExpr(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

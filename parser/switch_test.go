@@ -165,7 +165,7 @@ func TestSwitch(t *testing.T) {
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			asttest.AssertEqual(t, map[string]*ast.Func{
-				"main": test.expected,
+				"1": test.expected,
 			}, p.Funcs())
 			assert.Equal(t, test.comments, p.Comments())
 		})

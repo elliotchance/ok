@@ -39,7 +39,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "datafoo",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -47,7 +47,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "databar",
+					Symbol: "1",
 				},
 				&vm.Combine{
 					Left:   "i",
@@ -75,7 +75,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringfoo",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -83,7 +83,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringbar",
+					Symbol: "1",
 				},
 				&vm.Concat{
 					Left:   "i",
@@ -111,7 +111,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -119,7 +119,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.Add{
 					Left:   "i",
@@ -147,7 +147,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -155,7 +155,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.Subtract{
 					Left:   "i",
@@ -183,7 +183,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -191,7 +191,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.Multiply{
 					Left:   "i",
@@ -219,7 +219,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -227,7 +227,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.Divide{
 					Left:   "i",
@@ -255,7 +255,7 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -263,7 +263,7 @@ func TestBinary(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number3",
+					Symbol: "1",
 				},
 				&vm.Remainder{
 					Left:   "i",
@@ -304,11 +304,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "datafoo",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "databar",
+					Symbol: "1",
 				},
 				&vm.Combine{
 					Left:   "1",
@@ -328,11 +328,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.20",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number5",
+					Symbol: "1",
 				},
 				&vm.Add{
 					Left:   "1",
@@ -352,11 +352,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringfoo",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringbar",
+					Symbol: "1",
 				},
 				&vm.Concat{
 					Left:   "1",
@@ -376,11 +376,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.20",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number5",
+					Symbol: "1",
 				},
 				&vm.Subtract{
 					Left:   "1",
@@ -400,11 +400,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.20",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number5",
+					Symbol: "1",
 				},
 				&vm.Multiply{
 					Left:   "1",
@@ -424,11 +424,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.20",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number5",
+					Symbol: "1",
 				},
 				&vm.Divide{
 					Left:   "1",
@@ -448,11 +448,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number5",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1.20",
+					Symbol: "1",
 				},
 				&vm.Remainder{
 					Left:   "1",
@@ -503,11 +503,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -527,11 +527,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "chara",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "charB",
+					Symbol: "1",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -551,11 +551,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "dataa",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "dataB",
+					Symbol: "1",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -575,11 +575,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "1",
@@ -599,11 +599,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringfoo",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringbar",
+					Symbol: "1",
 				},
 				&vm.Equal{
 					Left:   "1",
@@ -623,11 +623,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -647,11 +647,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "chara",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "charB",
+					Symbol: "1",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -671,11 +671,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "dataa",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "dataB",
+					Symbol: "1",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -695,11 +695,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.NotEqualNumber{
 					Left:   "1",
@@ -719,11 +719,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringfoo",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringbar",
+					Symbol: "1",
 				},
 				&vm.NotEqual{
 					Left:   "1",
@@ -743,11 +743,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.GreaterThanNumber{
 					Left:   "1",
@@ -767,11 +767,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.GreaterThanEqualNumber{
 					Left:   "1",
@@ -791,11 +791,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.LessThanNumber{
 					Left:   "1",
@@ -815,11 +815,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.LessThanEqualNumber{
 					Left:   "1",
@@ -839,11 +839,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "string1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "string1",
+					Symbol: "1",
 				},
 				&vm.GreaterThanString{
 					Left:   "1",
@@ -863,11 +863,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "string1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "string1",
+					Symbol: "1",
 				},
 				&vm.GreaterThanEqualString{
 					Left:   "1",
@@ -887,11 +887,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "string1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "string1",
+					Symbol: "1",
 				},
 				&vm.LessThanString{
 					Left:   "1",
@@ -911,11 +911,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "string1.0",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "string1",
+					Symbol: "1",
 				},
 				&vm.LessThanEqualString{
 					Left:   "1",
@@ -936,15 +936,15 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringtotal~~~is",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1.5",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0.8",
+					Symbol: "2",
 				},
 				&vm.Add{
 					Left:   "2",
@@ -964,11 +964,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.And{
 					Left:   "1",
@@ -988,11 +988,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "boolfalse",
+					Symbol: "1",
 				},
 				&vm.And{
 					Left:   "1",
@@ -1012,11 +1012,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "booltrue",
+					Symbol: "1",
 				},
 				&vm.Or{
 					Left:   "1",
@@ -1036,11 +1036,11 @@ func TestBinary(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "booltrue",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "boolfalse",
+					Symbol: "1",
 				},
 				&vm.Or{
 					Left:   "1",
@@ -1090,12 +1090,12 @@ func TestBinary(t *testing.T) {
 				// first array
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 				&vm.Assign{
 					Result:   "i",
@@ -1105,12 +1105,12 @@ func TestBinary(t *testing.T) {
 				// second array
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "number0",
+					Symbol: "1",
 				},
 				&vm.ArrayAlloc{
 					Size:   "3",
 					Result: "4",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 
 				// +=
@@ -1125,9 +1125,9 @@ func TestBinary(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
-					Types:   map[vm.TypeRegister]*types.Type{},
+					Types:   types.Registry{},
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

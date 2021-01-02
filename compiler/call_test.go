@@ -41,12 +41,12 @@ func TestCall(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.ArrayAlloc{
 					Size:   "1",
 					Result: "2",
-					Kind:   "[]number",
+					Kind:   "2",
 				},
 				&vm.Len{
 					Argument: "2",
@@ -74,7 +74,7 @@ func TestCall(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.5",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -114,7 +114,7 @@ func TestCall(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1.5",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "foo",
@@ -122,7 +122,7 @@ func TestCall(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number2",
+					Symbol: "1",
 				},
 				&vm.Add{
 					Left:   "foo",
@@ -131,7 +131,7 @@ func TestCall(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number10",
+					Symbol: "2",
 				},
 				&vm.Multiply{
 					Left:   "4",
@@ -153,7 +153,7 @@ func TestCall(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringfoo",
+					Symbol: "0",
 				},
 			},
 		},
@@ -161,9 +161,9 @@ func TestCall(t *testing.T) {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(newFunc(test.nodes...),
 				&vm.File{
-					Types:   map[vm.TypeRegister]*types.Type{},
+					Types:   types.Registry{},
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

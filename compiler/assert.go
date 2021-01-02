@@ -67,7 +67,7 @@ func compileAssertRaise(
 		Statements: []ast.Node{n.Call},
 		On: []*ast.On{
 			{
-				Type: types.ErrorInterface, // TODO(elliot): Fix me.
+				Type: "error.Error",
 				Statements: []ast.Node{
 					&ast.Assign{
 						Lefts:  []ast.Node{&ast.Identifier{Name: raisedVariable}},

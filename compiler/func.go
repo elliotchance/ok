@@ -13,14 +13,10 @@ func CompileFunc(
 	file *vm.File,
 	parentFunc *vm.CompiledFunc,
 	constants map[string]*ast.Literal,
+	imports map[string]*types.Type,
+	scopeOverrides map[string]*types.Type,
 ) (*vm.CompiledFunc, error) {
-	compiled := vm.NewCompiledFunc(fn, parentFunc, constants)
-
-	// Make sure we clear state that shouldn't be serialized.
-	defer func() {
-		compiled.Parent = nil
-		compiled.DeferredFuncsToCompile = nil
-	}()
+	compiled := vm.NewCompiledFunc(fn, parentFunc, constants, file)
 
 	// All variables in a function are stored internally as a map right now. So
 	// the first thing we need to do is initialise the map. Whether we return it
@@ -33,13 +29,18 @@ func CompileFunc(
 	// Load the arguments from the registers.
 	for _, arg := range fn.Arguments {
 		compiled.NextRegister()
-		compiled.NewVariable(arg.Name, arg.Type)
+		resolvedTypeRegister, err := file.Types.Add(arg.Type)
+		if err != nil {
+			return nil, err
+		}
+
+		compiled.NewVariable(arg.Name, file.Types.Get(resolvedTypeRegister))
 
 		compiled.Arguments = append(compiled.Arguments, arg.Name)
 	}
 
 	err := compileBlock(compiled, fn.Statements, nil, nil,
-		file, nil)
+		file, scopeOverrides)
 	if err != nil {
 		return nil, err
 	}
@@ -52,18 +53,15 @@ func CompileFunc(
 	}
 
 	// Now we have finished compiling this scope (and so have discovered and
-	// resolved the type of all variables) we can no compile all the deferred
+	// resolved the type of all variables) we can now compile all the deferred
 	// function literals that might reference variables in this scope.
 	instructions := len(compiled.Instructions.Instructions)
 	for _, fn := range compiled.DeferredFuncsToCompile {
-		cf, err := CompileFunc(fn.Func, file, compiled, constants)
+		cf, err := CompileFunc(fn.Func, file, compiled, constants, imports, scopeOverrides)
 		if err != nil {
 			return nil, err
 		}
 
-		if fn.Func.UniqueName != cf.UniqueName {
-			panic("damn")
-		}
 		file.AddSymbolFunc(cf)
 
 		compiled.Append(&vm.AssignFunc{

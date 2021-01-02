@@ -2,15 +2,11 @@ package main
 
 import (
 	"fmt"
-	"hash/crc32"
 	"io"
 	"io/ioutil"
 	"log"
 	"os"
-
-	"github.com/elliotchance/ok/compiler"
-	"github.com/elliotchance/ok/util"
-	"github.com/elliotchance/ok/vm"
+	"strings"
 )
 
 var f io.Writer
@@ -22,40 +18,56 @@ func check(err error) {
 }
 
 func main() {
+	f, err := os.Create("fs/lib.go")
+	check(err)
+
+	fmt.Fprintf(f, "package fs\n\n")
+	fmt.Fprintf(f, "import \"os\"\n")
+	fmt.Fprintf(f, "import \"github.com/blang/vfs\"\n")
+	fmt.Fprintf(f, "import \"github.com/blang/vfs/memfs\"\n")
+	fmt.Fprintf(f, "import \"github.com/blang/vfs/mountfs\"\n")
+	fmt.Fprintf(f, "func init() {\n")
+	fmt.Fprintf(f, "\tFilesystem = mountfs.Create(vfs.OS())\n")
+	fmt.Fprintf(f, "\tvar fs vfs.Filesystem\n")
+	fmt.Fprintf(f, "\tvar f vfs.File\n")
+
 	packages, err := ioutil.ReadDir("lib")
 	check(err)
 
-	pkgs := map[string]*vm.File{}
-	crc32q := crc32.MakeTable(0xD5828281)
-	for _, pathInfo := range packages {
-		pkgName := pathInfo.Name()
+	for _, packagePathInfo := range packages {
+		pkgName := packagePathInfo.Name()
 
 		// lang is not importable - it only contains tests.
-		if !pathInfo.IsDir() || pkgName == "lang" {
+		if !packagePathInfo.IsDir() || pkgName == "lang" {
 			continue
 		}
 
-		// TODO(elliot): This is a pretty crude way to make sure functions
-		//  compiled from different inbuilt packages end up using predictable
-		//  but unique function numbers.
-		anonFunctionName := int(crc32.Checksum([]byte(pkgName), crc32q))
+		fmt.Fprintf(f, "\tfs = memfs.Create()\n")
 
-		f, errs := compiler.Compile("lib", pkgName, false, anonFunctionName)
-		util.CheckErrorsWithExit(errs)
+		fileNames, err := ioutil.ReadDir("lib/" + pkgName)
+		check(err)
 
-		pkgs[pkgName] = f
+		for _, filePathInfo := range fileNames {
+			if !strings.HasSuffix(filePathInfo.Name(), ".ok") {
+				continue
+			}
+
+			fileData, err := ioutil.ReadFile(fmt.Sprintf("lib/%s/%s", pkgName, filePathInfo.Name()))
+			check(err)
+
+			encodedFile := string(fileData)
+			encodedFile = strings.ReplaceAll(encodedFile, "\\", "\\\\")
+			encodedFile = strings.ReplaceAll(encodedFile, "\"", "\\\"")
+			encodedFile = strings.ReplaceAll(encodedFile, "\n", "\\n\" +\n\t\t\t\"")
+
+			fmt.Fprintf(f, "\tf, _ = fs.OpenFile(\"%s\", os.O_RDWR|os.O_CREATE, 0777)\n",
+				filePathInfo.Name())
+			fmt.Fprintf(f, "\tf.Write([]byte(\"%s\"))\n", encodedFile)
+		}
+
+		fmt.Fprintf(f, "\tFilesystem.Mount(fs, \"/%s\")\n", pkgName)
 	}
 
-	f, err := os.Create("vm/lib.go")
-	check(err)
-
-	fmt.Fprintf(f, "package vm\n\n")
-	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/ast\"\n")
-	fmt.Fprintf(f, "import \"github.com/elliotchance/ok/types\"\n\n")
-	fmt.Fprintf(f, "func init() {\n")
-	fmt.Fprintf(f, "\tPackages = ")
-	vm.Render(f, pkgs, "\t", true)
-	fmt.Fprintf(f, "\n")
 	fmt.Fprintf(f, "}\n")
 	fmt.Fprintf(f, "\n")
 }

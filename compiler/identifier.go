@@ -2,7 +2,6 @@ package compiler
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/types"
@@ -38,24 +37,6 @@ func compileIdentifier(
 			[]*types.Type{parentVar}, nil
 	}
 
-	if v, ok := compiledFunc.GetTypeForVariable(e.Name, scopeOverrides); ok {
-		return []vm.Register{vm.Register(e.Name)}, []*types.Type{v}, nil
-	}
-
-	// It could be an imported package.
-	for packageName := range file.Imports {
-		if e.Name == packageName || strings.HasSuffix(packageName, "/"+e.Name) {
-			imp := file.Imports[packageName]
-			packageRegister := compiledFunc.NextRegister()
-			compiledFunc.Append(&vm.LoadPackage{
-				Result:      packageRegister,
-				PackageName: e.Name,
-			})
-
-			return []vm.Register{packageRegister}, []*types.Type{imp}, nil
-		}
-	}
-
 	// Constants (defined at the package-level) can be referenced from
 	// anywhere. This only covers the case where we are referencing a
 	// constant that belongs to the current package, as external constants
@@ -67,26 +48,39 @@ func compileIdentifier(
 		// TODO(elliot): The compiler needs to raise an error when trying to
 		//  modify a constant.
 		literalRegister := compiledFunc.NextRegister()
-		compiledFunc.Append(&vm.AssignSymbol{
-			Result: literalRegister,
-			Symbol: file.AddSymbolLiteral(c),
-		})
+
+		if c.IsGlobal {
+			compiledFunc.Append(&vm.Assign{
+				Result:   literalRegister,
+				Register: vm.Register("$" + c.Value),
+			})
+		} else {
+			compiledFunc.Append(&vm.AssignSymbol{
+				Result: literalRegister,
+				Symbol: file.AddSymbolLiteral(c),
+			})
+		}
 
 		return []vm.Register{literalRegister}, []*types.Type{c.Kind}, nil
+	}
+
+	if v, ok := compiledFunc.GetTypeForVariable(e.Name, scopeOverrides); ok {
+		return []vm.Register{vm.Register(e.Name)}, []*types.Type{v}, nil
 	}
 
 	// It could also reference a package-level function.
 	if fn := file.FuncByName(e.Name); fn != nil {
 		literalRegister := compiledFunc.NextRegister()
+		ty := file.Types.Get(string(fn.Type))
 		compiledFunc.Append(&vm.AssignSymbol{
 			Result: literalRegister,
 			Symbol: file.AddSymbolLiteral(&ast.Literal{
-				Kind:  fn.Type,
+				Kind:  ty,
 				Value: fn.UniqueName,
 			}),
 		})
 
-		return []vm.Register{literalRegister}, []*types.Type{fn.Type}, nil
+		return []vm.Register{literalRegister}, []*types.Type{ty}, nil
 	}
 
 	return nil, nil, fmt.Errorf("%s undefined variable: %s",

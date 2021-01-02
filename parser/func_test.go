@@ -18,13 +18,13 @@ func TestFunc(t *testing.T) {
 		"zero-args-zero-returns": {
 			str: "func foo() {}",
 			expected: map[string]*ast.Func{
-				"foo": {Name: "foo"},
+				"1": {Name: "foo"},
 			},
 		},
 		"one-arg-zero-returns": {
 			str: "func foo(bar number) {}",
 			expected: map[string]*ast.Func{
-				"foo": {
+				"1": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
 						{Name: "bar", Type: types.Number},
@@ -35,7 +35,7 @@ func TestFunc(t *testing.T) {
 		"two-args-zero-returns": {
 			str: "func foo(bar number, baz string) {}",
 			expected: map[string]*ast.Func{
-				"foo": {
+				"1": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
 						{Name: "bar", Type: types.Number},
@@ -47,7 +47,7 @@ func TestFunc(t *testing.T) {
 		"three-args-zero-returns": {
 			str: "func foo(bar number, baz string, qux [] bool) {}",
 			expected: map[string]*ast.Func{
-				"foo": {
+				"1": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
 						{Name: "bar", Type: types.Number},
@@ -60,7 +60,7 @@ func TestFunc(t *testing.T) {
 		"zero-args-one-return": {
 			str: "func bar() number {}",
 			expected: map[string]*ast.Func{
-				"bar": {
+				"1": {
 					Name:    "bar",
 					Returns: []*types.Type{types.Number},
 				},
@@ -69,7 +69,7 @@ func TestFunc(t *testing.T) {
 		"zero-args-two-returns": {
 			str: "func bar() (number, string) {}",
 			expected: map[string]*ast.Func{
-				"bar": {
+				"1": {
 					Name:    "bar",
 					Returns: []*types.Type{types.Number, types.String},
 				},
@@ -78,7 +78,7 @@ func TestFunc(t *testing.T) {
 		"three-compressed-args-zero-returns": {
 			str: "func foo(bar, baz string, qux {}number) {}",
 			expected: map[string]*ast.Func{
-				"foo": {
+				"1": {
 					Name: "foo",
 					Arguments: []*ast.Argument{
 						{Name: "bar", Type: types.String},
@@ -91,10 +91,10 @@ func TestFunc(t *testing.T) {
 		"multiple-functions": {
 			str: "func foo() {}\nfunc bar() {}",
 			expected: map[string]*ast.Func{
-				"foo": {
+				"1": {
 					Name: "foo",
 				},
-				"bar": {
+				"2": {
 					Name: "bar",
 				},
 			},
@@ -102,7 +102,7 @@ func TestFunc(t *testing.T) {
 		"exported-function": {
 			str: "func Abs() {}",
 			expected: map[string]*ast.Func{
-				"Abs": {
+				"1": {
 					Name: "Abs",
 				},
 			},
@@ -113,7 +113,7 @@ func TestFunc(t *testing.T) {
 				"try { print() } finally { bar() }" +
 				"}",
 			expected: map[string]*ast.Func{
-				"main": {
+				"1": {
 					Name: "main",
 					Statements: []ast.Node{
 						&ast.ErrorScope{
@@ -158,7 +158,7 @@ func TestFunc(t *testing.T) {
 				"try { print() } finally { bar() }" +
 				"}",
 			expected: map[string]*ast.Func{
-				"main": {
+				"1": {
 					Name: "main",
 					Statements: []ast.Node{
 						&ast.ErrorScope{
@@ -178,7 +178,7 @@ func TestFunc(t *testing.T) {
 						},
 					},
 				},
-				"main2": {
+				"2": {
 					Name: "main2",
 					Statements: []ast.Node{
 						&ast.ErrorScope{
@@ -203,7 +203,7 @@ func TestFunc(t *testing.T) {
 		"package-argument": {
 			str: "func printTime(t time.Time) {}",
 			expected: map[string]*ast.Func{
-				"printTime": {
+				"1": {
 					Name: "printTime",
 					Arguments: []*ast.Argument{
 						{Name: "t", Type: types.NewUnresolvedInterface("time.Time")},

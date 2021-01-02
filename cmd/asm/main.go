@@ -39,17 +39,21 @@ func (*Command) Run(args []string) {
 	if args[0] == "." {
 		packageName = "."
 	}
-	pkg, errs := compiler.Compile(okPath, packageName, false, 0)
+	anonFunctionName := 0
+	pkg, _, errs := compiler.Compile(okPath, packageName, false,
+		&anonFunctionName, false)
 	util.CheckErrorsWithExit(errs)
 
 	// Create a map as a function may match more than one glob.
-	funcsToPrint := map[string]struct{}{}
+	funcsToPrint := map[vm.SymbolRegister]struct{}{}
 	for _, glob := range args[1:] {
-		for _, fn := range pkg.Symbols {
-			if fn.Func != nil &&
-				(util.MatchesGlob(fn.Func.UniqueName, glob) ||
-					util.MatchesGlob(fn.Func.Name, glob)) {
-				funcsToPrint[fn.Func.UniqueName] = struct{}{}
+		for symbolRegister, symbol := range pkg.Symbols {
+			if symbol.Func != nil &&
+				(util.MatchesGlob(symbol.Func.UniqueName, glob) ||
+					util.MatchesGlob(symbol.Func.Name, glob)) {
+				funcsToPrint[symbolRegister] = struct{}{}
+			} else if util.MatchesGlob(string(symbolRegister), glob) {
+				funcsToPrint[symbolRegister] = struct{}{}
 			}
 		}
 	}
@@ -58,32 +62,37 @@ func (*Command) Run(args []string) {
 	// also deterministic if we need to diff the output.
 	var funcs []string
 	for funcName := range funcsToPrint {
-		funcs = append(funcs, funcName)
+		funcs = append(funcs, string(funcName))
 	}
 	sort.Strings(funcs)
 
-	for i, fnName := range funcs {
+	for i, symbolRegister := range funcs {
 		// Just for vanity, put an empty line between functions.
 		if i > 0 {
 			fmt.Println()
 		}
 
-		fn := pkg.Symbols[vm.SymbolRegister(fnName)]
-		if fn == nil {
+		symbol := pkg.Symbols[vm.SymbolRegister(symbolRegister)]
+		if symbol == nil {
 			// TODO(elliot): This could be handled more gracefully.
-			panic("no such function: " + fnName)
+			panic("no such symbol: " + symbolRegister)
 		}
 
-		if fn.Func.Name != "" {
-			fmt.Printf("%s: ", fn.Func.Name)
-		}
-		fmt.Println(fn.Func.UniqueName+":", fn.Type+":")
+		if symbol.Func == nil {
+			fmt.Printf("%s (symbol=%s):\n  Value = \"%s\"\n",
+				pkg.Types.Get(string(symbol.Type)).String(), symbolRegister,
+				symbol.Value)
+		} else {
+			fmt.Printf("%s (symbol=%s, name=%s, unique=%s):\n",
+				pkg.Types.Get(string(symbol.Type)).String(), symbolRegister,
+				symbol.Func.Name, symbol.Func.UniqueName)
 
-		for i, ins := range fn.Func.Instructions.Instructions {
-			ty := fmt.Sprintf("%T", ins)[4:]
+			for i, ins := range symbol.Func.Instructions.Instructions {
+				ty := fmt.Sprintf("%T", ins)[4:]
 
-			// "-22" is chosen here because is is the longer instruction name.
-			fmt.Printf("  %3d %-22s # %s\n", i+1, ty, ins)
+				// "-22" is chosen here because is is the longer instruction name.
+				fmt.Printf("  %3d %-22s # %s\n", i+1, ty, ins)
+			}
 		}
 	}
 }

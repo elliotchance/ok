@@ -2,9 +2,9 @@ package vm
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/types"
@@ -12,19 +12,18 @@ import (
 
 // File is the root structure that will be serialized into the okc file.
 type File struct {
-	// Imports lists all the packages that this package relies on.
-	Imports map[string]*types.Type `json:",omitempty"`
-
 	Tests []*CompiledTest `json:",omitempty"`
-
-	PackageFunc *CompiledFunc `json:",omitempty"`
 
 	// Types contains the type descriptions that can be referenced by some
 	// instructions at runtime.
-	Types map[TypeRegister]*types.Type `json:",omitempty"`
+	Types types.Registry `json:",omitempty"`
 
 	// Symbols contains literal values that can be referenced by instructions.
 	Symbols map[SymbolRegister]*Symbol `json:",omitempty"`
+
+	// Globals describes the global registers and unique names of the functions
+	// that will initialize each package.
+	Globals map[string]string `json:",omitempty"`
 }
 
 func (f *File) FuncByName(name string) *CompiledFunc {
@@ -65,11 +64,6 @@ func Store(file *File, packageName string) error {
 }
 
 func Load(packageName string) (*File, error) {
-	// Ignore packages that are build in (standard library).
-	if p, ok := Packages[packageName]; ok {
-		return p, nil
-	}
-
 	filePath := PathForPackage(packageName)
 	jsonData, err := ioutil.ReadFile(filePath)
 	if err != nil {
@@ -85,44 +79,34 @@ func Load(packageName string) (*File, error) {
 	return okcFile, nil
 }
 
-// Interface is useful when we need to lookup root elements (constants,
-// functions etc) for the package.
-func (f *File) Interface() *types.Type {
-	return f.PackageFunc.Type.Returns[0]
-}
-
-func (f *File) AddType(kind *types.Type) TypeRegister {
-	if kind == nil {
-		return NoTypeRegister
+func (f *File) AddType(ty *types.Type) TypeRegister {
+	newType, err := f.Types.Add(ty)
+	if err != nil {
+		panic(err)
 	}
 
-	// TODO(elliot): Dedup types here.
-	key := TypeRegister(strings.ReplaceAll(kind.String(), " ", "-"))
-	f.Types[key] = kind
-
-	return key
+	return TypeRegister(newType)
 }
 
 func (f *File) AddSymbolLiteral(lit *ast.Literal) SymbolRegister {
 	// TODO(elliot): Dedup symbols here.
-	// TODO(elliot): Remove the newline replace. This is just so the value
-	//  doesn't cause libgen to produce mangled code.
-	key := SymbolRegister(strings.ReplaceAll(
-		strings.ReplaceAll(lit.Kind.String()+lit.Value, "\n", "\\n"),
-		" ", "~~~"))
+	key := SymbolRegister(fmt.Sprintf("%d", len(f.Symbols)))
 
 	f.Symbols[key] = &Symbol{
-		Type:  lit.Kind.String(),
+		Type:  f.AddType(lit.Kind),
 		Value: lit.Value,
 	}
 
 	return key
 }
 
-func (f *File) AddSymbolFunc(fn *CompiledFunc) {
-	f.Symbols[SymbolRegister(fn.UniqueName)] = &Symbol{
-		Type:      fn.Type.String(),
-		Interface: fn.Type.Interface(),
+func (f *File) AddSymbolFunc(fn *CompiledFunc) SymbolRegister {
+	key := SymbolRegister(fmt.Sprintf("%d", len(f.Symbols)))
+	f.Symbols[key] = &Symbol{
+		Type:      fn.Type,
+		Interface: f.Types.Get(string(fn.Type)).Interface(),
 		Func:      fn,
 	}
+
+	return key
 }

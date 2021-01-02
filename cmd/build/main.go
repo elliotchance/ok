@@ -1,6 +1,7 @@
 package build
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -27,16 +28,22 @@ func (*Command) Description() string {
 
 // Run is the entry point for the "ok run" command.
 func (*Command) Run(args []string) {
+	var flagCompile, flagVerbose bool
+	flag.BoolVar(&flagCompile, "c", false, "compile only")
+	flag.BoolVar(&flagVerbose, "v", false, "verbose output")
+	check(flag.CommandLine.Parse(args))
+	args = flag.Args()
+
 	if len(args) == 0 {
 		args = []string{"."}
 	}
 
 	for _, arg := range args {
-		runArg(arg)
+		runArg(arg, flagCompile, flagVerbose)
 	}
 }
 
-func runArg(arg string) {
+func runArg(arg string, flagCompile, flagVerbose bool) {
 	okPath, err := util.OKPath()
 	check(err)
 
@@ -44,8 +51,14 @@ func runArg(arg string) {
 	if arg == "." {
 		packageName = "."
 	}
-	file, errs := compiler.Compile(okPath, packageName, false, 0)
+	anonFunctionName := 0
+	file, _, errs := compiler.Compile(okPath, packageName, false,
+		&anonFunctionName, flagVerbose)
 	util.CheckErrorsWithExit(errs)
+
+	if flagCompile {
+		return
+	}
 
 	goFile := path.Join(arg, "main.go")
 	f, err := os.Create(goFile)

@@ -52,7 +52,8 @@ func Logger(Log func(string, string)) Logger {
 }
 
 // Log is a very simple implementation for Logger. You may call this directly
-// for dynamic log levels, but it is recommened to put this into a Logger first.
+// for dynamic log levels, but it is recommended to put this into a Logger
+// first.
 func Log(level, message string) {
     // https://github.com/elliotchance/ok/issues/99
     level = strings.PadLeft(level, " ", 5)

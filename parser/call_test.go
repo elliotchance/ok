@@ -72,7 +72,7 @@ func TestCall(t *testing.T) {
 
 			assert.Empty(t, p.Errors().String())
 			asttest.AssertEqual(t, map[string]*ast.Func{
-				"main": newFunc(test.expected),
+				"1": newFunc(test.expected),
 			}, p.Funcs())
 			assert.Nil(t, p.Comments())
 		})

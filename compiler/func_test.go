@@ -17,7 +17,7 @@ import (
 func parseFunc(s string) *ast.Func {
 	p := parser.NewParser(0)
 	p.ParseString(s, "a.ok")
-	return p.Funcs()["foo"]
+	return p.Funcs()["1"]
 }
 
 func TestFunc(t *testing.T) {
@@ -59,7 +59,7 @@ func TestFunc(t *testing.T) {
 				&vm.Print{},
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "stringhello",
+					Symbol: "0",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"1"},
@@ -71,7 +71,7 @@ func TestFunc(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignFunc{
 					Result:     "2",
-					Type:       "func()-number",
+					Type:       "2",
 					UniqueName: "2",
 				},
 				&vm.ParentScope{
@@ -88,7 +88,7 @@ func TestFunc(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignFunc{
 					Result:     "1",
-					Type:       "func()-number",
+					Type:       "2",
 					UniqueName: "2",
 				},
 				&vm.ParentScope{
@@ -100,7 +100,7 @@ func TestFunc(t *testing.T) {
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "baz",
@@ -121,8 +121,8 @@ func TestFunc(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-					Types:   map[vm.TypeRegister]*types.Type{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, map[string]*types.Type{})
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

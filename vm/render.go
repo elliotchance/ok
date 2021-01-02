@@ -70,7 +70,7 @@ func renderMap(f io.Writer, x interface{}, indent string, vmPackage bool) {
 
 func renderSlice(f io.Writer, x interface{}, indent string, vmPackage bool) {
 	// Some types are handled as a single line. This is so the output generated
-	// for vm/lib.go is far less verbose and more version control friendly.
+	// for fs/lib.go is far less verbose and more version control friendly.
 	switch x.(type) {
 	case Registers, []string:
 		renderSliceOneLine(f, x, indent, vmPackage)
@@ -115,7 +115,7 @@ func renderSliceOneLine(f io.Writer, x interface{}, indent string, vmPackage boo
 
 func renderPtr(f io.Writer, x interface{}, indent string, vmPackage bool) {
 	// Some types are handled as a single line. This is so the output generated
-	// for vm/lib.go is far less verbose and more version control friendly.
+	// for fs/lib.go is far less verbose and more version control friendly.
 	switch x.(type) {
 	case Instruction, *ast.Literal, *ast.Argument:
 		renderPtrWithoutKeys(f, x, indent, vmPackage)

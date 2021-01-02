@@ -28,6 +28,8 @@ type Literal struct {
 	// We can only open one reader for a file handle as to not reset the
 	// placement.
 	Reader *bufio.Reader
+
+	IsGlobal bool
 }
 
 // Position returns the position.

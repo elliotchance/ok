@@ -26,10 +26,10 @@ func TestMap(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "2",
 					Size:   "1",
 					Result: "2",
 				},
@@ -56,10 +56,10 @@ func TestMap(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number3",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -67,11 +67,11 @@ func TestMap(t *testing.T) {
 				// "a": 2
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringa",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number2",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -82,11 +82,11 @@ func TestMap(t *testing.T) {
 				// "b": 5
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "stringb",
+					Symbol: "3",
 				},
 				&vm.AssignSymbol{
 					Result: "6",
-					Symbol: "number5",
+					Symbol: "4",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -97,11 +97,11 @@ func TestMap(t *testing.T) {
 				// "c": 13
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringc",
+					Symbol: "5",
 				},
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "number13",
+					Symbol: "6",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -130,10 +130,10 @@ func TestMap(t *testing.T) {
 				// alloc
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number1",
+					Symbol: "0",
 				},
 				&vm.MapAlloc{
-					Kind:   "{}number",
+					Kind:   "3",
 					Size:   "1",
 					Result: "2",
 				},
@@ -141,11 +141,11 @@ func TestMap(t *testing.T) {
 				// "b": 123
 				&vm.AssignSymbol{
 					Result: "3",
-					Symbol: "stringb",
+					Symbol: "1",
 				},
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "number123",
+					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "2",
@@ -167,9 +167,9 @@ func TestMap(t *testing.T) {
 					test.node,
 				},
 			}, &vm.File{
-				Types:   map[vm.TypeRegister]*types.Type{},
+				Types:   types.Registry{},
 				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-			}, nil, nil)
+			}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

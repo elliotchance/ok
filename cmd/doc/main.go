@@ -6,7 +6,6 @@ import (
 	"os"
 	"path"
 	"sort"
-	"strconv"
 
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/parser"
@@ -37,12 +36,7 @@ func (*Command) Run(args []string) {
 		var constantNames []string
 		constants := map[string]*ast.Literal{}
 
-		for fnName, fn := range p.Funcs() {
-			// TODO(elliot): Remove this check.
-			if _, err := strconv.Atoi(fnName); err == nil {
-				continue
-			}
-
+		for _, fn := range p.Funcs() {
 			funcs = append(funcs, fn)
 		}
 

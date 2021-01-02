@@ -1,6 +1,6 @@
 .PHONY: clean test run-tests tests/* release version ok lib-gen
 
-ok: version vm/lib.go
+ok: version fs/lib.go
 	go build
 
 	# Restore the original main.go so that git does not track the changes.
@@ -27,9 +27,9 @@ test-fmt:
 vet:
 	# vet doesn't have a way to exclude files, so we have to do this hacky
 	# workaround for now.
-	mv -f vm/lib.go vm/lib.notgo
+	mv -f fs/lib.go fs/lib.notgo
 	go vet ./...
-	mv -f vm/lib.notgo vm/lib.go
+	mv -f fs/lib.notgo fs/lib.go
 
 test-coverage:
 	echo "" > coverage.txt
@@ -77,9 +77,9 @@ version:
 lib-gen:
 	go build ./cmd/lib-gen/
 
-vm/lib.go: lib-gen
+fs/lib.go: lib-gen
 	./lib-gen
-	go fmt vm/lib.go
+	go fmt fs/lib.go
 
 run-lib-tests:
 	for d in $(shell ls -d lib/*/); do \
@@ -99,9 +99,9 @@ check-doc:
     done
 
 check-stdlib:
-	mv -f vm/lib.go vm/lib.go.bak
-	make vm/lib.go
-	diff vm/lib.go vm/lib.go.bak
+	mv -f fs/lib.go fs/lib.go.bak
+	make fs/lib.go
+	diff fs/lib.go fs/lib.go.bak
 
 doc: ok
 	for d in $(shell ls -d lib/*/); do \

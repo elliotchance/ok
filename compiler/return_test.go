@@ -6,6 +6,7 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -32,7 +33,7 @@ func TestReturn(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number123",
+					Symbol: "0",
 				},
 				&vm.Return{
 					Results: []vm.Register{"1"},
@@ -49,11 +50,11 @@ func TestReturn(t *testing.T) {
 			expected: []vm.Instruction{
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number123",
+					Symbol: "0",
 				},
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "stringfoo",
+					Symbol: "1",
 				},
 				&vm.Return{
 					Results: []vm.Register{"1", "2"},
@@ -68,7 +69,8 @@ func TestReturn(t *testing.T) {
 				},
 			}, &vm.File{
 				Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-			}, nil, nil)
+				Types:   types.Registry{},
+			}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

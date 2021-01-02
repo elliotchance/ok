@@ -7,6 +7,7 @@ import (
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/compiler"
 	"github.com/elliotchance/ok/lexer"
+	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -77,7 +78,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -87,7 +88,7 @@ func TestSwitch(t *testing.T) {
 				// a == 1
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -102,7 +103,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE")
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "stringONE",
+					Symbol: "2",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -114,7 +115,7 @@ func TestSwitch(t *testing.T) {
 				// a == 2
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number2",
+					Symbol: "3",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -129,7 +130,7 @@ func TestSwitch(t *testing.T) {
 				// print("TWO")
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringTWO",
+					Symbol: "4",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -200,7 +201,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -210,7 +211,7 @@ func TestSwitch(t *testing.T) {
 				// a == 1
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -225,7 +226,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE")
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "stringONE",
+					Symbol: "2",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -237,7 +238,7 @@ func TestSwitch(t *testing.T) {
 				// a == 2
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number2",
+					Symbol: "3",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -252,7 +253,7 @@ func TestSwitch(t *testing.T) {
 				// print("TWO")
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringTWO",
+					Symbol: "4",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -264,7 +265,7 @@ func TestSwitch(t *testing.T) {
 				// print("NO MATCH")
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "stringNO~~~MATCH",
+					Symbol: "5",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"8"},
@@ -329,7 +330,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -339,7 +340,7 @@ func TestSwitch(t *testing.T) {
 				// a == 1
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -354,7 +355,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "stringONE~~~OR~~~TWO",
+					Symbol: "2",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -366,7 +367,7 @@ func TestSwitch(t *testing.T) {
 				// a == 2
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number2",
+					Symbol: "3",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -381,7 +382,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringONE~~~OR~~~TWO",
+					Symbol: "4",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -393,7 +394,7 @@ func TestSwitch(t *testing.T) {
 				// a == 3
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "number3",
+					Symbol: "5",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -408,7 +409,7 @@ func TestSwitch(t *testing.T) {
 				// print("THREE")
 				&vm.AssignSymbol{
 					Result: "10",
-					Symbol: "stringTHREE",
+					Symbol: "6",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"10"},
@@ -436,7 +437,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -491,7 +492,7 @@ func TestSwitch(t *testing.T) {
 				// a = 0
 				&vm.AssignSymbol{
 					Result: "1",
-					Symbol: "number0",
+					Symbol: "0",
 				},
 				&vm.Assign{
 					Result:   "a",
@@ -501,7 +502,7 @@ func TestSwitch(t *testing.T) {
 				// case 1
 				&vm.AssignSymbol{
 					Result: "2",
-					Symbol: "number1",
+					Symbol: "1",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -516,7 +517,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "4",
-					Symbol: "stringONE~~~OR~~~TWO",
+					Symbol: "2",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"4"},
@@ -528,7 +529,7 @@ func TestSwitch(t *testing.T) {
 				// case 2
 				&vm.AssignSymbol{
 					Result: "5",
-					Symbol: "number2",
+					Symbol: "3",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -543,7 +544,7 @@ func TestSwitch(t *testing.T) {
 				// print("ONE OR TWO")
 				&vm.AssignSymbol{
 					Result: "7",
-					Symbol: "stringONE~~~OR~~~TWO",
+					Symbol: "4",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"7"},
@@ -555,7 +556,7 @@ func TestSwitch(t *testing.T) {
 				// case 3
 				&vm.AssignSymbol{
 					Result: "8",
-					Symbol: "number3",
+					Symbol: "5",
 				},
 				&vm.EqualNumber{
 					Left:   "a",
@@ -570,7 +571,7 @@ func TestSwitch(t *testing.T) {
 				// print("THREE")
 				&vm.AssignSymbol{
 					Result: "10",
-					Symbol: "stringTHREE",
+					Symbol: "6",
 				},
 				&vm.Print{
 					Arguments: []vm.Register{"10"},
@@ -585,7 +586,8 @@ func TestSwitch(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,
 				&vm.File{
 					Symbols: map[vm.SymbolRegister]*vm.Symbol{},
-				}, nil, nil)
+					Types:   types.Registry{},
+				}, nil, nil, nil, nil)
 			if test.err != nil {
 				assert.EqualError(t, err, test.err.Error())
 			} else {

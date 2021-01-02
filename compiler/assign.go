@@ -52,7 +52,12 @@ func compileAssign(
 					node.Position(), rightResults[0].kind, variableName, v)
 			}
 
-			compiledFunc.NewVariable(variableName, rr.kind)
+			resolvedTypeRegister, err := file.Types.Add(rr.kind)
+			if err != nil {
+				return err
+			}
+
+			compiledFunc.NewVariable(variableName, file.Types.Get(resolvedTypeRegister))
 
 			compiledFunc.Append(&vm.Assign{
 				Result:   vm.Register(variableName),

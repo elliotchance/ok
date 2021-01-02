@@ -7,7 +7,6 @@ import (
 	"github.com/elliotchance/ok/ast"
 	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/parser"
-	"github.com/elliotchance/ok/types"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -41,7 +40,7 @@ func TestErrorScope(t *testing.T) {
 				},
 				On: []*ast.On{
 					{
-						Type: types.NewUnresolvedInterface("SomeError"),
+						Type: "SomeError",
 					},
 				},
 			},
@@ -56,10 +55,10 @@ func TestErrorScope(t *testing.T) {
 				},
 				On: []*ast.On{
 					{
-						Type: types.NewUnresolvedInterface("SomeError"),
+						Type: "SomeError",
 					},
 					{
-						Type: types.NewUnresolvedInterface("SomethingElse"),
+						Type: "SomethingElse",
 						Statements: []ast.Node{
 							&ast.Call{
 								Expr: &ast.Identifier{Name: "foo"},
@@ -79,7 +78,7 @@ func TestErrorScope(t *testing.T) {
 				},
 				On: []*ast.On{
 					{
-						Type: types.NewUnresolvedInterface("SomethingElse"),
+						Type: "SomethingElse",
 						Statements: []ast.Node{
 							&ast.Call{
 								Expr: &ast.Identifier{Name: "foo"},
@@ -123,7 +122,7 @@ func TestErrorScope(t *testing.T) {
 
 			assertEqualErrors(t, test.errs, p.Errors())
 			asttest.AssertEqual(t, map[string]*ast.Func{
-				"main": newFunc(test.expected),
+				"1": newFunc(test.expected),
 			}, p.Funcs())
 			assert.Nil(t, p.Comments())
 		})
