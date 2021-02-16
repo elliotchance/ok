@@ -81,13 +81,7 @@ func NewVM(pkg string) *VM {
 	}
 }
 
-// Run will run the program. That is, execute the "main" function. If there is
-// no main() method then nothing will run, but no error will be raised.
-//
-// TODO(elliot): Change missing main into an error in the future. It was done
-//  this way so I could use "ok run" like an "ok compile" (that didn't exist at
-//  the time) for compiling the standard libraries.
-func (vm *VM) Run(mainPackage string) error {
+func (vm *VM) prepareGlobals() error {
 	for name, uniqueName := range vm.GlobalsToLoad {
 		registers, err := vm.call(uniqueName, nil, map[string]*ast.Literal{}, types.Any)
 		if err != nil {
@@ -97,6 +91,20 @@ func (vm *VM) Run(mainPackage string) error {
 		vm.Return = nil
 
 		vm.Set(Register(name), vm.Get(registers[0]))
+	}
+
+	return nil
+}
+
+// Run will run the program. That is, execute the "main" function. If there is
+// no main() method then nothing will run, but no error will be raised.
+//
+// TODO(elliot): Change missing main into an error in the future. It was done
+//  this way so I could use "ok run" like an "ok compile" (that didn't exist at
+//  the time) for compiling the standard libraries.
+func (vm *VM) Run(mainPackage string) error {
+	if err := vm.prepareGlobals(); err != nil {
+		return err
 	}
 
 	// Now we can call the main() function.
@@ -110,8 +118,12 @@ func (vm *VM) Run(mainPackage string) error {
 	return nil
 }
 
-// Run will run the tests only.
+// RunTests will run the tests only.
 func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
+	if err := vm.prepareGlobals(); err != nil {
+		return err
+	}
+
 	for _, t := range vm.tests {
 		if !filter.MatchString(t.TestName) {
 			continue

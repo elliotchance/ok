@@ -159,6 +159,16 @@ func Compile(
 		file = vm.Merge(append(append([]*vm.File(nil), file), dependencies...)...)
 	}
 
+	// Compile and append tests, if any. Only in the root level package.
+	for _, test := range p.Tests() {
+		compiledTest, err := CompileTest(test, file, p.Constants, imports)
+		if err != nil {
+			return nil, nil, []error{err}
+		}
+
+		file.Tests = append(file.Tests, compiledTest)
+	}
+
 	err = vm.Store(file, packageName)
 	if err != nil {
 		return nil, nil, []error{err}
