@@ -45,7 +45,9 @@ test-coverage:
 run-tests: tests/* run-lib-tests
 
 tests/*: ok
-	./ok run $@ > /tmp/stdout.txt
+	@# Non successful runs will have their exit code appended to the expected
+	@# output so it can be included in the diff.
+	./ok run $@ > /tmp/stdout.txt || (echo "Exit: $$?" >> /tmp/stdout.txt)
 
 	@if [ -f "$@/stdout-ignored.txt" ]; then \
 		echo "Stdout ignored."; \

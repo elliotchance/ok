@@ -1,0 +1,5 @@
+Error: "uh oh"
+  3 foo() at /tests/error-unhandled/main.ok:4:5
+  2 bar() at /tests/error-unhandled/main.ok:8:8
+  1 main() at /tests/error-unhandled/main.ok:12:8
+Exit: 1

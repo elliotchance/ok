@@ -15,6 +15,9 @@ type Call struct {
 	// Type is the resolved interface when calling constructors. In any other
 	// case this should be types.Any.
 	Type TypeRegister
+
+	// Pos is used to append to the call stack.
+	Pos string
 }
 
 // Execute implements the Instruction interface for the VM.
@@ -29,7 +32,7 @@ func (ins *Call) Execute(_ *int, vm *VM) error {
 	}
 
 	ty := vm.Types[ins.Type]
-	results, err := vm.call(funcName, ins.Arguments, parentScope, ty)
+	results, err := vm.call(funcName, ins.Arguments, parentScope, ty, ins.Pos)
 	if err != nil {
 		return err
 	}

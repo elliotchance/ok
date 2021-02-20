@@ -11,12 +11,17 @@ type Raise struct {
 
 	// Type is used to match the handler.
 	Type TypeRegister
+
+	// Pos is used at the top of the stack trace to show where the error
+	// originated from.
+	Pos string
 }
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Raise) Execute(_ *int, vm *VM) error {
 	vm.ErrType = vm.Types[ins.Type]
 	vm.ErrValue = vm.Get(ins.Err)
+	vm.ErrStack = vm.captureCallStack(ins.Pos)
 
 	return nil
 }
