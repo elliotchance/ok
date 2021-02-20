@@ -1,0 +1,12 @@
+tests/test-raised-error: /tests/test-raised-error/main.okt:15:1: A: unhandled error
+Error: "uh oh"
+  3 foo() at /tests/test-raised-error/main.okt:4:5
+  2 bar() at /tests/test-raised-error/main.okt:8:8
+  1 test "A"() at /tests/test-raised-error/main.okt:17:8
+tests/test-raised-error: /tests/test-raised-error/main.okt:21:1: B: unhandled error
+Error: "uh oh"
+  3 foo() at /tests/test-raised-error/main.okt:4:5
+  2 bar() at /tests/test-raised-error/main.okt:8:8
+  1 test "B"() at /tests/test-raised-error/main.okt:23:8
+tests/test-raised-error: 2 failed 0 passed 2 asserts (0 ms)
+Exit: 1

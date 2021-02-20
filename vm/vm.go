@@ -124,7 +124,7 @@ func (vm *VM) Run(mainPackage string) error {
 }
 
 // RunTests will run the tests only.
-func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
+func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp, packageName string) error {
 	if err := vm.prepareGlobals(); err != nil {
 		return err
 	}
@@ -139,7 +139,7 @@ func (vm *VM) RunTests(verbose bool, filter *regexp.Regexp) error {
 		}
 
 		vm.CurrentTestPassed = true
-		err := vm.runTest(t, map[string]*ast.Literal{})
+		err := vm.runTest(t, map[string]*ast.Literal{}, packageName)
 		if err != nil {
 			return err
 		}
@@ -346,19 +346,21 @@ func (vm *VM) runInstructions(
 	return nil, nil
 }
 
+func (vm *VM) printStack() {
+	wd, _ := os.Getwd()
+	reverse(vm.ErrStack)
+
+	fmt.Printf("%s: %v\n", vm.ErrType, vm.ErrValue.Map["Error"])
+	stackLen := len(vm.ErrStack[:len(vm.ErrStack)-2])
+	for i, s := range vm.ErrStack[:len(vm.ErrStack)-2] {
+		parts := strings.Split(strings.TrimPrefix(s, wd), "|")
+		fmt.Println("", "", stackLen-i, parts[1]+"()", "at", parts[0])
+	}
+}
+
 func (vm *VM) catchUnhandledError() {
 	if vm.ErrType != nil {
-		reverse(vm.ErrStack)
-
-		wd, _ := os.Getwd()
-
-		fmt.Printf("%s: %v\n", vm.ErrType, vm.ErrValue.Map["Error"])
-		stackLen := len(vm.ErrStack[:len(vm.ErrStack)-2])
-		for i, s := range vm.ErrStack[:len(vm.ErrStack)-2] {
-			parts := strings.Split(strings.TrimPrefix(s, wd), "|")
-			fmt.Println("", "", stackLen-i, parts[1]+"()", "at", parts[0])
-		}
-
+		vm.printStack()
 		os.Exit(1)
 	}
 }
@@ -367,13 +369,31 @@ func stackDescription(pos, funcName string) string {
 	return fmt.Sprintf("%s|%s", pos, funcName)
 }
 
-func (vm *VM) runTest(test *CompiledTest, parentScope map[string]*ast.Literal) error {
+func (vm *VM) runTest(
+	test *CompiledTest,
+	parentScope map[string]*ast.Literal,
+	packageName string,
+) error {
 	vm.CurrentTestName = test.TestName
 
 	stackDesc := stackDescription(test.Pos,
 		fmt.Sprintf("test \"%s\"", test.TestName))
 	vm.appendStack(stackDesc, parentScope, types.Any)
 	_, err := vm.runInstructions(test.TestName, test.Instructions, false)
+	if err != nil {
+		return err
+	}
+
+	// The test finished with an unhandled exception?
+	if vm.ErrType != nil {
+		wd, _ := os.Getwd()
+		fmt.Printf("%s: %s: %s: unhandled error\n",
+			packageName, strings.TrimPrefix(test.Pos, wd), vm.CurrentTestName)
+		vm.printStack()
+
+		vm.ErrType = nil
+		vm.CurrentTestPassed = false
+	}
 
 	vm.catchUnhandledError()
 
@@ -386,8 +406,10 @@ func (vm *VM) runTest(test *CompiledTest, parentScope map[string]*ast.Literal) e
 
 func (vm *VM) assert(pass bool, left, op, right, pos string) {
 	if !pass {
+		wd, _ := os.Getwd()
 		fmt.Printf("%s: %s: %s: assert(%s %s %s) failed\n",
-			vm.pkg, pos, vm.CurrentTestName, left, op, right)
+			vm.pkg, strings.TrimPrefix(pos, wd), vm.CurrentTestName,
+			left, op, right)
 		vm.CurrentTestPassed = false
 	}
 	vm.TotalAssertions++

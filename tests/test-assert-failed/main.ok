@@ -1,0 +1,6 @@
+func add(a, b number) number {
+    return a + b
+}
+
+func main() {
+}

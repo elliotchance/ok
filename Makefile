@@ -55,7 +55,12 @@ tests/*: ok
 		diff $@/stdout.txt /tmp/stdout.txt; \
 	fi
 
-	./ok test $@
+	@# If the tests fail, we check that the failures match some expected output.
+	./ok test $@ > /tmp/stdout.txt || (echo "Exit: $$?" >> /tmp/stdout.txt)
+
+	@if [ -f "$@/stdout-test.txt" ]; then \
+		diff $@/stdout-test.txt /tmp/stdout.txt; \
+	fi
 
 ok-macos.zip: version clean
 	GOOS=darwin GOARCH=amd64 go build -o bin/ok

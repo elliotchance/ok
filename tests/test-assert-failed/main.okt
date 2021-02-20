@@ -1,0 +1,11 @@
+test "adding some numbers" {
+    assert(add(3, 5) == 8)
+    assert(add(1.2, 7.90) == 75)
+    assert(add(1.2, 7.90) == 9.10)
+}
+
+test "adding some numbers 2" {
+    assert(add(3, 5) == 8)
+    assert(add(1.2, 7.90) == 75)
+    assert(add(1.2, 7.90) == 9.10)
+}
