@@ -118,6 +118,7 @@ func compileCall(
 		Arguments:    argResults,
 		Results:      returnRegisters,
 		Type:         typeRegister,
+		Pos:          call.Pos,
 	}
 
 	compiledFunc.Append(ins)
@@ -218,6 +219,7 @@ func funcCall(compiledFunc *vm.CompiledFunc, args []vm.Register) (vm.Instruction
 		Variable:  args[0],
 		Arguments: args[1],
 		Results:   result,
+		Pos:       compiledFunc.Pos,
 	}
 
 	return ins, []vm.Register{result}, []*types.Type{types.AnyArray}, nil

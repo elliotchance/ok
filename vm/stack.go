@@ -21,15 +21,10 @@ func reverse(ss []string) {
 
 // Execute implements the Instruction interface for the VM.
 func (ins *Stack) Execute(_ *int, vm *VM) error {
-	var elements []string
+	elements := vm.captureCallStack("")
 
-	// We must exclude the last stack item because that's the code that called
-	// the internal __stack.
-	for _, stack := range vm.Stack[:len(vm.Stack)-1] {
-		elements = append(elements, stack[StackRegister].Value)
-	}
-
-	reverse(elements)
+	// Exclude some elements to avoid including the internal __stack call.
+	elements = elements[2 : len(elements)-1]
 
 	vm.Set(ins.Stack, asttest.NewLiteralString(strings.Join(elements, "\n")))
 

@@ -8,6 +8,7 @@ import (
 	"regexp"
 	"runtime/debug"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/elliotchance/ok/ast"
@@ -48,9 +49,11 @@ type VM struct {
 	CurrentTestPassed      bool
 
 	// ErrType will be non-empty once an error is raised. It contains the type
-	// to match for a handler. ErrValue contains the actual error.
+	// to match for a handler. ErrValue contains the actual error, and ErrStack
+	// contains the descriptive stack of where the error was originally raised.
 	ErrType  *types.Type
 	ErrValue *ast.Literal
+	ErrStack []string
 
 	// FinallyBlocks are stacked with stack.
 	FinallyBlocks [][]*FinallyBlock
@@ -83,7 +86,8 @@ func NewVM(pkg string) *VM {
 
 func (vm *VM) prepareGlobals() error {
 	for name, uniqueName := range vm.GlobalsToLoad {
-		registers, err := vm.call(uniqueName, nil, map[string]*ast.Literal{}, types.Any)
+		registers, err := vm.call(uniqueName, nil,
+			map[string]*ast.Literal{}, types.Any, "unknown")
 		if err != nil {
 			return err
 		}
@@ -109,7 +113,8 @@ func (vm *VM) Run(mainPackage string) error {
 
 	// Now we can call the main() function.
 	mainFunction := vm.Globals[mainPackage].Map["main"].Value
-	_, err := vm.call(mainFunction, nil, map[string]*ast.Literal{}, types.Any)
+	_, err := vm.call(mainFunction, nil, map[string]*ast.Literal{},
+		types.Any, "")
 	if err != nil {
 		return err
 	}
@@ -172,6 +177,7 @@ func (vm *VM) call(
 	arguments []Register,
 	parentScope map[string]*ast.Literal,
 	returnType *types.Type,
+	pos string,
 ) ([]Register, error) {
 	// Copy the registers of this context into the new call context.
 	fn := vm.fns[uniqueName]
@@ -179,7 +185,11 @@ func (vm *VM) call(
 		panic("no such function: " + uniqueName)
 	}
 
-	stackDesc := stackDescription(fn.Pos, fn.Name)
+	if pos == "" {
+		pos = fn.Pos
+	}
+
+	stackDesc := stackDescription(pos, fn.Name)
 	vm.appendStack(stackDesc, parentScope, returnType)
 
 	// Setup the finally blocks. Copy so they all start disabled.
@@ -338,8 +348,18 @@ func (vm *VM) runInstructions(
 
 func (vm *VM) catchUnhandledError() {
 	if vm.ErrType != nil {
-		// TODO(elliot): This needs to be handled much more gracefully.
-		panic(fmt.Sprintf("unhandled %s: %+v", vm.ErrType, vm.ErrValue.Map["Error"]))
+		reverse(vm.ErrStack)
+
+		wd, _ := os.Getwd()
+
+		fmt.Printf("%s: %v\n", vm.ErrType, vm.ErrValue.Map["Error"])
+		stackLen := len(vm.ErrStack[:len(vm.ErrStack)-2])
+		for i, s := range vm.ErrStack[:len(vm.ErrStack)-2] {
+			parts := strings.Split(strings.TrimPrefix(s, wd), "|")
+			fmt.Println("", "", stackLen-i, parts[1]+"()", "at", parts[0])
+		}
+
+		os.Exit(1)
 	}
 }
 
@@ -462,4 +482,18 @@ func (vm *VM) LoadFile(file *File) error {
 	vm.GlobalsToLoad = file.Globals
 
 	return nil
+}
+
+func (vm *VM) captureCallStack(pos string) []string {
+	var captured []string
+	for i, stack := range vm.Stack[1:] {
+		a := strings.Split(stack[StackRegister].Value, "|")
+		b := strings.Split(vm.Stack[i][StackRegister].Value, "|")
+		captured = append(captured, fmt.Sprintf("%s|%s", a[0], b[1]))
+	}
+
+	a := strings.Split(vm.Stack[len(vm.Stack)-1][StackRegister].Value, "|")
+	captured = append(captured, fmt.Sprintf("%s|%s", pos, a[1]))
+
+	return captured
 }

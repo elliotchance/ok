@@ -1,0 +1,13 @@
+import "error"
+
+func foo() {
+    raise error.Error("uh oh")
+}
+
+func bar() {
+    foo()
+}
+
+func main() {
+    bar()
+}

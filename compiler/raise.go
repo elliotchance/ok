@@ -26,6 +26,7 @@ func compileRaise(
 	compiledFunc.Append(&vm.Raise{
 		Err:  result[0],
 		Type: typeRegister,
+		Pos:  n.Pos,
 	})
 
 	return nil

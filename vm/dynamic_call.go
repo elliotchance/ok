@@ -12,6 +12,9 @@ type DynamicCall struct {
 	Variable  Register // func literal
 	Arguments Register // []any for arguments
 	Results   Register // []any for return values
+
+	// Pos is used to append to the call stack.
+	Pos string
 }
 
 // Execute implements the Instruction interface for the VM.
@@ -43,6 +46,7 @@ func (ins *DynamicCall) Execute(_ *int, vm *VM) error {
 		FunctionName: "*" + string(ins.Variable),
 		Arguments:    args,
 		Results:      results,
+		Pos:          ins.Pos,
 
 		// TODO(elliot): This should be the correct return type, otherwise the
 		//  reflect won't work.

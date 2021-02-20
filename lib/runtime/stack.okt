@@ -11,7 +11,12 @@ func Bar() StackTrace {
 test "StackTrace.String" {
     stack = foo()
     s = stack.String()
-    assert(strings.Contains(s, "1 Bar ") == true)
+
+    assert(strings.Contains(s, "3 Bar ") == true)
     assert(strings.Contains(s, "2 foo ") == true)
-    assert(strings.Contains(s, "3 test \"StackTrace.String\" ") == true)
+    assert(strings.Contains(s, "1 test \"StackTrace.String\" ") == true)
+
+    assert(strings.Contains(s, "lib/runtime/stack.okt:12") == true)
+    assert(strings.Contains(s, "lib/runtime/stack.okt:4") == true)
+    assert(strings.Contains(s, "lib/runtime/stack.okt:8") == true)
 }
