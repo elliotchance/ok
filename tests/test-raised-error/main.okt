@@ -1,0 +1,25 @@
+import "error"
+
+func foo() {
+    raise error.Error("uh oh")
+}
+
+func bar() {
+    foo()
+}
+
+func main() {
+
+}
+
+test "A" {
+    assert(true == true)
+    bar()
+    assert(false == true)
+}
+
+test "B" {
+    assert(true == true)
+    bar()
+    assert(false == true)
+}

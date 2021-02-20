@@ -59,7 +59,7 @@ func (c *Command) Run(args []string) {
 		m := vm.NewVM("no-package")
 		startTime := time.Now()
 		check(m.LoadFile(f))
-		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter))
+		err := m.RunTests(c.Verbose, regexp.MustCompile(c.Filter), packageName)
 		elapsed := time.Since(startTime).Milliseconds()
 		check(err)
 

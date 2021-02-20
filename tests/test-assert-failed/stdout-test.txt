@@ -1,0 +1,4 @@
+no-package: /tests/test-assert-failed/main.okt:3:5: adding some numbers: assert(9.1 == 75) failed
+no-package: /tests/test-assert-failed/main.okt:9:5: adding some numbers 2: assert(9.1 == 75) failed
+tests/test-assert-failed: 2 failed 0 passed 6 asserts (0 ms)
+Exit: 1
