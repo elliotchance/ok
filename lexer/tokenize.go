@@ -424,6 +424,10 @@ func tokenKindForQuote(quote rune) (kind string) {
 }
 
 func appendToken(tokens []Token, token Token, endOfLine *int, pos *Pos) []Token {
+	if token.Kind == TokenEOF {
+		return tokens
+	}
+
 	if *endOfLine > 0 {
 		pos.LineNumber += *endOfLine
 		pos.CharacterNumber = 0

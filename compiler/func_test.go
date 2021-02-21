@@ -116,6 +116,103 @@ func TestFunc(t *testing.T) {
 			fn:  parseFunc("func foo() { func bar() number { return ^baz } }"),
 			err: errors.New("baz does not exist in the parent scope"),
 		},
+		"func-with-if-closure": {
+			fn: &ast.Func{
+				Name: "foo",
+				Statements: []ast.Node{
+					&ast.Assign{
+						Lefts: []ast.Node{
+							&ast.Identifier{Name: "bar"},
+						},
+						Rights: []ast.Node{
+							&ast.Func{
+								Name:       "bar",
+								UniqueName: "2",
+								Statements: []ast.Node{
+									&ast.Call{
+										Expr: &ast.Identifier{Name: "print"},
+										Arguments: []ast.Node{
+											asttest.NewLiteralString("c"),
+										},
+									},
+								},
+							},
+						},
+					},
+					&ast.If{
+						Condition: &ast.Binary{
+							Op:    "==",
+							Left:  asttest.NewLiteralBool(true),
+							Right: asttest.NewLiteralBool(false),
+						},
+						True: []ast.Node{
+							&ast.Call{
+								Expr: &ast.Identifier{Name: "print"},
+								Arguments: []ast.Node{
+									asttest.NewLiteralString("a"),
+								},
+							},
+						},
+						False: []ast.Node{
+							&ast.Call{
+								Expr: &ast.Identifier{Name: "print"},
+								Arguments: []ast.Node{
+									asttest.NewLiteralString("b"),
+								},
+							},
+						},
+					},
+				},
+			},
+			expected: []vm.Instruction{
+				&vm.AssignFunc{
+					Result:     "1",
+					Type:       "0",
+					UniqueName: "2",
+				},
+				&vm.ParentScope{
+					X: "1",
+				},
+				&vm.Assign{
+					Result:   "bar",
+					Register: "1",
+				},
+				&vm.AssignSymbol{
+					Result: "2",
+					Symbol: "0",
+				},
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "1",
+				},
+				&vm.Equal{
+					Left:   "2",
+					Right:  "3",
+					Result: "4",
+				},
+				&vm.JumpUnless{ // 6
+					Condition: "4",
+					To:        9,
+				},
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "2",
+				},
+				&vm.Print{
+					Arguments: vm.Registers{"5"},
+				},
+				&vm.Jump{ // 9
+					To: 11,
+				},
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "3",
+				},
+				&vm.Print{ // 11
+					Arguments: vm.Registers{"6"},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,

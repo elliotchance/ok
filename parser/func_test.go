@@ -211,12 +211,74 @@ func TestFunc(t *testing.T) {
 				},
 			},
 		},
+		"if-before-closure": {
+			str: `func foo() {
+				if true == false {
+					print("a")
+				} else {
+					print("b")
+				}
+
+				func bar() {
+					print("c")
+				}
+			}`,
+			expected: map[string]*ast.Func{
+				"1": {
+					Name: "foo",
+					Statements: []ast.Node{
+						&ast.Assign{
+							Lefts: []ast.Node{
+								&ast.Identifier{Name: "bar"},
+							},
+							Rights: []ast.Node{
+								&ast.Func{
+									Name:       "bar",
+									UniqueName: "2",
+									Statements: []ast.Node{
+										&ast.Call{
+											Expr: &ast.Identifier{Name: "print"},
+											Arguments: []ast.Node{
+												asttest.NewLiteralString("c"),
+											},
+										},
+									},
+								},
+							},
+						},
+						&ast.If{
+							Condition: &ast.Binary{
+								Op:    "==",
+								Left:  asttest.NewLiteralBool(true),
+								Right: asttest.NewLiteralBool(false),
+							},
+							True: []ast.Node{
+								&ast.Call{
+									Expr: &ast.Identifier{Name: "print"},
+									Arguments: []ast.Node{
+										asttest.NewLiteralString("a"),
+									},
+								},
+							},
+							False: []ast.Node{
+								&ast.Call{
+									Expr: &ast.Identifier{Name: "print"},
+									Arguments: []ast.Node{
+										asttest.NewLiteralString("b"),
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.NewParser(0)
 			p.ParseString(test.str, "a.ok")
 
-			assert.Nil(t, p.Errors())
+			assert.Nil(t, p.Errors(), p.Errors())
 			asttest.AssertEqual(t, test.expected, p.Funcs())
 			assert.Nil(t, p.Comments())
 		})
