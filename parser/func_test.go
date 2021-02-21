@@ -273,6 +273,17 @@ func TestFunc(t *testing.T) {
 				},
 			},
 		},
+		"return-any-map": {
+			str: "func foo() {}any { }",
+			expected: map[string]*ast.Func{
+				"1": {
+					Name: "foo",
+					Returns: []*types.Type{
+						types.AnyMap,
+					},
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			p := parser.NewParser(0)

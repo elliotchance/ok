@@ -27,9 +27,16 @@ func consumeType(parser *Parser, offset int) (ty *types.Type, _ int, _ error) {
 	}()
 
 	for {
+		// The IsEndOfLine checks here are important because a type cannot span
+		// more than one line. This is how we differentiate between a type and
+		// what might look like the next function;
+		//
+		//   func foo() {} func bar() {}
+
 		switch {
 		case parser.tokens[offset].Kind == lexer.TokenSquareOpen &&
-			parser.tokens[offset+1].Kind == lexer.TokenSquareClose:
+			parser.tokens[offset+1].Kind == lexer.TokenSquareClose &&
+			!parser.tokens[offset+1].IsEndOfLine:
 			offset += 2
 			defers = append(defers, func() {
 				if ty != nil {
@@ -38,7 +45,8 @@ func consumeType(parser *Parser, offset int) (ty *types.Type, _ int, _ error) {
 			})
 
 		case parser.tokens[offset].Kind == lexer.TokenCurlyOpen &&
-			parser.tokens[offset+1].Kind == lexer.TokenCurlyClose:
+			parser.tokens[offset+1].Kind == lexer.TokenCurlyClose &&
+			!parser.tokens[offset+1].IsEndOfLine:
 			offset += 2
 			defers = append(defers, func() {
 				if ty != nil {

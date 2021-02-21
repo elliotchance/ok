@@ -16,6 +16,7 @@ func TestType(t *testing.T) {
 	for testName, test := range map[string]struct {
 		str      string
 		expected ast.Node
+		error    string
 	}{
 		"any": {
 			str: "any []",
@@ -86,17 +87,25 @@ func TestType(t *testing.T) {
 				Arguments: []ast.Node{asttest.NewLiteralNumber("12.3")},
 			},
 		},
+		"newline-not-allowed": {
+			str:   "[]\nnumber",
+			error: "a.ok:2:1 expecting statement; a.ok:1:1 expecting statement",
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			str := fmt.Sprintf("func main() { %s }", test.str)
 			p := parser.NewParser(0)
 			p.ParseString(str, "a.ok")
 
-			require.Empty(t, p.Errors().String(), str)
-			asttest.AssertEqual(t, map[string]*ast.Func{
-				"1": newFunc(test.expected),
-			}, p.Funcs())
-			assert.Nil(t, p.Comments())
+			if test.error != "" {
+				assert.Equal(t, p.Errors().String(), test.error)
+			} else {
+				require.Empty(t, p.Errors().String(), str)
+				asttest.AssertEqual(t, map[string]*ast.Func{
+					"1": newFunc(test.expected),
+				}, p.Funcs())
+				assert.Nil(t, p.Comments())
+			}
 		})
 	}
 }
