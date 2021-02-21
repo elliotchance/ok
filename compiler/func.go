@@ -82,6 +82,24 @@ func CompileFunc(
 		compiled.Instructions.Instructions[instructions:],
 		compiled.Instructions.Instructions[:instructions]...)
 
+	// Since we moved instructions to the top we also need to adjust the jump
+	// positions down accordingly.
+	if instructions > 0 {
+		count := len(compiled.Instructions.Instructions) - instructions
+
+		for index, ins := range compiled.Instructions.Instructions {
+			switch actual := ins.(type) {
+			case *vm.Jump:
+				actual.To += count
+
+			case *vm.JumpUnless:
+				actual.To += count
+			}
+
+			compiled.Instructions.Instructions[index] = ins
+		}
+	}
+
 	return compiled, nil
 }
 

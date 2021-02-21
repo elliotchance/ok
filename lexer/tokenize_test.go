@@ -1290,6 +1290,65 @@ func TestTokenizeString(t *testing.T) {
 				{lexer.TokenEOF, "", false, pos(3)},
 			},
 		},
+		"nested-func-and-if": {
+			str: `func foo() {
+				if true == false {
+					print("a")
+				} else {
+					print("b")
+				}
+
+				func bar() {
+					print("c")
+				}
+			}`,
+			expected: []lexer.Token{
+				{lexer.TokenFunc, "func", false, pos(1)},
+				{lexer.TokenIdentifier, "foo", false, pos(6)},
+				{lexer.TokenParenOpen, "(", false, pos(9)},
+				{lexer.TokenParenClose, ")", false, pos(10)},
+				{lexer.TokenCurlyOpen, "{", true, pos(12)},
+
+				{lexer.TokenIf, "if", false, pos2(2, 5)},
+				{lexer.TokenBoolLiteral, "true", false, pos2(2, 8)},
+				{lexer.TokenEqual, "==", false, pos2(2, 13)},
+				{lexer.TokenBoolLiteral, "false", false, pos2(2, 16)},
+				{lexer.TokenCurlyOpen, "{", true, pos2(2, 22)},
+
+				{lexer.TokenIdentifier, "print", false, pos2(3, 6)},
+				{lexer.TokenParenOpen, "(", false, pos2(3, 11)},
+				{lexer.TokenStringLiteral, "a", false, pos2(3, 12)},
+				{lexer.TokenParenClose, ")", true, pos2(3, 15)},
+
+				{lexer.TokenCurlyClose, "}", false, pos2(4, 5)},
+				{lexer.TokenElse, "else", false, pos2(4, 7)},
+				{lexer.TokenCurlyOpen, "{", true, pos2(4, 12)},
+
+				{lexer.TokenIdentifier, "print", false, pos2(5, 6)},
+				{lexer.TokenParenOpen, "(", false, pos2(5, 11)},
+				{lexer.TokenStringLiteral, "b", false, pos2(5, 12)},
+				{lexer.TokenParenClose, ")", true, pos2(5, 15)},
+
+				{lexer.TokenCurlyClose, "}", true, pos2(6, 5)},
+
+				{lexer.TokenFunc, "func", false, pos2(8, 5)},
+				{lexer.TokenIdentifier, "bar", false, pos2(8, 10)},
+				{lexer.TokenParenOpen, "(", false, pos2(8, 13)},
+				{lexer.TokenParenClose, ")", false, pos2(8, 14)},
+				{lexer.TokenCurlyOpen, "{", true, pos2(8, 16)},
+
+				{lexer.TokenIdentifier, "print", false, pos2(9, 6)},
+				{lexer.TokenParenOpen, "(", false, pos2(9, 11)},
+				{lexer.TokenStringLiteral, "c", false, pos2(9, 12)},
+				{lexer.TokenParenClose, ")", true, pos2(9, 15)},
+
+				{lexer.TokenCurlyClose, "}", true, pos2(10, 5)},
+
+				{lexer.TokenCurlyClose, "}", false, pos2(11, 4)},
+
+				{lexer.TokenEOF, "", false, pos2(11, 5)},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			options := lexer.Options{
