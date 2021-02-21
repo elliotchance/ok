@@ -19,7 +19,7 @@ func TestObject(t *testing.T) {
 			str: `foo.bar`,
 			expected: &ast.Key{
 				Expr: &ast.Identifier{Name: "foo"},
-				Key:  &ast.Identifier{Name: "bar"},
+				Key:  asttest.NewLiteralString("bar"),
 			},
 		},
 		"set-property": {
@@ -28,7 +28,7 @@ func TestObject(t *testing.T) {
 				Lefts: []ast.Node{
 					&ast.Key{
 						Expr: &ast.Identifier{Name: "foo"},
-						Key:  &ast.Identifier{Name: "bar"},
+						Key:  asttest.NewLiteralString("bar"),
 					},
 				},
 				Rights: []ast.Node{

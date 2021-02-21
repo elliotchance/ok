@@ -4,4 +4,11 @@ func main() {
 
     map2 = {}any {}
     print(map2)
+
+    map1["a"] = 789
+    print(map1)
+
+    a = "b"
+    map1[a] = 234
+    print(map1)
 }

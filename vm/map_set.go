@@ -12,8 +12,8 @@ type MapSet struct {
 // Execute implements the Instruction interface for the VM.
 func (ins *MapSet) Execute(_ *int, vm *VM) error {
 	key := vm.Get(ins.Key).Value
-	vm.Get(ins.Map).Map[key] = vm.Get(ins.Value)
-	vm.Get(ins.Map).Array = append(vm.Get(ins.Map).Array, vm.Get(ins.Key))
+	vm.Get(ins.Map).Map[key] = vm.Get(ins.Value).Copy()
+	vm.Get(ins.Map).Array = append(vm.Get(ins.Map).Array, vm.Get(ins.Key).Copy())
 
 	return nil
 }

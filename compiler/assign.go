@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/elliotchance/ok/ast"
-	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/types"
 	"github.com/elliotchance/ok/vm"
 )
@@ -72,11 +71,7 @@ func compileAssign(
 			}
 
 			// TODO(elliot): Check this is a sane operation.
-			key := l.Key
-			if e, ok := key.(*ast.Identifier); ok {
-				key = asttest.NewLiteralString(e.Name)
-			}
-			keyResults, _, err := compileExpr(compiledFunc, key, file, scopeOverrides)
+			keyResults, _, err := compileExpr(compiledFunc, l.Key, file, scopeOverrides)
 			if err != nil {
 				return err
 			}

@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 )
 
@@ -49,8 +50,11 @@ func consumeAssignable(parser *Parser, offset int) (ast.Node, int, error) {
 
 		return &ast.Key{
 			Expr: identifier,
-			Key:  key,
 			Pos:  parser.pos(originalOffset),
+
+			// Even though this is an identifier it's not actually a variable
+			// and needs to be translated into a literal.
+			Key: asttest.NewLiteralString(key.Name),
 		}, offset, nil
 	}
 

@@ -454,7 +454,7 @@ func TestExpr(t *testing.T) {
 			str: "math.Pi",
 			expected: &ast.Key{
 				Expr: &ast.Identifier{Name: "math"},
-				Key:  &ast.Identifier{Name: "Pi"},
+				Key:  asttest.NewLiteralString("Pi"),
 			},
 		},
 		"method": {
@@ -462,7 +462,7 @@ func TestExpr(t *testing.T) {
 			expected: &ast.Call{
 				Expr: &ast.Key{
 					Expr: &ast.Identifier{Name: "math"},
-					Key:  &ast.Identifier{Name: "Foo"},
+					Key:  asttest.NewLiteralString("Foo"),
 				},
 			},
 		},
@@ -472,10 +472,10 @@ func TestExpr(t *testing.T) {
 				Expr: &ast.Call{ // math.Foo()
 					Expr: &ast.Key{ // math.Foo
 						Expr: &ast.Identifier{Name: "math"},
-						Key:  &ast.Identifier{Name: "Foo"},
+						Key:  asttest.NewLiteralString("Foo"),
 					},
 				},
-				Key: &ast.Identifier{Name: "Bar"},
+				Key: asttest.NewLiteralString("Bar"),
 			},
 		},
 		"chained-method": {
@@ -485,10 +485,10 @@ func TestExpr(t *testing.T) {
 					Expr: &ast.Call{ // math.Foo()
 						Expr: &ast.Key{ // math.Foo
 							Expr: &ast.Identifier{Name: "math"},
-							Key:  &ast.Identifier{Name: "Foo"},
+							Key:  asttest.NewLiteralString("Foo"),
 						},
 					},
-					Key: &ast.Identifier{Name: "Bar"},
+					Key: asttest.NewLiteralString("Bar"),
 				},
 			},
 		},

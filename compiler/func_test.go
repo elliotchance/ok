@@ -213,6 +213,119 @@ func TestFunc(t *testing.T) {
 				},
 			},
 		},
+		"get-index-variable": {
+			fn: parseFunc("func foo() { a = { \"b\": \"c\" }\nb = \"b\"\nprint(a[b]) }"),
+			expected: []vm.Instruction{
+				// alloc
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "0",
+				},
+				&vm.MapAlloc{
+					Kind:   "3",
+					Size:   "1",
+					Result: "2",
+				},
+
+				// "b": "c"
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "1",
+				},
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "2",
+				},
+				&vm.MapSet{
+					Map:   "2",
+					Key:   "3",
+					Value: "4",
+				},
+
+				// assign a
+				&vm.Assign{
+					Result:   "a",
+					Register: "2",
+				},
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "3",
+				},
+
+				// assign b
+				&vm.Assign{
+					Result:   "b",
+					Register: "5",
+				},
+
+				// print(a[b])
+				&vm.MapGet{
+					Map:    "a",
+					Key:    "b",
+					Result: "6",
+				},
+				&vm.Print{
+					Arguments: vm.Registers{"6"},
+				},
+			},
+		},
+		"set-index-variable": {
+			fn: parseFunc("func foo() { a = { \"b\": \"c\" }\nb = \"a\"\na[b] = \"45\" }"),
+			expected: []vm.Instruction{
+				// alloc
+				&vm.AssignSymbol{
+					Result: "1",
+					Symbol: "0",
+				},
+				&vm.MapAlloc{
+					Kind:   "3",
+					Size:   "1",
+					Result: "2",
+				},
+
+				// "b": "c"
+				&vm.AssignSymbol{
+					Result: "3",
+					Symbol: "1",
+				},
+				&vm.AssignSymbol{
+					Result: "4",
+					Symbol: "2",
+				},
+				&vm.MapSet{
+					Map:   "2",
+					Key:   "3",
+					Value: "4",
+				},
+
+				// assign a
+				&vm.Assign{
+					Result:   "a",
+					Register: "2",
+				},
+				&vm.AssignSymbol{
+					Result: "5",
+					Symbol: "3",
+				},
+
+				// b = "a"
+				&vm.Assign{
+					Result:   "b",
+					Register: "5",
+				},
+
+				// a[b] = "45"
+				&vm.AssignSymbol{
+					Result: "6",
+					Symbol: "4",
+				},
+				&vm.MapSet{
+					Map:   "a",
+					Key:   "b",
+					Value: "6",
+				},
+			},
+		},
 	} {
 		t.Run(testName, func(t *testing.T) {
 			compiledFunc, err := compiler.CompileFunc(test.fn,

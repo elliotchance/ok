@@ -62,9 +62,8 @@ func compileKey(
 			Result: resultRegister,
 		})
 
-		// TODO(elliot): Might not be an identifier?
 		return resultRegister,
-			arrayOrMapKind[0].Properties[n.Key.(*ast.Identifier).Name], nil
+			arrayOrMapKind[0].Properties[n.Key.(*ast.Literal).Value], nil
 
 	case types.KindString:
 		compiledFunc.Append(&vm.StringIndex{
