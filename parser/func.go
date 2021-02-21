@@ -49,7 +49,12 @@ func consumeFunc(parser *Parser, offset int) (_ *ast.Func, _ int, anon bool, fin
 		return nil, originalOffset, anon, err
 	}
 
-	if parser.tokens[offset].Kind != lexer.TokenCurlyOpen {
+	// The next "{" will be ambiguous because it could be a map or the start of
+	// the block. Try to consume types first, and fallback to treating it as the
+	// start of the block.
+	fn.Returns, offset, err = consumeTypes(parser, offset, false)
+
+	if parser.tokens[offset].Kind != lexer.TokenCurlyOpen && err != nil {
 		fn.Returns, offset, err = consumeTypes(parser, offset, false)
 		if err != nil {
 			return nil, originalOffset, anon, err
