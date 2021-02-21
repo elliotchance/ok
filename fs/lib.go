@@ -1045,4 +1045,102 @@ func init() {
 		"}\n" +
 		""))
 	Filesystem.Mount(fs, "/time")
+	fs = memfs.Create()
+	f, _ = fs.OpenFile("is.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("// IsControl reports whether the character is a control character.\n" +
+		"func IsControl(c char) bool {\n" +
+		"    return __unicode_is(\"Control\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsDigit reports whether the character is a decimal digit.\n" +
+		"func IsDigit(c char) bool {\n" +
+		"    return __unicode_is(\"Digit\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsGraphic reports whether the character is defined as a Graphic by Unicode.\n" +
+		"// Such characters include letters, marks, numbers, punctuation, symbols, and\n" +
+		"// spaces, from categories L, M, N, P, S, Zs.\n" +
+		"func IsGraphic(c char) bool {\n" +
+		"    return __unicode_is(\"Graphic\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsLetter reports whether the character is a letter (category L).\n" +
+		"func IsLetter(c char) bool {\n" +
+		"    return __unicode_is(\"Letter\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsLower reports whether the character is a lower case letter.\n" +
+		"func IsLower(c char) bool {\n" +
+		"    return __unicode_is(\"Lower\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsMark reports whether the character is a mark character (category M).\n" +
+		"func IsMark(c char) bool {\n" +
+		"    return __unicode_is(\"Mark\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsNumber reports whether the character is a number (category N).\n" +
+		"func IsNumber(c char) bool {\n" +
+		"    return __unicode_is(\"Number\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsPrint reports whether the character is defined as printable. Such\n" +
+		"// characters include letters, marks, numbers, punctuation, symbols, and the\n" +
+		"// ASCII space character, from categories L, M, N, P, S and the ASCII space\n" +
+		"// character.\n" +
+		"//\n" +
+		"// This categorization is the same as IsGraphic except that the only spacing\n" +
+		"// character is ASCII space, U+0020.\n" +
+		"func IsPrint(c char) bool {\n" +
+		"    return __unicode_is(\"Print\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsPunct reports whether the character is a Unicode punctuation character\n" +
+		"// (category P).\n" +
+		"func IsPunct(c char) bool {\n" +
+		"    return __unicode_is(\"Punct\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsSpace reports whether the character is a space character as defined by\n" +
+		"// Unicode's White Space property; in the Latin-1 space this is '\\t', '\\n',\n" +
+		"// '\\v', '\\f', '\\r', ' ', U+0085 (NEL), U+00A0 (NBSP).\n" +
+		"//\n" +
+		"// Other definitions of spacing characters are set by category Z and property\n" +
+		"// Pattern_White_Space.\n" +
+		"func IsSpace(c char) bool {\n" +
+		"    return __unicode_is(\"Space\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsSymbol reports whether the character is a symbolic character.\n" +
+		"func IsSymbol(c char) bool {\n" +
+		"    return __unicode_is(\"Symbol\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsTitle reports whether the character is a title case letter.\n" +
+		"func IsTitle(c char) bool {\n" +
+		"    return __unicode_is(\"Title\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// IsUpper reports whether the character is an upper case letter.\n" +
+		"func IsUpper(c char) bool {\n" +
+		"    return __unicode_is(\"Upper\", c)\n" +
+		"}\n" +
+		""))
+	f, _ = fs.OpenFile("to.ok", os.O_RDWR|os.O_CREATE, 0777)
+	f.Write([]byte("// ToLower maps the character to lower case.\n" +
+		"func ToLower(c char) char {\n" +
+		"    return __unicode_to(\"Lower\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// ToUpper maps the character to upper case.\n" +
+		"func ToUpper(c char) char {\n" +
+		"    return __unicode_to(\"Upper\", c)\n" +
+		"}\n" +
+		"\n" +
+		"// ToTitle maps the character to title case.\n" +
+		"func ToTitle(c char) char {\n" +
+		"    return __unicode_to(\"Title\", c)\n" +
+		"}\n" +
+		""))
+	Filesystem.Mount(fs, "/unicode")
 }

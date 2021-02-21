@@ -42,6 +42,8 @@ var builtinFunctions = map[string]builtinFn{
 	"__sleep":       funcSleep,
 	"__stack":       funcStack,
 	"__type":        funcType,
+	"__unicode_is":  funcUnicodeIs,
+	"__unicode_to":  funcUnicodeTo,
 	"__unix":        funcUnix,
 	"__write":       funcWrite,
 
@@ -511,4 +513,32 @@ func funcEnvUnset(_ *vm.CompiledFunc, args []vm.Register) (vm.Instruction, []vm.
 	}
 
 	return ins, nil, nil, nil
+}
+
+func funcUnicodeIs(
+	compiledFunc *vm.CompiledFunc,
+	args []vm.Register,
+) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.UnicodeIs{
+		Op:     args[0],
+		Char:   args[1],
+		Result: result,
+	}
+
+	return ins, vm.Registers{result}, []*types.Type{types.Bool}, nil
+}
+
+func funcUnicodeTo(
+	compiledFunc *vm.CompiledFunc,
+	args []vm.Register,
+) (vm.Instruction, []vm.Register, []*types.Type, error) {
+	result := compiledFunc.NextRegister()
+	ins := &vm.UnicodeTo{
+		Op:     args[0],
+		Char:   args[1],
+		Result: result,
+	}
+
+	return ins, vm.Registers{result}, []*types.Type{types.Char}, nil
 }

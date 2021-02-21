@@ -1,0 +1,17 @@
+test "ToUpper" {
+    assert(ToUpper('a') == 'A')
+    assert(ToUpper('B') == 'B')
+    assert(ToUpper('5') == '5')
+}
+
+test "ToLower" {
+    assert(ToLower('a') == 'a')
+    assert(ToLower('B') == 'b')
+    assert(ToLower('5') == '5')
+}
+
+test "ToTitle" {
+    assert(ToUpper('a') == 'A')
+    assert(ToUpper('B') == 'B')
+    assert(ToUpper('5') == '5')
+}

@@ -1,0 +1,64 @@
+test "IsControl" {
+    assert(IsControl('a') == false)
+    assert(IsControl('\r') == true)
+}
+
+test "IsDigit" {
+    assert(IsDigit('a') == false)
+    assert(IsDigit('2') == true)
+}
+
+test "IsGraphic" {
+    assert(IsGraphic('\r') == false)
+    assert(IsGraphic('A') == true)
+}
+
+test "IsLetter" {
+    assert(IsLetter('3') == false)
+    assert(IsLetter('b') == true)
+}
+
+test "IsLower" {
+    assert(IsLower('C') == false)
+    assert(IsLower('c') == true)
+}
+
+test "IsMark" {
+    assert(IsMark('C') == false)
+    assert(IsMark('̊') == true)
+}
+
+test "IsNumber" {
+    assert(IsNumber('C') == false)
+    assert(IsNumber('6') == true)
+}
+
+test "IsPrint" {
+    assert(IsPrint('\r') == false)
+    assert(IsPrint('6') == true)
+}
+
+test "IsPunct" {
+    assert(IsPunct('a') == false)
+    assert(IsPunct(',') == true)
+}
+
+test "IsSpace" {
+    assert(IsSpace('t') == false)
+    assert(IsSpace(' ') == true)
+}
+
+test "IsSymbol" {
+    assert(IsSymbol('t') == false)
+    assert(IsSymbol('₤') == true)
+}
+
+test "IsTitle" {
+    assert(IsTitle('s') == false)
+    assert(IsTitle('ǅ') == true)
+}
+
+test "IsUpper" {
+    assert(IsUpper('v') == false)
+    assert(IsUpper('V') == true)
+}

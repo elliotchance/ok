@@ -8,3 +8,4 @@
 - [runtime](https://github.com/elliotchance/ok/tree/master/lib/runtime) - Current process and runtime environment.
 - [strings](https://github.com/elliotchance/ok/tree/master/lib/strings) - Common string checking and manipulation.
 - [time](https://github.com/elliotchance/ok/tree/master/lib/time) - Time and date functions.
+- [unicode](https://github.com/elliotchance/ok/tree/master/lib/unicode) - Unicode and character functions.
