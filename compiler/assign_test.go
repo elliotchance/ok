@@ -86,6 +86,14 @@ func TestAssign(t *testing.T) {
 				},
 				&ast.Assign{
 					Lefts: []ast.Node{
+						&ast.Identifier{Name: "bar"},
+					},
+					Rights: []ast.Node{
+						asttest.NewLiteralString("bar"),
+					},
+				},
+				&ast.Assign{
+					Lefts: []ast.Node{
 						&ast.Key{
 							Expr: &ast.Identifier{Name: "foo"},
 							Key:  &ast.Identifier{Name: "bar"},
@@ -109,14 +117,18 @@ func TestAssign(t *testing.T) {
 					Result: "2",
 					Symbol: "1",
 				},
+				&vm.Assign{
+					Result:   "bar",
+					Register: "2",
+				},
 				&vm.AssignSymbol{
 					Result: "3",
 					Symbol: "2",
 				},
 				&vm.MapSet{
 					Map:   "foo",
-					Key:   "3",
-					Value: "2",
+					Key:   "bar",
+					Value: "3",
 				},
 			},
 		},

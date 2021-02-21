@@ -113,6 +113,13 @@ func TestMap(t *testing.T) {
 				Key:  asttest.NewLiteralString("bar"),
 			},
 		},
+		"get-index-variable": {
+			str: `foo[bar]`,
+			expected: &ast.Key{
+				Expr: &ast.Identifier{Name: "foo"},
+				Key:  &ast.Identifier{Name: "bar"},
+			},
+		},
 		"set-index": {
 			str: `foo[bar] = 2`,
 			expected: &ast.Assign{

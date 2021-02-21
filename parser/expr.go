@@ -2,6 +2,7 @@ package parser
 
 import (
 	"github.com/elliotchance/ok/ast"
+	"github.com/elliotchance/ok/ast/asttest"
 	"github.com/elliotchance/ok/lexer"
 )
 
@@ -181,8 +182,11 @@ func consumeChainedExpr(parser *Parser, offset int) (ast.Node, int, error) {
 
 			expr = &ast.Key{
 				Expr: expr,
-				Key:  ident,
 				Pos:  ident.Pos,
+
+				// Even though this is an identifier it's not actually a
+				// variable and needs to be translated into a literal.
+				Key: asttest.NewLiteralString(ident.Name),
 			}
 			continue
 		}

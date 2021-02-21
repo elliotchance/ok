@@ -59,3 +59,14 @@ func (node *Literal) String() string {
 
 	return string(v)
 }
+
+// Copy performs a shallow copy.
+func (node *Literal) Copy() *Literal {
+	return &Literal{
+		Kind:  node.Kind,
+		Value: node.Value,
+		Array: node.Array,
+		Map:   node.Map,
+		Pos:   node.Pos,
+	}
+}

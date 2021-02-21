@@ -45,7 +45,7 @@ func TestCall(t *testing.T) {
 			expected: &ast.Call{
 				Expr: &ast.Key{
 					Expr: &ast.Identifier{Name: "math"},
-					Key:  &ast.Identifier{Name: "abs"},
+					Key:  asttest.NewLiteralString("abs"),
 				},
 				Arguments: []ast.Node{
 					asttest.NewLiteralNumber("123"),
