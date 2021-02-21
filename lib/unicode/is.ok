@@ -1,0 +1,78 @@
+// IsControl reports whether the character is a control character.
+func IsControl(c char) bool {
+    return __unicode_is("Control", c)
+}
+
+// IsDigit reports whether the character is a decimal digit.
+func IsDigit(c char) bool {
+    return __unicode_is("Digit", c)
+}
+
+// IsGraphic reports whether the character is defined as a Graphic by Unicode.
+// Such characters include letters, marks, numbers, punctuation, symbols, and
+// spaces, from categories L, M, N, P, S, Zs.
+func IsGraphic(c char) bool {
+    return __unicode_is("Graphic", c)
+}
+
+// IsLetter reports whether the character is a letter (category L).
+func IsLetter(c char) bool {
+    return __unicode_is("Letter", c)
+}
+
+// IsLower reports whether the character is a lower case letter.
+func IsLower(c char) bool {
+    return __unicode_is("Lower", c)
+}
+
+// IsMark reports whether the character is a mark character (category M).
+func IsMark(c char) bool {
+    return __unicode_is("Mark", c)
+}
+
+// IsNumber reports whether the character is a number (category N).
+func IsNumber(c char) bool {
+    return __unicode_is("Number", c)
+}
+
+// IsPrint reports whether the character is defined as printable. Such
+// characters include letters, marks, numbers, punctuation, symbols, and the
+// ASCII space character, from categories L, M, N, P, S and the ASCII space
+// character.
+//
+// This categorization is the same as IsGraphic except that the only spacing
+// character is ASCII space, U+0020.
+func IsPrint(c char) bool {
+    return __unicode_is("Print", c)
+}
+
+// IsPunct reports whether the character is a Unicode punctuation character
+// (category P).
+func IsPunct(c char) bool {
+    return __unicode_is("Punct", c)
+}
+
+// IsSpace reports whether the character is a space character as defined by
+// Unicode's White Space property; in the Latin-1 space this is '\t', '\n',
+// '\v', '\f', '\r', ' ', U+0085 (NEL), U+00A0 (NBSP).
+//
+// Other definitions of spacing characters are set by category Z and property
+// Pattern_White_Space.
+func IsSpace(c char) bool {
+    return __unicode_is("Space", c)
+}
+
+// IsSymbol reports whether the character is a symbolic character.
+func IsSymbol(c char) bool {
+    return __unicode_is("Symbol", c)
+}
+
+// IsTitle reports whether the character is a title case letter.
+func IsTitle(c char) bool {
+    return __unicode_is("Title", c)
+}
+
+// IsUpper reports whether the character is an upper case letter.
+func IsUpper(c char) bool {
+    return __unicode_is("Upper", c)
+}

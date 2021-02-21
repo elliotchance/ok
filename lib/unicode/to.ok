@@ -1,0 +1,14 @@
+// ToLower maps the character to lower case.
+func ToLower(c char) char {
+    return __unicode_to("Lower", c)
+}
+
+// ToUpper maps the character to upper case.
+func ToUpper(c char) char {
+    return __unicode_to("Upper", c)
+}
+
+// ToTitle maps the character to title case.
+func ToTitle(c char) char {
+    return __unicode_to("Title", c)
+}
