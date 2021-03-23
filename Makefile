@@ -47,7 +47,8 @@ run-tests: tests/* run-lib-tests
 tests/*: ok
 	@# Non successful runs will have their exit code appended to the expected
 	@# output so it can be included in the diff.
-	./ok run $@ > /tmp/stdout.txt || (echo "Exit: $$?" >> /tmp/stdout.txt)
+	./ok build -nexe -o main $@
+	./main > /tmp/stdout.txt || (echo "Exit: $$?" >> /tmp/stdout.txt)
 
 	@if [ -f "$@/stdout-ignored.txt" ]; then \
 		echo "Stdout ignored."; \
